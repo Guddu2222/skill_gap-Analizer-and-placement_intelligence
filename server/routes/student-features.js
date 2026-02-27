@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 const Student = require('../models/Student');
@@ -6,6 +5,80 @@ const Job = require('../models/Job');
 const Alumni = require('../models/Alumni');
 const InterviewExperience = require('../models/InterviewExperience');
 const auth = require('../middleware/auth');
+const { upload, uploadImage } = require('../config/cloudinary');
+
+// Upload Resume
+router.post('/upload-resume', auth, upload.single('resume'), async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.user.userId });
+    if (!student) {
+      return res.status(404).json({ msg: 'Student not found' });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ msg: 'No file uploaded' });
+    }
+
+    // req.file.path will contain the Cloudinary URL
+    student.resumeUrl = req.file.path;
+    
+    // The profileCompletionPercentage is auto-recalculated by the pre-save hook on Student model
+    await student.save();
+
+    res.json({ 
+      msg: 'Resume uploaded successfully',
+      resumeUrl: student.resumeUrl,
+      profileCompletionPercentage: student.profileCompletionPercentage
+    });
+  } catch (err) {
+    console.error('Upload Error:', err);
+    res.status(500).json({ error: 'Failed to upload resume' });
+  }
+});
+
+// Upload Profile Picture
+router.post('/upload-profile-picture', auth, uploadImage.single('profilePicture'), async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.user.userId });
+    if (!student) {
+      return res.status(404).json({ msg: 'Student not found' });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ msg: 'No image uploaded' });
+    }
+
+    // req.file.path will contain the Cloudinary URL
+    student.profilePicture = req.file.path;
+    
+    // The profileCompletionPercentage is auto-recalculated by the pre-save hook on Student model
+    await student.save();
+
+    res.json({ 
+      msg: 'Profile picture uploaded successfully',
+      profilePicture: student.profilePicture,
+      profileCompletionPercentage: student.profileCompletionPercentage
+    });
+  } catch (err) {
+    console.error('Profile Picture Upload Error:', err);
+    res.status(500).json({ error: 'Failed to upload profile picture' });
+  }
+});
+router.get('/me', auth, async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.user.userId })
+      .populate('user', '-password')
+      .populate('college', 'name location tier');
+      
+    if (!student) {
+      return res.status(404).json({ msg: 'Student profile not found' });
+    }
+    res.json({ student });
+  } catch (err) {
+    console.error('Fetch student profile error:', err.message);
+    res.status(500).json({ error: 'Server Error' });
+  }
+});
 
 // Get Student Skill Gap Analysis
 router.get('/skill-gap', auth, async (req, res) => {

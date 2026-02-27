@@ -41,6 +41,11 @@ export const fetchJobs = async () => {
 };
 
 // Auth API methods
+export const register = async (payload) => {
+  const response = await api.post('/auth/register', payload);
+  return response.data;
+};
+
 export const login = async (email, password) => {
   try {
     const response = await api.post('/auth/login', { email, password });
@@ -79,4 +84,101 @@ export const logout = async () => {
   }
 };
 
+// College dashboard & student management (college_admin)
+export const fetchCollegeDashboard = async () => {
+  const { data } = await api.get('/college-features/dashboard');
+  return data;
+};
+
+export const fetchCollegeStudents = async (params = {}) => {
+  const { data } = await api.get('/college-features/students', { params });
+  return data;
+};
+
+export const fetchCollegeSkillsAnalytics = async () => {
+  const { data } = await api.get('/college-features/skills/analytics');
+  return data;
+};
+
+export const fetchCollegeDepartmentSkills = async (department) => {
+  const { data } = await api.get(`/college-features/skills/department/${encodeURIComponent(department)}`);
+  return data;
+};
+
+export const exportCollegeStudents = async (format = 'csv') => {
+  const response = await api.get('/college-features/students/export', {
+    params: { format },
+    responseType: format === 'csv' ? 'blob' : 'json',
+  });
+  return response.data;
+};
+
+// ==================== RECRUITER API ====================
+
+export const fetchRecruiterStats = async () => {
+  const { data } = await api.get('/recruiter-features/dashboard/stats');
+  return data;
+};
+
+export const fetchRecruiterColleges = async (params = {}) => {
+  const { data } = await api.get('/recruiter-features/colleges', { params });
+  return data;
+};
+
+export const fetchCollegeDetail = async (collegeId) => {
+  const { data } = await api.get(`/recruiter-features/colleges/${collegeId}`);
+  return data;
+};
+
+export const searchCandidates = async (criteria) => {
+  const { data } = await api.post('/recruiter-features/search/candidates', criteria);
+  return data;
+};
+
+export const fetchDomainExperts = async (domain, limit = 20) => {
+  const { data } = await api.get(`/recruiter-features/candidates/top-by-domain/${domain}`, { params: { limit } });
+  return data;
+};
+
+export const saveCandidate = async (studentId, folderName = 'General', notes = '', rating = null) => {
+  const { data } = await api.post('/recruiter-features/candidates/save', { studentId, folderName, notes, rating });
+  return data;
+};
+
+export const fetchSavedCandidates = async (params = {}) => {
+  const { data } = await api.get('/recruiter-features/candidates/saved', { params });
+  return data;
+};
+
+export const updateCandidateStatus = async (id, status, notes = '') => {
+  const { data } = await api.patch(`/recruiter-features/candidates/saved/${id}/status`, { status, notes });
+  return data;
+};
+
+export const unsaveCandidate = async (studentId) => {
+  const { data } = await api.delete(`/recruiter-features/candidates/save/${studentId}`);
+  return data;
+};
+
+// ==================== STUDENT API ====================
+export const fetchStudentProfile = async () => {
+  const { data } = await api.get('/student-features/me');
+  return data;
+};
+
+export const fetchSkillGap = async () => {
+  const { data } = await api.get('/student-features/skill-gap');
+  return data;
+};
+
+export const uploadProfilePicture = async (formData) => {
+  const { data } = await api.post('/student-features/upload-profile-picture', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return data;
+};
+
 export default api;
+

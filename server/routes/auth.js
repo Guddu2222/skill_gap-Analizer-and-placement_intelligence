@@ -4,6 +4,8 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Student = require('../models/Student');
+const College = require('../models/College');
 
 const { sendVerificationEmail, sendWelcomeEmail } = require('../utils/sendEmail');
 const crypto = require('crypto');
@@ -11,9 +13,29 @@ const crypto = require('crypto');
 // Register
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const {
+      name,
+      email,
+      password,
+      role,
+      // College admin profile (when role === 'college_admin')
+      collegeName,
+      phone,
+      address,
+      
+      // Student profile (when role === 'student') - Extended
+      firstName, lastName, college: studentCollegeName, rollNumber,
+      department, graduationYear, cgpa, degree, skills,
+      linkedinUrl, githubUrl, portfolioUrl, targetRole, resumeUrl,
+      dateOfBirth, gender, specialization, admissionYear, currentSemester,
+      activeBacklogs, clearedBacklogs, education10th, education12th,
+      experiences, projects,
+      addressLine1, addressLine2, city, state, pincode, country,
+      preferredLocations, expectedSalaryMin, expectedSalaryMax, willingToRelocate
+    } = req.body;
+
     let user = await User.findOne({ email });
-    
+
     if (user && user.isVerified) {
       return res.status(400).json({ msg: 'User already exists' });
     }
@@ -21,50 +43,186 @@ router.post('/register', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Generate 6-digit verification code
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     const verificationCodeExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
 
     if (user) {
-      // Update existing unverified user
-      user.name = name;
+      user.name = name || `${firstName} ${lastName}`.trim();
       user.password = hashedPassword;
       user.role = role;
       user.verificationCode = verificationCode;
       user.verificationCodeExpires = verificationCodeExpires;
     } else {
-      // Create new user
       user = new User({
-        name,
+        name: name || `${firstName} ${lastName}`.trim(),
         email,
         password: hashedPassword,
         role,
         verificationCode,
-        verificationCodeExpires
+        verificationCodeExpires,
       });
     }
 
     await user.save();
 
-    // Send verification email
+    // If college_admin, create/upsert a College document and link it to the user
+    if (role === 'college_admin') {
+      try {
+        const emailDomain = email.split('@')[1]?.toLowerCase() || null;
+        const collegeNameTrimmed = (collegeName || name || '').trim();
+
+        // Build upsert filter — prefer domain-based lookup to avoid duplicates
+        const filter = emailDomain
+          ? { emailDomain }
+          : { name: new RegExp('^' + collegeNameTrimmed.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i') };
+
+        const update = {
+          $setOnInsert: {
+            name: collegeNameTrimmed || `College (${email})`,
+            emailDomain: emailDomain || undefined,
+            location: address || undefined,
+          },
+        };
+
+        const college = await College.findOneAndUpdate(filter, update, {
+          upsert: true,
+          new: true,
+          setDefaultsOnInsert: true,
+        });
+
+        user.college = college._id;
+        await user.save();
+      } catch (collegeErr) {
+        console.error('College upsert error (non-fatal):', collegeErr.message);
+        // Non-fatal: user is still created, they can be linked later
+      }
+    }
+
+    // If student, create/update Student profile and optionally link college
+    if (role === 'student') {
+      let collegeId = null;
+      if (studentCollegeName && typeof studentCollegeName === 'string' && studentCollegeName.trim().length >= 3) {
+        const cleanCollegeName = studentCollegeName.trim();
+        let college = await College.findOne({
+          name: new RegExp('^' + cleanCollegeName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i'),
+        });
+        
+        // Auto-create college if it doesn't exist
+        if (!college) {
+          try {
+            college = new College({ name: cleanCollegeName, isVerified: false });
+            await college.save();
+          } catch(err) {
+            console.error('Error auto-creating college', err);
+          }
+        }
+        
+        if (college) collegeId = college._id;
+      }
+
+      const yearNum = graduationYear ? parseInt(graduationYear, 10) : new Date().getFullYear();
+      const skillsNormalized = Array.isArray(skills)
+        ? skills
+            .filter((s) => s != null && (typeof s === 'string' ? String(s).trim() !== '' : String(s.skillName || '').trim() !== ''))
+            .map((s) => (typeof s === 'string' ? { skillName: s.trim() } : { 
+              skillName: String(s.skillName || '').trim(), 
+              proficiencyLevel: String(s.proficiencyLevel || 'intermediate').toLowerCase() 
+            }))
+        : [];
+
+      const studentPayload = {
+        user: user._id,
+        college: collegeId,
+        rollNumber: rollNumber && String(rollNumber).trim() ? String(rollNumber).trim() : email.split('@')[0],
+        department: department && String(department).trim() ? String(department).trim() : 'General',
+        year: yearNum,
+        graduationYear: yearNum,
+        firstName: firstName && String(firstName).trim() ? String(firstName).trim() : undefined,
+        lastName: lastName && String(lastName).trim() ? String(lastName).trim() : undefined,
+        email: email || user.email,
+        phone: phone && String(phone).trim() ? String(phone).trim() : undefined,
+        cgpa: cgpa != null && cgpa !== '' ? parseFloat(cgpa) : undefined,
+        degree: degree && String(degree).trim() ? String(degree).trim() : undefined,
+        skills: skillsNormalized,
+        targetRole: targetRole && String(targetRole).trim() ? String(targetRole).trim() : undefined,
+        linkedinUrl: linkedinUrl && String(linkedinUrl).trim() ? String(linkedinUrl).trim() : undefined,
+        githubUrl: githubUrl && String(githubUrl).trim() ? String(githubUrl).trim() : undefined,
+        portfolioUrl: portfolioUrl && String(portfolioUrl).trim() ? String(portfolioUrl).trim() : undefined,
+        resumeUrl: resumeUrl && String(resumeUrl).trim() ? String(resumeUrl).trim() : undefined,
+        
+        // New Fields
+        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
+        gender: gender || undefined,
+        specialization: specialization || undefined,
+        admissionYear: admissionYear ? parseInt(admissionYear, 10) : undefined,
+        currentSemester: currentSemester ? parseInt(currentSemester, 10) : undefined,
+        activeBacklogs: activeBacklogs ? parseInt(activeBacklogs, 10) : 0,
+        clearedBacklogs: clearedBacklogs ? parseInt(clearedBacklogs, 10) : 0,
+        
+        education10th: education10th?.percentage ? {
+          institutionName: education10th.institutionName,
+          board: education10th.board,
+          percentage: parseFloat(education10th.percentage),
+          yearOfPassing: parseInt(education10th.yearOfPassing, 10)
+        } : undefined,
+
+        education12th: education12th?.percentage ? {
+          institutionName: education12th.institutionName,
+          board: education12th.board,
+          percentage: parseFloat(education12th.percentage),
+          yearOfPassing: parseInt(education12th.yearOfPassing, 10),
+          stream: education12th.stream
+        } : undefined,
+
+        experiences: Array.isArray(experiences) ? experiences : [],
+        projects: Array.isArray(projects) ? projects : [],
+        
+        addressLine1, addressLine2, city, state, pincode, country,
+        preferredLocations: Array.isArray(preferredLocations) ? preferredLocations : [],
+        expectedSalaryMin: expectedSalaryMin ? parseFloat(expectedSalaryMin) : undefined,
+        expectedSalaryMax: expectedSalaryMax ? parseFloat(expectedSalaryMax) : undefined,
+        willingToRelocate: willingToRelocate !== undefined ? Boolean(willingToRelocate) : true,
+      };
+
+      let student = await Student.findOne({ user: user._id });
+      if (student) {
+        Object.assign(student, studentPayload);
+        await student.save();
+      } else {
+        student = new Student(studentPayload);
+        await student.save();
+      }
+    }
+
     try {
       await sendVerificationEmail(user.email, verificationCode);
     } catch (err) {
       console.error('Email send error:', err);
-      // We still save the user, but they might need to resend the code
     }
 
     const payload = { userId: user.id, role: user.role };
+    if (user.role === 'college_admin' && user.college) {
+      payload.collegeId = user.college.toString();
+    }
     const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
 
-    res.json({ 
-      token, 
+    res.json({
+      token,
       user: { id: user.id, name: user.name, email: user.email, role: user.role, isVerified: false },
-      message: 'Registration successful. Please check your email for verification code.'
+      message: 'Registration successful. Please check your email for verification code.',
     });
   } catch (err) {
-    console.error('Register error:', err.message);
-    res.status(500).json({ error: 'Server Error', details: process.env.NODE_ENV === 'development' ? err.message : undefined });
+    console.error('Register error (Full):', err);
+    // Handle Mongoose Validation Errors
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+      return res.status(400).json({ msg: messages.join(' | ') });
+    }
+    // Handle Duplicate Key Errors
+    if (err.code === 11000) {
+      return res.status(400).json({ msg: 'Email is already registered.' });
+    }
+    res.status(500).json({ msg: err.message || 'Server Error' });
   }
 });
 
@@ -150,9 +308,14 @@ router.post('/login', async (req, res) => {
     }
 
     const payload = { userId: user.id, role: user.role };
+    if (user.role === 'college_admin' && user.college) {
+      payload.collegeId = user.college.toString();
+    }
     const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
 
-    res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role, isVerified: user.isVerified } });
+    const userRes = { id: user.id, name: user.name, email: user.email, role: user.role, isVerified: user.isVerified };
+    if (user.college) userRes.collegeId = user.college.toString();
+    res.json({ token, user: userRes });
   } catch (err) {
     console.error('Login error:', err.message);
     res.status(500).json({ error: 'Server Error', details: process.env.NODE_ENV === 'development' ? err.message : undefined });
@@ -257,6 +420,17 @@ router.post('/reset-password', async (req, res) => {
 
   } catch (err) {
     console.error('Reset password error:', err.message);
+    res.status(500).json({ error: 'Server Error' });
+  }
+});
+
+// Check if email exists
+router.post('/check-email', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    res.json({ exists: !!user });
+  } catch (err) {
     res.status(500).json({ error: 'Server Error' });
   }
 });

@@ -1,81 +1,123 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Building2, Users, Bookmark, Target, Award, TrendingUp, Briefcase, Search } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
-import StatCard from '../components/StatCard';
-import { FileText, Users, Clock, CheckCircle } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import CollegeExplorer from '../components/recruiter/CollegeExplorer';
+import AdvancedSearch from '../components/recruiter/AdvancedSearch';
+import DomainExperts from '../components/recruiter/DomainExperts';
+import SavedCandidates from '../components/recruiter/SavedCandidates';
+import { fetchRecruiterStats } from '../services/api';
 
-const funnelData = [
-  { name: 'AI Matched', value: 2450 },
-  { name: 'Screened', value: 1200 },
-  { name: 'Tech Round', value: 450 },
-  { name: 'HR Round', value: 150 },
-  { name: 'Offered', value: 78 },
+const TABS = [
+  { id: 'explore',  label: 'Explore Colleges', icon: Building2 },
+  { id: 'search',   label: 'Advanced Search',  icon: Search },
+  { id: 'saved',    label: 'Saved',             icon: Bookmark },
+  { id: 'experts',  label: 'Domain Experts',    icon: Target },
 ];
 
+const StatCard = ({ icon: Icon, title, value, subtitle, color, badge }) => (
+  <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100">
+    <div className="flex items-start justify-between mb-4">
+      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${color}`}>
+        <Icon className="w-6 h-6 text-white" />
+      </div>
+      {badge != null && (
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+          <TrendingUp className="w-3 h-3" /> {badge}%
+        </span>
+      )}
+    </div>
+    <h3 className="text-3xl font-bold text-gray-900 mb-1">{value ?? '–'}</h3>
+    <p className="text-sm font-medium text-gray-600 mb-0.5">{title}</p>
+    {subtitle && <p className="text-xs text-gray-400">{subtitle}</p>}
+  </div>
+);
+
 const RecruiterDashboard = () => {
+  const [activeTab, setActiveTab] = useState('explore');
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchRecruiterStats()
+      .then(setStats)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <div className="flex bg-gray-50 min-h-screen font-sans">
       <Sidebar role="recruiter" />
-      
+
       <main className="flex-1 ml-64 p-8">
-        <header className="bg-gradient-to-r from-indigo-900 to-blue-900 text-white p-8 rounded-2xl mb-8 shadow-xl">
-           <h1 className="text-3xl font-bold mb-2">Hello, Sarah!</h1>
-           <p className="text-blue-200">Manage your campus hiring drives and candidate pipeline.</p>
+        {/* Header */}
+        <header className="bg-gradient-to-r from-indigo-900 via-blue-900 to-blue-800 text-white p-8 rounded-2xl mb-8 shadow-xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                <Briefcase className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold mb-1">Recruiter Portal</h1>
+                <p className="text-blue-200 text-sm">Discover top talent across campuses</p>
+              </div>
+            </div>
+          </div>
         </header>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatCard title="Total Applications" value="2,450" subtext="+15% vs last season" trend={15} icon={FileText} />
-          <StatCard title="Interviews" value="86" subtext="12 Scheduled Today" trend={0} icon={Users} />
-          <StatCard title="Offers Rolled" value="124" subtext="78 Accepted" trend={5} icon={CheckCircle} />
-          <StatCard title="Time to Hire" value="18 Days" subtext="-2 days improvement" trend={-10} icon={Clock} />
+        {/* Quick Stats */}
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {[1,2,3,4].map(i => <div key={i} className="bg-white rounded-2xl p-6 h-32 animate-pulse shadow-md" />)}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <StatCard
+              icon={Bookmark} title="Saved Candidates"
+              value={stats?.savedCandidates ?? 0} subtitle="Shortlisted profiles"
+              color="bg-gradient-to-br from-blue-500 to-blue-600"
+            />
+            <StatCard
+              icon={Building2} title="Colleges in Pipeline"
+              value={stats?.viewedColleges ?? 0} subtitle="Institutions explored"
+              color="bg-gradient-to-br from-purple-500 to-purple-600"
+            />
+            <StatCard
+              icon={Users} title="In Interviews"
+              value={stats?.statusBreakdown?.interviewing ?? 0} subtitle="Active candidates"
+              color="bg-gradient-to-br from-green-500 to-green-600"
+            />
+            <StatCard
+              icon={Award} title="Hired"
+              value={stats?.statusBreakdown?.hired ?? 0} subtitle="Successful hires"
+              color="bg-gradient-to-br from-orange-500 to-orange-600"
+            />
+          </div>
+        )}
+
+        {/* Tab Nav */}
+        <div className="bg-white rounded-2xl shadow-md p-2 mb-8 flex gap-2">
+          {TABS.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              onClick={() => setActiveTab(id)}
+              className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-sm transition-all ${
+                activeTab === id
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg'
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              <Icon className="w-4 h-4" />
+              {id === 'saved' && stats ? `${label} (${stats.savedCandidates ?? 0})` : label}
+            </button>
+          ))}
         </div>
 
-        {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-          <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-6">Hiring Funnel Analysis</h3>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={funnelData} layout="vertical" margin={{top: 5, right: 30, left: 40, bottom: 5}}>
-                  <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f3f4f6" />
-                  <XAxis type="number" hide />
-                  <YAxis dataKey="name" type="category" width={80} tick={{fill: '#4b5563', fontSize: 12}} />
-                  <Tooltip 
-                     cursor={{fill: '#f9fafb'}}
-                     contentStyle={{borderRadius: '8px'}}
-                  />
-                  <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={32}>
-                    {funnelData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={`hsl(230, 80%, ${70 - (index * 10)}%)`} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-6">Today's Interviews</h3>
-            <div className="space-y-4">
-               {[1,2,3].map((i) => (
-                   <div key={i} className="flex items-center p-3 rounded-xl hover:bg-gray-50 transition border border-transparent hover:border-gray-100">
-                      <div className="w-12 h-12 rounded-full bg-gray-200 flex-shrink-0 mr-4 overflow-hidden">
-                        {/* Placeholder Avatar */}
-                        <div className="w-full h-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">
-                            C{i}
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                          <h4 className="font-semibold text-gray-900 text-sm">Candidate Name</h4>
-                          <p className="text-xs text-gray-500">10:00 AM • Tech Round</p>
-                      </div>
-                      <button className="text-blue-600 text-xs font-semibold px-2 py-1 bg-blue-50 rounded hover:bg-blue-100">Join</button>
-                   </div>
-               ))}
-            </div>
-          </div>
+        {/* Tab Content */}
+        <div>
+          {activeTab === 'explore'  && <CollegeExplorer />}
+          {activeTab === 'search'   && <AdvancedSearch />}
+          {activeTab === 'saved'    && <SavedCandidates stats={stats} />}
+          {activeTab === 'experts'  && <DomainExperts />}
         </div>
       </main>
     </div>

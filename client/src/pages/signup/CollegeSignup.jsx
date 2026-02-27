@@ -39,11 +39,13 @@ const CollegeSignup = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            name: formData.contactPerson, // or collegeName depending on requirements. Using contactPerson as 'name' for User model
+            name: formData.contactPerson,
             email: formData.email,
             password: formData.password,
             role: 'college_admin',
-            collegeName: formData.collegeName // We might need to store college details separately or in User
+            collegeName: formData.collegeName,
+            phone: formData.phone,
+            address: formData.address,
           }),
         });
 

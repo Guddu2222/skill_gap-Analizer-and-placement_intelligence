@@ -19,6 +19,7 @@ import RoleSelectionPage from './pages/signup/RoleSelectionPage';
 import StudentSignup from './pages/signup/StudentSignup';
 import CollegeSignup from './pages/signup/CollegeSignup';
 import RecruiterSignup from './pages/signup/RecruiterSignup';
+import EmailVerificationPage from './pages/signup/EmailVerificationPage';
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
         <Route path="/signup/student" element={<StudentSignup />} />
         <Route path="/signup/college" element={<CollegeSignup />} />
         <Route path="/signup/recruiter" element={<RecruiterSignup />} />
+        <Route path="/signup/verify-email" element={<EmailVerificationPage />} />
         
         {/* Dashboard Routes */}
         <Route path="/college" element={<CollegeDashboard />} />
