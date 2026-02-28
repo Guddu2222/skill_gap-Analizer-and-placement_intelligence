@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
-import { BookOpen, CheckCircle, Lock, PlayCircle, AlertCircle, Award, Target, Briefcase, MapPin, Zap } from 'lucide-react';
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import { fetchStudentProfile, fetchSkillGap } from '../services/api'; // Make sure this is correctly exported in api.js
+import { BookOpen, CheckCircle, Lock, PlayCircle, AlertCircle, Award, Target, Briefcase, MapPin, Zap, BarChart3, Users, ArrowRight } from 'lucide-react';
+import { fetchStudentProfile, fetchLatestSkillGapAnalysis, fetchLearningPaths, triggerSkillGapAnalysis } from '../services/api'; 
 
 import ResumeUploadWidget from '../components/student/ResumeUploadWidget';
 import ProfilePictureUpload from '../components/student/ProfilePictureUpload';
+import SkillGapOverview from '../components/student/SkillGapOverview';
+import LearningPathTracker from '../components/student/LearningPathTracker';
+import SkillRadarChart from '../components/student/SkillRadarChart';
+import RecommendedCourses from '../components/student/RecommendedCourses';
+import CompetitiveAnalysis from '../components/student/CompetitiveAnalysis';
 
 const StudentDashboard = () => {
   const [student, setStudent] = useState(null);
-  const [skillGap, setSkillGap] = useState(null);
+  const [skillGapAnalysis, setSkillGapAnalysis] = useState(null);
+  const [learningPaths, setLearningPaths] = useState([]);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [analyzing, setAnalyzing] = useState(false);
   const [loading, setLoading] = useState(true);
 
   // function to handle upload success dynamic UI updates
@@ -29,25 +36,53 @@ const StudentDashboard = () => {
     }));
   };
 
-  useEffect(() => {
-    const loadDashboardData = async () => {
-      try {
-        const [profileRes, gapRes] = await Promise.all([
-          fetchStudentProfile(),
-          fetchSkillGap()
-        ]);
-        
-        setStudent(profileRes.student);
-        setSkillGap(gapRes);
-      } catch (err) {
-        console.error("Dashboard data load error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
 
-    loadDashboardData();
+      const profileRes = await fetchStudentProfile();
+      setStudent(profileRes.student);
+
+      try {
+        const gapRes = await fetchLatestSkillGapAnalysis();
+        setSkillGapAnalysis(gapRes.analysis);
+      } catch (error) {
+        setSkillGapAnalysis(null);
+      }
+
+      try {
+        const pathsRes = await fetchLearningPaths();
+        setLearningPaths(pathsRes.learningPaths || []);
+      } catch (error) {
+        setLearningPaths([]);
+      }
+    } catch (err) {
+      console.error("Dashboard data load error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
   }, []);
+
+  const handleAnalyzeSkills = async () => {
+    try {
+       setAnalyzing(true);
+       // Use safe defaults if the student profile doesn't have these explicitly set yet
+       const domain = student?.targetDomain || 'Software Engineer';
+       const role = student?.targetRole || 'Full Stack Developer';
+       await triggerSkillGapAnalysis(domain, role);
+       await fetchDashboardData();
+    } catch(err) {
+       console.error(err);
+       alert("Failed to analyze skills");
+    } finally {
+       setAnalyzing(false);
+       
+    }
+  };
 
   if (loading) {
     return (
@@ -73,30 +108,7 @@ const StudentDashboard = () => {
       </div>
     );
   }
-
-  // Generate radar chart data dynamically based on the skill gap response
-  const generateRadarData = () => {
-    if (!skillGap) return [];
-    
-    const data = [];
-    const allSkills = [...new Set([...(skillGap.acquiredSkills || []), ...(skillGap.missingSkills || [])])];
-    
-    allSkills.forEach(skill => {
-      // Basic heuristic to create visual delta
-      const isAcquired = skillGap.acquiredSkills?.includes(skill);
-      data.push({
-        subject: skill,
-        You: isAcquired ? Math.floor(Math.random() * 30 + 120) : Math.floor(Math.random() * 40 + 40), // 120-150 if acquired, 40-80 if missing
-        TargetRole: 150,
-        fullMark: 150
-      });
-    });
-
-    // If no skills found from backend, return empty array to prevent Crash
-    return data.slice(0, 6); // Limit to top 6 skills for visual clarity on radar
-  };
-
-  const radarData = generateRadarData();
+  // Removed redundant radar data gen inline
 
   return (
     <div className="flex bg-slate-50 min-h-screen font-sans">
@@ -163,175 +175,132 @@ const StudentDashboard = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-           {/* Skill Readiness Assessment */}
-           <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex justify-between items-center mb-6">
-                 <div>
-                   <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                     <Radar className="w-5 h-5 text-indigo-600" />
-                     Skill Readiness
-                   </h3>
-                   <p className="text-sm text-slate-500">Compared to {skillGap?.targetRole || 'industry standard'}</p>
-                 </div>
-                 {skillGap?.matchScore && (
-                   <div className="flex flex-col items-end">
-                     <span className="text-2xl font-bold text-indigo-600">{skillGap.matchScore}%</span>
-                     <span className="text-xs text-slate-500 font-medium uppercase tracking-wider">Match Score</span>
-                   </div>
-                 )}
-              </div>
-              
-              <div className="h-80 flex items-center justify-center bg-slate-50/50 rounded-2xl border border-slate-50">
-                {radarData.length > 0 ? (
-                 <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarData}>
-                      <PolarGrid stroke="#e2e8f0" />
-                      <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }} />
-                      <PolarRadiusAxis angle={30} domain={[0, 150]} tick={false} axisLine={false} />
-                      <Radar name="You" dataKey="You" stroke="#4f46e5" strokeWidth={2} fill="#6366f1" fillOpacity={0.4} />
-                      <Radar name="Target Role" dataKey="TargetRole" stroke="#10b981" strokeDasharray="3 3" strokeWidth={2} fill="transparent" />
-                      <Tooltip 
-                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                      />
-                    </RadarChart>
-                 </ResponsiveContainer>
-                ) : (
-                  <div className="text-center text-slate-500">
-                    <p>Not enough skill data to build chart.</p>
-                    <button className="mt-2 text-indigo-600 font-medium text-sm hover:underline">Add Skills</button>
-                  </div>
-                )}
-              </div>
-           </div>
-
-           {/* Critical Skill Gaps */}
-           <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex justify-between items-center mb-6">
-                 <div>
-                    <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                       <Zap className="w-5 h-5 text-amber-500" />
-                       Critical Gaps
-                    </h3>
-                    <p className="text-sm text-slate-500">Skills required for your target role</p>
-                 </div>
-                 {skillGap?.missingSkills?.length > 0 && (
-                  <span className="bg-rose-50 border border-rose-100 text-rose-600 text-xs px-3 py-1.5 rounded-full font-bold shadow-sm">
-                    {skillGap.missingSkills.length} Action Items
-                  </span>
-                 )}
-              </div>
-              
-              <div className="space-y-3 max-h-[320px] overflow-y-auto pr-2 custom-scrollbar">
-                 {skillGap?.missingSkills?.length > 0 ? (
-                   skillGap.missingSkills.map((skill, i) => (
-                      <div key={i} className="flex justify-between items-center p-4 rounded-2xl border border-slate-100 hover:border-indigo-100 hover:bg-slate-50 transition group">
-                         <div className="flex gap-4 items-center">
-                            <div className="p-2.5 rounded-xl bg-slate-100 text-slate-600 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
-                               <AlertCircle className="w-5 h-5" />
-                            </div>
-                            <div>
-                               <h4 className="font-semibold text-slate-900">{skill}</h4>
-                               <p className="text-xs text-rose-500 font-medium">Gap Identified</p>
-                            </div>
-                         </div>
-                         <button className="px-4 py-2 text-sm font-semibold rounded-xl bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50 hover:border-indigo-300 transition-all shadow-sm">
-                            Learn
-                         </button>
-                      </div>
-                   ))
-                 ) : (
-                   <div className="text-center py-12">
-                     <Award className="w-12 h-12 text-emerald-400 mx-auto mb-3" />
-                     <p className="font-medium text-slate-900">No major gaps identified!</p>
-                     <p className="text-sm text-slate-500">You perfectly match your target role's skill profile.</p>
-                   </div>
-                 )}
-              </div>
-           </div>
-        </div>
-
-        {/* Personalized Learning Roadmap */}
-        <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden">
-           {/* Background Decoration */}
-           <div className="absolute right-0 top-0 w-64 h-full bg-gradient-to-l from-slate-50 to-transparent pointer-events-none"></div>
-
-           <div className="flex justify-between items-center mb-8 relative z-10">
-              <div>
-                 <h3 className="text-xl font-bold text-slate-900">Personalized Roadmap</h3>
-                 <p className="text-slate-500 text-sm mt-1">AI-curated steps based on your current profile</p>
-              </div>
-              <button className="text-indigo-600 text-sm font-bold hover:text-indigo-700 bg-indigo-50 px-4 py-2 rounded-xl transition-colors">
-                View Full Path
-              </button>
-           </div>
-           
-           <div className="flex gap-5 overflow-x-auto pb-6 relative z-10 snap-x">
-              
-              {/* Acquired Skills - Completed Steps */}
-              {skillGap?.acquiredSkills?.slice(0, 1).map((skill, idx) => (
-                <div key={idx} className="snap-start min-w-[280px] p-6 rounded-2xl border border-emerald-100 bg-gradient-to-b from-emerald-50/50 to-white shadow-sm flex flex-col">
-                   <div className="flex justify-between items-start mb-4">
-                      <div className="p-2 bg-emerald-100 rounded-xl text-emerald-600 shadow-sm">
-                        <CheckCircle className="w-5 h-5" />
-                      </div>
-                   </div>
-                   <h4 className="font-bold text-slate-900 mb-1">{skill} Mastery</h4>
-                   <p className="text-xs text-emerald-600 font-medium mb-auto">Competency Verified</p>
+        {/* Alert Banner - No Analysis */}
+        {!skillGapAnalysis && (
+          <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl p-6 mb-8 text-white shadow-xl">
+            <div className="flex items-start justify-between">
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Target className="w-6 h-6" />
                 </div>
-              ))}
-
-              {/* Active Step (Top Missing Skill) */}
-              {skillGap?.missingSkills?.[0] && (
-                <div className="snap-start min-w-[320px] p-1.5 rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-200 transform hover:-translate-y-1 transition-transform cursor-pointer">
-                   <div className="bg-white rounded-[20px] p-5 h-full flex flex-col">
-                       <div className="relative h-32 bg-slate-900 rounded-xl mb-5 overflow-hidden group">
-                          <img src={`https://source.unsplash.com/random/400x200/?${skillGap.missingSkills[0].toLowerCase().replace(' ', ',')},coding`} alt="Course Cover" className="w-full h-full object-cover opacity-60 mix-blend-overlay" />
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition">
-                             <PlayCircle className="w-12 h-12 text-white shadow-xl opacity-90 group-hover:opacity-100 transform group-hover:scale-110 transition drop-shadow-lg" />
-                          </div>
-                          <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded-md text-white text-xs font-bold">Recommended</div>
-                       </div>
-                      <h4 className="font-bold text-slate-900 text-lg mb-1">{skillGap.missingSkills[0]} Fundamentals</h4>
-                      <p className="text-sm text-slate-500 mb-4 line-clamp-1">Master the core concepts required for {student.targetRole}.</p>
-                      
-                      <div className="mt-auto">
-                        <div className="flex justify-between text-xs font-bold text-slate-700 mb-2">
-                           <span>0% Complete</span>
-                           <span className="text-indigo-600">Start Now</span>
-                        </div>
-                        <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                           <div className="h-full bg-indigo-600 rounded-full w-[5%]"></div>
-                        </div>
-                      </div>
-                   </div>
+                <div>
+                  <h3 className="text-xl font-bold mb-2">Get Your Personalized Career Roadmap</h3>
+                  <p className="text-blue-100 mb-4">
+                    Discover your skill gaps, get AI-powered recommendations, and create a learning path tailored just for you!
+                  </p>
+                  <button 
+                    onClick={handleAnalyzeSkills}
+                    disabled={analyzing}
+                    className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-all flex items-center space-x-2 disabled:opacity-50"
+                  >
+                    <Zap className="w-5 h-5" />
+                    <span>{analyzing ? 'Analyzing with AI...' : 'Start Analysis Now'}</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {skillGapAnalysis && (
+          <>
+            {/* Navigation Tabs */}
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-2 mb-8">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+                <button
+                  onClick={() => setActiveTab('overview')}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all ${
+                    activeTab === 'overview'
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <BarChart3 className="w-5 h-5 inline-block mr-2" />
+                  Overview
+                </button>
+                <button
+                  onClick={() => setActiveTab('learning')}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all ${
+                    activeTab === 'learning'
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <BookOpen className="w-5 h-5 inline-block mr-2" />
+                  My Paths
+                </button>
+                <button
+                  onClick={() => setActiveTab('skills')}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all ${
+                    activeTab === 'skills'
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <Target className="w-5 h-5 inline-block mr-2" />
+                  Skill Radar
+                </button>
+                <button
+                  onClick={() => setActiveTab('courses')}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all ${
+                    activeTab === 'courses'
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <Award className="w-5 h-5 inline-block mr-2" />
+                  Courses
+                </button>
+                <button
+                  onClick={() => setActiveTab('competitive')}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all ${
+                    activeTab === 'competitive'
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <Users className="w-5 h-5 inline-block mr-2" />
+                  Compare
+                </button>
+              </div>
+            </div>
+
+            {/* Tab Content */}
+            <div className="pb-12">
+              {activeTab === 'overview' && (
+                <SkillGapOverview 
+                  analysis={skillGapAnalysis} 
+                  student={student}
+                  onReanalyze={handleAnalyzeSkills}
+                />
               )}
-
-              {/* Locked Steps (Other Missing Skills) */}
-              {skillGap?.missingSkills?.slice(1, 3).map((skill, idx) => (
-                <div key={idx} className="snap-start min-w-[280px] p-6 rounded-2xl border border-slate-100 bg-slate-50/80 shadow-sm flex flex-col opacity-75">
-                   <div className="flex justify-between items-start mb-4">
-                      <div className="p-2 bg-white rounded-xl text-slate-400 shadow-sm border border-slate-200">
-                        <Lock className="w-5 h-5" />
-                      </div>
-                   </div>
-                   <h4 className="font-bold text-slate-700 mb-1">{skill} Deep Dive</h4>
-                   <p className="text-xs text-slate-500 font-medium mb-auto">Locked • Complete previous step</p>
-                </div>
-              ))}
-              
-              {/* Final Goal */}
-              <div className="snap-start min-w-[280px] p-6 rounded-2xl border border-slate-100 bg-slate-50/80 shadow-sm flex flex-col justify-center items-center text-center">
-                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center border-4 border-slate-100 shadow-sm mb-4">
-                   <Briefcase className="w-6 h-6 text-slate-400" />
-                 </div>
-                 <h4 className="font-bold text-slate-700">Mock Interview</h4>
-                 <p className="text-xs text-slate-500 font-medium mt-1">Unlocks after roadmap completion</p>
-              </div>
-
-           </div>
-        </div>
+              {activeTab === 'learning' && (
+                <LearningPathTracker 
+                  learningPaths={learningPaths}
+                  onUpdate={fetchDashboardData}
+                />
+              )}
+              {activeTab === 'skills' && (
+                <SkillRadarChart 
+                  analysis={skillGapAnalysis}
+                  studentSkills={student?.skills}
+                />
+              )}
+              {activeTab === 'courses' && (
+                <RecommendedCourses 
+                  analysis={skillGapAnalysis}
+                />
+              )}
+              {activeTab === 'competitive' && (
+                <CompetitiveAnalysis 
+                  student={student}
+                  analysis={skillGapAnalysis}
+                />
+              )}
+            </div>
+          </>
+        )}
       </main>
 
       <style dangerouslySetInnerHTML={{__html: `
@@ -344,6 +313,13 @@ const StudentDashboard = () => {
         .custom-scrollbar::-webkit-scrollbar-thumb {
           background-color: #cbd5e1;
           border-radius: 20px;
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
       `}} />
     </div>

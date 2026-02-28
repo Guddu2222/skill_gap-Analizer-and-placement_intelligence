@@ -20,6 +20,7 @@ app.use('/api/analytics', require('./routes/analytics'));
 app.use('/api/student-features', require('./routes/student-features')); 
 app.use('/api/college-features', require('./routes/college-features')); 
 app.use('/api/recruiter-features', require('./routes/recruiter-features')); 
+app.use('/api/skill-gap', require('./routes/skillGap'));
 
 app.get('/', (req, res) => {
   res.send('Placement Intelligence Platform API is running');
@@ -44,3 +45,4 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/placement
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+

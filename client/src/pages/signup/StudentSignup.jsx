@@ -68,6 +68,7 @@ const StudentSignup = () => {
     projects: [],
     
     // Step 6: Preferences & Address
+    targetRole: '',
     addressLine1: '',
     addressLine2: '',
     city: '',

@@ -7,6 +7,7 @@ const Step6Preferences = ({ formData, updateFormData, onNext, onBack }) => {
   const validateStep = () => {
     const newErrors = {};
 
+    if (!formData.targetRole?.trim()) newErrors.targetRole = 'Target Role is required';
     if (!formData.addressLine1?.trim()) newErrors.addressLine1 = 'Address line 1 is required';
     if (!formData.city?.trim()) newErrors.city = 'City is required';
     if (!formData.state?.trim()) newErrors.state = 'State is required';
@@ -161,6 +162,18 @@ const Step6Preferences = ({ formData, updateFormData, onNext, onBack }) => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Target Role *</label>
+                  <input
+                    type="text" required
+                    value={formData.targetRole || ''}
+                    onChange={(e) => updateFormData({ targetRole: e.target.value })}
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 ${errors.targetRole ? 'border-red-500' : 'border-gray-300'}`}
+                    placeholder="e.g. Software Development Engineer, Frontend Developer, Data Scientist"
+                  />
+                  {errors.targetRole && <p className="mt-1 text-sm text-red-600">{errors.targetRole}</p>}
+                </div>
+
                 <div className="md:col-span-2">
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Preferred Locations</label>
                   <div className="relative">

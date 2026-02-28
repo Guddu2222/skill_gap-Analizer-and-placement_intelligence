@@ -171,6 +171,22 @@ export const fetchSkillGap = async () => {
   return data;
 };
 
+// ==================== SKILL GAP ANALYSIS API ====================
+export const triggerSkillGapAnalysis = async (targetDomain, targetRole) => {
+  const { data } = await api.post('/skill-gap/analyze', { targetDomain, targetRole });
+  return data;
+};
+
+export const fetchLatestSkillGapAnalysis = async () => {
+  const { data } = await api.get('/skill-gap/latest');
+  return data;
+};
+
+export const fetchLearningPaths = async () => {
+  const { data } = await api.get('/skill-gap/learning-paths');
+  return data;
+};
+
 export const uploadProfilePicture = async (formData) => {
   const { data } = await api.post('/student-features/upload-profile-picture', formData, {
     headers: {
