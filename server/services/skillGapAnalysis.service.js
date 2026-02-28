@@ -392,6 +392,20 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
       const estimatedDate = new Date();
       estimatedDate.setDate(estimatedDate.getDate() + (estimatedWeeks * 7));
 
+      // Check if a path for this skill already exists
+      let existingPath = await SkillLearningPath.findOne({
+        student: studentId,
+        skillName: { $regex: new RegExp(`^${skillObj.skill}$`, 'i') }
+      });
+
+      if (existingPath) {
+        // Update the gapAnalysis reference and save
+        existingPath.gapAnalysis = gapAnalysisId;
+        await existingPath.save();
+        learningPaths.push(existingPath);
+        continue;
+      }
+
       const learningPath = await SkillLearningPath.create({
         student: studentId,
         gapAnalysis: gapAnalysisId,

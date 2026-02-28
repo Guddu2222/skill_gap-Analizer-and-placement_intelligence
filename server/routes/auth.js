@@ -7,7 +7,7 @@ const User = require('../models/User');
 const Student = require('../models/Student');
 const College = require('../models/College');
 
-const { sendVerificationEmail, sendWelcomeEmail } = require('../utils/sendEmail');
+const { sendVerificationEmail, sendWelcomeEmail, sendPasswordResetEmail } = require('../utils/sendEmail');
 const crypto = require('crypto');
 
 // Register
@@ -204,7 +204,7 @@ router.post('/register', async (req, res) => {
     if (user.role === 'college_admin' && user.college) {
       payload.collegeId = user.college.toString();
     }
-    const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
+    const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' });
 
     res.json({
       token,
@@ -311,7 +311,7 @@ router.post('/login', async (req, res) => {
     if (user.role === 'college_admin' && user.college) {
       payload.collegeId = user.college.toString();
     }
-    const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
+    const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' });
 
     const userRes = { id: user.id, name: user.name, email: user.email, role: user.role, isVerified: user.isVerified };
     if (user.college) userRes.collegeId = user.college.toString();
@@ -349,13 +349,14 @@ router.post('/forgot-password', async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    // In production, send email with reset link
-    // For now, we'll just return the token (remove this in production!)
-    console.log(`Password reset token for ${email}: ${resetToken}`);
-    console.log(`Reset link: http://localhost:3000/reset-password/${resetToken}`);
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const resetLink = `${frontendUrl}/reset-password/${resetToken}`;
 
-    // TODO: Send email with reset link
-    // await sendPasswordResetEmail(user.email, resetToken);
+    console.log(`Password reset token for ${email}: ${resetToken}`);
+    console.log(`Reset link: ${resetLink}`);
+
+    // Send email with reset link
+    await sendPasswordResetEmail(user.email, resetLink);
 
     res.json({ 
       success: true, 

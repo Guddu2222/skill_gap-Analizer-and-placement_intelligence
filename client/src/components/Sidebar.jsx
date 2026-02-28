@@ -1,9 +1,10 @@
 
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, Briefcase, BarChart2, Settings, Building } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, Users, Briefcase, BarChart2, Settings, Building, LogOut } from 'lucide-react';
 
 const Sidebar = ({ role = 'college' }) => {
+  const navigate = useNavigate();
   const links = {
     college: [
       { icon: LayoutDashboard, label: 'Dashboard', path: '/college' },
@@ -21,13 +22,22 @@ const Sidebar = ({ role = 'college' }) => {
     ],
     student: [
       { icon: LayoutDashboard, label: 'Dashboard', path: '/student' },
-      { icon: BarChart2, label: 'Skill Analysis', path: '/student/skills' },
       { icon: Users, label: 'Alumni Network', path: '/student/alumni' },
       { icon: Briefcase, label: 'Interview Prep', path: '/student/interviews' },
     ]
   };
 
   const navLinks = links[role] || links.college;
+
+  useEffect(() => {
+    // Optionally check token validity here
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userRole');
+    navigate('/login');
+  };
 
   return (
     <aside className="w-64 bg-white border-r border-gray-100 h-screen fixed left-0 top-0 flex flex-col z-10">
@@ -57,10 +67,17 @@ const Sidebar = ({ role = 'college' }) => {
         ))}
       </nav>
 
-      <div className="p-4 border-t border-gray-50">
+      <div className="p-4 border-t border-gray-50 space-y-2">
         <button className="flex items-center gap-3 px-4 py-3 w-full text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-xl transition-all">
           <Settings className="w-5 h-5" />
           Settings
+        </button>
+        <button 
+          onClick={handleLogout}
+          className="flex items-center gap-3 px-4 py-3 w-full text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all"
+        >
+          <LogOut className="w-5 h-5" />
+          Logout
         </button>
       </div>
     </aside>

@@ -47,7 +47,7 @@ const App = () => {
         <Route path="/recruiter" element={<RecruiterDashboard />} />
         <Route path="/recruiter/smart-shortlist" element={<SmartShortlist />} />
         <Route path="/student" element={<StudentDashboard />} />
-        <Route path="/student/skills" element={<SkillIntelligence />} />
+        {/* <Route path="/student/skills" element={<SkillIntelligence />} /> */}
         <Route path="/student/alumni" element={<AlumniNetwork />} />
         <Route path="/student/interviews" element={<InterviewPrep />} />
       </Routes>

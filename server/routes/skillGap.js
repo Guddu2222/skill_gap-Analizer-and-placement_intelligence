@@ -115,16 +115,62 @@ router.get('/learning-paths', auth, async (req, res) => {
     const learningPaths = await SkillLearningPath.find({ student: studentId })
       .sort({ createdAt: -1 });
 
+    // Deduplicate by skillName to prevent redundant paths in UI
+    const uniquePathsMap = new Map();
+    
+    // Helper to normalize skill names minimally
+    const normalizeSkillName = (name) => {
+      let normalized = name.toLowerCase().trim();
+      normalized = normalized.replace(/\(.*?\)/g, ''); // Remove (Advanced) etc.
+      normalized = normalized.replace(/&/g, 'and');
+      normalized = normalized.replace(/[^a-z0-9 ]/g, ' '); // Remove special characters
+      normalized = normalized.replace(/\b(advanced|basic|basics|introduction|intro to|principles|fundamentals of)\b/g, '');
+      return normalized.replace(/\s+/g, ' ').trim();
+    };
+
+    learningPaths.forEach(lp => {
+      if (!lp.skillName) return;
+      const normalizedName = normalizeSkillName(lp.skillName);
+      let matchedKey = null;
+
+      // Check if this normalized name matches or is a substantial substring of an existing key (or vice-versa)
+      for (const existingKey of uniquePathsMap.keys()) {
+        if (
+          normalizedName === existingKey || 
+          (normalizedName.length > 2 && existingKey.includes(normalizedName)) || 
+          (existingKey.length > 2 && normalizedName.includes(existingKey))
+        ) {
+          matchedKey = existingKey;
+          break;
+        }
+      }
+
+      if (!matchedKey) {
+        uniquePathsMap.set(normalizedName, lp);
+      } else {
+        const existing = uniquePathsMap.get(matchedKey);
+        // Keep the one with higher progress, or newer if progress is equal
+        if (lp.progressPercentage > existing.progressPercentage) {
+           // We might want to keep the shorter name as the key, but updating map value is fine
+           uniquePathsMap.set(matchedKey, lp);
+        } else if (lp.progressPercentage === existing.progressPercentage && new Date(lp.createdAt) > new Date(existing.createdAt)) {
+           uniquePathsMap.set(matchedKey, lp);
+        }
+      }
+    });
+    
+    const uniqueLearningPaths = Array.from(uniquePathsMap.values());
+
     // Group by status
     const grouped = {
-      not_started: learningPaths.filter(lp => lp.status === 'not_started'),
-      in_progress: learningPaths.filter(lp => lp.status === 'in_progress'),
-      completed: learningPaths.filter(lp => lp.status === 'completed')
+      not_started: uniqueLearningPaths.filter(lp => lp.status === 'not_started'),
+      in_progress: uniqueLearningPaths.filter(lp => lp.status === 'in_progress'),
+      completed: uniqueLearningPaths.filter(lp => lp.status === 'completed')
     };
 
     res.json({
       success: true,
-      learningPaths,
+      learningPaths: uniqueLearningPaths,
       grouped
     });
 
