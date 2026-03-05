@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
-import { BookOpen, CheckCircle, Lock, PlayCircle, AlertCircle, Award, Target, Briefcase, MapPin, Zap, BarChart3, Users, ArrowRight } from 'lucide-react';
+import { BookOpen, CheckCircle, Lock, PlayCircle, AlertCircle, Award, Target, Briefcase, MapPin, Zap, BarChart3, Users, ArrowRight, MessageSquare } from 'lucide-react';
 import { fetchStudentProfile, fetchLatestSkillGapAnalysis, fetchLearningPaths, triggerSkillGapAnalysis } from '../services/api'; 
 
 import ResumeUploadWidget from '../components/student/ResumeUploadWidget';
@@ -10,6 +10,9 @@ import LearningPathTracker from '../components/student/LearningPathTracker';
 import SkillRadarChart from '../components/student/SkillRadarChart';
 import RecommendedCourses from '../components/student/RecommendedCourses';
 import CompetitiveAnalysis from '../components/student/CompetitiveAnalysis';
+import InterviewDashboard from '../components/student/interview/InterviewDashboard';
+import InterviewSession from '../components/student/interview/InterviewSession';
+import InterviewFeedbackCard from '../components/student/interview/InterviewFeedbackCard';
 
 const StudentDashboard = () => {
   const [student, setStudent] = useState(null);
@@ -18,6 +21,10 @@ const StudentDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [analyzing, setAnalyzing] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  // Interview View State
+  const [interviewView, setInterviewView] = useState('dashboard'); // 'dashboard', 'session', 'feedback'
+  const [activeInterviewId, setActiveInterviewId] = useState(null);
 
   // function to handle upload success dynamic UI updates
   const handleResumeUploadSuccess = (resumeUrl, newProfileCompletionPercentage) => {
@@ -206,62 +213,73 @@ const StudentDashboard = () => {
         {skillGapAnalysis && (
           <>
             {/* Navigation Tabs */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-2 mb-8">
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-2 mb-8 overflow-x-auto">
+              <div className="flex gap-2 min-w-max">
                 <button
-                  onClick={() => setActiveTab('overview')}
-                  className={`px-4 py-3 rounded-xl font-semibold transition-all ${
+                  onClick={() => { setActiveTab('overview'); setInterviewView('dashboard'); }}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
                     activeTab === 'overview'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
                       : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  <BarChart3 className="w-5 h-5 inline-block mr-2" />
+                  <BarChart3 className="w-5 h-5 mr-2" />
                   Overview
                 </button>
                 <button
-                  onClick={() => setActiveTab('learning')}
-                  className={`px-4 py-3 rounded-xl font-semibold transition-all ${
+                  onClick={() => { setActiveTab('learning'); setInterviewView('dashboard'); }}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
                     activeTab === 'learning'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
                       : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  <BookOpen className="w-5 h-5 inline-block mr-2" />
+                  <BookOpen className="w-5 h-5 mr-2" />
                   My Paths
                 </button>
                 <button
-                  onClick={() => setActiveTab('skills')}
-                  className={`px-4 py-3 rounded-xl font-semibold transition-all ${
+                  onClick={() => { setActiveTab('skills'); setInterviewView('dashboard'); }}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
                     activeTab === 'skills'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
                       : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  <Target className="w-5 h-5 inline-block mr-2" />
+                  <Target className="w-5 h-5 mr-2" />
                   Skill Radar
                 </button>
                 <button
-                  onClick={() => setActiveTab('courses')}
-                  className={`px-4 py-3 rounded-xl font-semibold transition-all ${
+                  onClick={() => { setActiveTab('courses'); setInterviewView('dashboard'); }}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
                     activeTab === 'courses'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
                       : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  <Award className="w-5 h-5 inline-block mr-2" />
+                  <Award className="w-5 h-5 mr-2" />
                   Courses
                 </button>
                 <button
-                  onClick={() => setActiveTab('competitive')}
-                  className={`px-4 py-3 rounded-xl font-semibold transition-all ${
+                  onClick={() => { setActiveTab('competitive'); setInterviewView('dashboard'); }}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
                     activeTab === 'competitive'
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
                       : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  <Users className="w-5 h-5 inline-block mr-2" />
+                  <Users className="w-5 h-5 mr-2" />
                   Compare
+                </button>
+                <button
+                  onClick={() => setActiveTab('interviews')}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
+                    activeTab === 'interviews'
+                      ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <MessageSquare className="w-5 h-5 mr-2" />
+                  Interviews
                 </button>
               </div>
             </div>
@@ -297,6 +315,38 @@ const StudentDashboard = () => {
                   student={student}
                   analysis={skillGapAnalysis}
                 />
+              )}
+              {activeTab === 'interviews' && (
+                <div className="animate-fadeIn">
+                  {interviewView === 'dashboard' && (
+                    <InterviewDashboard 
+                      student={student}
+                      onStartInterview={() => setInterviewView('session')}
+                      onViewFeedback={(id) => {
+                        setActiveInterviewId(id);
+                        setInterviewView('feedback');
+                      }}
+                    />
+                  )}
+                  {interviewView === 'session' && (
+                    <InterviewSession 
+                      student={student}
+                      onComplete={(id) => {
+                         setActiveInterviewId(id);
+                         setInterviewView('feedback');
+                      }}
+                    />
+                  )}
+                  {interviewView === 'feedback' && (
+                    <InterviewFeedbackCard 
+                      interviewId={activeInterviewId}
+                      onBack={() => {
+                        setActiveInterviewId(null);
+                        setInterviewView('dashboard');
+                      }}
+                    />
+                  )}
+                </div>
               )}
             </div>
           </>

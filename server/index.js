@@ -21,6 +21,7 @@ app.use('/api/student-features', require('./routes/student-features'));
 app.use('/api/college-features', require('./routes/college-features')); 
 app.use('/api/recruiter-features', require('./routes/recruiter-features')); 
 app.use('/api/skill-gap', require('./routes/skillGap'));
+app.use('/api/interviews', require('./routes/interviews'));
 
 app.get('/', (req, res) => {
   res.send('Placement Intelligence Platform API is running');

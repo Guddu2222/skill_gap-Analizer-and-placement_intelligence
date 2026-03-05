@@ -196,5 +196,26 @@ export const uploadProfilePicture = async (formData) => {
   return data;
 };
 
+// ==================== MOCK INTERVIEW API ====================
+export const generateMockInterview = async (targetRole) => {
+  const { data } = await api.post('/interviews/generate', { targetRole });
+  return data;
+};
+
+export const evaluateInterviewAnswers = async (interviewId, answers) => {
+  const { data } = await api.post(`/interviews/${interviewId}/evaluate`, { answers });
+  return data;
+};
+
+export const getInterviewHistory = async () => {
+  const { data } = await api.get('/interviews/history');
+  return data;
+};
+
+export const getInterviewDetails = async (interviewId) => {
+  const { data } = await api.get(`/interviews/${interviewId}`);
+  return data;
+};
+
 export default api;
 

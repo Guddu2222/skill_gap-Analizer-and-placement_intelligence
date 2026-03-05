@@ -145,11 +145,18 @@ const Step6Preferences = ({ formData, updateFormData, onNext, onBack }) => {
                 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Country</label>
-                  <input
-                    type="text" disabled
+                  <select
                     value={formData.country || 'India'}
-                    className="w-full px-4 py-3 border border-gray-300 bg-gray-100 rounded-lg"
-                  />
+                    onChange={(e) => updateFormData({ country: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white"
+                  >
+                    {[
+                      "India","Nepal","Bhutan","Bangladesh","Sri Lanka","Maldives","United States", "United Kingdom", "Canada", "Australia", 
+                      "Germany", "France", "Singapore", "United Arab Emirates", "Qatar", "Saudi Arabia", "Kuwait", "Oman", "Bahrain", "Other"
+                    ].map(country => (
+                      <option key={country} value={country}>{country}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>
