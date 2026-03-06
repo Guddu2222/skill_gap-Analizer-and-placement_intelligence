@@ -9,7 +9,6 @@ import SignInPage from './pages/SignInPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import AlumniNetwork from './pages/AlumniNetwork';
-import InterviewPrep from './pages/InterviewPrep';
 import RecruiterCRM from './pages/RecruiterCRM';
 import SmartShortlist from './pages/SmartShortlist';
 
