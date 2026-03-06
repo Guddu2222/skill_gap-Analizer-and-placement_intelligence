@@ -9,7 +9,7 @@ const interviews = [
   { id: 3, company: 'Microsoft', role: 'SWE', difficulty: 'Medium', date: '2 weeks ago', rounds: 3, outcome: 'Pending' },
 ];
 
-const InterviewPrep = () => {
+const InterviewPrep = () => {f
   return (
     <div className="flex bg-gray-50 min-h-screen font-sans">
       <Sidebar role="student" />

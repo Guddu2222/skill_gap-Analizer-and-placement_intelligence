@@ -63,19 +63,23 @@ class InterviewService {
         ]
       `;
 
-      const model = this.gemini.getGenerativeModel({ model: 'gemini-pro' });
-      const result = await model.generateContent(prompt);
+      const model = this.gemini.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const result = await model.generateContent({
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: {
+          responseMimeType: "application/json"
+        }
+      });
       const text = result.response.text();
       
       // Attempt to parse JSON
-      const jsonStart = text.indexOf('[');
-      const jsonEnd = text.lastIndexOf(']') + 1;
-      
-      if (jsonStart === -1 || jsonEnd === 0) {
+      let questionsData = [];
+      try {
+        questionsData = JSON.parse(text);
+      } catch (err) {
+        console.error('Failed to parse Gemini response as JSON', text);
         throw new Error('Failed to parse Gemini response as JSON');
       }
-      
-      const questionsData = JSON.parse(text.substring(jsonStart, jsonEnd));
 
       // Create MockInterview record
       const mockInterview = new MockInterview({
@@ -108,7 +112,7 @@ class InterviewService {
       const evaluations = [];
       let totalScore = 0;
 
-      const model = this.gemini.getGenerativeModel({ model: 'gemini-pro' });
+      const model = this.gemini.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
       // Iterate through answers and get evaluations
       for (const answerData of studentAnswers) {
@@ -123,35 +127,42 @@ class InterviewService {
           Candidate's Answer: "${studentAnswer}"
 
           Evaluate the candidate's answer. Give a score out of 10.
-          Also provide constructive feedback and an example of an ideal answer.
+          
+          Provide constructive feedback and an example of an ideal answer. 
+          CRITICAL INSTRUCTION: The "feedback" and "idealAnswer" values MUST be clean, professional, plain text paragraphs. DO NOT use any markdown formatting, bullet points, code blocks (\`\`\`), bolding, or JSON structure inside these text strings. They should look like normal human-written paragraphs.
+          
           If the score is 6 or less, identify the ONE specific foundational skill or technology they need to study (e.g., "React Hooks", "JavaScript Closures", "SQL Joins"). If the score is 7 or higher, return null for recommendedSkill.
 
           Return ONLY a JSON object with this exact structure:
           {
             "score": <number between 0 and 10>,
-            "feedback": "<constructive feedback here>",
-            "idealAnswer": "<a great example of how to answer this>",
+            "feedback": "<clean plain text paragraph of constructive feedback here>",
+            "idealAnswer": "<clean plain text paragraph of a great example answer here>",
             "recommendedSkill": "<specific skill name or null>"
           }
         `;
 
-        const result = await model.generateContent(prompt);
+        const result = await model.generateContent({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: {
+            responseMimeType: "application/json"
+          }
+        });
         const text = result.response.text();
-        
-        const jsonStart = text.indexOf('{');
-        const jsonEnd = text.lastIndexOf('}') + 1;
         
         let score = 0;
         let aiFeedback = "Could not evaluate.";
         let idealAnswer = "";
         let recommendedSkill = null;
 
-        if (jsonStart !== -1 && jsonEnd !== 0) {
-          const evalResult = JSON.parse(text.substring(jsonStart, jsonEnd));
-          score = evalResult.score;
-          aiFeedback = evalResult.feedback;
-          idealAnswer = evalResult.idealAnswer;
-          recommendedSkill = evalResult.recommendedSkill;
+        try {
+          const evalResult = JSON.parse(text);
+          score = evalResult.score || 0;
+          aiFeedback = evalResult.feedback || aiFeedback;
+          idealAnswer = evalResult.idealAnswer || idealAnswer;
+          recommendedSkill = evalResult.recommendedSkill || null;
+        } catch (err) {
+          console.error('Failed to parse Gemini evaluation response as JSON', text);
         }
 
         totalScore += score;

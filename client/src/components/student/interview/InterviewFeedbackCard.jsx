@@ -1,6 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { getInterviewDetails } from '../../../services/api';
-import { ArrowLeft, CheckCircle, XCircle, Award, Lightbulb, BookOpen } from 'lucide-react';
+import { ArrowLeft, CheckCircle, XCircle, Award, Lightbulb, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
+
+const ExpandableText = ({ text, maxLength = 250 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  if (!text) return null;
+  
+  // Clean up markdown code blocks if present to make the summary cleaner
+  const cleanText = text.replace(/```[a-z]*\n/gi, '').replace(/```/gi, '');
+  
+  if (cleanText.length <= maxLength) {
+    return <p className="text-slate-700 leading-relaxed whitespace-pre-wrap">{cleanText}</p>;
+  }
+
+  return (
+    <div>
+      <p className="text-slate-700 leading-relaxed whitespace-pre-wrap">
+        {isExpanded ? cleanText : `${cleanText.substring(0, maxLength)}...`}
+      </p>
+      <button 
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="mt-3 flex items-center gap-1 text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors"
+      >
+        {isExpanded ? (
+          <><ChevronUp className="w-4 h-4" /> Show Less</>
+        ) : (
+          <><ChevronDown className="w-4 h-4" /> Read Full Explanation</>
+        )}
+      </button>
+    </div>
+  );
+};
+
 
 const InterviewFeedbackCard = ({ interviewId, onBack }) => {
   const [interview, setInterview] = useState(null);
@@ -118,33 +150,38 @@ const InterviewFeedbackCard = ({ interviewId, onBack }) => {
               </div>
 
               {/* Student Answer */}
-              <div className="mb-6 pl-11">
-                <div className="text-sm font-semibold text-slate-500 mb-2">Your Answer:</div>
-                <div className="bg-white p-4 rounded-xl border border-slate-200 text-slate-700 italic">
-                  "{response.studentAnswer}"
+              <div className="mb-5 pl-11">
+                <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-slate-400"></div>
+                  <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Your Answer</div>
+                  <div className="text-slate-700 italic leading-relaxed">
+                    "{response.studentAnswer}"
+                  </div>
                 </div>
               </div>
 
               {/* AI Feedback & Ideal Answer */}
               <div className="pl-11 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
-                   <div className="flex items-center gap-2 text-indigo-700 font-bold text-sm mb-2">
-                     <Lightbulb className="w-4 h-4" />
-                     Feedback
-                   </div>
-                   <p className="text-slate-700 text-sm leading-relaxed">
-                     {response.aiFeedback}
-                   </p>
-                </div>
-                
-                <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
-                   <div className="flex items-center gap-2 text-emerald-700 font-bold text-sm mb-2">
+                <div className="bg-emerald-50/50 p-5 rounded-xl border border-emerald-100 shadow-sm relative overflow-hidden flex flex-col h-full">
+                   <div className="absolute top-0 left-0 w-1 h-full bg-emerald-400"></div>
+                   <div className="flex items-center gap-2 text-emerald-700 font-bold text-xs uppercase tracking-wider mb-3">
                      <CheckCircle className="w-4 h-4" />
                      Ideal Answer
                    </div>
-                   <p className="text-slate-700 text-sm leading-relaxed">
-                     {response.idealAnswer}
-                   </p>
+                   <div className="flex-grow">
+                     <ExpandableText text={response.idealAnswer} />
+                   </div>
+                </div>
+                
+                <div className="bg-indigo-50/50 p-5 rounded-xl border border-indigo-100 shadow-sm relative overflow-hidden flex flex-col h-full">
+                   <div className="absolute top-0 left-0 w-1 h-full bg-indigo-400"></div>
+                   <div className="flex items-center gap-2 text-indigo-700 font-bold text-xs uppercase tracking-wider mb-3">
+                     <Lightbulb className="w-4 h-4" />
+                     Feedback
+                   </div>
+                   <div className="flex-grow">
+                     <ExpandableText text={response.aiFeedback} />
+                   </div>
                 </div>
               </div>
 

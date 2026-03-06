@@ -47,7 +47,6 @@ const App = () => {
         <Route path="/recruiter/smart-shortlist" element={<SmartShortlist />} />
         <Route path="/student" element={<StudentDashboard />} />
         <Route path="/student/alumni" element={<AlumniNetwork />} />
-        <Route path="/student/interviews" element={<InterviewPrep />} />
       </Routes>
     </Router>
   );

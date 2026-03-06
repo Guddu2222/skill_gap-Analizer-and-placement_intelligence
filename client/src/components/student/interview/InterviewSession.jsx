@@ -16,7 +16,12 @@ const InterviewSession = ({ student, onComplete }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recognition, setRecognition] = useState(null);
 
+  const hasStarted = useRef(false);
+
   useEffect(() => {
+    if (hasStarted.current) return;
+    hasStarted.current = true;
+
     const startInterview = async () => {
       try {
         setLoading(true);

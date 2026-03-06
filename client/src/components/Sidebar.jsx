@@ -23,7 +23,6 @@ const Sidebar = ({ role = 'college' }) => {
     student: [
       { icon: LayoutDashboard, label: 'Dashboard', path: '/student' },
       { icon: Users, label: 'Alumni Network', path: '/student/alumni' },
-      { icon: Briefcase, label: 'Interview Prep', path: '/student/interviews' },
     ]
   };
 
