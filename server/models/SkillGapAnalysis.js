@@ -58,9 +58,9 @@ const skillGapAnalysisSchema = new mongoose.Schema({
   priorityLearningPath: [{
     type: String
   }],
-  careerAdvice: {
+  careerAdvice: [{
     type: String
-  },
+  }],
   marketAlignmentScore: { 
     type: Number, 
     min: 0, 

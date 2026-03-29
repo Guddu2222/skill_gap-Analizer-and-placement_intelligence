@@ -42,7 +42,8 @@ const studentSchema = new mongoose.Schema({
   profilePicture: { type: String },
 
   // Academic Info
-  rollNumber: { type: String, required: true },
+  rollNumber: { type: String, required: true },      // University / Exam Roll Number
+  collegeRollNumber: { type: String, default: '' },  // College Internal Roll Number
   department: { type: String, required: true },
   degree: { type: String },
   specialization: { type: String },
@@ -77,6 +78,9 @@ const studentSchema = new mongoose.Schema({
   resumeUrl: { type: String },
   linkedinUrl: { type: String },
   githubUrl: { type: String },
+  githubUsername: { type: String },
+  leetcodeUrl: { type: String },
+  leetcodeUsername: { type: String },
   portfolioUrl: { type: String },
   
   // Target & Preferences

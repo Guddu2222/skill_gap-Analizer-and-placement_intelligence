@@ -23,11 +23,14 @@ class SkillGapAnalysisService {
         throw new Error('Student not found');
       }
 
-      // 2. Get domain requirements from database
+      // 2. Fetch external verifiable stats (GitHub / LeetCode)
+      const externalStats = await this.fetchExternalStats(student);
+
+      // 3. Get domain requirements from database
       const domainRequirements = await this.getDomainRequirements(targetDomain, targetRole);
 
-      // 3. Prepare data for AI analysis
-      const analysisPrompt = this.prepareAnalysisPrompt(student, domainRequirements, targetDomain, targetRole);
+      // 4. Prepare data for AI analysis
+      const analysisPrompt = this.prepareAnalysisPrompt(student, domainRequirements, targetDomain, targetRole, externalStats);
 
       // 4. Get AI analysis
       const aiAnalysisRaw = await this.analyzeWithGemini(analysisPrompt);
@@ -87,8 +90,41 @@ class SkillGapAnalysisService {
     }
   }
 
+  async fetchExternalStats(student) {
+    let stats = '';
+    
+    if (student.leetcodeUsername) {
+      try {
+        // Use global fetch
+        const resp = await fetch(`https://leetcode-stats-api.herokuapp.com/${student.leetcodeUsername}`);
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data.status === 'success') {
+            stats += `- LeetCode: ${data.totalSolved} problems solved (${data.easySolved} Easy, ${data.mediumSolved} Medium, ${data.hardSolved} Hard)\n`;
+          }
+        }
+      } catch (e) {
+        console.error('LeetCode fetch error:', e.message);
+      }
+    }
+
+    if (student.githubUsername) {
+      try {
+        const resp = await fetch(`https://api.github.com/users/${student.githubUsername}`);
+        if (resp.ok) {
+          const data = await resp.json();
+          stats += `- GitHub: ${data.public_repos} public repositories, ${data.followers} followers\n`;
+        }
+      } catch (e) {
+        console.error('GitHub fetch error:', e.message);
+      }
+    }
+
+    return stats;
+  }
+
   // Prepare AI Prompt
-  prepareAnalysisPrompt(student, domainRequirements, targetDomain, targetRole) {
+  prepareAnalysisPrompt(student, domainRequirements, targetDomain, targetRole, externalStats = '') {
     const formatSkills = (skillsArray) => {
       if (!skillsArray || skillsArray.length === 0) return 'No skills listed';
       return skillsArray.map(s => {
@@ -126,7 +162,7 @@ ${experiences}
 **Projects:**
 ${projects}
 
-**Target Domain:** ${targetDomain}
+${externalStats ? `**Verifiable Developer Stats:**\n${externalStats}\n` : ''}**Target Domain:** ${targetDomain}
 **Target Role:** ${targetRole || 'Entry-level position'}
 
 **Required Skills for ${targetDomain} (${targetRole || 'Entry-level'}):**
@@ -143,7 +179,7 @@ Analyze this student's readiness for a ${targetRole || 'entry-level'} role in ${
 4. **Market Readiness Score**: 0-100 score of job readiness based on their profile data
 5. **Priority Recommendations**: Top 3-5 skills to focus on immediately
 6. **Learning Timeline**: Estimated weeks to become job-ready
-7. **Career Advice**: Personalized guidance based on their profile
+7. **Career Advice**: Personalized guidance based on their profile, formatted as an array of 4-5 bullet points.
 
 **Output Format (Strict JSON):**
 {
@@ -181,7 +217,10 @@ Analyze this student's readiness for a ${targetRole || 'entry-level'} role in ${
     "Step 2: Then master Y because..."
   ],
   "estimated_weeks": 12,
-  "career_advice": "Personalized guidance and next steps",
+  "career_advice": [
+    "Advice point 1...",
+    "Advice point 2..."
+  ],
   "competitive_advantages": ["What makes this student stand out"],
   "red_flags": ["Concerns or gaps to address urgently"]
 }
@@ -228,7 +267,19 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
          cleanJsonString = cleanJsonString.replace(/^```/, '').replace(/```$/, '').trim();
       }
 
-      const parsed = JSON.parse(cleanJsonString);
+      let parsed = JSON.parse(cleanJsonString);
+      
+      // Ensure career_advice is an array of strings
+      if (parsed.career_advice && typeof parsed.career_advice === 'string') {
+        // Try to split if it contains numbers or newlines
+        parsed.career_advice = parsed.career_advice.split(/(?:\d+\.\s*\*\*.*?\*\*|\n)/).map(s => s.trim()).filter(s => s.length > 5);
+        if (parsed.career_advice.length === 0) {
+           parsed.career_advice = ["Keep learning and building projects to improve your readiness!"];
+        }
+      } else if (!Array.isArray(parsed.career_advice)) {
+         parsed.career_advice = ["Keep learning and building projects to improve your readiness!"];
+      }
+
       return parsed;
     } catch (error) {
       console.error('Error parsing AI response:', error, '\\nRaw string:', aiResponseRaw);
@@ -249,7 +300,7 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
         strong_skills: [],
         priority_learning_path: [],
         estimated_weeks: 4,
-        career_advice: "Keep learning and building projects!"
+        career_advice: ["Keep learning and building projects!"]
       };
     }
   }
@@ -461,7 +512,7 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
         "strong_skills": [],
         "priority_learning_path": ["Learn React", "Learn Node"],
         "estimated_weeks": 8,
-        "career_advice": "Configure the GEMINI_API_KEY in the backend .env or verify its validity.",
+        "career_advice": ["Configure the GEMINI_API_KEY in the backend .env or verify its validity."],
         "red_flags": []
       }`;
   }

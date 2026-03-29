@@ -166,6 +166,11 @@ export const fetchStudentProfile = async () => {
   return data;
 };
 
+export const updateStudentProfile = async (payload) => {
+  const { data } = await api.put('/student-features/update-profile', payload);
+  return data;
+};
+
 export const fetchSkillGap = async () => {
   const { data } = await api.get('/student-features/skill-gap');
   return data;

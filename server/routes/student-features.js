@@ -73,7 +73,29 @@ router.get('/me', auth, async (req, res) => {
     if (!student) {
       return res.status(404).json({ msg: 'Student profile not found' });
     }
-    res.json({ student });
+
+    // Calculate Placement Readiness Score
+    const SkillGapAnalysis = require('../models/SkillGapAnalysis');
+    const latestAnalysis = await SkillGapAnalysis.findOne({ student: student._id, isActive: true }).sort({ createdAt: -1 });
+
+    let placementReadinessScore = 0;
+    let components = { profile: student.profileCompletionPercentage, skillGap: 0, resume: student.resumeUrl ? 100 : 0 };
+
+    if (latestAnalysis) {
+      components.skillGap = latestAnalysis.overallReadinessScore || 0;
+      // Formula: 40% skills, 40% profile completion, 20% resume presence
+      placementReadinessScore = Math.round(
+        (components.skillGap * 0.4) + (components.profile * 0.4) + (components.resume * 0.2)
+      );
+    } else {
+      placementReadinessScore = Math.round((components.profile * 0.7) + (components.resume * 0.3));
+    }
+
+    const studentData = student.toObject();
+    studentData.placementReadinessScore = placementReadinessScore;
+    studentData.readinessComponents = components;
+
+    res.json({ student: studentData });
   } catch (err) {
     console.error('Fetch student profile error:', err.message);
     res.status(500).json({ error: 'Server Error' });
@@ -147,4 +169,104 @@ router.get('/interviews', auth, async (req, res) => {
   }
 });
 
+// Update Student Profile
+router.put('/update-profile', auth, async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.user.userId });
+    if (!student) {
+      return res.status(404).json({ msg: 'Student profile not found' });
+    }
+
+    const {
+      // Basic Info
+      firstName, lastName, phone, dateOfBirth, gender,
+      // Academic Info
+      department, degree, specialization, cgpa, graduationYear,
+      admissionYear, currentSemester, activeBacklogs, clearedBacklogs,
+      // Skills
+      skills,
+      // Links
+      linkedinUrl, githubUrl, githubUsername, leetcodeUrl, leetcodeUsername, portfolioUrl,
+      // Career Preferences
+      targetRole, willingToRelocate, preferredLocations,
+      expectedSalaryMin, expectedSalaryMax,
+      // Address
+      addressLine1, addressLine2, city, state, pincode, country,
+    } = req.body;
+
+    // Basic Info
+    if (firstName !== undefined) student.firstName = String(firstName).trim();
+    if (lastName !== undefined) student.lastName = String(lastName).trim();
+    if (phone !== undefined) student.phone = String(phone).trim();
+    if (dateOfBirth !== undefined) student.dateOfBirth = dateOfBirth ? new Date(dateOfBirth) : undefined;
+    if (gender !== undefined) student.gender = gender;
+
+    // Academic Info
+    if (department !== undefined) student.department = String(department).trim();
+    if (degree !== undefined) student.degree = String(degree).trim();
+    if (specialization !== undefined) student.specialization = String(specialization).trim();
+    if (cgpa !== undefined) student.cgpa = cgpa !== '' ? parseFloat(cgpa) : undefined;
+    if (graduationYear !== undefined) {
+      const yr = parseInt(graduationYear, 10);
+      student.graduationYear = yr;
+      student.year = yr;
+    }
+    if (admissionYear !== undefined) student.admissionYear = parseInt(admissionYear, 10);
+    if (currentSemester !== undefined) student.currentSemester = parseInt(currentSemester, 10);
+    if (activeBacklogs !== undefined) student.activeBacklogs = parseInt(activeBacklogs, 10) || 0;
+    if (clearedBacklogs !== undefined) student.clearedBacklogs = parseInt(clearedBacklogs, 10) || 0;
+
+    // Skills – normalize to {skillName, proficiencyLevel}
+    if (Array.isArray(skills)) {
+      student.skills = skills
+        .filter((s) => s && (typeof s === 'string' ? s.trim() : s.skillName?.trim()))
+        .map((s) =>
+          typeof s === 'string'
+            ? { skillName: s.trim(), proficiencyLevel: 'intermediate' }
+            : { skillName: String(s.skillName || '').trim(), proficiencyLevel: s.proficiencyLevel || 'intermediate' }
+        );
+    }
+
+    // Links
+    if (linkedinUrl !== undefined) student.linkedinUrl = String(linkedinUrl).trim();
+    if (githubUrl !== undefined) student.githubUrl = String(githubUrl).trim();
+    if (githubUsername !== undefined) student.githubUsername = String(githubUsername).trim();
+    if (leetcodeUrl !== undefined) student.leetcodeUrl = String(leetcodeUrl).trim();
+    if (leetcodeUsername !== undefined) student.leetcodeUsername = String(leetcodeUsername).trim();
+    if (portfolioUrl !== undefined) student.portfolioUrl = String(portfolioUrl).trim();
+
+    // Career
+    if (targetRole !== undefined) student.targetRole = String(targetRole).trim();
+    if (willingToRelocate !== undefined) student.willingToRelocate = Boolean(willingToRelocate);
+    if (Array.isArray(preferredLocations)) student.preferredLocations = preferredLocations;
+    if (expectedSalaryMin !== undefined) student.expectedSalaryMin = expectedSalaryMin !== '' ? parseFloat(expectedSalaryMin) : undefined;
+    if (expectedSalaryMax !== undefined) student.expectedSalaryMax = expectedSalaryMax !== '' ? parseFloat(expectedSalaryMax) : undefined;
+
+    // Address
+    if (addressLine1 !== undefined) student.addressLine1 = String(addressLine1).trim();
+    if (addressLine2 !== undefined) student.addressLine2 = String(addressLine2).trim();
+    if (city !== undefined) student.city = String(city).trim();
+    if (state !== undefined) student.state = String(state).trim();
+    if (pincode !== undefined) student.pincode = String(pincode).trim();
+    if (country !== undefined) student.country = String(country).trim();
+
+    await student.save();
+
+    // Return fresh populated student
+    const updated = await Student.findById(student._id)
+      .populate('user', '-password')
+      .populate('college', 'name location tier');
+
+    res.json({ msg: 'Profile updated successfully', student: updated });
+  } catch (err) {
+    console.error('Update profile error:', err);
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map((v) => v.message);
+      return res.status(400).json({ msg: messages.join(' | ') });
+    }
+    res.status(500).json({ error: 'Server Error' });
+  }
+});
+
 module.exports = router;
+

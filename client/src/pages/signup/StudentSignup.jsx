@@ -31,6 +31,7 @@ const StudentSignup = () => {
     college: '',
     collegeId: '',
     rollNumber: '',
+    collegeRollNumber: '',
     department: '',
     degree: '',
     specialization: '',

@@ -17,11 +17,14 @@ const StudentsView = ({
   const filteredStudents = useMemo(() => {
     return students.filter((student) => {
       const search = (searchTerm || '').toLowerCase();
+      const fullName = `${student.first_name || ''} ${student.last_name || ''}`.toLowerCase();
       const matchesSearch =
         !search ||
+        fullName.includes(search) ||
         (student.first_name || '').toLowerCase().includes(search) ||
         (student.last_name || '').toLowerCase().includes(search) ||
         (student.roll_number || '').toLowerCase().includes(search) ||
+        (student.college_roll_number || '').toLowerCase().includes(search) ||
         (student.email || '').toLowerCase().includes(search);
       const matchesDept = selectedDepartment === 'all' || student.department === selectedDepartment;
       return matchesSearch && matchesDept;
@@ -47,6 +50,9 @@ const StudentsView = ({
             <div>
               <h3 className="font-semibold text-gray-900">{name}</h3>
               <p className="text-sm text-gray-500">{student.roll_number}</p>
+              {student.college_roll_number && (
+                <p className="text-xs text-blue-600 font-medium">College: {student.college_roll_number}</p>
+              )}
             </div>
           </div>
           {student.is_placed && (
@@ -156,7 +162,7 @@ const StudentsView = ({
                 )}
               </div>
               <p className="text-sm text-gray-500 truncate">
-                {student.roll_number} • {student.department}
+                {student.roll_number}{student.college_roll_number ? ` / ${student.college_roll_number}` : ''} • {student.department}
               </p>
             </div>
           </div>
@@ -193,7 +199,7 @@ const StudentsView = ({
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search by name, roll number, email..."
+              placeholder="Search by name, roll number (university or college), email..."
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>

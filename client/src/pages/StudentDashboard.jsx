@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
-import { BookOpen, CheckCircle, Lock, PlayCircle, AlertCircle, Award, Target, Briefcase, MapPin, Zap, BarChart3, Users, ArrowRight, MessageSquare } from 'lucide-react';
+import { BookOpen, CheckCircle, Lock, PlayCircle, AlertCircle, Award, Target, Briefcase, MapPin, Zap, BarChart3, Users, ArrowRight, MessageSquare, Pencil } from 'lucide-react';
 import { fetchStudentProfile, fetchLatestSkillGapAnalysis, fetchLearningPaths, triggerSkillGapAnalysis } from '../services/api'; 
 
 import ResumeUploadWidget from '../components/student/ResumeUploadWidget';
 import ProfilePictureUpload from '../components/student/ProfilePictureUpload';
+import ProfileEditModal from '../components/student/ProfileEditModal';
+import ReadinessScoreWidget from '../components/student/ReadinessScoreWidget';
 import SkillGapOverview from '../components/student/SkillGapOverview';
 import LearningPathTracker from '../components/student/LearningPathTracker';
 import SkillRadarChart from '../components/student/SkillRadarChart';
 import RecommendedCourses from '../components/student/RecommendedCourses';
 import CompetitiveAnalysis from '../components/student/CompetitiveAnalysis';
+import OpportunitiesTab from '../components/student/OpportunitiesTab';
+import MentorshipTab from '../components/student/MentorshipTab';
 import InterviewDashboard from '../components/student/interview/InterviewDashboard';
 import InterviewSession from '../components/student/interview/InterviewSession';
 import InterviewFeedbackCard from '../components/student/interview/InterviewFeedbackCard';
@@ -21,6 +25,7 @@ const StudentDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [analyzing, setAnalyzing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showEditProfile, setShowEditProfile] = useState(false);
 
   // Interview View State
   const [interviewView, setInterviewView] = useState('dashboard'); // 'dashboard', 'session', 'feedback'
@@ -154,23 +159,23 @@ const StudentDashboard = () => {
               </div>
             </div>
             
-            {/* Profile Completion Widget */}
-            <div className="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/20 w-full md:w-64">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-white font-medium text-sm">Profile Completion</span>
-                <span className="text-indigo-200 font-bold text-sm">{student.profileCompletionPercentage}%</span>
-              </div>
-              <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-3">
-                <div 
-                  className="h-full bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full transition-all duration-1000"
-                  style={{ width: `${student.profileCompletionPercentage}%` }}
-                ></div>
-              </div>
-              {student.profileCompletionPercentage < 100 && (
-                <p className="text-xs text-indigo-200">
-                  {student.resumeUrl ? 'Add more skills to reach 100%' : 'Upload a resume to boost your score!'}
-                </p>
-              )}
+            {/* Readiness Score Widget + Edit Button */}
+            <div className="flex flex-col gap-4 w-full md:w-64 relative z-20">
+              <ReadinessScoreWidget 
+                score={student.placementReadinessScore} 
+                components={student.readinessComponents || { 
+                  profile: student.profileCompletionPercentage, 
+                  skillGap: skillGapAnalysis?.overallReadinessScore || 0, 
+                  resume: student.resumeUrl ? 100 : 0 
+                }} 
+              />
+              <button
+                onClick={() => setShowEditProfile(true)}
+                className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white font-semibold text-sm rounded-xl border border-white/30 hover:border-white/50 transition-all group"
+              >
+                <Pencil className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+                Edit Profile
+              </button>
             </div>
           </div>
         </div>
@@ -271,6 +276,28 @@ const StudentDashboard = () => {
                   Compare
                 </button>
                 <button
+                  onClick={() => { setActiveTab('opportunities'); setInterviewView('dashboard'); }}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
+                    activeTab === 'opportunities'
+                      ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <Briefcase className="w-5 h-5 mr-2" />
+                  Opportunities
+                </button>
+                <button
+                  onClick={() => { setActiveTab('mentorship'); setInterviewView('dashboard'); }}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
+                    activeTab === 'mentorship'
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <Users className="w-5 h-5 mr-2" />
+                  Mentorship
+                </button>
+                <button
                   onClick={() => setActiveTab('interviews')}
                   className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
                     activeTab === 'interviews'
@@ -291,6 +318,7 @@ const StudentDashboard = () => {
                   analysis={skillGapAnalysis} 
                   student={student}
                   onReanalyze={handleAnalyzeSkills}
+                  isAnalyzing={analyzing}
                 />
               )}
               {activeTab === 'learning' && (
@@ -315,6 +343,14 @@ const StudentDashboard = () => {
                   student={student}
                   analysis={skillGapAnalysis}
                 />
+              )}
+              {activeTab === 'opportunities' && (
+                <OpportunitiesTab 
+                  student={student}
+                />
+              )}
+              {activeTab === 'mentorship' && (
+                <MentorshipTab />
               )}
               {activeTab === 'interviews' && (
                 <div className="animate-fadeIn">
@@ -352,6 +388,17 @@ const StudentDashboard = () => {
           </>
         )}
       </main>
+
+      {/* Profile Edit Modal */}
+      <ProfileEditModal
+        student={student}
+        open={showEditProfile}
+        onClose={() => setShowEditProfile(false)}
+        onProfileUpdate={(updatedStudent) => {
+          setStudent(updatedStudent);
+          setShowEditProfile(false);
+        }}
+      />
 
       <style dangerouslySetInnerHTML={{__html: `
         .custom-scrollbar::-webkit-scrollbar {

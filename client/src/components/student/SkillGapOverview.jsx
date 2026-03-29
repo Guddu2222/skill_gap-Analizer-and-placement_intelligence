@@ -14,7 +14,7 @@ import {
   Activity
 } from 'lucide-react';
 
-const SkillGapOverview = ({ analysis, student, onReanalyze }) => {
+const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
   if (!analysis) {
     return (
       <div className="bg-white/60 backdrop-blur-xl rounded-3xl p-16 text-center shadow-2xl shadow-slate-200/50 border border-white">
@@ -30,11 +30,16 @@ const SkillGapOverview = ({ analysis, student, onReanalyze }) => {
         </p>
         <button 
           onClick={onReanalyze}
-          className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-2xl font-bold hover:shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-1 transition-all duration-300 flex items-center space-x-3 mx-auto"
+          disabled={isAnalyzing}
+          className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-2xl font-bold hover:shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-1 transition-all duration-300 flex items-center space-x-3 mx-auto disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0"
         >
-          <Zap className="w-5 h-5" />
-          <span>Launch AI Analysis</span>
-          <ArrowRight className="w-5 h-5 ml-2" />
+          {isAnalyzing ? (
+             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          ) : (
+             <Zap className="w-5 h-5" />
+          )}
+          <span>{isAnalyzing ? 'Analyzing with AI...' : 'Launch AI Analysis'}</span>
+          {!isAnalyzing && <ArrowRight className="w-5 h-5 ml-2" />}
         </button>
       </div>
     );
@@ -77,8 +82,9 @@ const SkillGapOverview = ({ analysis, student, onReanalyze }) => {
               <span className="text-sm font-bold text-indigo-900 tracking-wide uppercase">Readiness Overview</span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl font-black text-slate-800 mb-4 tracking-tight leading-tight flex items-baseline justify-center xl:justify-start gap-2">
-              Score: <span className="text-transparent bg-clip-text bg-gradient-to-br from-indigo-600 to-violet-600">{analysis.overallReadinessScore || 0}</span><span className="text-3xl text-slate-400 font-bold">/100</span>
+            <h1 className="flex items-baseline justify-center xl:justify-start gap-1 mb-4">
+              <span className="text-7xl md:text-8xl font-black text-slate-800 tracking-tighter">{analysis.overallReadinessScore || 0}</span>
+              <span className="text-2xl md:text-3xl font-bold text-slate-400">/100</span>
             </h1>
             
             <p className="text-slate-600 text-lg md:text-xl leading-relaxed max-w-3xl border-l-4 border-indigo-500/50 pl-5 mb-8 font-medium">
@@ -103,10 +109,15 @@ const SkillGapOverview = ({ analysis, student, onReanalyze }) => {
           <div className="w-full xl:w-72 flex flex-col items-center xl:items-end space-y-6 pt-6 border-t xl:border-t-0 xl:border-l border-slate-200 xl:pl-8">
             <button 
               onClick={onReanalyze}
-              className="w-full bg-slate-900 hover:bg-slate-800 text-white transition-all duration-300 rounded-2xl py-4 px-6 font-bold flex items-center justify-center gap-3 group shadow-xl hover:shadow-indigo-500/20"
+              disabled={isAnalyzing}
+              className="w-full bg-slate-900 hover:bg-slate-800 text-white transition-all duration-300 rounded-xl py-4 px-6 font-bold flex items-center justify-center gap-3 group shadow-xl hover:shadow-indigo-500/20 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              <Zap className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
-              <span>Refresh Analysis</span>
+              {isAnalyzing ? (
+                 <div className="w-5 h-5 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                 <Zap className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
+              )}
+              <span>{isAnalyzing ? 'Analyzing...' : 'Refresh Analysis'}</span>
             </button>
             <p className="text-xs text-slate-500 font-bold uppercase tracking-wider bg-white/50 px-4 py-2 rounded-xl border border-slate-100">
               Updated • {new Date(analysis.updatedAt || analysis.createdAt).toLocaleDateString()}
@@ -327,9 +338,20 @@ const SkillGapOverview = ({ analysis, student, onReanalyze }) => {
                   <span className="text-xs font-bold text-indigo-300 tracking-widest uppercase">Expert Guidance</span>
                 </div>
                 <h3 className="text-3xl font-black text-white mb-6 tracking-tight">Executive Career Advice</h3>
-                <p className="text-slate-300 text-lg leading-relaxed font-light border-l-4 border-indigo-500 pl-6">
-                  {analysis.careerAdvice}
-                </p>
+                 <div className="text-slate-300 text-lg leading-relaxed font-light border-l-4 border-indigo-500 pl-6">
+                  {Array.isArray(analysis.careerAdvice) ? (
+                    <ul className="space-y-4">
+                      {analysis.careerAdvice.map((advice, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0"></span>
+                          <span>{advice}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{analysis.careerAdvice}</p>
+                  )}
+                </div>
              </div>
            </div>
         </div>

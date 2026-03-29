@@ -9,6 +9,34 @@ const { roleCheck } = require('../middleware/auth');
 
 const getSkillName = (s) => (typeof s === 'string' ? s : (s && s.skillName)) || '';
 
+/**
+ * Given a canonical collegeId (ObjectId string), returns an array of all
+ * College ObjectIds that fuzzy-match the same college name.
+ * This handles the case where students and admins are linked to different
+ * College documents created by different lookup strategies (domain vs name).
+ */
+async function resolveCollegeIds(collegeId) {
+  const ids = [collegeId];
+  try {
+    const canonical = await College.findById(collegeId).lean();
+    if (!canonical || !canonical.name) return ids;
+
+    // Escape regex special chars from the college name
+    const escaped = canonical.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // Allow matching even if the stored name is a substring or superset
+    const nameRegex = new RegExp(escaped.split(/\s+/).filter(w => w.length > 3).join('.*'), 'i');
+
+    const matches = await College.find({ name: nameRegex }).select('_id').lean();
+    matches.forEach(m => {
+      const sid = m._id.toString();
+      if (!ids.map(String).includes(sid)) ids.push(m._id);
+    });
+  } catch (e) {
+    console.error('[resolveCollegeIds] error:', e.message);
+  }
+  return ids;
+}
+
 // Helper: normalize student for API (optional snake_case for legacy frontend)
 function toStudentResponse(doc) {
   const s = doc.toObject ? doc.toObject() : doc;
@@ -24,6 +52,7 @@ function toStudentResponse(doc) {
     first_name: s.firstName,
     last_name: s.lastName,
     roll_number: s.rollNumber,
+    college_roll_number: s.collegeRollNumber || '',
     email: s.email,
     phone: s.phone,
     department: s.department,
@@ -54,7 +83,8 @@ router.get('/dashboard', auth, roleCheck(['college_admin']), async (req, res) =>
     const college = await College.findById(collegeId).lean();
     if (!college) return res.status(404).json({ error: 'College not found' });
 
-    const students = await Student.find({ college: collegeId }).lean();
+    const collegeIds = await resolveCollegeIds(collegeId);
+    const students = await Student.find({ college: { $in: collegeIds } }).lean();
     const totalStudents = students.length;
     const placedStudents = students.filter((s) => s.isPlaced || s.placementStatus === 'placed').length;
     const placementRate = totalStudents > 0 ? ((placedStudents / totalStudents) * 100).toFixed(2) : 0;
@@ -111,7 +141,8 @@ router.get('/students', auth, roleCheck(['college_admin']), async (req, res) => 
       order = 'desc',
     } = req.query;
 
-    const query = { college: collegeId };
+    const collegeIds = await resolveCollegeIds(collegeId);
+    const query = { college: { $in: collegeIds } };
     if (department) query.department = department;
     if (graduationYear) query.graduationYear = parseInt(graduationYear, 10) || query.graduationYear;
     if (placementStatus) query.placementStatus = placementStatus;
@@ -120,6 +151,7 @@ router.get('/students', auth, roleCheck(['college_admin']), async (req, res) => 
         { firstName: new RegExp(search, 'i') },
         { lastName: new RegExp(search, 'i') },
         { rollNumber: new RegExp(search, 'i') },
+        { collegeRollNumber: new RegExp(search, 'i') },
         { email: new RegExp(search, 'i') },
       ];
     }
@@ -155,7 +187,8 @@ router.get('/skills/analytics', auth, roleCheck(['college_admin']), async (req, 
     const collegeId = req.user.collegeId;
     if (!collegeId) return res.status(403).json({ error: 'College not associated' });
 
-    const students = await Student.find({ college: collegeId }).lean();
+    const collegeIds = await resolveCollegeIds(collegeId);
+    const students = await Student.find({ college: { $in: collegeIds } }).lean();
     const skillsMap = {};
     const categoryMap = {};
 
@@ -238,7 +271,8 @@ router.get('/students/export', auth, roleCheck(['college_admin']), async (req, r
     const { format = 'csv' } = req.query;
     if (!collegeId) return res.status(403).json({ error: 'College not associated' });
 
-    const students = await Student.find({ college: collegeId }).lean();
+    const collegeIds = await resolveCollegeIds(collegeId);
+    const students = await Student.find({ college: { $in: collegeIds } }).lean();
     const rows = students.map((s) => toStudentResponse(s));
 
     if (format === 'csv') {

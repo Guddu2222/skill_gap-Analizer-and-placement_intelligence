@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
       address,
       
       // Student profile (when role === 'student') - Extended
-      firstName, lastName, college: studentCollegeName, rollNumber,
+      firstName, lastName, college: studentCollegeName, rollNumber, collegeRollNumber,
       department, graduationYear, cgpa, degree, skills,
       linkedinUrl, githubUrl, portfolioUrl, targetRole, resumeUrl,
       dateOfBirth, gender, specialization, admissionYear, currentSemester,
@@ -134,6 +134,7 @@ router.post('/register', async (req, res) => {
         user: user._id,
         college: collegeId,
         rollNumber: rollNumber && String(rollNumber).trim() ? String(rollNumber).trim() : email.split('@')[0],
+        collegeRollNumber: collegeRollNumber && String(collegeRollNumber).trim() ? String(collegeRollNumber).trim() : undefined,
         department: department && String(department).trim() ? String(department).trim() : 'General',
         year: yearNum,
         graduationYear: yearNum,
@@ -316,6 +317,42 @@ router.post('/login', async (req, res) => {
     const userRes = { id: user.id, name: user.name, email: user.email, role: user.role, isVerified: user.isVerified };
     if (user.college) userRes.collegeId = user.college.toString();
     res.json({ token, user: userRes });
+
+    // --- Background: re-link orphaned students to the canonical college ---
+    // Runs fire-and-forget (does NOT block the login response)
+    if (user.role === 'college_admin' && user.college) {
+      setImmediate(async () => {
+        try {
+          const canonicalId = user.college;
+          const canonicalCollege = await College.findById(canonicalId).lean();
+          if (!canonicalCollege || !canonicalCollege.name) return;
+
+          // Build a forgiving regex from meaningful words in the college name
+          const words = canonicalCollege.name.split(/\s+/).filter(w => w.length > 3);
+          if (!words.length) return;
+          const escaped = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+          const nameRegex = new RegExp(escaped.join('.*'), 'i');
+
+          // Find all College docs that match the name
+          const altColleges = await College.find({ name: nameRegex, _id: { $ne: canonicalId } }).select('_id').lean();
+          if (!altColleges.length) return;
+
+          const altIds = altColleges.map(c => c._id);
+
+          // Re-link students pointing to any alternate college ID
+          const result = await Student.updateMany(
+            { college: { $in: altIds } },
+            { $set: { college: canonicalId } }
+          );
+
+          if (result.modifiedCount > 0) {
+            console.log(`[College Repair] Relinked ${result.modifiedCount} student(s) to college ${canonicalId} (${canonicalCollege.name})`);
+          }
+        } catch (repairErr) {
+          console.error('[College Repair] Error during student re-link:', repairErr.message);
+        }
+      });
+    }
   } catch (err) {
     console.error('Login error:', err.message);
     res.status(500).json({ error: 'Server Error', details: process.env.NODE_ENV === 'development' ? err.message : undefined });
