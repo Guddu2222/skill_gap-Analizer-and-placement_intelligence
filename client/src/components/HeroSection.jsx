@@ -108,7 +108,7 @@ const HeroSection = () => {
           {/* Right Content - Dashboard Preview */}
           <div className="relative animate-slideUp delay-200">
             {/* Floating Stats Card */}
-            <div className="absolute -top-6 -left-6 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 shadow-2xl animate-float z-10">
+            <div className="absolute -top-4 -left-2 md:-top-6 md:-left-6 scale-90 md:scale-100 origin-top-left bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-4 md:p-6 shadow-2xl animate-float z-10">
               <div className="flex items-center space-x-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center">
                   <TrendingUp className="w-6 h-6 text-white" />
@@ -121,7 +121,7 @@ const HeroSection = () => {
             </div>
 
             {/* Main Dashboard Mockup */}
-            <div className="relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+            <div className="relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-4 sm:p-6 lg:p-8 shadow-2xl">
               {/* Dashboard Header */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-3">
@@ -139,10 +139,10 @@ const HeroSection = () => {
                 {stats.slice(0, 2).map((stat, index) => {
                   const Icon = stat.icon;
                   return (
-                    <div key={index} className="bg-white/5 backdrop-blur-lg rounded-xl p-4 border border-white/10">
-                      <Icon className="w-8 h-8 text-blue-400 mb-2" />
-                      <p className="text-2xl font-bold text-white">{stat.value}</p>
-                      <p className="text-sm text-gray-400">{stat.label}</p>
+                    <div key={index} className="bg-white/5 backdrop-blur-lg rounded-xl p-3 md:p-4 border border-white/10">
+                      <Icon className="w-6 h-6 md:w-8 md:h-8 text-blue-400 mb-2" />
+                      <p className="text-lg md:text-2xl font-bold text-white">{stat.value}</p>
+                      <p className="text-xs md:text-sm text-gray-400">{stat.label}</p>
                     </div>
                   );
                 })}
@@ -175,7 +175,7 @@ const HeroSection = () => {
             </div>
 
             {/* Floating User Card */}
-            <div className="absolute -bottom-6 -right-6 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 shadow-2xl animate-float delay-1000">
+            <div className="absolute -bottom-4 -right-2 md:-bottom-6 md:-right-6 scale-90 md:scale-100 origin-bottom-right bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-4 md:p-6 shadow-2xl animate-float delay-1000 z-10">
               <div className="flex items-center space-x-4">
                 <div className="flex -space-x-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full border-2 border-white/20"></div>
