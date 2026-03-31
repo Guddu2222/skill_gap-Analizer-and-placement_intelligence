@@ -138,8 +138,8 @@ const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
         </div>
       </div>
 
-      {/* Grid Layout for Skills */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Vertical Layout for Skills */}
+      <div className="flex flex-col gap-6">
         
         {/* Missing Skills Column */}
         <div className="bg-white/40 backdrop-blur-2xl border border-white rounded-[2.5rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">

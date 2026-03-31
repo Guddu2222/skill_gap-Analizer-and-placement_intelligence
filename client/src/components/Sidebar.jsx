@@ -43,7 +43,7 @@ const Sidebar = ({ role = 'college' }) => {
       <div className="p-6 border-b border-gray-50">
         <div className="flex items-center gap-2 text-blue-600">
           <Building className="w-8 h-8" />
-          <span className="text-xl font-bold tracking-tight text-gray-900">PlacementIQ</span>
+          <span className="text-xl font-bold tracking-tight text-gray-900">SkillBridge</span>
         </div>
       </div>
       
