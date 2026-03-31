@@ -271,53 +271,69 @@ const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
 
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Timeline Widget */}
-        <div className="lg:w-1/3 bg-white/40 backdrop-blur-2xl rounded-[2.5rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white flex flex-col justify-center items-center text-center relative overflow-hidden group">
-          <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-3xl blur opacity-0 group-hover:opacity-10 transition duration-1000 group-hover:duration-200"></div>
-          <div className="relative w-24 h-24 bg-gradient-to-br from-indigo-50 to-white rounded-full flex items-center justify-center mb-8 shadow-sm border border-indigo-100">
-            <Clock className="w-10 h-10 text-indigo-600" />
+      {/* Strategic Roadmap - Fully Redesigned */}
+      <div className="relative w-full bg-white/40 backdrop-blur-2xl border border-white rounded-[3rem] p-8 md:p-14 shadow-[0_10px_40px_rgb(0,0,0,0.06)] overflow-hidden mt-6 mb-6 group/roadmap">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none group-hover/roadmap:bg-indigo-500/10 transition-colors duration-1000"></div>
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none group-hover/roadmap:bg-emerald-500/10 transition-colors duration-1000"></div>
+
+        {/* Header Section */}
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 px-4">
+          <div>
+            <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-50 to-violet-50 border border-indigo-100/50 mb-6 shadow-sm hover:shadow-md transition-shadow">
+              <Target className="w-5 h-5 text-indigo-600" />
+              <span className="text-sm font-bold text-indigo-900 tracking-widest uppercase">Strategic Roadmap</span>
+            </div>
+            <h3 className="text-4xl md:text-5xl font-black text-slate-800 tracking-tight">Your Path to Excellence</h3>
           </div>
-          <h3 className="text-2xl font-black text-slate-800 mb-3 tracking-tight">Estimated Timeline</h3>
-          <p className="text-sm text-slate-500 max-w-[200px] mb-8 leading-relaxed font-medium">Focus dedicated time to reach job readiness</p>
-          <div className="flex items-baseline gap-2 bg-slate-50 px-8 py-4 rounded-3xl border border-slate-100">
-            <span className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center pb-2">
-              {String(analysis.estimatedTimeToReady || '0').match(/\d+/) ? String(analysis.estimatedTimeToReady || '0').match(/\d+/)[0] : '0'}
-            </span>
-            <span className="text-xl font-bold text-slate-400 uppercase tracking-widest">WKS</span>
+          
+          {/* Integrated Timeline Badge */}
+          <div className="flex flex-col items-start lg:items-end hover:-translate-y-1 transition-transform duration-300">
+            <p className="text-slate-500 font-bold mb-3 uppercase tracking-widest text-xs ml-2">Target Completion</p>
+            <div className="flex items-center gap-5 bg-white pl-4 pr-8 py-4 rounded-[2rem] shadow-xl shadow-indigo-100/50 border border-indigo-50 cursor-default">
+              <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center animate-pulse">
+                <Clock className="w-7 h-7 text-indigo-600" />
+              </div>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-indigo-600 to-violet-600">
+                  {String(analysis.estimatedTimeToReady || '0').match(/\d+/) ? String(analysis.estimatedTimeToReady || '0').match(/\d+/)[0] : '0'}
+                </span>
+                <span className="text-xl font-black text-slate-300">WKS</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Priority Learning Path Widget */}
-        <div className="lg:w-2/3 bg-white/40 backdrop-blur-2xl border border-white rounded-[2.5rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-8 opacity-5">
-            <Target className="w-64 h-64 text-indigo-900" />
-          </div>
-          <div className="relative z-10 w-full">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-14 h-14 rounded-2xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/30">
-                <ChevronRight className="w-8 h-8 text-white" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-black text-slate-800 tracking-tight">Strategic Path</h3>
-                <p className="text-sm font-semibold text-indigo-500/80 uppercase tracking-widest mt-0.5">Your roadmap to success</p>
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              {analysis.priorityLearningPath?.map((step, index) => (
-                <div key={index} className="flex gap-5 group cursor-default bg-white hover:bg-indigo-50/50 p-5 rounded-2xl border border-slate-200 hover:border-indigo-200 transition-all duration-300">
-                  <div className="flex flex-col items-center shrink-0">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center font-black text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300 text-lg shadow-sm">
-                      {index + 1}
-                    </div>
+        {/* Vertical Timeline */}
+        <div className="relative z-10 max-w-5xl mx-auto px-4">
+          {/* The continuous vertical line */}
+          <div className="absolute left-[39px] md:left-[51px] top-8 bottom-8 w-1 bg-gradient-to-b from-indigo-500 via-violet-400 to-indigo-100 rounded-full opacity-30"></div>
+          
+          <div className="space-y-12">
+            {analysis.priorityLearningPath?.map((step, index) => (
+              <div key={index} className="relative flex items-start gap-8 md:gap-12 group">
+                {/* Timeline Node */}
+                <div className="relative z-10 shrink-0 mt-2">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white border-[6px] border-indigo-50 rounded-full flex items-center justify-center shadow-xl group-hover:border-indigo-100 transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-1 cursor-default">
+                    <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-br from-indigo-600 to-violet-600">{index + 1}</span>
                   </div>
-                  <div className="flex-1 flex items-center pr-4">
-                    <p className="text-slate-700 font-medium leading-relaxed group-hover:text-slate-900 transition-colors">{step}</p>
-                  </div>
+                  <div className="absolute inset-0 rounded-full border border-indigo-300 opacity-0 group-hover:opacity-100 group-hover:animate-ping pointer-events-none"></div>
                 </div>
-              ))}
-            </div>
+                
+                {/* Content Card */}
+                <div className="flex-1 bg-white p-8 md:p-10 rounded-[2.5rem] border border-slate-100/80 shadow-lg shadow-slate-200/40 group-hover:shadow-2xl group-hover:shadow-indigo-200 group-hover:-translate-y-2 group-hover:border-indigo-100 transition-all duration-500 relative overflow-hidden cursor-default">
+                  {/* Subtle hover gradient flare */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-indigo-50 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                  
+                  {/* Animated header layout */}
+                  <div className="flex items-center gap-3 mb-2 relative h-8">
+                     <Zap className="w-6 h-6 text-indigo-500 opacity-0 group-hover:opacity-100 -translate-x-8 group-hover:translate-x-0 transition-all duration-500 absolute left-0" />
+                     <h4 className="text-xl md:text-2xl font-bold text-slate-800 group-hover:translate-x-10 transition-transform duration-500 absolute left-0">Phase {index + 1}</h4>
+                  </div>
+                  
+                  <p className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium mt-6 group-hover:text-slate-900 transition-colors duration-300 relative z-10">{step}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
