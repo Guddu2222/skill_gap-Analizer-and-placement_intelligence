@@ -70,7 +70,7 @@ export const Verification_Email_Template = `
               <p>If you did not create an account, no further action is required. If you have any questions, feel free to contact our support team.</p>
           </div>
           <div class="footer">
-              <p>&copy; ${new Date().getFullYear()} Placement Intelligence. All rights reserved.</p>
+              <p>&copy; ${new Date().getFullYear()} SkillBridge. All rights reserved.</p>
           </div>
       </div>
   </body>
@@ -162,7 +162,7 @@ export const Welcome_Email_Template = `
               <p>If you need any help, don’t hesitate to contact us. We’re here to support you every step of the way.</p>
           </div>
           <div class="footer">
-              <p>&copy; ${new Date().getFullYear()} Placement Intelligence. All rights reserved.</p>
+              <p>&copy; ${new Date().getFullYear()} SkillBridge. All rights reserved.</p>
           </div>
       </div>
     </html>
@@ -196,7 +196,7 @@ export const Password_Reset_Email_Template = `
               <p>If you did not request a password reset, please ignore this email. This link will expire in 1 hour.</p>
           </div>
           <div class="footer">
-              <p>&copy; 2026 Placement Intelligence. All rights reserved.</p>
+              <p>&copy; 2026 SkillBridge. All rights reserved.</p>
           </div>
       </div>
   </body>

@@ -68,7 +68,7 @@ const RoleSelectionPage = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-3">
-            Welcome to Placement Intelligence
+            Welcome to SkillBridge
           </h1>
           <p className="text-xl text-gray-600">
             Choose your account type to get started

@@ -1,7 +1,7 @@
 const { transporter } = require('./Email.config.js');
 const { Verification_Email_Template, Welcome_Email_Template, Password_Reset_Email_Template } = require('./EmailTemplate.js');
 
-const COMPANY_NAME = process.env.COMPANY_NAME || "Placement Intelligence";
+const COMPANY_NAME = process.env.COMPANY_NAME || "SkillBridge";
 
 const sendVerificationEmail = async (email, verificationCode) => {
   try {

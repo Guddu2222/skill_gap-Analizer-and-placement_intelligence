@@ -91,7 +91,7 @@ const SignInPage = () => {
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 p-12 flex-col justify-between">
         <div>
           <h1 className="text-4xl font-bold text-white mb-2">
-            Placement Intelligence
+            SkillBridge
           </h1>
           <p className="text-blue-100 text-lg">
             Your Gateway to Career Success
@@ -137,7 +137,7 @@ const SignInPage = () => {
         </div>
 
         <div className="text-blue-100 text-sm">
-          © 2026 Placement Intelligence. All rights reserved.
+          © 2026 SkillBridge. All rights reserved.
         </div>
       </div>
 
@@ -147,7 +147,7 @@ const SignInPage = () => {
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Placement Intelligence
+              SkillBridge
             </h1>
             <p className="text-gray-600">Sign in to continue</p>
           </div>

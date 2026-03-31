@@ -56,7 +56,7 @@ const Navbar = () => {
                 </svg>
               </div>
               <span className={`text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent ${isScrolled ? 'text-gray-900' : 'text-white'}`}>
-                PlacementAI
+                SkillBridge
               </span>
             </a>
           </div>

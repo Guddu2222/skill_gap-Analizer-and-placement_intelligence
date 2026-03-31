@@ -24,7 +24,7 @@ app.use('/api/skill-gap', require('./routes/skillGap'));
 app.use('/api/interviews', require('./routes/interviews'));
 
 app.get('/', (req, res) => {
-  res.send('Placement Intelligence Platform API is running');
+  res.send('SkillBridge API is running');
 });
 
 // Database Connection
