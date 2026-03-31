@@ -28,8 +28,7 @@ const Sidebar = ({ role = 'college' }) => {
       { icon: Users, label: 'Compare', path: '/student/compare' },
       { icon: Briefcase, label: 'Opportunities', path: '/student/opportunities' },
       { icon: Users, label: 'Mentorship', path: '/student/mentorship' },
-      { icon: MessageSquare, label: 'Interviews', path: '/student/interviews' },
-      { icon: Users, label: 'Alumni Network', path: '/student/alumni' },
+      { icon: MessageSquare, label: 'Interviews', path: '/student/interviews' }
     ]
   };
 

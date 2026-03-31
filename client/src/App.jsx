@@ -8,7 +8,6 @@ import StudentDashboard from './pages/StudentDashboard';
 import SignInPage from './pages/SignInPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
-import AlumniNetwork from './pages/AlumniNetwork';
 import RecruiterCRM from './pages/RecruiterCRM';
 import SmartShortlist from './pages/SmartShortlist';
 
@@ -55,7 +54,6 @@ const App = () => {
         <Route path="/student/opportunities" element={<StudentDashboard activeRoute="opportunities" />} />
         <Route path="/student/mentorship" element={<StudentDashboard activeRoute="mentorship" />} />
         <Route path="/student/interviews" element={<StudentDashboard activeRoute="interviews" />} />
-        <Route path="/student/alumni" element={<AlumniNetwork />} />
       </Routes>
     </Router>
   );
