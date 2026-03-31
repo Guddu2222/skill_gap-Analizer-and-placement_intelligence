@@ -44,7 +44,17 @@ const App = () => {
         <Route path="/college/recruiters" element={<RecruiterCRM />} />
         <Route path="/recruiter" element={<RecruiterDashboard />} />
         <Route path="/recruiter/smart-shortlist" element={<SmartShortlist />} />
-        <Route path="/student" element={<StudentDashboard />} />
+        
+        {/* Student Dashboard Routes */}
+        <Route path="/student" element={<StudentDashboard activeRoute="overview" />} />
+        <Route path="/student/overview" element={<StudentDashboard activeRoute="overview" />} />
+        <Route path="/student/paths" element={<StudentDashboard activeRoute="learning" />} />
+        <Route path="/student/skills" element={<StudentDashboard activeRoute="skills" />} />
+        <Route path="/student/courses" element={<StudentDashboard activeRoute="courses" />} />
+        <Route path="/student/compare" element={<StudentDashboard activeRoute="competitive" />} />
+        <Route path="/student/opportunities" element={<StudentDashboard activeRoute="opportunities" />} />
+        <Route path="/student/mentorship" element={<StudentDashboard activeRoute="mentorship" />} />
+        <Route path="/student/interviews" element={<StudentDashboard activeRoute="interviews" />} />
         <Route path="/student/alumni" element={<AlumniNetwork />} />
       </Routes>
     </Router>

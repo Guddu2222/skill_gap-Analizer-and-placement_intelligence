@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, Briefcase, BarChart2, Settings, Building, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, Briefcase, BarChart2, Settings, Building, LogOut, BookOpen, Target, Award, MessageSquare } from 'lucide-react';
 
 const Sidebar = ({ role = 'college' }) => {
   const navigate = useNavigate();
@@ -21,7 +21,14 @@ const Sidebar = ({ role = 'college' }) => {
       { icon: BarChart2, label: 'Analytics', path: '/recruiter/analytics' },
     ],
     student: [
-      { icon: LayoutDashboard, label: 'Dashboard', path: '/student' },
+      { icon: LayoutDashboard, label: 'Overview', path: '/student/overview' },
+      { icon: BookOpen, label: 'My Paths', path: '/student/paths' },
+      { icon: Target, label: 'Skill Radar', path: '/student/skills' },
+      { icon: Award, label: 'Courses', path: '/student/courses' },
+      { icon: Users, label: 'Compare', path: '/student/compare' },
+      { icon: Briefcase, label: 'Opportunities', path: '/student/opportunities' },
+      { icon: Users, label: 'Mentorship', path: '/student/mentorship' },
+      { icon: MessageSquare, label: 'Interviews', path: '/student/interviews' },
       { icon: Users, label: 'Alumni Network', path: '/student/alumni' },
     ]
   };

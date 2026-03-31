@@ -18,11 +18,18 @@ import InterviewDashboard from '../components/student/interview/InterviewDashboa
 import InterviewSession from '../components/student/interview/InterviewSession';
 import InterviewFeedbackCard from '../components/student/interview/InterviewFeedbackCard';
 
-const StudentDashboard = () => {
+const StudentDashboard = ({ activeRoute = 'overview' }) => {
   const [student, setStudent] = useState(null);
   const [skillGapAnalysis, setSkillGapAnalysis] = useState(null);
   const [learningPaths, setLearningPaths] = useState([]);
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState(activeRoute);
+  
+  useEffect(() => {
+    setActiveTab(activeRoute);
+    if (activeRoute !== 'interviews') {
+      setInterviewView('dashboard');
+    }
+  }, [activeRoute]);
   const [analyzing, setAnalyzing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showEditProfile, setShowEditProfile] = useState(false);
@@ -217,100 +224,6 @@ const StudentDashboard = () => {
 
         {skillGapAnalysis && (
           <>
-            {/* Navigation Tabs */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-2 mb-8 overflow-x-auto">
-              <div className="flex gap-2 min-w-max">
-                <button
-                  onClick={() => { setActiveTab('overview'); setInterviewView('dashboard'); }}
-                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
-                    activeTab === 'overview'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  <BarChart3 className="w-5 h-5 mr-2" />
-                  Overview
-                </button>
-                <button
-                  onClick={() => { setActiveTab('learning'); setInterviewView('dashboard'); }}
-                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
-                    activeTab === 'learning'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  <BookOpen className="w-5 h-5 mr-2" />
-                  My Paths
-                </button>
-                <button
-                  onClick={() => { setActiveTab('skills'); setInterviewView('dashboard'); }}
-                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
-                    activeTab === 'skills'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  <Target className="w-5 h-5 mr-2" />
-                  Skill Radar
-                </button>
-                <button
-                  onClick={() => { setActiveTab('courses'); setInterviewView('dashboard'); }}
-                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
-                    activeTab === 'courses'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  <Award className="w-5 h-5 mr-2" />
-                  Courses
-                </button>
-                <button
-                  onClick={() => { setActiveTab('competitive'); setInterviewView('dashboard'); }}
-                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
-                    activeTab === 'competitive'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  <Users className="w-5 h-5 mr-2" />
-                  Compare
-                </button>
-                <button
-                  onClick={() => { setActiveTab('opportunities'); setInterviewView('dashboard'); }}
-                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
-                    activeTab === 'opportunities'
-                      ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  <Briefcase className="w-5 h-5 mr-2" />
-                  Opportunities
-                </button>
-                <button
-                  onClick={() => { setActiveTab('mentorship'); setInterviewView('dashboard'); }}
-                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
-                    activeTab === 'mentorship'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  <Users className="w-5 h-5 mr-2" />
-                  Mentorship
-                </button>
-                <button
-                  onClick={() => setActiveTab('interviews')}
-                  className={`px-4 py-3 rounded-xl font-semibold transition-all flex items-center ${
-                    activeTab === 'interviews'
-                      ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  <MessageSquare className="w-5 h-5 mr-2" />
-                  Interviews
-                </button>
-              </div>
-            </div>
-
             {/* Tab Content */}
             <div className="pb-12">
               {activeTab === 'overview' && (
