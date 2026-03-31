@@ -1,8 +1,17 @@
 
 import axios from 'axios';
 
+// Format URL to ensure it ends with /api (fixes Vercel env variable typos)
+const getBaseUrl = () => {
+  let url = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  if (!url.endsWith('/api')) {
+    url = url.replace(/\/+$/, '') + '/api';
+  }
+  return url;
+};
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: getBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
