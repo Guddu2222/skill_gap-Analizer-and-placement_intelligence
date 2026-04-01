@@ -22,6 +22,7 @@ const sendVerificationEmail = async (email, verificationCode) => {
     console.log("Email sent successfully", response);
   } catch (error) {
     console.log("Email error", error);
+    throw new Error("Failed to send verification email");
   }
 };
 
@@ -37,6 +38,7 @@ const sendWelcomeEmail = async (email, name) => {
     console.log("Email sent successfully", response);
   } catch (error) {
     console.log("Email error", error);
+    throw new Error("Failed to send welcome email");
   }
 };
 
@@ -52,6 +54,7 @@ const sendPasswordResetEmail = async (email, resetLink) => {
     console.log("Password reset email sent successfully", response);
   } catch (error) {
     console.log("Password reset email error", error);
+    throw new Error("Failed to send password reset email");
   }
 };
 
