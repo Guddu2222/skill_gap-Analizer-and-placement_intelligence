@@ -3,14 +3,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import api from "../../services/api";
 import { Mail, ArrowRight, Loader } from "lucide-react";
 
-const EmailVerificationPage = () => {
+const EmailVerificationPage = ({ email: propEmail }) => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state?.email;
+  const email = propEmail || location.state?.email;
 
   const handleVerify = async (e) => {
     e.preventDefault();
