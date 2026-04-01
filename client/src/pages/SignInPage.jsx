@@ -13,6 +13,7 @@ const SignInPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [generalError, setGeneralError] = useState("");
   const [needsVerification, setNeedsVerification] = useState(false);
 
   const handleSubmit = async (e) => {
