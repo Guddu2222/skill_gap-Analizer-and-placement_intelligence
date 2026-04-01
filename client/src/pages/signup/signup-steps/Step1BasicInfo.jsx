@@ -90,11 +90,11 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-blue-600">Step 1 of 6</span>
+            <span className="text-sm font-medium text-blue-600">Step 1 of 2</span>
             <span className="text-sm text-gray-500">Basic Information</span>
           </div>
           <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-500" style={{ width: '16.66%' }}></div>
+            <div className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-500" style={{ width: '50%' }}></div>
           </div>
         </div>
 
@@ -349,7 +349,7 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
                 </>
               ) : (
                 <>
-                  <span>Continue</span>
+                  <span>Create Account</span>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>

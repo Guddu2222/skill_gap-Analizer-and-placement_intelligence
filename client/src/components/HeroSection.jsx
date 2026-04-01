@@ -12,9 +12,9 @@ import {
 
 const HeroSection = () => {
   const stats = [
-    { icon: Users, value: '500+', label: 'Institutions' },
+    { icon: Users, value: '50+', label: 'Institutions' },
     { icon: Award, value: '94.8%', label: 'Placement Rate' },
-    { icon: Building2, value: '1000+', label: 'Companies' },
+    { icon: Building2, value: '100+', label: 'Companies' },
     { icon: TrendingUp, value: '50K+', label: 'Students Placed' }
   ];
 

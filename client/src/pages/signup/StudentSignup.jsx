@@ -3,11 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import Step1BasicInfo from './signup-steps/Step1BasicInfo';
-import Step2AcademicInfo from './signup-steps/Step2AcademicInfo';
-import Step3EducationHistory from './signup-steps/Step3EducationHistory';
-import Step4SkillsResume from './signup-steps/Step4SkillsResume';
-import Step5ExperienceProjects from './signup-steps/Step5ExperienceProjects';
-import Step6Preferences from './signup-steps/Step6Preferences';
 import EmailVerificationPage from './EmailVerificationPage';
 
 const StudentSignup = () => {
@@ -17,7 +12,6 @@ const StudentSignup = () => {
   const [error, setError] = useState('');
   
   const [formData, setFormData] = useState({
-    // Step 1: Basic Info
     firstName: '',
     lastName: '',
     email: '',
@@ -26,63 +20,9 @@ const StudentSignup = () => {
     gender: '',
     password: '',
     confirmPassword: '',
-    
-    // Step 2: Academic Info
-    college: '',
-    collegeId: '',
-    rollNumber: '',
-    collegeRollNumber: '',
-    department: '',
-    degree: '',
-    specialization: '',
-    admissionYear: '',
-    graduationYear: '',
-    currentSemester: '',
-    cgpa: '',
-    activeBacklogs: 0,
-    clearedBacklogs: 0,
-    
-    // Step 3: Education History
-    education10th: {
-      institutionName: '',
-      board: '',
-      percentage: '',
-      yearOfPassing: ''
-    },
-    education12th: {
-      institutionName: '',
-      board: '',
-      percentage: '',
-      yearOfPassing: '',
-      stream: ''
-    },
-    
-    // Step 4: Skills & Resume
-    skills: [],
-    resumeUrl: '',
-    linkedinUrl: '',
-    githubUrl: '',
-    portfolioUrl: '',
-    
-    // Step 5: Experience & Projects
-    experiences: [],
-    projects: [],
-    
-    // Step 6: Preferences & Address
-    targetRole: '',
-    addressLine1: '',
-    addressLine2: '',
-    city: '',
-    state: '',
-    pincode: '',
-    country: 'India',
-    preferredLocations: [],
-    expectedSalaryMin: '',
-    expectedSalaryMax: '',
-    willingToRelocate: true
   });
 
-  const totalSteps = 7; // Including email verification
+  const totalSteps = 2; // Basic Info + Email Verification
 
   const submitStudentData = async () => {
     setLoading(true);
@@ -101,7 +41,7 @@ const StudentSignup = () => {
       
       if (response.data) {
         // Success! Proceed to verification
-        setCurrentStep(7);
+        setCurrentStep(2);
         window.scrollTo(0, 0);
       }
     } catch (err) {
@@ -114,11 +54,8 @@ const StudentSignup = () => {
   };
 
   const nextStep = () => {
-    if (currentStep === 6) {
+    if (currentStep === 1) {
       submitStudentData();
-    } else if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
-      window.scrollTo(0, 0);
     }
   };
 
@@ -136,16 +73,6 @@ const StudentSignup = () => {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <Step1BasicInfo formData={formData} updateFormData={updateFormData} onNext={nextStep} />;
-      case 2:
-        return <Step2AcademicInfo formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
-      case 3:
-        return <Step3EducationHistory formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
-      case 4:
-        return <Step4SkillsResume formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
-      case 5:
-        return <Step5ExperienceProjects formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
-      case 6:
         return (
           <div className="relative">
              {error && (
@@ -162,10 +89,10 @@ const StudentSignup = () => {
                 </div>
               </div>
              )}
-             <Step6Preferences formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />
+             <Step1BasicInfo formData={formData} updateFormData={updateFormData} onNext={nextStep} />
           </div>
         );
-      case 7:
+      case 2:
         return <EmailVerificationPage email={formData.email} />;
       default:
         return null;
