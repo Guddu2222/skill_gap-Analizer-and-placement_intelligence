@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { register } from '../../services/api';
 
 import Step1BasicInfo from './signup-steps/Step1BasicInfo';
 import EmailVerificationPage from './EmailVerificationPage';
@@ -35,11 +35,9 @@ const StudentSignup = () => {
         ...formData,
       };
 
-      // Ensure API endpoint matches
-      // Replace this with standard auth register API import if preferred
-      const response = await axios.post('http://localhost:5000/api/auth/register', payload);
+      const data = await register(payload);
       
-      if (response.data) {
+      if (data) {
         // Success! Proceed to verification
         setCurrentStep(2);
         window.scrollTo(0, 0);

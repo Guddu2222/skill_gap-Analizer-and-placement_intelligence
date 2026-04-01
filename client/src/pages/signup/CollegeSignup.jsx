@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Building2, Mail, Lock, User, Eye, EyeOff, XCircle, CheckCircle } from 'lucide-react';
+import { register } from '../../services/api';
 
 const CollegeSignup = () => {
   const navigate = useNavigate();
@@ -33,31 +34,19 @@ const CollegeSignup = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await fetch('http://localhost:5000/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: formData.contactPerson,
-            email: formData.email,
-            password: formData.password,
-            role: 'college_admin',
-            collegeName: formData.collegeName,
-            phone: formData.phone,
-            address: formData.address,
-          }),
+        await register({
+          name: formData.contactPerson,
+          email: formData.email,
+          password: formData.password,
+          role: 'college_admin',
+          collegeName: formData.collegeName,
+          phone: formData.phone,
+          address: formData.address,
         });
 
-        const data = await response.json();
-
-        if (response.ok) {
-          navigate('/signup/verify-email', { state: { email: formData.email } });
-        } else {
-          setErrors({ ...newErrors, submit: data.msg || data.error || 'Registration failed' });
-        }
+        navigate('/signup/verify-email', { state: { email: formData.email } });
       } catch (err) {
-        setErrors({ ...newErrors, submit: 'Something went wrong. Please try again.' });
+        setErrors({ ...newErrors, submit: err.response?.data?.msg || err.response?.data?.error || 'Something went wrong. Please try again.' });
       }
     } else {
       setErrors(newErrors);

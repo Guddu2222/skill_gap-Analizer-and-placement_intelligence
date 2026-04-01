@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Briefcase, Mail, Lock, Building2, User, Eye, EyeOff, XCircle, CheckCircle } from 'lucide-react';
+import { register } from '../../services/api';
 
 const RecruiterSignup =  () => {
   const navigate = useNavigate();
@@ -45,36 +46,24 @@ const RecruiterSignup =  () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await fetch('http://localhost:5000/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: formData.contactPerson,
-            email: formData.email,
-            password: formData.password,
-            role: 'recruiter',
-            company: formData.companyName
-          }),
+        await register({
+          name: formData.contactPerson,
+          email: formData.email,
+          password: formData.password,
+          role: 'recruiter',
+          company: formData.companyName
         });
 
-        const data = await response.json();
-
-        if (response.ok) {
-          // Navigate to a verification page. 
-          // Since RecruiterSignup doesn't have an internal step for verification, we route to a generic one or add one.
-          // For now, let's assume we reuse the verification page or a dedicated route.
-          // However, EmailVerificationPage is designed to take email from state.
-          // We can route to /signup/verify-email if that route exists and maps to EmailVerificationPage.
-          // Assuming /student-signup manages it internally, maybe we need a route for verification.
-          // Let's use navigate with state.
-          navigate('/signup/verify-email', { state: { email: formData.email } });
-        } else {
-          setErrors({ ...newErrors, submit: data.msg || data.error || 'Registration failed' });
-        }
+        // Navigate to a verification page. 
+        // Since RecruiterSignup doesn't have an internal step for verification, we route to a generic one or add one.
+        // For now, let's assume we reuse the verification page or a dedicated route.
+        // However, EmailVerificationPage is designed to take email from state.
+        // We can route to /signup/verify-email if that route exists and maps to EmailVerificationPage.
+        // Assuming /student-signup manages it internally, maybe we need a route for verification.
+        // Let's use navigate with state.
+        navigate('/signup/verify-email', { state: { email: formData.email } });
       } catch (err) {
-        setErrors({ ...newErrors, submit: 'Something went wrong. Please try again.' });
+        setErrors({ ...newErrors, submit: err.response?.data?.msg || err.response?.data?.error || 'Something went wrong. Please try again.' });
       }
     } else {
       setErrors(newErrors);
