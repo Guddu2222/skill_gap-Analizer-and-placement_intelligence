@@ -529,7 +529,7 @@ exports.forgotPassword = async (req, res) => {
       { expiresIn: "1h" },
     );
 
-    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    const frontendUrl = process.env.FRONTEND_URL || req.headers.origin || "http://localhost:5173";
     const resetLink = `${frontendUrl}/reset-password/${resetToken}`;
 
     await sendPasswordResetEmail(user.email, resetLink);
