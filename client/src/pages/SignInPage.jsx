@@ -13,12 +13,13 @@ const SignInPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [generalError, setGeneralError] = useState("");
+  const [needsVerification, setNeedsVerification] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
     setGeneralError("");
+    setNeedsVerification(false);
 
     // Validation
     const newErrors = {};
@@ -68,6 +69,9 @@ const SignInPage = () => {
         setGeneralError("Invalid email or password");
       }
     } catch (error) {
+      if (error.response?.data?.isVerified === false) {
+        setNeedsVerification(true);
+      }
       const errorMessage =
         error.response?.data?.msg ||
         error.response?.data?.error ||
@@ -205,11 +209,20 @@ const SignInPage = () => {
               <p className="text-gray-600">Sign in to your account</p>
             </div>
 
-            {/* General Error Alert */}
             {generalError && (
-              <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start">
-                <AlertCircle className="w-5 h-5 text-red-600 mr-3 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-red-800">{generalError}</p>
+              <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="flex items-start">
+                  <AlertCircle className="w-5 h-5 text-red-600 mr-3 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-red-800">{generalError}</p>
+                </div>
+                {needsVerification && (
+                  <button
+                    onClick={() => navigate('/signup/verify-email', { state: { email: formData.email } })}
+                    className="flex-shrink-0 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg shadow-sm transition-colors"
+                  >
+                    Verify Email Now
+                  </button>
+                )}
               </div>
             )}
 
