@@ -1,33 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import Sidebar from '../components/Sidebar';
-import { BookOpen, CheckCircle, Lock, PlayCircle, AlertCircle, Award, Target, Briefcase, MapPin, Zap, BarChart3, Users, ArrowRight, MessageSquare, Pencil } from 'lucide-react';
-import { fetchStudentProfile, fetchLatestSkillGapAnalysis, fetchLearningPaths, triggerSkillGapAnalysis } from '../services/api'; 
+import React, { useState, useEffect } from "react";
+import Sidebar from "../components/Sidebar";
+import {
+  BookOpen,
+  CheckCircle,
+  Lock,
+  PlayCircle,
+  AlertCircle,
+  Award,
+  Target,
+  Briefcase,
+  MapPin,
+  Zap,
+  BarChart3,
+  Users,
+  ArrowRight,
+  MessageSquare,
+  Pencil,
+} from "lucide-react";
+import {
+  fetchStudentProfile,
+  fetchLatestSkillGapAnalysis,
+  fetchLearningPaths,
+  triggerSkillGapAnalysis,
+} from "../services/api";
 
-import ResumeUploadWidget from '../components/student/ResumeUploadWidget';
-import ProfilePictureUpload from '../components/student/ProfilePictureUpload';
-import ProfileEditModal from '../components/student/ProfileEditModal';
-import ReadinessScoreWidget from '../components/student/ReadinessScoreWidget';
-import SkillGapOverview from '../components/student/SkillGapOverview';
-import LearningPathTracker from '../components/student/LearningPathTracker';
-import SkillRadarChart from '../components/student/SkillRadarChart';
-import RecommendedCourses from '../components/student/RecommendedCourses';
-import CompetitiveAnalysis from '../components/student/CompetitiveAnalysis';
-import OpportunitiesTab from '../components/student/OpportunitiesTab';
-import MentorshipTab from '../components/student/MentorshipTab';
-import InterviewDashboard from '../components/student/interview/InterviewDashboard';
-import InterviewSession from '../components/student/interview/InterviewSession';
-import InterviewFeedbackCard from '../components/student/interview/InterviewFeedbackCard';
+import ResumeUploadWidget from "../components/student/ResumeUploadWidget";
+import ProfilePictureUpload from "../components/student/ProfilePictureUpload";
+import ProfileEditModal from "../components/student/ProfileEditModal";
+import ReadinessScoreWidget from "../components/student/ReadinessScoreWidget";
+import SkillGapOverview from "../components/student/SkillGapOverview";
+import LearningPathTracker from "../components/student/LearningPathTracker";
+import SkillRadarChart from "../components/student/SkillRadarChart";
+import RecommendedCourses from "../components/student/RecommendedCourses";
+import CompetitiveAnalysis from "../components/student/CompetitiveAnalysis";
+import OpportunitiesTab from "../components/student/OpportunitiesTab";
+import MentorshipTab from "../components/student/MentorshipTab";
+import InterviewDashboard from "../components/student/interview/InterviewDashboard";
+import InterviewSession from "../components/student/interview/InterviewSession";
+import InterviewFeedbackCard from "../components/student/interview/InterviewFeedbackCard";
 
-const StudentDashboard = ({ activeRoute = 'overview' }) => {
+const StudentDashboard = ({ activeRoute = "overview" }) => {
   const [student, setStudent] = useState(null);
   const [skillGapAnalysis, setSkillGapAnalysis] = useState(null);
   const [learningPaths, setLearningPaths] = useState([]);
   const [activeTab, setActiveTab] = useState(activeRoute);
-  
+
   useEffect(() => {
     setActiveTab(activeRoute);
-    if (activeRoute !== 'interviews') {
-      setInterviewView('dashboard');
+    if (activeRoute !== "interviews") {
+      setInterviewView("dashboard");
     }
   }, [activeRoute]);
   const [analyzing, setAnalyzing] = useState(false);
@@ -35,23 +56,31 @@ const StudentDashboard = ({ activeRoute = 'overview' }) => {
   const [showEditProfile, setShowEditProfile] = useState(false);
 
   // Interview View State
-  const [interviewView, setInterviewView] = useState('dashboard'); // 'dashboard', 'session', 'feedback'
+  const [interviewView, setInterviewView] = useState("dashboard"); // 'dashboard', 'session', 'feedback'
   const [activeInterviewId, setActiveInterviewId] = useState(null);
 
   // function to handle upload success dynamic UI updates
-  const handleResumeUploadSuccess = (resumeUrl, newProfileCompletionPercentage) => {
-    setStudent(prev => ({
+  const handleResumeUploadSuccess = (
+    resumeUrl,
+    newProfileCompletionPercentage,
+  ) => {
+    setStudent((prev) => ({
       ...prev,
       resumeUrl: resumeUrl,
-      profileCompletionPercentage: newProfileCompletionPercentage || prev.profileCompletionPercentage
+      profileCompletionPercentage:
+        newProfileCompletionPercentage || prev.profileCompletionPercentage,
     }));
   };
 
-  const handleProfilePictureUploadSuccess = (profilePictureUrl, newProfileCompletionPercentage) => {
-    setStudent(prev => ({
+  const handleProfilePictureUploadSuccess = (
+    profilePictureUrl,
+    newProfileCompletionPercentage,
+  ) => {
+    setStudent((prev) => ({
       ...prev,
       profilePicture: profilePictureUrl,
-      profileCompletionPercentage: newProfileCompletionPercentage || prev.profileCompletionPercentage
+      profileCompletionPercentage:
+        newProfileCompletionPercentage || prev.profileCompletionPercentage,
     }));
   };
 
@@ -88,18 +117,17 @@ const StudentDashboard = ({ activeRoute = 'overview' }) => {
 
   const handleAnalyzeSkills = async () => {
     try {
-       setAnalyzing(true);
-       // Use safe defaults if the student profile doesn't have these explicitly set yet
-       const domain = student?.targetDomain || 'Software Engineer';
-       const role = student?.targetRole || 'Full Stack Developer';
-       await triggerSkillGapAnalysis(domain, role);
-       await fetchDashboardData();
-    } catch(err) {
-       console.error(err);
-       alert("Failed to analyze skills");
+      setAnalyzing(true);
+      // Use safe defaults if the student profile doesn't have these explicitly set yet
+      const domain = student?.targetDomain || "Software Engineer";
+      const role = student?.targetRole || "Full Stack Developer";
+      await triggerSkillGapAnalysis(domain, role);
+      await fetchDashboardData();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to analyze skills");
     } finally {
-       setAnalyzing(false);
-       
+      setAnalyzing(false);
     }
   };
 
@@ -110,7 +138,9 @@ const StudentDashboard = ({ activeRoute = 'overview' }) => {
         <main className="flex-1 ml-64 p-8 flex items-center justify-center">
           <div className="flex flex-col items-center">
             <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-            <p className="mt-4 text-gray-500 font-medium">Loading your insights...</p>
+            <p className="mt-4 text-gray-500 font-medium">
+              Loading your insights...
+            </p>
           </div>
         </main>
       </div>
@@ -122,7 +152,9 @@ const StudentDashboard = ({ activeRoute = 'overview' }) => {
       <div className="flex bg-gray-50 min-h-screen">
         <Sidebar role="student" />
         <main className="flex-1 ml-64 p-8 flex items-center justify-center">
-          <p className="text-gray-500">Failed to load profile. Please try reloading.</p>
+          <p className="text-gray-500">
+            Failed to load profile. Please try reloading.
+          </p>
         </main>
       </div>
     );
@@ -132,29 +164,35 @@ const StudentDashboard = ({ activeRoute = 'overview' }) => {
   return (
     <div className="flex bg-slate-50 min-h-screen font-sans">
       <Sidebar role="student" />
-      
+
       <main className="flex-1 ml-64 p-8">
-        
         {/* Dynamic Header Section */}
         <div className="relative overflow-hidden bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 rounded-3xl shadow-xl mb-8 border border-white/20">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500 opacity-10 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
-          
+
           <div className="relative z-10 p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div className="flex items-center gap-6">
-              <ProfilePictureUpload student={student} onUploadSuccess={handleProfilePictureUploadSuccess} />
+              <ProfilePictureUpload
+                student={student}
+                onUploadSuccess={handleProfilePictureUploadSuccess}
+              />
               <div>
                 <h1 className="text-3xl font-bold text-white mb-2">
-                  Welcome back, {student.firstName || student.user?.name?.split(' ')[0]}!
+                  Welcome back,{" "}
+                  {student.firstName || student.user?.name?.split(" ")[0]}!
                 </h1>
                 <div className="flex flex-wrap items-center gap-4 text-indigo-100 text-sm">
                   <span className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-sm">
                     <Target className="w-4 h-4" />
-                    Target: {student.targetRole || 'Set your target role'}
+                    Target: {student.targetRole || "Set your target role"}
                   </span>
                   <span className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-sm">
                     <Briefcase className="w-4 h-4" />
-                    Status: <span className="capitalize">{student.placementStatus}</span>
+                    Status:{" "}
+                    <span className="capitalize">
+                      {student.placementStatus}
+                    </span>
                   </span>
                   {student.college?.name && (
                     <span className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-sm">
@@ -165,16 +203,18 @@ const StudentDashboard = ({ activeRoute = 'overview' }) => {
                 </div>
               </div>
             </div>
-            
+
             {/* Readiness Score Widget + Edit Button */}
             <div className="flex flex-col gap-4 w-full md:w-64 relative z-20">
-              <ReadinessScoreWidget 
-                score={student.placementReadinessScore} 
-                components={student.readinessComponents || { 
-                  profile: student.profileCompletionPercentage, 
-                  skillGap: skillGapAnalysis?.overallReadinessScore || 0, 
-                  resume: student.resumeUrl ? 100 : 0 
-                }} 
+              <ReadinessScoreWidget
+                score={student.placementReadinessScore}
+                components={
+                  student.readinessComponents || {
+                    profile: student.profileCompletionPercentage,
+                    skillGap: skillGapAnalysis?.overallReadinessScore || 0,
+                    resume: student.resumeUrl ? 100 : 0,
+                  }
+                }
               />
               <button
                 onClick={() => setShowEditProfile(true)}
@@ -203,17 +243,24 @@ const StudentDashboard = ({ activeRoute = 'overview' }) => {
                   <Target className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-2">Get Your Personalized Career Roadmap</h3>
+                  <h3 className="text-xl font-bold mb-2">
+                    Get Your Personalized Career Roadmap
+                  </h3>
                   <p className="text-blue-100 mb-4">
-                    Discover your skill gaps, get AI-powered recommendations, and create a learning path tailored just for you!
+                    Discover your skill gaps, get AI-powered recommendations,
+                    and create a learning path tailored just for you!
                   </p>
-                  <button 
+                  <button
                     onClick={handleAnalyzeSkills}
                     disabled={analyzing}
                     className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-all flex items-center space-x-2 disabled:opacity-50"
                   >
                     <Zap className="w-5 h-5" />
-                    <span>{analyzing ? 'Analyzing with AI...' : 'Start Analysis Now'}</span>
+                    <span>
+                      {analyzing
+                        ? "Analyzing with AI..."
+                        : "Start Analysis Now"}
+                    </span>
                     <ArrowRight className="w-5 h-5" />
                   </button>
                 </div>
@@ -226,72 +273,66 @@ const StudentDashboard = ({ activeRoute = 'overview' }) => {
           <>
             {/* Tab Content */}
             <div className="pb-12">
-              {activeTab === 'overview' && (
-                <SkillGapOverview 
-                  analysis={skillGapAnalysis} 
+              {activeTab === "overview" && (
+                <SkillGapOverview
+                  analysis={skillGapAnalysis}
                   student={student}
                   onReanalyze={handleAnalyzeSkills}
                   isAnalyzing={analyzing}
                 />
               )}
-              {activeTab === 'learning' && (
-                <LearningPathTracker 
+              {activeTab === "learning" && (
+                <LearningPathTracker
                   learningPaths={learningPaths}
                   onUpdate={fetchDashboardData}
                 />
               )}
-              {activeTab === 'skills' && (
-                <SkillRadarChart 
+              {activeTab === "skills" && (
+                <SkillRadarChart
                   analysis={skillGapAnalysis}
                   studentSkills={student?.skills}
                 />
               )}
-              {activeTab === 'courses' && (
-                <RecommendedCourses 
-                  analysis={skillGapAnalysis}
-                />
+              {activeTab === "courses" && (
+                <RecommendedCourses analysis={skillGapAnalysis} />
               )}
-              {activeTab === 'competitive' && (
-                <CompetitiveAnalysis 
+              {activeTab === "competitive" && (
+                <CompetitiveAnalysis
                   student={student}
                   analysis={skillGapAnalysis}
                 />
               )}
-              {activeTab === 'opportunities' && (
-                <OpportunitiesTab 
-                  student={student}
-                />
+              {activeTab === "opportunities" && (
+                <OpportunitiesTab student={student} />
               )}
-              {activeTab === 'mentorship' && (
-                <MentorshipTab />
-              )}
-              {activeTab === 'interviews' && (
+              {activeTab === "mentorship" && <MentorshipTab />}
+              {activeTab === "interviews" && (
                 <div className="animate-fadeIn">
-                  {interviewView === 'dashboard' && (
-                    <InterviewDashboard 
+                  {interviewView === "dashboard" && (
+                    <InterviewDashboard
                       student={student}
-                      onStartInterview={() => setInterviewView('session')}
+                      onStartInterview={() => setInterviewView("session")}
                       onViewFeedback={(id) => {
                         setActiveInterviewId(id);
-                        setInterviewView('feedback');
+                        setInterviewView("feedback");
                       }}
                     />
                   )}
-                  {interviewView === 'session' && (
-                    <InterviewSession 
+                  {interviewView === "session" && (
+                    <InterviewSession
                       student={student}
                       onComplete={(id) => {
-                         setActiveInterviewId(id);
-                         setInterviewView('feedback');
+                        setActiveInterviewId(id);
+                        setInterviewView("feedback");
                       }}
                     />
                   )}
-                  {interviewView === 'feedback' && (
-                    <InterviewFeedbackCard 
+                  {interviewView === "feedback" && (
+                    <InterviewFeedbackCard
                       interviewId={activeInterviewId}
                       onBack={() => {
                         setActiveInterviewId(null);
-                        setInterviewView('dashboard');
+                        setInterviewView("dashboard");
                       }}
                     />
                   )}
@@ -313,7 +354,9 @@ const StudentDashboard = ({ activeRoute = 'overview' }) => {
         }}
       />
 
-      <style dangerouslySetInnerHTML={{__html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }
@@ -331,7 +374,9 @@ const StudentDashboard = ({ activeRoute = 'overview' }) => {
           from { opacity: 0; }
           to { opacity: 1; }
         }
-      `}} />
+      `,
+        }}
+      />
     </div>
   );
 };

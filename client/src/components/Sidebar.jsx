@@ -1,35 +1,54 @@
+import React, { useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Users,
+  Briefcase,
+  BarChart2,
+  Settings,
+  Building,
+  LogOut,
+  BookOpen,
+  Target,
+  Award,
+  MessageSquare,
+} from "lucide-react";
 
-import React, { useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, Briefcase, BarChart2, Settings, Building, LogOut, BookOpen, Target, Award, MessageSquare } from 'lucide-react';
-
-const Sidebar = ({ role = 'college' }) => {
+const Sidebar = ({ role = "college" }) => {
   const navigate = useNavigate();
   const links = {
     college: [
-      { icon: LayoutDashboard, label: 'Dashboard', path: '/college' },
-      { icon: Briefcase, label: 'Campus Drives', path: '/college/drives' },
-      { icon: Users, label: 'Students', path: '/college/students' },
-      { icon: Building, label: 'Recruiters', path: '/college/recruiters' },
-      { icon: BarChart2, label: 'Analytics', path: '/college/analytics' },
+      { icon: LayoutDashboard, label: "Dashboard", path: "/college" },
+      { icon: Briefcase, label: "Campus Drives", path: "/college/drives" },
+      { icon: Users, label: "Students", path: "/college/students" },
+      { icon: Building, label: "Recruiters", path: "/college/recruiters" },
+      { icon: BarChart2, label: "Analytics", path: "/college/analytics" },
     ],
     recruiter: [
-      { icon: LayoutDashboard, label: 'Dashboard', path: '/recruiter' },
-      { icon: Briefcase, label: 'Jobs & Postings', path: '/recruiter/jobs' },
-      { icon: Users, label: 'Smart Shortlister', path: '/recruiter/smart-shortlist' },
-      { icon: Users, label: 'Candidates', path: '/recruiter/candidates' },
-      { icon: BarChart2, label: 'Analytics', path: '/recruiter/analytics' },
+      { icon: LayoutDashboard, label: "Dashboard", path: "/recruiter" },
+      { icon: Briefcase, label: "Jobs & Postings", path: "/recruiter/jobs" },
+      {
+        icon: Users,
+        label: "Smart Shortlister",
+        path: "/recruiter/smart-shortlist",
+      },
+      { icon: Users, label: "Candidates", path: "/recruiter/candidates" },
+      { icon: BarChart2, label: "Analytics", path: "/recruiter/analytics" },
     ],
     student: [
-      { icon: LayoutDashboard, label: 'Overview', path: '/student/overview' },
-      { icon: BookOpen, label: 'My Paths', path: '/student/paths' },
-      { icon: Target, label: 'Skill Radar', path: '/student/skills' },
-      { icon: Award, label: 'Courses', path: '/student/courses' },
-      { icon: Users, label: 'Compare', path: '/student/compare' },
-      { icon: Briefcase, label: 'Opportunities', path: '/student/opportunities' },
-      { icon: Users, label: 'Mentorship', path: '/student/mentorship' },
-      { icon: MessageSquare, label: 'Interviews', path: '/student/interviews' }
-    ]
+      { icon: LayoutDashboard, label: "Overview", path: "/student/overview" },
+      { icon: BookOpen, label: "My Paths", path: "/student/paths" },
+      { icon: Target, label: "Skill Radar", path: "/student/skills" },
+      { icon: Award, label: "Courses", path: "/student/courses" },
+      { icon: Users, label: "Compare", path: "/student/compare" },
+      {
+        icon: Briefcase,
+        label: "Opportunities",
+        path: "/student/opportunities",
+      },
+      { icon: Users, label: "Mentorship", path: "/student/mentorship" },
+      { icon: MessageSquare, label: "Interviews", path: "/student/interviews" },
+    ],
   };
 
   const navLinks = links[role] || links.college;
@@ -39,9 +58,9 @@ const Sidebar = ({ role = 'college' }) => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userRole');
-    navigate('/login');
+    localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
+    navigate("/login");
   };
 
   return (
@@ -49,21 +68,25 @@ const Sidebar = ({ role = 'college' }) => {
       <div className="p-6 border-b border-gray-50">
         <div className="flex items-center gap-2 text-blue-600">
           <Building className="w-8 h-8" />
-          <span className="text-xl font-bold tracking-tight text-gray-900">SkillBridge</span>
+          <span className="text-xl font-bold tracking-tight text-gray-900">
+            SkillBridge
+          </span>
         </div>
       </div>
-      
+
       <nav className="flex-1 p-4 space-y-1">
         {navLinks.map((link) => (
           <NavLink
             key={link.path}
             to={link.path}
-            end={link.path.split('/').length > 2 ? false : true}
+            end={link.path.split("/").length > 2 ? false : true}
             className={({ isActive }) => `
               flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
-              ${isActive 
-                ? 'bg-blue-50 text-blue-700' 
-                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}
+              ${
+                isActive
+                  ? "bg-blue-50 text-blue-700"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              }
             `}
           >
             <link.icon className="w-5 h-5" />
@@ -77,7 +100,7 @@ const Sidebar = ({ role = 'college' }) => {
           <Settings className="w-5 h-5" />
           Settings
         </button>
-        <button 
+        <button
           onClick={handleLogout}
           className="flex items-center gap-3 px-4 py-3 w-full text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all"
         >

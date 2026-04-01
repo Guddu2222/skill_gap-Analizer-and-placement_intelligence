@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { PlayCircle, Clock, CheckCircle, BarChart2, Star, Target, MessageSquare } from 'lucide-react';
-import { getInterviewHistory } from '../../../services/api';
+import React, { useState, useEffect } from "react";
+import {
+  PlayCircle,
+  Clock,
+  CheckCircle,
+  BarChart2,
+  Star,
+  Target,
+  MessageSquare,
+} from "lucide-react";
+import { getInterviewHistory } from "../../../services/api";
 
 const InterviewDashboard = ({ student, onStartInterview, onViewFeedback }) => {
   const [history, setHistory] = useState([]);
@@ -25,15 +33,15 @@ const InterviewDashboard = ({ student, onStartInterview, onViewFeedback }) => {
   }, []);
 
   const getScoreColor = (score) => {
-    if (score >= 80) return 'text-green-500';
-    if (score >= 60) return 'text-yellow-500';
-    return 'text-red-500';
+    if (score >= 80) return "text-green-500";
+    if (score >= 60) return "text-yellow-500";
+    return "text-red-500";
   };
 
   const getScoreBadge = (score) => {
-    if (score >= 80) return 'bg-green-100 text-green-700 border-green-200';
-    if (score >= 60) return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-    return 'bg-red-100 text-red-700 border-red-200';
+    if (score >= 80) return "bg-green-100 text-green-700 border-green-200";
+    if (score >= 60) return "bg-yellow-100 text-yellow-700 border-yellow-200";
+    return "bg-red-100 text-red-700 border-red-200";
   };
 
   return (
@@ -48,7 +56,8 @@ const InterviewDashboard = ({ student, onStartInterview, onViewFeedback }) => {
               AI Interview Preperation
             </h2>
             <p className="text-indigo-100 max-w-xl text-lg">
-              Practice specialized technical and behavioral questions tailored to your skill gaps and target role.
+              Practice specialized technical and behavioral questions tailored
+              to your skill gaps and target role.
             </p>
           </div>
           <button
@@ -69,7 +78,7 @@ const InterviewDashboard = ({ student, onStartInterview, onViewFeedback }) => {
             Interview History
           </h3>
           <span className="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
-            {history.length} Session{history.length !== 1 && 's'}
+            {history.length} Session{history.length !== 1 && "s"}
           </span>
         </div>
 
@@ -81,9 +90,12 @@ const InterviewDashboard = ({ student, onStartInterview, onViewFeedback }) => {
         ) : history.length === 0 ? (
           <div className="text-center py-16 px-4 border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
             <Target className="w-16 h-16 text-indigo-300 mx-auto mb-4" />
-            <h4 className="text-xl font-semibold text-slate-700 mb-2">No Interviews Yet</h4>
+            <h4 className="text-xl font-semibold text-slate-700 mb-2">
+              No Interviews Yet
+            </h4>
             <p className="text-slate-500 mb-6 max-w-md mx-auto">
-              You haven't completed any mock interviews. Start your first session to get personalized feedback and improve your skills.
+              You haven't completed any mock interviews. Start your first
+              session to get personalized feedback and improve your skills.
             </p>
             <button
               onClick={onStartInterview}
@@ -95,43 +107,52 @@ const InterviewDashboard = ({ student, onStartInterview, onViewFeedback }) => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {history.map((interview) => (
-              <div 
-                key={interview._id} 
-                onClick={() => interview.status === 'Completed' ? onViewFeedback(interview._id) : null}
-                className={`bg-white border ${interview.status === 'Completed' ? 'border-indigo-100 hover:border-indigo-300 hover:shadow-md cursor-pointer' : 'border-slate-200 opacity-70'} rounded-2xl p-5 transition-all group`}
+              <div
+                key={interview._id}
+                onClick={() =>
+                  interview.status === "Completed"
+                    ? onViewFeedback(interview._id)
+                    : null
+                }
+                className={`bg-white border ${interview.status === "Completed" ? "border-indigo-100 hover:border-indigo-300 hover:shadow-md cursor-pointer" : "border-slate-200 opacity-70"} rounded-2xl p-5 transition-all group`}
               >
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex items-center gap-2 text-sm font-medium text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg">
                     <Star className="w-4 h-4" />
                     {interview.targetRole}
                   </div>
-                  {interview.status === 'Completed' ? (
-                     <span className={`text-xs font-bold px-2.5 py-1 rounded-lg border ${getScoreBadge(interview.overallScore)}`}>
-                       Score: {interview.overallScore}%
-                     </span>
+                  {interview.status === "Completed" ? (
+                    <span
+                      className={`text-xs font-bold px-2.5 py-1 rounded-lg border ${getScoreBadge(interview.overallScore)}`}
+                    >
+                      Score: {interview.overallScore}%
+                    </span>
                   ) : (
                     <span className="text-xs font-bold px-2.5 py-1 rounded-lg border bg-slate-100 text-slate-600 border-slate-200">
-                       {interview.status}
-                     </span>
+                      {interview.status}
+                    </span>
                   )}
                 </div>
 
                 <div className="space-y-3 mb-5">
                   <div className="flex items-center gap-3 text-sm text-slate-600">
-                     <Clock className="w-4 h-4 text-slate-400" />
-                     {new Date(interview.createdAt).toLocaleDateString(undefined, {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                     })}
+                    <Clock className="w-4 h-4 text-slate-400" />
+                    {new Date(interview.createdAt).toLocaleDateString(
+                      undefined,
+                      {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      },
+                    )}
                   </div>
                   <div className="flex items-center gap-3 text-sm text-slate-600">
-                     <CheckCircle className="w-4 h-4 text-slate-400" />
-                     {interview.questions?.length || 5} Questions
+                    <CheckCircle className="w-4 h-4 text-slate-400" />
+                    {interview.questions?.length || 5} Questions
                   </div>
                 </div>
 
-                {interview.status === 'Completed' && (
+                {interview.status === "Completed" && (
                   <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-indigo-600 font-medium text-sm group-hover:text-indigo-700">
                     View Detailed Feedback
                     <BarChart2 className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />

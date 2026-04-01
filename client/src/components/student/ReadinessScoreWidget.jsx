@@ -1,12 +1,12 @@
-import React from 'react';
-import { Target, Zap, TrendingUp, Info } from 'lucide-react';
+import React from "react";
+import { Target, Zap, TrendingUp, Info } from "lucide-react";
 
 const ReadinessScoreWidget = ({ score, components }) => {
   // Determine color based on score
   const getScoreColor = (s) => {
-    if (s >= 80) return 'from-emerald-400 to-teal-500';
-    if (s >= 50) return 'from-amber-400 to-orange-500';
-    return 'from-red-400 to-rose-500';
+    if (s >= 80) return "from-emerald-400 to-teal-500";
+    if (s >= 50) return "from-amber-400 to-orange-500";
+    return "from-red-400 to-rose-500";
   };
 
   const colorClass = getScoreColor(score || 0);
@@ -17,7 +17,10 @@ const ReadinessScoreWidget = ({ score, components }) => {
         <div>
           <h3 className="text-white font-medium text-sm flex items-center gap-1.5">
             Placement Readiness
-            <span className="cursor-help" title="Based on your skills (40%), profile (40%), and resume (20%)">
+            <span
+              className="cursor-help"
+              title="Based on your skills (40%), profile (40%), and resume (20%)"
+            >
               <Info className="w-3.5 h-3.5 text-indigo-200" />
             </span>
           </h3>
@@ -29,7 +32,7 @@ const ReadinessScoreWidget = ({ score, components }) => {
       </div>
 
       <div className="w-full h-2.5 bg-white/10 rounded-full overflow-hidden mb-4">
-        <div 
+        <div
           className={`h-full bg-gradient-to-r ${colorClass} rounded-full transition-all duration-1000 ease-out`}
           style={{ width: `${score || 0}%` }}
         ></div>
@@ -50,9 +53,11 @@ const ReadinessScoreWidget = ({ score, components }) => {
           <span>{components?.resume || 0}% Resume</span>
         </div>
       </div>
-      
+
       {/* Decorative background glow */}
-      <div className={`absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-r ${colorClass} opacity-20 blur-2xl rounded-full pointer-events-none`}></div>
+      <div
+        className={`absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-r ${colorClass} opacity-20 blur-2xl rounded-full pointer-events-none`}
+      ></div>
     </div>
   );
 };

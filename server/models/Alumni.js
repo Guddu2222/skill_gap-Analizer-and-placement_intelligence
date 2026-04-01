@@ -1,5 +1,4 @@
-
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const alumniSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -11,7 +10,7 @@ const alumniSchema = new mongoose.Schema({
   email: { type: String },
   skills: { type: [String], default: [] },
   isMentor: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Alumni', alumniSchema);
+module.exports = mongoose.model("Alumni", alumniSchema);

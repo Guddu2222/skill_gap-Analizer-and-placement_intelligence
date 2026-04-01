@@ -1,47 +1,57 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Briefcase, Mail, Lock, Building2, User, Eye, EyeOff, XCircle, CheckCircle } from 'lucide-react';
-import { register } from '../../services/api';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import {
+  Briefcase,
+  Mail,
+  Lock,
+  Building2,
+  User,
+  Eye,
+  EyeOff,
+  XCircle,
+  CheckCircle,
+} from "lucide-react";
+import { register } from "../../services/api";
 
-const RecruiterSignup =  () => {
+const RecruiterSignup = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    companyName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    contactPerson: '',
-    phone: '',
-    website: '',
-    industry: ''
+    companyName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    contactPerson: "",
+    phone: "",
+    website: "",
+    industry: "",
   });
 
   const industries = [
-    'Technology',
-    'Finance',
-    'Consulting',
-    'Manufacturing',
-    'Healthcare',
-    'E-commerce',
-    'Education',
-    'Other'
+    "Technology",
+    "Finance",
+    "Consulting",
+    "Manufacturing",
+    "Healthcare",
+    "E-commerce",
+    "Education",
+    "Other",
   ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
-    if (!formData.email.includes('@')) {
-      newErrors.email = 'Please enter a valid email';
+    if (!formData.email.includes("@")) {
+      newErrors.email = "Please enter a valid email";
     }
     if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
+      newErrors.password = "Password must be at least 8 characters";
     }
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
     if (Object.keys(newErrors).length === 0) {
@@ -50,20 +60,26 @@ const RecruiterSignup =  () => {
           name: formData.contactPerson,
           email: formData.email,
           password: formData.password,
-          role: 'recruiter',
-          company: formData.companyName
+          role: "recruiter",
+          company: formData.companyName,
         });
 
-        // Navigate to a verification page. 
+        // Navigate to a verification page.
         // Since RecruiterSignup doesn't have an internal step for verification, we route to a generic one or add one.
         // For now, let's assume we reuse the verification page or a dedicated route.
         // However, EmailVerificationPage is designed to take email from state.
         // We can route to /signup/verify-email if that route exists and maps to EmailVerificationPage.
         // Assuming /student-signup manages it internally, maybe we need a route for verification.
         // Let's use navigate with state.
-        navigate('/signup/verify-email', { state: { email: formData.email } });
+        navigate("/signup/verify-email", { state: { email: formData.email } });
       } catch (err) {
-        setErrors({ ...newErrors, submit: err.response?.data?.msg || err.response?.data?.error || 'Something went wrong. Please try again.' });
+        setErrors({
+          ...newErrors,
+          submit:
+            err.response?.data?.msg ||
+            err.response?.data?.error ||
+            "Something went wrong. Please try again.",
+        });
       }
     } else {
       setErrors(newErrors);
@@ -99,7 +115,9 @@ const RecruiterSignup =  () => {
                 <input
                   type="text"
                   value={formData.companyName}
-                  onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, companyName: e.target.value })
+                  }
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="Enter your company name"
                   required
@@ -117,11 +135,13 @@ const RecruiterSignup =  () => {
                 <input
                   type="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   className={`
                     w-full pl-10 pr-4 py-3 border rounded-lg 
                     focus:ring-2 focus:ring-green-500 focus:border-transparent
-                    ${errors.email ? 'border-red-500' : 'border-gray-300'}
+                    ${errors.email ? "border-red-500" : "border-gray-300"}
                   `}
                   placeholder="hr@company.com"
                   required
@@ -146,7 +166,12 @@ const RecruiterSignup =  () => {
                   <input
                     type="text"
                     value={formData.contactPerson}
-                    onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        contactPerson: e.target.value,
+                      })
+                    }
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     placeholder="Your Name"
                     required
@@ -160,7 +185,9 @@ const RecruiterSignup =  () => {
                 <input
                   type="tel"
                   value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="+91 9876543210"
                   required
@@ -177,7 +204,9 @@ const RecruiterSignup =  () => {
                 <input
                   type="url"
                   value={formData.website}
-                  onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, website: e.target.value })
+                  }
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="https://company.com"
                 />
@@ -188,13 +217,17 @@ const RecruiterSignup =  () => {
                 </label>
                 <select
                   value={formData.industry}
-                  onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, industry: e.target.value })
+                  }
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent appearance-none bg-white"
                   required
                 >
                   <option value="">Select Industry</option>
                   {industries.map((industry, index) => (
-                    <option key={index} value={industry}>{industry}</option>
+                    <option key={index} value={industry}>
+                      {industry}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -208,13 +241,15 @@ const RecruiterSignup =  () => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
                   className={`
                     w-full pl-10 pr-12 py-3 border rounded-lg 
                     focus:ring-2 focus:ring-green-500 focus:border-transparent
-                    ${errors.password ? 'border-red-500' : 'border-gray-300'}
+                    ${errors.password ? "border-red-500" : "border-gray-300"}
                   `}
                   placeholder="Minimum 8 characters"
                   required
@@ -224,7 +259,11 @@ const RecruiterSignup =  () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
               {errors.password && (
@@ -243,13 +282,18 @@ const RecruiterSignup =  () => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
-                  type={showConfirmPassword ? 'text' : 'password'}
+                  type={showConfirmPassword ? "text" : "password"}
                   value={formData.confirmPassword}
-                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      confirmPassword: e.target.value,
+                    })
+                  }
                   className={`
                     w-full pl-10 pr-12 py-3 border rounded-lg 
                     focus:ring-2 focus:ring-green-500 focus:border-transparent
-                    ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'}
+                    ${errors.confirmPassword ? "border-red-500" : "border-gray-300"}
                   `}
                   placeholder="Re-enter your password"
                   required
@@ -259,7 +303,11 @@ const RecruiterSignup =  () => {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 >
-                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
               {errors.confirmPassword && (
@@ -278,38 +326,50 @@ const RecruiterSignup =  () => {
                 required
                 className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
               />
-              <label htmlFor="recruiter-terms" className="ml-3 text-sm text-gray-700">
-                I agree to the{' '}
-                <a href="/terms" className="text-green-600 hover:text-green-700 font-semibold">
+              <label
+                htmlFor="recruiter-terms"
+                className="ml-3 text-sm text-gray-700"
+              >
+                I agree to the{" "}
+                <a
+                  href="/terms"
+                  className="text-green-600 hover:text-green-700 font-semibold"
+                >
                   Terms of Service
-                </a>{' '}
-                and{' '}
-                <a href="/privacy" className="text-green-600 hover:text-green-700 font-semibold">
+                </a>{" "}
+                and{" "}
+                <a
+                  href="/privacy"
+                  className="text-green-600 hover:text-green-700 font-semibold"
+                >
                   Privacy Policy
                 </a>
               </label>
             </div>
 
             {/* Submit Button */}
-              {errors.submit && (
-                <div className="mb-4 text-sm text-red-600 text-center">
-                  {errors.submit}
-                </div>
-              )}
-              <button
-                type="submit"
-                className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-200 flex items-center justify-center"
-              >
-                Create Recruiter Account
-                <CheckCircle className="w-5 h-5 ml-2" />
-              </button>
+            {errors.submit && (
+              <div className="mb-4 text-sm text-red-600 text-center">
+                {errors.submit}
+              </div>
+            )}
+            <button
+              type="submit"
+              className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-200 flex items-center justify-center"
+            >
+              Create Recruiter Account
+              <CheckCircle className="w-5 h-5 ml-2" />
+            </button>
           </form>
         </div>
 
         {/* Login Link */}
         <p className="mt-6 text-center text-sm text-gray-600">
-          Already have an account?{' '}
-          <Link to="/login" className="text-green-600 hover:text-green-700 font-semibold">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-green-600 hover:text-green-700 font-semibold"
+          >
             Log In
           </Link>
         </p>

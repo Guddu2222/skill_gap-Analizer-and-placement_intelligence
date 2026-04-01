@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React from "react";
 
 const StatCard = ({ title, value, subtext, icon: Icon, trend }) => {
   return (
@@ -16,8 +15,11 @@ const StatCard = ({ title, value, subtext, icon: Icon, trend }) => {
       {subtext && (
         <div className="flex items-center gap-2 text-sm">
           {trend && (
-            <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${trend > 0 ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-              {trend > 0 ? '+' : ''}{trend}%
+            <span
+              className={`px-2 py-0.5 rounded-full text-xs font-semibold ${trend > 0 ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}`}
+            >
+              {trend > 0 ? "+" : ""}
+              {trend}%
             </span>
           )}
           <span className="text-gray-500">{subtext}</span>

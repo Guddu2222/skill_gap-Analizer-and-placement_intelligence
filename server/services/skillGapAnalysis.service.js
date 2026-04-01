@@ -1,36 +1,47 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-const Student = require('../models/Student');
-const SkillGapAnalysis = require('../models/SkillGapAnalysis');
-const DomainSkillRequirement = require('../models/DomainSkillRequirement');
-const SkillLearningPath = require('../models/SkillLearningPath');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const Student = require("../models/Student");
+const SkillGapAnalysis = require("../models/SkillGapAnalysis");
+const DomainSkillRequirement = require("../models/DomainSkillRequirement");
+const SkillLearningPath = require("../models/SkillLearningPath");
 
 class SkillGapAnalysisService {
   constructor() {
     // Initialize AI client using the environment variable
-    this.gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+    this.gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
   }
 
   // Main Analysis Function
   async analyzeSkillGap(studentId, targetDomain, targetRole = null) {
     try {
-      console.log(`Analyzing skill gap for student: ${studentId}, domain: ${targetDomain}`);
+      console.log(
+        `Analyzing skill gap for student: ${studentId}, domain: ${targetDomain}`,
+      );
 
       // 1. Get student's current profile and skills
       // Using Mongoose populate to resolve references if any (e.g. experiences/skills/projects which are embedded/referenced in Student)
       const student = await Student.findById(studentId);
 
       if (!student) {
-        throw new Error('Student not found');
+        throw new Error("Student not found");
       }
 
       // 2. Fetch external verifiable stats (GitHub / LeetCode)
       const externalStats = await this.fetchExternalStats(student);
 
       // 3. Get domain requirements from database
-      const domainRequirements = await this.getDomainRequirements(targetDomain, targetRole);
+      const domainRequirements = await this.getDomainRequirements(
+        targetDomain,
+        targetRole,
+      );
 
       // 4. Prepare data for AI analysis
-      const analysisPrompt = this.prepareAnalysisPrompt(student, domainRequirements, targetDomain, targetRole, externalStats);
+      const analysisPrompt = this.prepareAnalysisPrompt(
+        student,
+        domainRequirements,
+        targetDomain,
+        targetRole,
+        externalStats,
+      );
 
       // 4. Get AI analysis
       const aiAnalysisRaw = await this.analyzeWithGemini(analysisPrompt);
@@ -39,15 +50,20 @@ class SkillGapAnalysisService {
       const structuredAnalysis = this.parseAIResponse(aiAnalysisRaw);
 
       // 6. Calculate readiness score
-      const readinessScore = this.calculateReadinessScore(student.skills || [], domainRequirements);
+      const readinessScore = this.calculateReadinessScore(
+        student.skills || [],
+        domainRequirements,
+      );
 
       // 7. Get learning resources
-      const learningResources = await this.getRecommendedResources(structuredAnalysis.missing_skills || []);
+      const learningResources = await this.getRecommendedResources(
+        structuredAnalysis.missing_skills || [],
+      );
 
       // 8. Invalidate previous active analyses for this student/domain
       await SkillGapAnalysis.updateMany(
-        { student: studentId, isActive: true }, 
-        { $set: { isActive: false } }
+        { student: studentId, isActive: true },
+        { $set: { isActive: false } },
       );
 
       // 9. Save new analysis to database
@@ -55,10 +71,10 @@ class SkillGapAnalysisService {
         student: studentId,
         targetDomain: targetDomain,
         targetRole: targetRole,
-        currentSkills: (student.skills || []).map(s => ({
+        currentSkills: (student.skills || []).map((s) => ({
           skill: s.skillName || s, // Handle string or object structure
-          proficiency: s.proficiency || 'beginner',
-          years: s.years || 0
+          proficiency: s.proficiency || "beginner",
+          years: s.years || 0,
         })),
         overallReadinessScore: readinessScore,
         missingSkills: structuredAnalysis.missing_skills,
@@ -72,51 +88,58 @@ class SkillGapAnalysisService {
         recommendedCourses: learningResources.courses,
         recommendedCertifications: learningResources.certifications,
         estimatedTimeToReady: structuredAnalysis.estimated_weeks,
-        isActive: true
+        isActive: true,
       });
 
       // 10. Create learning paths for missing skills
-      await this.createLearningPaths(studentId, savedAnalysis._id, structuredAnalysis.missing_skills || []);
+      await this.createLearningPaths(
+        studentId,
+        savedAnalysis._id,
+        structuredAnalysis.missing_skills || [],
+      );
 
       return {
         success: true,
         analysis: savedAnalysis,
-        insights: structuredAnalysis
+        insights: structuredAnalysis,
       };
-
     } catch (error) {
-      console.error('Skill gap analysis error:', error);
+      console.error("Skill gap analysis error:", error);
       throw error;
     }
   }
 
   async fetchExternalStats(student) {
-    let stats = '';
-    
+    let stats = "";
+
     if (student.leetcodeUsername) {
       try {
         // Use global fetch
-        const resp = await fetch(`https://leetcode-stats-api.herokuapp.com/${student.leetcodeUsername}`);
+        const resp = await fetch(
+          `https://leetcode-stats-api.herokuapp.com/${student.leetcodeUsername}`,
+        );
         if (resp.ok) {
           const data = await resp.json();
-          if (data.status === 'success') {
+          if (data.status === "success") {
             stats += `- LeetCode: ${data.totalSolved} problems solved (${data.easySolved} Easy, ${data.mediumSolved} Medium, ${data.hardSolved} Hard)\n`;
           }
         }
       } catch (e) {
-        console.error('LeetCode fetch error:', e.message);
+        console.error("LeetCode fetch error:", e.message);
       }
     }
 
     if (student.githubUsername) {
       try {
-        const resp = await fetch(`https://api.github.com/users/${student.githubUsername}`);
+        const resp = await fetch(
+          `https://api.github.com/users/${student.githubUsername}`,
+        );
         if (resp.ok) {
           const data = await resp.json();
           stats += `- GitHub: ${data.public_repos} public repositories, ${data.followers} followers\n`;
         }
       } catch (e) {
-        console.error('GitHub fetch error:', e.message);
+        console.error("GitHub fetch error:", e.message);
       }
     }
 
@@ -124,34 +147,44 @@ class SkillGapAnalysisService {
   }
 
   // Prepare AI Prompt
-  prepareAnalysisPrompt(student, domainRequirements, targetDomain, targetRole, externalStats = '') {
+  prepareAnalysisPrompt(
+    student,
+    domainRequirements,
+    targetDomain,
+    targetRole,
+    externalStats = "",
+  ) {
     const formatSkills = (skillsArray) => {
-      if (!skillsArray || skillsArray.length === 0) return 'No skills listed';
-      return skillsArray.map(s => {
-         if (typeof s === 'string') return s;
-         return `${s.skillName} (${s.proficiencyLevel || 'beginner'})`;
-      }).join(', ');
-    }
+      if (!skillsArray || skillsArray.length === 0) return "No skills listed";
+      return skillsArray
+        .map((s) => {
+          if (typeof s === "string") return s;
+          return `${s.skillName} (${s.proficiencyLevel || "beginner"})`;
+        })
+        .join(", ");
+    };
 
     const currentSkills = formatSkills(student.skills);
-    
-    // Fallback logic for nested fields arrays if they exist in schema
-    const experiences = (student.experiences || []).map(e => 
-      `${e.role} at ${e.companyName} (${e.type})`
-    ).join(', ') || 'No experience listed';
 
-    const projects = (student.projects || []).map(p => 
-      `${p.title} - ${p.description}`
-    ).join(', ') || 'No projects listed';
+    // Fallback logic for nested fields arrays if they exist in schema
+    const experiences =
+      (student.experiences || [])
+        .map((e) => `${e.role} at ${e.companyName} (${e.type})`)
+        .join(", ") || "No experience listed";
+
+    const projects =
+      (student.projects || [])
+        .map((p) => `${p.title} - ${p.description}`)
+        .join(", ") || "No projects listed";
 
     return `
 You are an expert career counselor and technical recruiter specializing in ${targetDomain}.
 
 **Student Profile:**
-- Name: ${student.firstName || ''} ${student.lastName || ''}
-- Department: ${student.department || 'Unknown'}
-- CGPA: ${student.cgpa || 'N/A'}/10
-- Graduation Year: ${student.graduationYear || 'Unknown'}
+- Name: ${student.firstName || ""} ${student.lastName || ""}
+- Department: ${student.department || "Unknown"}
+- CGPA: ${student.cgpa || "N/A"}/10
+- Graduation Year: ${student.graduationYear || "Unknown"}
 
 **Current Skills:**
 ${currentSkills}
@@ -162,16 +195,16 @@ ${experiences}
 **Projects:**
 ${projects}
 
-${externalStats ? `**Verifiable Developer Stats:**\n${externalStats}\n` : ''}**Target Domain:** ${targetDomain}
-**Target Role:** ${targetRole || 'Entry-level position'}
+${externalStats ? `**Verifiable Developer Stats:**\n${externalStats}\n` : ""}**Target Domain:** ${targetDomain}
+**Target Role:** ${targetRole || "Entry-level position"}
 
-**Required Skills for ${targetDomain} (${targetRole || 'Entry-level'}):**
-Core Skills: ${(domainRequirements.coreSkills || []).map(s => s.skill).join(', ') || 'General Domain Knowledge'}
-Preferred Skills: ${(domainRequirements.preferredSkills || []).map(s => s.skill).join(', ') || 'None specified'}
-Nice-to-have: ${(domainRequirements.niceToHaveSkills || []).map(s => s.skill).join(', ') || 'None specified'}
+**Required Skills for ${targetDomain} (${targetRole || "Entry-level"}):**
+Core Skills: ${(domainRequirements.coreSkills || []).map((s) => s.skill).join(", ") || "General Domain Knowledge"}
+Preferred Skills: ${(domainRequirements.preferredSkills || []).map((s) => s.skill).join(", ") || "None specified"}
+Nice-to-have: ${(domainRequirements.niceToHaveSkills || []).map((s) => s.skill).join(", ") || "None specified"}
 
 **Task:**
-Analyze this student's readiness for a ${targetRole || 'entry-level'} role in ${targetDomain} and provide:
+Analyze this student's readiness for a ${targetRole || "entry-level"} role in ${targetDomain} and provide:
 
 1. **Skill Gap Analysis**: Identify missing critical skills
 2. **Skills to Improve**: Current skills that need advancement
@@ -232,27 +265,31 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
   // Gemini API Integration
   async analyzeWithGemini(prompt) {
     if (!process.env.GEMINI_API_KEY) {
-      console.warn("GEMINI_API_KEY is not set. Using mock AI response for development.");
+      console.warn(
+        "GEMINI_API_KEY is not set. Using mock AI response for development.",
+      );
       return this.getMockGeminiResponse();
     }
 
     try {
-      const model = this.gemini.getGenerativeModel({ model: 'gemini-2.5-flash' }); // Use flash for speed, 1.5-pro for complex reasonining
-      
+      const model = this.gemini.getGenerativeModel({
+        model: "gemini-2.5-flash",
+      }); // Use flash for speed, 1.5-pro for complex reasonining
+
       const result = await model.generateContent({
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
         generationConfig: {
           temperature: 0.7,
-          responseMimeType: "application/json"
-        }
+          responseMimeType: "application/json",
+        },
       });
 
       const response = result.response;
       let text = response.text();
       return text;
     } catch (error) {
-      console.error('Gemini API error. Falling back to mock:', error);
-      return this.getMockGeminiResponse(error.message || 'Unknown API Error');
+      console.error("Gemini API error. Falling back to mock:", error);
+      return this.getMockGeminiResponse(error.message || "Unknown API Error");
     }
   }
 
@@ -261,46 +298,66 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
     try {
       // Clean string if the AI ignores instructions and wraps in markdown
       let cleanJsonString = aiResponseRaw.trim();
-      if (cleanJsonString.startsWith('```json')) {
-         cleanJsonString = cleanJsonString.replace(/^```json/, '').replace(/```$/, '').trim();
-      } else if (cleanJsonString.startsWith('```')) {
-         cleanJsonString = cleanJsonString.replace(/^```/, '').replace(/```$/, '').trim();
+      if (cleanJsonString.startsWith("```json")) {
+        cleanJsonString = cleanJsonString
+          .replace(/^```json/, "")
+          .replace(/```$/, "")
+          .trim();
+      } else if (cleanJsonString.startsWith("```")) {
+        cleanJsonString = cleanJsonString
+          .replace(/^```/, "")
+          .replace(/```$/, "")
+          .trim();
       }
 
       let parsed = JSON.parse(cleanJsonString);
-      
+
       // Ensure career_advice is an array of strings
-      if (parsed.career_advice && typeof parsed.career_advice === 'string') {
+      if (parsed.career_advice && typeof parsed.career_advice === "string") {
         // Try to split if it contains numbers or newlines
-        parsed.career_advice = parsed.career_advice.split(/(?:\d+\.\s*\*\*.*?\*\*|\n)/).map(s => s.trim()).filter(s => s.length > 5);
+        parsed.career_advice = parsed.career_advice
+          .split(/(?:\d+\.\s*\*\*.*?\*\*|\n)/)
+          .map((s) => s.trim())
+          .filter((s) => s.length > 5);
         if (parsed.career_advice.length === 0) {
-           parsed.career_advice = ["Keep learning and building projects to improve your readiness!"];
+          parsed.career_advice = [
+            "Keep learning and building projects to improve your readiness!",
+          ];
         }
       } else if (!Array.isArray(parsed.career_advice)) {
-         parsed.career_advice = ["Keep learning and building projects to improve your readiness!"];
+        parsed.career_advice = [
+          "Keep learning and building projects to improve your readiness!",
+        ];
       }
 
       return parsed;
     } catch (error) {
-      console.error('Error parsing AI response:', error, '\\nRaw string:', aiResponseRaw);
-      
+      console.error(
+        "Error parsing AI response:",
+        error,
+        "\\nRaw string:",
+        aiResponseRaw,
+      );
+
       // Return a safe default structure to prevent app crash
       return {
         summary: "We couldn't generate a detailed summary at this time.",
         readiness_score: 50,
         market_score: 50,
-         missing_skills: [{
-           skill: "General Problem Solving",
-           priority: "high",
-           reasoning: "Always a critical gap",
-           difficulty: "medium",
-           estimated_learning_time: "4 weeks"
-         }],
+        missing_skills: [
+          {
+            skill: "General Problem Solving",
+            priority: "high",
+            reasoning: "Always a critical gap",
+            difficulty: "medium",
+            estimated_learning_time: "4 weeks",
+          },
+        ],
         skills_to_improve: [],
         strong_skills: [],
         priority_learning_path: [],
         estimated_weeks: 4,
-        career_advice: ["Keep learning and building projects!"]
+        career_advice: ["Keep learning and building projects!"],
       };
     }
   }
@@ -310,19 +367,28 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
     let score = 0;
     let totalWeight = 0;
 
-    const studentSkillsFlat = studentSkills.map(s => 
-      typeof s === 'string' ? s.toLowerCase() : (s.skillName ? s.skillName.toLowerCase() : '')
+    const studentSkillsFlat = studentSkills.map((s) =>
+      typeof s === "string"
+        ? s.toLowerCase()
+        : s.skillName
+          ? s.skillName.toLowerCase()
+          : "",
     );
 
     // Check core skills
-    if (domainRequirements.coreSkills && domainRequirements.coreSkills.length > 0) {
-      domainRequirements.coreSkills.forEach(reqSkill => {
+    if (
+      domainRequirements.coreSkills &&
+      domainRequirements.coreSkills.length > 0
+    ) {
+      domainRequirements.coreSkills.forEach((reqSkill) => {
         totalWeight += reqSkill.weight || 10;
-        
-        const hasSkill = studentSkillsFlat.includes(reqSkill.skill.toLowerCase());
+
+        const hasSkill = studentSkillsFlat.includes(
+          reqSkill.skill.toLowerCase(),
+        );
 
         if (hasSkill) {
-          score += (reqSkill.weight || 10); // Simplified scoring since proficiency is harder to normalize without strict enums
+          score += reqSkill.weight || 10; // Simplified scoring since proficiency is harder to normalize without strict enums
         }
       });
     }
@@ -334,7 +400,7 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
   async getDomainRequirements(domain, role) {
     let query = { domain: domain };
     if (role) query.role = role;
-    
+
     let requirements = await DomainSkillRequirement.findOne(query);
 
     // Filter to fallback if empty
@@ -348,38 +414,47 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
   // Default Domain Requirements (Fallback)
   async getDefaultDomainRequirements(domain, role) {
     const defaultRequirements = {
-      'Software Engineer': {
+      "Software Engineer": {
         coreSkills: [
-          { skill: 'Data Structures & Algorithms', weight: 15, minProficiency: 'intermediate' },
-          { skill: 'Object-Oriented Programming', weight: 12, minProficiency: 'intermediate' },
-          { skill: 'Git', weight: 8, minProficiency: 'beginner' },
-          { skill: 'SQL', weight: 10, minProficiency: 'beginner' }
+          {
+            skill: "Data Structures & Algorithms",
+            weight: 15,
+            minProficiency: "intermediate",
+          },
+          {
+            skill: "Object-Oriented Programming",
+            weight: 12,
+            minProficiency: "intermediate",
+          },
+          { skill: "Git", weight: 8, minProficiency: "beginner" },
+          { skill: "SQL", weight: 10, minProficiency: "beginner" },
         ],
         preferredSkills: [
-          { skill: 'JavaScript', weight: 10 },
-          { skill: 'Python', weight: 10 },
-          { skill: 'Java', weight: 10 },
-          { skill: 'React', weight: 8 },
-          { skill: 'Node.js', weight: 8 }
-        ]
+          { skill: "JavaScript", weight: 10 },
+          { skill: "Python", weight: 10 },
+          { skill: "Java", weight: 10 },
+          { skill: "React", weight: 8 },
+          { skill: "Node.js", weight: 8 },
+        ],
       },
-      'Data Scientist': {
+      "Data Scientist": {
         coreSkills: [
-          { skill: 'Python', weight: 15, minProficiency: 'intermediate' },
-          { skill: 'Statistics', weight: 15, minProficiency: 'intermediate' },
-          { skill: 'Machine Learning', weight: 15, minProficiency: 'beginner' },
-          { skill: 'SQL', weight: 10, minProficiency: 'intermediate' }
+          { skill: "Python", weight: 15, minProficiency: "intermediate" },
+          { skill: "Statistics", weight: 15, minProficiency: "intermediate" },
+          { skill: "Machine Learning", weight: 15, minProficiency: "beginner" },
+          { skill: "SQL", weight: 10, minProficiency: "intermediate" },
         ],
         preferredSkills: [
-          { skill: 'Pandas', weight: 10 },
-          { skill: 'NumPy', weight: 10 },
-          { skill: 'Scikit-learn', weight: 10 }
-        ]
-      }
+          { skill: "Pandas", weight: 10 },
+          { skill: "NumPy", weight: 10 },
+          { skill: "Scikit-learn", weight: 10 },
+        ],
+      },
     };
 
     // Default to Software Engineer if domain not found in mocks
-    const result = defaultRequirements[domain] || defaultRequirements['Software Engineer'];
+    const result =
+      defaultRequirements[domain] || defaultRequirements["Software Engineer"];
     return { domain, role, ...result };
   }
 
@@ -390,43 +465,67 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
 
     // Simple mock db logic identical to user's implementation
     const resourceDatabase = {
-      'JavaScript': {
+      JavaScript: {
         courses: [
-          { title: 'JavaScript - The Complete Guide', platform: 'Udemy', url: 'https://udemy.com/', duration: '40 hours', price: 'Paid' },
+          {
+            title: "JavaScript - The Complete Guide",
+            platform: "Udemy",
+            url: "https://udemy.com/",
+            duration: "40 hours",
+            price: "Paid",
+          },
         ],
         certifications: [
-          { name: 'Meta Front-End Developer', issuer: 'Meta', url: 'https://coursera.org/' }
-        ]
+          {
+            name: "Meta Front-End Developer",
+            issuer: "Meta",
+            url: "https://coursera.org/",
+          },
+        ],
       },
-      'React': {
-         courses: [
-           { title: 'React.dev Documentation', platform: 'Official Docs', url: 'https://react.dev/learn', duration: '20 hours', price: 'Free' }
-         ]
-      }
+      React: {
+        courses: [
+          {
+            title: "React.dev Documentation",
+            platform: "Official Docs",
+            url: "https://react.dev/learn",
+            duration: "20 hours",
+            price: "Free",
+          },
+        ],
+      },
       // Add more as needed...
     };
 
-    missingSkills.forEach(skillObj => {
+    missingSkills.forEach((skillObj) => {
       const skillName = skillObj.skill;
       // Very basic substring match
-      const key = Object.keys(resourceDatabase).find(k => skillName.toLowerCase().includes(k.toLowerCase()));
-      
+      const key = Object.keys(resourceDatabase).find((k) =>
+        skillName.toLowerCase().includes(k.toLowerCase()),
+      );
+
       if (key && resourceDatabase[key]) {
-        if(resourceDatabase[key].courses) courses.push(...resourceDatabase[key].courses);
-        if(resourceDatabase[key].certifications) certifications.push(...resourceDatabase[key].certifications);
+        if (resourceDatabase[key].courses)
+          courses.push(...resourceDatabase[key].courses);
+        if (resourceDatabase[key].certifications)
+          certifications.push(...resourceDatabase[key].certifications);
       }
     });
 
     // Fallbacks if nothing matched
     if (courses.length === 0) {
-      courses.push(
-        { title: 'freeCodeCamp (General Concepts)', platform: 'freeCodeCamp', url: 'https://freecodecamp.org', duration: 'Self-paced', price: 'Free' }
-      );
+      courses.push({
+        title: "freeCodeCamp (General Concepts)",
+        platform: "freeCodeCamp",
+        url: "https://freecodecamp.org",
+        duration: "Self-paced",
+        price: "Free",
+      });
     }
 
     return {
       courses: courses.slice(0, 5),
-      certifications: certifications.slice(0, 3)
+      certifications: certifications.slice(0, 3),
     };
   }
 
@@ -435,18 +534,20 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
     const learningPaths = [];
 
     for (const skillObj of missingSkills) {
-      if(!skillObj.skill) continue; // Skip malformed 
-      
-      const resources = await this.getRecommendedResources([{skill: skillObj.skill}]);
-      
+      if (!skillObj.skill) continue; // Skip malformed
+
+      const resources = await this.getRecommendedResources([
+        { skill: skillObj.skill },
+      ]);
+
       const estimatedWeeks = parseInt(skillObj.estimated_learning_time) || 4;
       const estimatedDate = new Date();
-      estimatedDate.setDate(estimatedDate.getDate() + (estimatedWeeks * 7));
+      estimatedDate.setDate(estimatedDate.getDate() + estimatedWeeks * 7);
 
       // Check if a path for this skill already exists
       let existingPath = await SkillLearningPath.findOne({
         student: studentId,
-        skillName: { $regex: new RegExp(`^${skillObj.skill}$`, 'i') }
+        skillName: { $regex: new RegExp(`^${skillObj.skill}$`, "i") },
       });
 
       if (existingPath) {
@@ -461,13 +562,16 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
         student: studentId,
         gapAnalysis: gapAnalysisId,
         skillName: skillObj.skill,
-        currentLevel: 'none',
-        targetLevel: 'intermediate',
-        learningResources: resources.courses.map(r => ({ type: 'course', ...r })),
+        currentLevel: "none",
+        targetLevel: "intermediate",
+        learningResources: resources.courses.map((r) => ({
+          type: "course",
+          ...r,
+        })),
         milestones: this.generateMilestones(skillObj.skill, estimatedWeeks),
         progressPercentage: 0,
-        status: 'not_started',
-        estimatedCompletionDate: estimatedDate
+        status: "not_started",
+        estimatedCompletionDate: estimatedDate,
       });
 
       learningPaths.push(learningPath);
@@ -482,13 +586,13 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
 
     for (let i = 1; i <= totalMilestones; i++) {
       const dueDate = new Date();
-      dueDate.setDate(dueDate.getDate() + (i * 7));
+      dueDate.setDate(dueDate.getDate() + i * 7);
 
       milestones.push({
         title: `Week ${i}: Learn ${skill} Basics`,
         description: `Complete required readings and tutorials for ${skill} phase ${i}`,
         completed: false,
-        dueDate: dueDate
+        dueDate: dueDate,
       });
     }
 
@@ -496,11 +600,11 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
   }
 
   getMockGeminiResponse(errorMessage = null) {
-     const summaryMsg = errorMessage 
-       ? `This is a mock AI response because the Gemini API call failed. Error details: ${errorMessage}. Please check your GEMINI_API_KEY validity, quota, or network connectivity.` 
-       : `This is a mock AI response since the GEMINI_API_KEY was not configured in the .env file. Add the key to see real results.`;
-       
-     return `{
+    const summaryMsg = errorMessage
+      ? `This is a mock AI response because the Gemini API call failed. Error details: ${errorMessage}. Please check your GEMINI_API_KEY validity, quota, or network connectivity.`
+      : `This is a mock AI response since the GEMINI_API_KEY was not configured in the .env file. Add the key to see real results.`;
+
+    return `{
         "summary": "${summaryMsg}",
         "readiness_score": 60,
         "market_score": 65,

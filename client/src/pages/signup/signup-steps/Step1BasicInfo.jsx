@@ -1,6 +1,15 @@
-import React, { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, User, Phone, Calendar, Users } from 'lucide-react';
-import api from '../../../services/api';
+import React, { useState } from "react";
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  User,
+  Phone,
+  Calendar,
+  Users,
+} from "lucide-react";
+import api from "../../../services/api";
 
 const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,46 +30,50 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
   const validateStep = async () => {
     const newErrors = {};
 
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
-    
-    if (!formData.email.includes('@')) {
-      newErrors.email = 'Please enter a valid email';
+    if (!formData.firstName.trim())
+      newErrors.firstName = "First name is required";
+    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
+
+    if (!formData.email.includes("@")) {
+      newErrors.email = "Please enter a valid email";
     } else {
       // Check if email already exists
       try {
-        const response = await api.post('/auth/check-email', { email: formData.email });
+        const response = await api.post("/auth/check-email", {
+          email: formData.email,
+        });
         if (response.data.exists) {
-          newErrors.email = 'This email is already registered';
+          newErrors.email = "This email is already registered";
         }
       } catch (error) {
-        console.error('Email check error:', error);
+        console.error("Email check error:", error);
       }
     }
 
     if (!formData.phone.match(/^[0-9]{10}$/)) {
-      newErrors.phone = 'Phone number must be 10 digits';
+      newErrors.phone = "Phone number must be 10 digits";
     }
 
     if (!formData.dateOfBirth) {
-      newErrors.dateOfBirth = 'Date of birth is required';
+      newErrors.dateOfBirth = "Date of birth is required";
     } else {
-      const age = new Date().getFullYear() - new Date(formData.dateOfBirth).getFullYear();
+      const age =
+        new Date().getFullYear() - new Date(formData.dateOfBirth).getFullYear();
       if (age < 16 || age > 100) {
-        newErrors.dateOfBirth = 'Please enter a valid date of birth';
+        newErrors.dateOfBirth = "Please enter a valid date of birth";
       }
     }
 
     if (!formData.gender) {
-      newErrors.gender = 'Please select your gender';
+      newErrors.gender = "Please select your gender";
     }
 
     if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
+      newErrors.password = "Password must be at least 8 characters";
     }
 
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
     setErrors(newErrors);
@@ -83,18 +96,27 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
       <div className="max-w-2xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Your Account</h2>
-          <p className="text-gray-600">Let's start with your basic information</p>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Create Your Account
+          </h2>
+          <p className="text-gray-600">
+            Let's start with your basic information
+          </p>
         </div>
 
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-blue-600">Step 1 of 2</span>
+            <span className="text-sm font-medium text-blue-600">
+              Step 1 of 2
+            </span>
             <span className="text-sm text-gray-500">Basic Information</span>
           </div>
           <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-500" style={{ width: '50%' }}></div>
+            <div
+              className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-500"
+              style={{ width: "50%" }}
+            ></div>
           </div>
         </div>
 
@@ -112,15 +134,21 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
                   <input
                     type="text"
                     value={formData.firstName}
-                    onChange={(e) => updateFormData({ firstName: e.target.value })}
+                    onChange={(e) =>
+                      updateFormData({ firstName: e.target.value })
+                    }
                     className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      errors.firstName ? 'border-red-500' : 'border-gray-300'
+                      errors.firstName ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="John"
                     required
                   />
                 </div>
-                {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>}
+                {errors.firstName && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.firstName}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -132,12 +160,14 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
                   value={formData.lastName}
                   onChange={(e) => updateFormData({ lastName: e.target.value })}
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.lastName ? 'border-red-500' : 'border-gray-300'
+                    errors.lastName ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="Doe"
                   required
                 />
-                {errors.lastName && <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>}
+                {errors.lastName && (
+                  <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
+                )}
               </div>
             </div>
 
@@ -153,14 +183,18 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
                   value={formData.email}
                   onChange={(e) => updateFormData({ email: e.target.value })}
                   className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.email ? 'border-red-500' : 'border-gray-300'
+                    errors.email ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="yourname@college.edu"
                   required
                 />
               </div>
-              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
-              <p className="mt-1 text-sm text-gray-500">Use your official college email</p>
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+              )}
+              <p className="mt-1 text-sm text-gray-500">
+                Use your official college email
+              </p>
             </div>
 
             {/* Phone Number */}
@@ -174,17 +208,21 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => {
-                    const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                    const value = e.target.value
+                      .replace(/\D/g, "")
+                      .slice(0, 10);
                     updateFormData({ phone: value });
                   }}
                   className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.phone ? 'border-red-500' : 'border-gray-300'
+                    errors.phone ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="9876543210"
                   required
                 />
               </div>
-              {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone}</p>}
+              {errors.phone && (
+                <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
+              )}
             </div>
 
             {/* Date of Birth & Gender */}
@@ -198,15 +236,21 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
                   <input
                     type="date"
                     value={formData.dateOfBirth}
-                    onChange={(e) => updateFormData({ dateOfBirth: e.target.value })}
-                    max={new Date().toISOString().split('T')[0]}
+                    onChange={(e) =>
+                      updateFormData({ dateOfBirth: e.target.value })
+                    }
+                    max={new Date().toISOString().split("T")[0]}
                     className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
+                      errors.dateOfBirth ? "border-red-500" : "border-gray-300"
                     }`}
                     required
                   />
                 </div>
-                {errors.dateOfBirth && <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth}</p>}
+                {errors.dateOfBirth && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.dateOfBirth}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -219,7 +263,7 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
                     value={formData.gender}
                     onChange={(e) => updateFormData({ gender: e.target.value })}
                     className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white ${
-                      errors.gender ? 'border-red-500' : 'border-gray-300'
+                      errors.gender ? "border-red-500" : "border-gray-300"
                     }`}
                     required
                   >
@@ -230,7 +274,9 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
                     <option value="prefer_not_to_say">Prefer not to say</option>
                   </select>
                 </div>
-                {errors.gender && <p className="mt-1 text-sm text-red-600">{errors.gender}</p>}
+                {errors.gender && (
+                  <p className="mt-1 text-sm text-red-600">{errors.gender}</p>
+                )}
               </div>
             </div>
 
@@ -242,14 +288,14 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={(e) => {
                     updateFormData({ password: e.target.value });
                     calculatePasswordStrength(e.target.value);
                   }}
                   className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.password ? 'border-red-500' : 'border-gray-300'
+                    errors.password ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="Minimum 8 characters"
                   required
@@ -259,7 +305,11 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
 
@@ -267,28 +317,42 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
               {formData.password && (
                 <div className="mt-3">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-medium text-gray-700">Password Strength:</span>
-                    <span className={`text-xs font-semibold ${
-                      passwordStrength <= 2 ? 'text-red-600' : 
-                      passwordStrength === 3 ? 'text-yellow-600' : 
-                      'text-green-600'
-                    }`}>
-                      {passwordStrength <= 2 ? 'Weak' : passwordStrength === 3 ? 'Medium' : 'Strong'}
+                    <span className="text-xs font-medium text-gray-700">
+                      Password Strength:
+                    </span>
+                    <span
+                      className={`text-xs font-semibold ${
+                        passwordStrength <= 2
+                          ? "text-red-600"
+                          : passwordStrength === 3
+                            ? "text-yellow-600"
+                            : "text-green-600"
+                      }`}
+                    >
+                      {passwordStrength <= 2
+                        ? "Weak"
+                        : passwordStrength === 3
+                          ? "Medium"
+                          : "Strong"}
                     </span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                     <div
                       className={`h-full transition-all duration-300 ${
-                        passwordStrength <= 2 ? 'bg-red-500' : 
-                        passwordStrength === 3 ? 'bg-yellow-500' : 
-                        'bg-green-500'
+                        passwordStrength <= 2
+                          ? "bg-red-500"
+                          : passwordStrength === 3
+                            ? "bg-yellow-500"
+                            : "bg-green-500"
                       }`}
                       style={{ width: `${(passwordStrength / 5) * 100}%` }}
                     ></div>
                   </div>
                 </div>
               )}
-              {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+              )}
             </div>
 
             {/* Confirm Password */}
@@ -301,15 +365,23 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
                 <input
                   type="password"
                   value={formData.confirmPassword}
-                  onChange={(e) => updateFormData({ confirmPassword: e.target.value })}
+                  onChange={(e) =>
+                    updateFormData({ confirmPassword: e.target.value })
+                  }
                   className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                    errors.confirmPassword
+                      ? "border-red-500"
+                      : "border-gray-300"
                   }`}
                   placeholder="Re-enter your password"
                   required
                 />
               </div>
-              {errors.confirmPassword && <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>}
+              {errors.confirmPassword && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.confirmPassword}
+                </p>
+              )}
             </div>
 
             {/* Terms */}
@@ -321,12 +393,18 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
                 className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
               <label htmlFor="terms" className="ml-3 text-sm text-gray-700">
-                I agree to the{' '}
-                <a href="/terms" className="text-blue-600 hover:text-blue-700 font-semibold">
+                I agree to the{" "}
+                <a
+                  href="/terms"
+                  className="text-blue-600 hover:text-blue-700 font-semibold"
+                >
                   Terms of Service
-                </a>{' '}
-                and{' '}
-                <a href="/privacy" className="text-blue-600 hover:text-blue-700 font-semibold">
+                </a>{" "}
+                and{" "}
+                <a
+                  href="/privacy"
+                  className="text-blue-600 hover:text-blue-700 font-semibold"
+                >
                   Privacy Policy
                 </a>
               </label>
@@ -338,8 +416,8 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
               disabled={loading}
               className={`w-full py-4 rounded-lg font-semibold transition-all flex items-center justify-center space-x-2 ${
                 loading
-                  ? 'bg-blue-400 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl'
+                  ? "bg-blue-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl"
               }`}
             >
               {loading ? (
@@ -350,8 +428,18 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
               ) : (
                 <>
                   <span>Create Account</span>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                 </>
               )}
@@ -361,8 +449,11 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
 
         {/* Login Link */}
         <p className="mt-6 text-center text-sm text-gray-600">
-          Already have an account?{' '}
-          <a href="/login" className="text-blue-600 hover:text-blue-700 font-semibold">
+          Already have an account?{" "}
+          <a
+            href="/login"
+            className="text-blue-600 hover:text-blue-700 font-semibold"
+          >
             Log In
           </a>
         </p>

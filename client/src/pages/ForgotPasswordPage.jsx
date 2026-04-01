@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Mail, ArrowLeft, CheckCircle, Loader } from 'lucide-react';
-import api from '../services/api';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Mail, ArrowLeft, CheckCircle, Loader } from "lucide-react";
+import api from "../services/api";
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
-      const response = await api.post('/auth/forgot-password', {
-        email
+      const response = await api.post("/auth/forgot-password", {
+        email,
       });
 
       if (response.data.success || response.status === 200) {
         setSubmitted(true);
       } else {
-        setError(response.data.error || 'Something went wrong');
+        setError(response.data.error || "Something went wrong");
       }
     } catch (err) {
       // Don't reveal if email exists or not (security best practice)
@@ -31,7 +31,9 @@ const ForgotPasswordPage = () => {
         // Still show success message for security
         setSubmitted(true);
       } else {
-        setError(err.response?.data?.error || 'Network error. Please try again.');
+        setError(
+          err.response?.data?.error || "Network error. Please try again.",
+        );
       }
     } finally {
       setLoading(false);
@@ -45,22 +47,21 @@ const ForgotPasswordPage = () => {
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-10 h-10 text-green-600" />
           </div>
-          
+
           <h2 className="text-2xl font-bold text-gray-900 mb-3">
             Check Your Email
           </h2>
-          
+
           <p className="text-gray-600 mb-6">
             We've sent a password reset link to
           </p>
-          
-          <p className="text-lg font-semibold text-blue-600 mb-8">
-            {email}
-          </p>
+
+          <p className="text-lg font-semibold text-blue-600 mb-8">{email}</p>
 
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
             <p className="text-sm text-gray-700">
-              Click the link in the email to reset your password. The link will expire in 1 hour.
+              Click the link in the email to reset your password. The link will
+              expire in 1 hour.
             </p>
           </div>
 
@@ -94,7 +95,7 @@ const ForgotPasswordPage = () => {
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Mail className="w-8 h-8 text-blue-600" />
             </div>
-            
+
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
               Forgot Password?
             </h2>
@@ -133,9 +134,10 @@ const ForgotPasswordPage = () => {
               className={`
                 w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 
                 flex items-center justify-center
-                ${loading
-                  ? 'bg-blue-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300'
+                ${
+                  loading
+                    ? "bg-blue-400 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
                 }
                 text-white
               `}
@@ -146,7 +148,7 @@ const ForgotPasswordPage = () => {
                   Sending...
                 </>
               ) : (
-                'Send Reset Link'
+                "Send Reset Link"
               )}
             </button>
           </form>
