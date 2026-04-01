@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../services/api';
 import { Mail, ArrowRight, Loader } from 'lucide-react';
 
 const EmailVerificationPage = () => {
@@ -25,7 +25,7 @@ const EmailVerificationPage = () => {
     setError('');
 
     try {
-      const response = await axios.post('/api/auth/verify-email', {
+      const response = await api.post('/auth/verify-email', {
         email,
         code: verificationCode
       });
@@ -45,7 +45,7 @@ const EmailVerificationPage = () => {
 
   const handleResend = async () => {
     try {
-      await axios.post('/api/auth/resend-verification', { email });
+      await api.post('/auth/resend-verification', { email });
       alert('Verification code resent successfully!');
     } catch (err) {
       setError('Failed to resend code');

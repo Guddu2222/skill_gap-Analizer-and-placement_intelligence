@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, User, Phone, Calendar, Users } from 'lucide-react';
-import axios from 'axios';
+import api from '../../../services/api';
 
 const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,7 +29,7 @@ const Step1BasicInfo = ({ formData, updateFormData, onNext }) => {
     } else {
       // Check if email already exists
       try {
-        const response = await axios.post('/api/auth/check-email', { email: formData.email });
+        const response = await api.post('/auth/check-email', { email: formData.email });
         if (response.data.exists) {
           newErrors.email = 'This email is already registered';
         }
