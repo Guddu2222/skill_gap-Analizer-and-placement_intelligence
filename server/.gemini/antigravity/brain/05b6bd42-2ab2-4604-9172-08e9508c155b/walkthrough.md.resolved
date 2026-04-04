@@ -1,0 +1,28 @@
+# Connectivity & Code Improvements Walkthrough
+
+## 1. Project Setup Fixes
+The primary issue was that the backend server was not configured or running.
+
+- **Created Server Environment**: Added [.env](file:///d:/project/Fittness%20tracking%20website/server/.env) file to the `server` directory with necessary configuration (Port 5000, MongoDB URI, etc.).
+- **Installed Dependencies**: Ran `npm install` in the `server` directory to restore missing `node_modules`.
+
+## 2. Client-Server Connectivity
+Ensured the client can correctly talk to the backend.
+
+- **Vite Proxy**: Configured [vite.config.js](file:///d:/project/Fittness%20tracking%20website/client/vite.config.js) to proxy `/api` requests to `http://localhost:5000`. This prevents CORS issues and simplifies frontend configuration.
+- **API Base URL**: Updated [client/src/api.js](file:///d:/project/Fittness%20tracking%20website/client/src/api.js) to use a relative `/api` base URL, leveraging the proxy.
+
+## 3. Code Improvements / Error Handling
+Added basic error handling as requested.
+
+- **Server-Side**: Added a global error handling middleware in [server/src/index.js](file:///d:/project/Fittness%20tracking%20website/server/src/index.js) to catch unhandled exceptions and return a consistent 500 response.
+- **Client-Side**: Added an Axios response interceptor in [client/src/api.js](file:///d:/project/Fittness%20tracking%20website/client/src/api.js) to automatically redirect users to `/login` if a 401 Unauthorized response is received.
+
+## Verification
+1. **Server Status**: The server is now running (via `npm run dev`) and attempting to connect to MongoDB.
+2. **Client Access**: The client can now makes requests to `/api/...` which are proxied to the backend.
+3. **Connection Check**: The `ERR_CONNECTION_REFUSED` error should be resolved as the server is now listening on port 5000.
+
+**Next Steps**:
+- Verify the application in the browser.
+- If you see database connection errors in the terminal, check your IP whitelist on MongoDB Atlas or internet connection.

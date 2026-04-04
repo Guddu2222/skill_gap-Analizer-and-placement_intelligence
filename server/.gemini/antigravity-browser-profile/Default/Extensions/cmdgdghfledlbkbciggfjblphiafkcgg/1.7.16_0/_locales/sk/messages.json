@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Zablokovali ste"
+   },
+   "ads": {
+      "message": "Reklamy"
+   },
+   "dataSavedTitle": {
+      "message": "Údaje uložené"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Použiť na všetky stránky"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Hĺbka"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Ukážka"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Uložiť"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Selektor"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Špecifickosť"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Vybrali ste"
+   },
+   "elementBlocker_title": {
+      "message": "Odstraňovač prvkov"
+   },
+   "extDesc": {
+      "message": "Blokujte reklamy a kontextové okná na všetkých webových stránkach, ktoré si každý deň prehliadate"
+   },
+   "extName": {
+      "message": "SBlock - Super Ad Blocker"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super blokovač reklám"
+   },
+   "filteringModeBasic": {
+      "message": "Základné"
+   },
+   "filteringModeSuper": {
+      "message": "Super blok"
+   },
+   "footerMadeLove": {
+      "message": "Vyrobené s láskou v"
+   },
+   "footerShareFriends": {
+      "message": "Zdieľajte so svojimi priateľmi"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Načítajte rýchlejšie"
+   },
+   "loveSblockButton": {
+      "message": "Máte radi SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Napíšte recenziu."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock nie je na tejto stránke podporovaný"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Blokovať reklamy v miestnom jazyku"
+   },
+   "optionBlockManually": {
+      "message": "Blokovať manuálne"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "OTVORENÉ"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Obnoviť všetky"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Selektor"
+   },
+   "optionBlockTracker": {
+      "message": "Sledovač blokov"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignorovať kontextové okná akceptovania súborov cookie"
+   },
+   "optionPopupsSocial": {
+      "message": "Blokujte sociálne widgety"
+   },
+   "reportIssueButton": {
+      "message": "Nahláste problém"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Povedz nám viac."
+   },
+   "secDuration": {
+      "message": "sek"
+   },
+   "thisPageTitle": {
+      "message": "Táto stránka"
+   },
+   "thisWebsiteTitle": {
+      "message": "Táto webová stránka"
+   },
+   "timeSavedTitle": {
+      "message": "Čas ušetrený"
+   }
+}

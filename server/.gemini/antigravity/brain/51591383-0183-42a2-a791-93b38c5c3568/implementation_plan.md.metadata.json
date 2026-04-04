@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Implementation plan for adding multi-turn conversation memory (chat history) feature to the Crop Advisory System.",
+  "updatedAt": "2026-03-14T09:50:49.648476600Z",
+  "version": "1"
+}

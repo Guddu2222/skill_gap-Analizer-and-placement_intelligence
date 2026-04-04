@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan for adding a full profile-update feature to the Student dashboard. Covers a new backend PUT endpoint, a new client-side API helper, and a rich multi-section ProfileEditModal component with an Edit Profile button wired into StudentDashboard.",
+  "updatedAt": "2026-03-22T18:57:32.846246700Z"
+}

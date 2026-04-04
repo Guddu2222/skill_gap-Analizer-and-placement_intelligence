@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Je hebt geblokkeerd"
+   },
+   "ads": {
+      "message": "Advertenties"
+   },
+   "dataSavedTitle": {
+      "message": "Gegevens opgeslagen"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Toepassen op alle sites"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Diepte"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Voorbeeld"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Redden"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Selector"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Specificiteit"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Je hebt geselecteerd"
+   },
+   "elementBlocker_title": {
+      "message": "Elementverwijderaar"
+   },
+   "extDesc": {
+      "message": "Blokkeer advertenties en pop-ups op alle websites die u dagelijks bezoekt"
+   },
+   "extName": {
+      "message": "SBlock - Superadvertentieblokkering"
+   },
+   "extNameFirstShort": {
+      "message": "SBblok"
+   },
+   "extNameLastShort": {
+      "message": "Superadvertentieblokkering"
+   },
+   "filteringModeBasic": {
+      "message": "Basis"
+   },
+   "filteringModeSuper": {
+      "message": "Superblok"
+   },
+   "footerMadeLove": {
+      "message": "Met liefde gemaakt"
+   },
+   "footerShareFriends": {
+      "message": "Deel met je vrienden"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Laad sneller"
+   },
+   "loveSblockButton": {
+      "message": "Ben je dol op SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Laat een recensie achter."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock wordt niet ondersteund op deze pagina"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Blokkeer advertenties in de lokale taal"
+   },
+   "optionBlockManually": {
+      "message": "Handmatig blokkeren"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Open"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Alles resetten"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Selector"
+   },
+   "optionBlockTracker": {
+      "message": "Blok-tracker"
+   },
+   "optionPopupsCookie": {
+      "message": "Negeer pop-ups voor het accepteren van cookies"
+   },
+   "optionPopupsSocial": {
+      "message": "Blokkeer sociale widgets"
+   },
+   "reportIssueButton": {
+      "message": "Een probleem melden"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Vertel ons meer."
+   },
+   "secDuration": {
+      "message": "sec"
+   },
+   "thisPageTitle": {
+      "message": "Deze pagina"
+   },
+   "thisWebsiteTitle": {
+      "message": "Deze website"
+   },
+   "timeSavedTitle": {
+      "message": "Tijd bespaard"
+   }
+}

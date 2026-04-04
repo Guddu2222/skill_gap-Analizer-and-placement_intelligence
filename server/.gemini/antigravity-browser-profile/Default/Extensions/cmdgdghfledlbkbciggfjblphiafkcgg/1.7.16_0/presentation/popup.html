@@ -1,0 +1,205 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./css/default.css" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/popup.css" />
+    <title data-i18n="extName"></title>
+  </head>
+  <body>
+    <div id="loadingLayer" class="d-flex justify-content-center align-items-center">
+      <video src="./video/loading.mp4" autoplay loop draggable="false" width="60%"></video>
+    </div>
+    <div id="informationLayer" class="d-none">
+      <div class="background-disable-2 color-always-white text-center change-log text-sm weight-5">
+        New update (Feb 08, 2026): <span id="changeLog" class="text-md pointer text-underline weight-7">Change Log</span>
+      </div>
+      <div class="background-white" id="main">
+        <div class="header my-2.5">
+          <div class="d-flex z-index-40">
+            <div data-icon="sBlock" class="icon-logo d-flex pe-1 width-10"></div>
+            <div class="d-flex flex-column">
+              <div class="text-lg">SBlock</div>
+              <span class="caption text-xs weight-5" data-i18n="extNameLastShort"></span>
+            </div>
+          </div>
+          <div class="d-flex">
+            <label class="toggle-mobile d-flex">
+              <input type="checkbox" id="darkModeCheckbox"/>
+              <span class="toggle toggle-dark"><span class="switch"></span></span>
+            </label>
+            <div id="donateMenuIcon" data-icon="donate" class="d-flex width-6 icon-disable pointer ms-2"></div>
+            <div id="refreshMenuIcon" data-icon="refresh" class="d-flex width-6 icon-disable pointer ms-2"></div>
+            <div class="pos-r ms-2 d-flex justify-content-center">
+              <div id="offMenu" class="pos-a width-9 background-white d-none">
+                <span data-time-min="30" class="pt-3 pb-2">30 <span class="pointer-none" data-i18n="minutesAbbreviation"></span></span>
+                <hr class="hr-horizontal m-0" />
+                <span data-time-min="60" class="py-2">1 <span class="pointer-none" data-i18n="hourAbbreviation"></span></span>
+                <hr class="hr-horizontal m-0" />
+                <span data-time-min="1440" class="pt-2 pb-3">24 <span class="pointer-none" data-i18n="hourAbbreviation"></span></span>
+              </div>
+              <div id="offMenuIcon" data-icon="off" class="d-flex width-6 icon-disable pointer"></div>
+            </div>
+          </div>
+        </div>
+        <div class="background-light-blue radius-1 mb-2.5 p-3">
+          <div class="text-lg text-center mb-2" data-i18n="adBlockedHeader"></div>
+          <div class="pos-r">
+            <div class="pos-a text-xl ads-block-text"><span id="adsBlockCount">0</span> <span data-i18n="ads"></span></div>
+            <div data-icon="semicircular" class="semicircular margin-auto"></div>
+          </div>
+          <hr class="hr-horizontal" />
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex text-md text-bold" data-i18n="thisWebsiteTitle"></div>
+            <label class="toggle-mobile d-flex">
+              <input type="checkbox" id="thisWebsiteCheckbox" />
+              <span class="toggle" data-i18n-toggle="onSwitch:offSwitch"><span class="switch"></span></span>
+            </label>
+          </div>
+          <div class="d-flex justify-content-between mt-2">
+            <div class="thisPageSection d-flex text-sm weight-5">
+              <div data-i18n="thisPageTitle"></div>
+              <div id="thisPageUrl" class="text-overflow-ellipsis">/</div>
+            </div>
+            <label class="toggle-mobile d-flex">
+              <input type="checkbox" id="thisPageCheckbox" />
+              <span class="toggle" data-i18n-toggle="onSwitch:offSwitch"><span class="switch"></span></span>
+            </label>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="toggle-big">
+            <input type="checkbox" id="filteringModeCheckbox" />
+            <span class="toggle" data-i18n-toggle="filteringModeBasic:filteringModeSuper"><span class="switch"></span></span>
+          </label>
+        </div>
+        <div class="d-flex justify-content-between mb-2.5">
+          <div class="radius-1 pos-r me-2.5 width-100p background-light-blue weight-5">
+            <div data-icon="time" class="statics-icon icon-gradient background-white"></div>
+            <p class="text-center mt-3 mb-0 text-xs color-disable" data-i18n="timeSavedTitle"></p>
+            <p class="text-center mt-0 mb-1 text-md"><span id="timeDuration">-</span></p>
+          </div>
+          <div class="radius-1 pos-r me-2.5 width-100p background-light-blue weight-5">
+            <div data-icon="data" class="statics-icon icon-gradient background-white"></div>
+            <p class="text-center mt-3 mb-0 text-xs color-disable" data-i18n="dataSavedTitle"></p>
+            <p class="text-center mt-0 mb-1 text-md"><span id="dataSaved">-</span></p>
+          </div>
+          <div class="radius-1 pos-r width-100p background-light-blue weight-5">
+            <div data-icon="speed" class="statics-icon icon-gradient background-white"></div>
+            <p class="text-center mt-3 mb-0 text-xs color-disable" data-i18n="loadFasterTitle"></p>
+            <p class="text-center mt-0 mb-1 text-md"><span id="loadFasterPercent">-</span></p>
+          </div>
+        </div>
+        <div>
+          <div class="radius-full py-2 d-flex justify-content-between align-items-center background-light-blue px-2 mb-2.5">
+            <div class="d-flex align-items-center text-md weight-7">
+              <div data-icon="block" class="d-flex width-4 me-2 icon-gradient"></div>
+              <div>
+                <p data-i18n="optionBlockManually"></p>
+                <div class="text-xs weight-5">
+                  <span class="color-disable"><span id="blockManuallySelector"></span> <span data-i18n="optionBlockManuallySelector"></span></span>
+                  <span class="hr-vertical"></span>
+                  <span class="color-red-1 pointer" data-i18n="optionBlockManuallyReset" id="blockManuallyResetBtn"></span>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex open-btn pointer weight-5 text-md" data-i18n="optionBlockManuallyOpenBtn" id="blockManuallyOpenBtn"></div>
+          </div>
+          <div class="radius-full py-2 d-flex justify-content-between background-light-blue px-2 mb-2.5">
+            <div class="d-flex align-items-center text-md weight-7">
+              <div data-icon="language" class="d-flex width-4 me-2 icon-gradient"></div>
+              <span data-i18n="optionBlockLocalRules"></span>
+            </div>
+            <label class="toggle-mobile d-flex">
+              <input type="checkbox" id="optionBlockLocal" />
+              <span class="toggle" data-i18n-toggle="onSwitch:offSwitch"><span class="switch"></span></span>
+            </label>
+          </div>
+          <div class="radius-full py-2 d-flex justify-content-between background-light-blue px-2 mb-2.5">
+            <div class="d-flex align-items-center text-md weight-7">
+              <div data-icon="element" class="d-flex width-4 me-2 icon-gradient"></div>
+              <span data-i18n="optionBlockTracker"></span>
+            </div>
+            <label class="toggle-mobile d-flex">
+              <input type="checkbox" id="optionBlockTracker" />
+              <span class="toggle" data-i18n-toggle="onSwitch:offSwitch"><span class="switch"></span></span>
+            </label>
+          </div>
+          <div class="radius-full py-2 d-flex justify-content-between background-light-blue px-2 mb-2.5">
+            <div class="d-flex align-items-center text-md weight-7">
+              <div data-icon="cookie" class="d-flex width-4 me-2 icon-gradient"></div>
+              <span data-i18n="optionPopupsCookie"></span>
+            </div>
+            <label class="toggle-mobile d-flex">
+              <input type="checkbox" id="optionPopupsCookie" />
+              <span class="toggle" data-i18n-toggle="onSwitch:offSwitch"><span class="switch"></span></span>
+            </label>
+          </div>
+          <div class="radius-full py-2 d-flex justify-content-between background-light-blue px-2 mb-2.5">
+            <div class="d-flex align-items-center text-md weight-7">
+              <div data-icon="like" class="d-flex width-4 me-2 icon-gradient"></div>
+              <span data-i18n="optionPopupsSocial"></span>
+            </div>
+            <label class="toggle-mobile d-flex">
+              <input type="checkbox" id="optionPopupsSocial" />
+              <span class="toggle" data-i18n-toggle="onSwitch:offSwitch"><span class="switch"></span></span>
+            </label>
+          </div>
+        </div>
+        <div class="d-flex mb-2.5">
+          <div class="radius-1 p-2 width-50 d-flex justify-content-between pointer background-light-blue me-2" id="reviewButton">
+            <div class="d-flex align-items-center text-xs weight-7">
+              <div data-icon="love" class="d-flex width-4 me-2 icon-gradient"></div>
+              <div>
+                <p data-i18n="loveSblockButton" class="text-md weight-7"></p>
+                <p data-i18n="loveSblockButtonDesc" class="color-disable mt-2 text-xs weight-5"></p>
+              </div>
+            </div>
+          </div>
+          <div class="radius-1 p-2 width-50 d-flex justify-content-between pointer background-light-blue" id="reportIssueButton">
+            <div class="d-flex align-items-center text-xs weight-7">
+              <div data-icon="issue" class="d-flex width-4 me-2 icon-gradient"></div>
+              <div>
+                <p data-i18n="reportIssueButton" class="text-md weight-7"></p>
+                <p data-i18n="reportIssueButtonDesc" class="color-disable mt-2 text-xs weight-5"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="hr-horizontal-disable" />
+        <p class="text-center mb-2.5">
+          <span data-i18n="footerShareFriends" class="text-sm weight-5"></span>
+          <span data-icon="facebook" class="width-5 d-inline-block vertical-middle ms-2 pointer" id="facebookShare"></span>
+          <span data-icon="x" class="width-5 d-inline-block vertical-middle pointer" id="xShare"></span>
+        </p>
+        <div class="semicircular-bottom text-sm">
+          <div class="background-light-blue">
+            <span data-i18n="footerMadeLove" class="text-sm weight-5"></span>
+            <img
+              alt="ch"
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAMAAABiM0N1AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAA5UExURUdwTM4AAP8AAP///84AAM0AAM4AAM4AAMUAAM0AANQAAOAAAP/t7f9BQfAAAP8sLP/Fxf9lZf+enijeSJsAAAAKdFJOUwBZ///dw6B6/iJSa0c9AAABdklEQVRYw+2XiY6DMAxEm5I75ID//9i1udkaSpuoi7YMEkgcjzHC4LndLl06vQzo4ImbR5iSgqOEkIqxfSATiqYowa3DxeEaxRFH0wwT1lIgIzkSXJiEvAXNLEticLa1WhFuOky4r9TRZnNSdZJQPe5xlCNlHygL3OhtIXB+dzTovqu+1EGhv6d9B0TphCB9GBR3Qe4wyKfUNj7mO/J1BaqRlumoA3WwWMDRJuh8jr4X5H3TNN7HmAkaL67rlFJVALRWMVCFPRdLgLBWLBYV80Az0X87KA5PFJ5tHmj8Tkd4w9ssENlr5UAtFlsABC0SY8R2XvxVri/kc5D+t6WFF8Ya6JJUF3A0NB3QUgHQ9sSl9edHv319wlGfGbrJfp7LN2f4LUcAwaDSLyjY2k1ccJoGYUbRv6KL7nmPtBDwVlwZCgQBSLJ1mOpz4IxzY/rCHVxSOU5ZLRgd8Ja0SVwoOlwqwfbDK0OcmEKqeT3mvhebL136U/0ARagxdpiXIbkAAAAASUVORK5CYII="
+            />
+          </div>
+        </div>
+        <div id="disableLayer" class="opaque-layer z-index-30 text-xl2 text-center d-none">
+          <div class="opaque-layer-content" dir="auto"><span data-i18n="notWorking"></span> &#128148;</div>
+        </div>
+        <div id="offLayer" class="opaque-layer z-index-50 d-none">
+          <div class="opaque-layer-content">
+            <div id="offLayerIcon" data-icon="off" class="icon-disable pointer"></div>
+            <p id="offTimer" class="text-center text-lg my-0 color-disable">00:00:00</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./js/utils.js"></script>
+    <script src="./js/error-handler.js"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/dom.js"></script>
+    <script src="./js/i18n.js"></script>
+    <script src="./js/icon.js"></script>
+    <script src="./js/popup.js"></script>
+  </body>
+</html>

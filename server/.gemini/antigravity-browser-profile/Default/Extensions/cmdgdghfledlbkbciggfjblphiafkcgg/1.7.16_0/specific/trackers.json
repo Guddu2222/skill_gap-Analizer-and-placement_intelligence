@@ -1,0 +1,1091 @@
+{
+ "div[class^=\"style-module--contentAreaInne\"] > div[class^=\"style-module--bottomContainer--\"]:has(> div[class^=\"style-module--footer\"] > div[class^=\"style-module--reactions\"]){display:none!important}": [
+  [
+   "fashiontechnews.zozo.com"
+  ]
+ ],
+ "section[data-cy=\"story-parts-wrapper\"] > div:not([data-cy]):has(rect[clip-path=\"url(#loading)\"]){display:none!important}": [
+  [
+   "olympics.com"
+  ]
+ ],
+ "#pianoRecommendBottom{display:none!important}": [
+  [
+   "nikkei.com"
+  ]
+ ],
+ ".format--subheading:has(+ .is-recommend:empty),.is-recommend:empty,div[id^=\"logly-lift-\"]{display:none!important}": [
+  [
+   "itmedia.co.jp"
+  ]
+ ],
+ ".gnt_tb,.story-taboola-related-module{display:none!important}": [
+  [
+   "usatoday.com"
+  ]
+ ],
+ "div[id$=\"-pickup\"][style^=\"height\"]{display:none!important}": [
+  [
+   "entapark.jp"
+  ]
+ ],
+ "section[id^=\"recirculationAside-ArticleGroup-Recommandé-pour-vous-\"]{display:none!important}": [
+  [
+   "virgule.lu"
+  ]
+ ],
+ ".g-a-recommend{display:none!important}": [
+  [
+   "shueisha.online"
+  ]
+ ],
+ "#_vis_opt_path_hides{display:none!important}": [
+  [
+   "dominos.jp"
+  ]
+ ],
+ ".recommend-articles:has(> div[class^=\"taboola\"]){display:none!important}": [
+  [
+   "bunshun.jp"
+  ]
+ ],
+ "#custom_html-12{display:none!important}": [
+  [
+   "adultportal.jp"
+  ]
+ ],
+ ".custom_text_home:has(> #mw-clerk-sliderhp){display:none!important}": [
+  [
+   "misterworker.com"
+  ]
+ ],
+ "body > div[style=\"height:480px;\"]{display:none!important}": [
+  [
+   "7-24blog.com"
+  ]
+ ],
+ ".aside-box-relation-arti{display:none!important}": [
+  [
+   "s.response.jp"
+  ]
+ ],
+ ".content-aside__taboola{display:none!important}": [
+  [
+   "revistaoeste.com"
+  ]
+ ],
+ "section.section-page > .container > .row > div:has(> .div-youmaylike){display:none!important}": [
+  [
+   "bangkokpost.com"
+  ]
+ ],
+ "div[data-testid^=\"non-commercial-\"],div[data-testid^=\"recommended-\"]{display:none!important}": [
+  [
+   "dailyrecord.co.uk"
+  ]
+ ],
+ "#highschool-pickup{display:none!important}": [
+  [
+   "baseballpost.jp"
+  ]
+ ],
+ "img[src*=\"a8.net/svt/\"]{display:none!important}": [
+  [
+   "berrykun.com"
+  ]
+ ],
+ "#contents > div.sub-column > div.title:has(+ #cx-recommed),#cx-recommed,#main-column > article > div.main-special{display:none!important}": [
+  [
+   "diamond.jp"
+  ]
+ ],
+ ".taboola-class-check{display:none!important}": [
+  [
+   "ntvspor.net"
+  ]
+ ],
+ "div[class^=\"index-module_featuredVideosWhiteWrapper\"]:has(> div[class^=\"index-module_videoContainer\"] > #taboola-video-reel-new-homepage),div[id^=\"taboolaContainerWrapper\"]{display:none!important}": [
+  [
+   "wpde.com"
+  ]
+ ],
+ "div[id^=\"piano_special_Top_\"]{display:none!important}": [
+  [
+   "sankei.com"
+  ]
+ ],
+ ".more-stories{display:none!important}": [
+  [
+   "telegraph.co.uk"
+  ]
+ ],
+ "div[class^=\"article_specialFeature_\"],div[class^=\"displayhandler\"]:has(> div[class^=\"premiumRecommend\"]),div[class^=\"recommendArticlesList_recommend__\"]{display:none!important}": [
+  [
+   "businessinsider.jp"
+  ]
+ ],
+ ".popular:has(> .js-relap-anchor){display:none!important}": [
+  [
+   "yakutia.info"
+  ]
+ ],
+ "._mo_recs_tpi{display:none!important}": [
+  [
+   "elperiodico.com"
+  ]
+ ],
+ "div[style]:has(> script[src^=\"https://rranking3.ziyu.net/\"]){display:none!important}": [
+  [
+   "news.tokimeki-s.com"
+  ]
+ ],
+ ".most-read-stories{display:none!important}": [
+  [
+   "express.co.uk"
+  ]
+ ],
+ "reach-topbox{display:none!important}": [
+  [
+   "themirror.com"
+  ]
+ ],
+ ".ninja-recommend-block + br,.ninja-recommend-block + hr{display:none!important}": [
+  [
+   "geinoukame.com"
+  ]
+ ],
+ "section[class^=\"XpaTaboolaPlaceholder_\"]{display:none!important}": [
+  [
+   "onefootball.com"
+  ]
+ ],
+ "#story-recommendations{display:none!important}": [
+  [
+   "arstechnica.com"
+  ]
+ ],
+ "div[class^=\"article-outer\"] > div.recommend:has(> div.ninja-recommend-block){display:none!important}": [
+  [
+   "nanjpride.blog.jp"
+  ]
+ ],
+ "img[src^=\"//vg01.met.vgwort.de/\"]{display:none!important}": [
+  [
+   "pcgameshardware.de"
+  ]
+ ],
+ "#custom_html-74{display:none!important}": [
+  [
+   "idle-girl.com"
+  ]
+ ],
+ ".side-menu:has(script[src=\"//accaii.com/natuero/script.js\"]){display:none!important}": [
+  [
+   "natuero-dougakan.com"
+  ]
+ ],
+ "#ohtani-pickup{display:none!important}": [
+  [
+   "hochi.news"
+  ]
+ ],
+ "#taxelBox{display:none!important}": [
+  [
+   "news.audee.jp"
+  ]
+ ],
+ ".popular.piano{display:none!important}": [
+  [
+   "spoki.lv"
+  ]
+ ],
+ "#null-recommendations-widget{display:none!important}": [
+  [
+   "usnews.com"
+  ]
+ ],
+ ".widget_custom_html:has(> div.textwidget > div[style^=\"width: 100%;\"] > div.ninja-recommend-block){display:none!important}": [
+  [
+   "tousatu-ch.net"
+  ]
+ ],
+ "img[src^=\"https://t.myvisualiq.net/\"]{display:none!important}": [
+  [
+   "pcmag.com"
+  ]
+ ],
+ ".article-recommended{display:none!important}": [
+  [
+   "tv2.no"
+  ]
+ ],
+ "#custom_html-137,#custom_html-81,#related-box{display:none!important}": [
+  [
+   "erostopics.net"
+  ]
+ ],
+ "center > div > table.font12 + table[width=\"1200\"]:not([class]),center > div > table[width=\"1200\"]:has(> tbody > tr > td[height=\"310\"] > script),table[width=\"795\"]:has(td > script[src^=\"https://s1.aspservice.jp\"]),td[width=\"800\"][align=\"right\"][valign=\"top\"]{display:none!important}": [
+  [
+   "petyado.com"
+  ]
+ ],
+ ".topbox2 > div.”smanone”,.underbox{display:none!important}": [
+  [
+   "xn--r8jwklh769h2mc880dk1o431a.com"
+  ]
+ ],
+ "#main > aside:has(> div.OUTBRAIN){display:none!important}": [
+  [
+   "nekochan.jp"
+  ]
+ ],
+ ".recommend_header,.recommend_header + div[style^=\"aspect-ratio:\"]{display:none!important}": [
+  [
+   "wanchan.jp"
+  ]
+ ],
+ "#sectiondivicymi{display:none!important}": [
+  [
+   "thehindu.com"
+  ]
+ ],
+ "#text-39{display:none!important}": [
+  [
+   "hmangamatome.net"
+  ]
+ ],
+ ".b-footer-counters{display:none!important}": [
+  [
+   "unn.com.ua"
+  ]
+ ],
+ "#bigmirTop,img[src^=\"//counter.ukr.net/\"]{display:none!important}": [
+  [
+   "sinoptik.ua"
+  ]
+ ],
+ "#text-9{display:none!important}": [
+  [
+   "tousatu-club.com"
+  ]
+ ],
+ ".module-recommend{display:none!important}": [
+  [
+   "crea.bunshun.jp"
+  ]
+ ],
+ "img[src^=\"https://ssl-wolterskluwer.met.vgwort.de/\"]{display:none!important}": [
+  [
+   "lto.de"
+  ]
+ ],
+ ".tg-first-footer-widget{display:none!important}": [
+  [
+   "device4game.ru"
+  ]
+ ],
+ ".recommend{display:none!important}": [
+  [
+   "president.jp"
+  ]
+ ],
+ "#custom_html-6{display:none!important}": [
+  [
+   "revuestarlightre.com"
+  ]
+ ],
+ ".piano-end-article-reco,.piano-in-article-reco,.piano-right-rail-reco{display:none!important}": [
+  [
+   "washingtontimes.com"
+  ]
+ ],
+ "#block-11{display:none!important}": [
+  [
+   "anime-drama.jp"
+  ]
+ ],
+ ".vgwort-metis-marker{display:none!important}": [
+  [
+   "kino-zeit.de"
+  ]
+ ],
+ ".theqoo-counter{display:none!important}": [
+  [
+   "theqoo.net"
+  ]
+ ],
+ ".taboola-recommends{display:none!important}": [
+  [
+   "cbssports.com"
+  ]
+ ],
+ ".content-wrapper > div[data-mod-name=\"container\"]:has(> div.taboola-teasers),div[data-mod-name=\"taboolateasers\"]{display:none!important}": [
+  [
+   "gmx.com"
+  ]
+ ],
+ ".footbl3 > div[style=\"margin-right:100px;\"]{display:none!important}": [
+  [
+   "syzran-small.ru"
+  ]
+ ],
+ "#text-6{display:none!important}": [
+  [
+   "comichara.com",
+   "movient.net"
+  ]
+ ],
+ "#custom_html-30{display:none!important}": [
+  [
+   "okazuch.site"
+  ]
+ ],
+ ".ratio-wrapper{display:none!important}": [
+  [
+   "fudge.jp"
+  ]
+ ],
+ ".taboola-below-article-thumbnails-desktop-2-wrap{display:none!important}": [
+  [
+   "newsweekjapan.jp"
+  ]
+ ],
+ "#text-2{display:none!important}": [
+  [
+   "nukigazo.com"
+  ]
+ ],
+ "#taboola-mid-article-leia-mais{display:none!important}": [
+  [
+   "brasil247.com"
+  ]
+ ],
+ ".cx-top-news{display:none!important}": [
+  [
+   "cyclestyle.net",
+   "rbbtoday.com"
+  ]
+ ],
+ "img[src^=\"https://ish.tumedia.no/ish_tracker.gif\"]{display:none!important}": [
+  [
+   "digi.no"
+  ]
+ ],
+ ".plugin-l-t:last-child{display:none!important}": [
+  [
+   "samuraisoccer.doorblog.jp"
+  ]
+ ],
+ ".plugin-access{display:none!important}": [
+  [
+   "zch-vip.com"
+  ]
+ ],
+ "#random{display:none!important}": [
+  [
+   "norisoku.com"
+  ]
+ ],
+ ".RecommendPianoWrapper,.RecommendUnderlayer{display:none!important}": [
+  [
+   "jiji.com"
+  ]
+ ],
+ "#footer-widget,.plugin-counter{display:none!important}": [
+  [
+   "m4ex.com"
+  ]
+ ],
+ "img[src*=\"//vg09.met.vgwort.de/\"]{display:none!important}": [
+  [
+   "dealdoktor.de"
+  ]
+ ],
+ ".footer-col-3{display:none!important}": [
+  [
+   "scarfilm.org"
+  ]
+ ],
+ "a[href=\"http://analyzer.fc2.com\"]{display:none!important}": [
+  [
+   "blog.livedoor.jp"
+  ]
+ ],
+ "#cxRelatedEntry,#sp_j-cast_kiji_recommend_1{display:none!important}": [
+  [
+   "j-cast.com"
+  ]
+ ],
+ ".carouselBlock > li[id^=\"cx_\"].c-headlineindex_listitem{display:none!important}": [
+  [
+   "markezine.jp"
+  ]
+ ],
+ "#cxense-wrapper{display:none!important}": [
+  [
+   "ciudad.com.ar"
+  ]
+ ],
+ "a[href^=\"https://px.a8.net/\"]{display:none!important}": [
+  [
+   "androplus.org"
+  ]
+ ],
+ "article[class^=\"cXense-\"]{display:none!important}": [
+  [
+   "cienradios.com"
+  ]
+ ],
+ ".bottomMenu{display:none!important}": [
+  [
+   "park.ajinomoto.co.jp"
+  ]
+ ],
+ "div[id^=\"cx_\"]{display:none!important}": [
+  [
+   "augsburger-allgemeine.de",
+   "nikkansports.com"
+  ]
+ ],
+ "iframe[id^=\"cxWidget_\"]{display:none!important}": [
+  [
+   "weekly-economist.mainichi.jp"
+  ]
+ ],
+ ".c1-ad-sticky{display:none!important}": [
+  [
+   "bizjournals.com"
+  ]
+ ],
+ ".popin-recommend{display:none!important}": [
+  [
+   "chinatimes.com"
+  ]
+ ],
+ ".pbancut{display:none!important}": [
+  [
+   "hobbylog.jp"
+  ]
+ ],
+ ".recommend-container{display:none!important}": [
+  [
+   "kuruma-news.jp"
+  ]
+ ],
+ ".counter{display:none!important}": [
+  [
+   "dumskaya.net",
+   "da-te.jp"
+  ]
+ ],
+ ".__popin,.__recommendedPosts{display:none!important}": [
+  [
+   "finders.me"
+  ]
+ ],
+ "a[alt=\"Яндекс.Метрика\"]{display:none!important}": [
+  [
+   "agronews.com"
+  ]
+ ],
+ "a[href=\"https://metrika.yandex.ru/\"]{display:none!important}": [
+  [
+   "politring.com"
+  ]
+ ],
+ ".gtm-bnr-rensai{display:none!important}": [
+  [
+   "oceans-nadia.com"
+  ]
+ ],
+ "div[id^=\"logly-\"] + div.h10px.colBoxClear{display:none!important}": [
+  [
+   "nlab.itmedia.co.jp"
+  ]
+ ],
+ ".li-bi-container{display:none!important}": [
+  [
+   "today.ua"
+  ]
+ ],
+ "#page-error-modal{display:none!important}": [
+  [
+   "culture.ru"
+  ]
+ ],
+ "#custom_html-3{display:none!important}": [
+  [
+   "nexus-games.net",
+   "hentai-sharing.net",
+   "news.webike.net"
+  ]
+ ],
+ "#custom_html-5{display:none!important}": [
+  [
+   "news.webike.net"
+  ]
+ ],
+ "#_popIn_recommend{display:none!important}": [
+  [
+   "bcnretail.com"
+  ]
+ ],
+ "#sub div.plugin-memo:last-child{display:none!important}": [
+  [
+   "chaos2ch.com"
+  ]
+ ],
+ "#_popIn_right,.p-ads{display:none!important}": [
+  [
+   "otekomachi.yomiuri.co.jp"
+  ]
+ ],
+ "._popIn_ranking_otekomachi,._popIn_recommend_tieup,.topi-popin-relation{display:none!important}": [
+  [
+   "komachi.yomiuri.co.jp"
+  ]
+ ],
+ ".bot_right{display:none!important}": [
+  [
+   "textologia.ru"
+  ]
+ ],
+ ".nt-foot-item[style=\"overflow:hidden;\"]{display:none!important}": [
+  [
+   "tourister.ru"
+  ]
+ ],
+ ".sidebar_acr.side_inline{display:none!important}": [
+  [
+   "fategrandorder.info"
+  ]
+ ],
+ ".dailymotion-widget{display:none!important}": [
+  [
+   "suara.com"
+  ]
+ ],
+ ".sidebar > #custom_html-4{display:none!important}": [
+  [
+   "audiobb.com"
+  ]
+ ],
+ ".banner-area-entry + h3.category-title{display:none!important}": [
+  [
+   "b.kyodo.co.jp"
+  ]
+ ],
+ "#pickup-header_frame{display:none!important}": [
+  [
+   "moeimg.net"
+  ]
+ ],
+ "#text-17{display:none!important}": [
+  [
+   "4esnok.by"
+  ]
+ ],
+ "#HTML1{display:none!important}": [
+  [
+   "pusatporn18.com"
+  ]
+ ],
+ "#cceol{display:none!important}": [
+  [
+   "seshop.com",
+   "shoeisha.co.jp"
+  ]
+ ],
+ "#taboola-below-sokuho-thumbnails{display:none!important}": [
+  [
+   "sports.goo.ne.jp"
+  ]
+ ],
+ "#sidebar-right-1 > #HTML6{display:none!important}": [
+  [
+   "techmaniachd.pl"
+  ]
+ ],
+ ".articleList-along,.articleList-attention{display:none!important}": [
+  [
+   "news.mynavi.jp"
+  ]
+ ],
+ "div[style^=\"margin-bottom:150px;\"][style*=\"padding-right:2em;\"]{display:none!important}": [
+  [
+   "semprotyuk.com"
+  ]
+ ],
+ ".toplist{display:none!important}": [
+  [
+   "club-opel.com"
+  ]
+ ],
+ ".taboola{display:none!important}": [
+  [
+   "israelnationalnews.com",
+   "insider.com"
+  ]
+ ],
+ ".side-reccomend{display:none!important}": [
+  [
+   "the-ans.jp"
+  ]
+ ],
+ ".cx-subhead{display:none!important}": [
+  [
+   "inside-games.jp"
+  ]
+ ],
+ ".cbCxense{display:none!important}": [
+  [
+   "business.nikkei.com"
+  ]
+ ],
+ "#custom_html-2{display:none!important}": [
+  [
+   "club.berkovich-zametki.com",
+   "koneta.nifty.com"
+  ]
+ ],
+ "div[data-uri=\"www.vulture.com/_components/clay-space/instances/taboola@published\"]{display:none!important}": [
+  [
+   "vulture.com"
+  ]
+ ],
+ "#text-8{display:none!important}": [
+  [
+   "android-tools.ru"
+  ]
+ ],
+ "#CollapsiblePanel_Statistics{display:none!important}": [
+  [],
+  [
+   "animespirit"
+  ]
+ ],
+ ".footer_bl-3{display:none!important}": [
+  [
+   "setafi.com"
+  ]
+ ],
+ "a[href^=\"https://www.liveinternet.ru/click\"]{display:none!important}": [
+  [
+   "kanobu.ru"
+  ]
+ ],
+ ".footer-counters{display:none!important}": [
+  [
+   "viva.ua",
+   "beauty.ua"
+  ]
+ ],
+ "img[alt=\"comscorebeacon\"]{display:none!important}": [
+  [
+   "ctvnews.ca"
+  ]
+ ],
+ "#Stats10_content{display:none!important}": [
+  [
+   "jaiefra.com"
+  ]
+ ],
+ "#Counters,#Counters + div[class=\"block\"]{display:none!important}": [
+  [
+   "dokonline.com"
+  ]
+ ],
+ ".td-footer-template-9{display:none!important}": [
+  [
+   "portaltele.com.ua"
+  ]
+ ],
+ ".links-sites > .counters{display:none!important}": [
+  [
+   "tap.az"
+  ]
+ ],
+ "div[data-widget=\"plista_widget_belowArticle_desktop_nocss\"]+div[class^=\"_\"] > svg,div[data-widget=\"plista_widget_webApp_mobile_nocss\"]+div[class^=\"_\"] > svg{display:none!important}": [
+  [
+   "ferra.ru"
+  ]
+ ],
+ "#custom_html-16{display:none!important}": [
+  [
+   "tensaigakkou.ru"
+  ]
+ ],
+ ".gaoop{display:none!important}": [
+  [
+   "continentseven.com"
+  ]
+ ],
+ ".tbla,.trc_related_container{display:none!important}": [
+  [
+   "msn.com"
+  ]
+ ],
+ ".count{display:none!important}": [
+  [
+   "borfilm.com",
+   "hronika.info"
+  ]
+ ],
+ ".block__recommend{display:none!important}": [
+  [
+   "ixbt.com"
+  ]
+ ],
+ "#sidebar > #text-64 > .block-title{display:none!important}": [
+  [
+   "unilad.co.uk"
+  ]
+ ],
+ "a[href^=\"http://whos.amung.us/stats/\"]{display:none!important}": [
+  [
+   "uniongang.net"
+  ]
+ ],
+ "a[href^=\"http://top.list.ru/\"],a[href^=\"http://www.one.ru\"],noindex > a{display:none!important}": [
+  [
+   "artmoney.ru"
+  ]
+ ],
+ ".articleAdditional > .mehrthema{display:none!important}": [
+  [
+   "computerbild.de"
+  ]
+ ],
+ ".b-footer_counters{display:none!important}": [
+  [
+   "m.lenta.ru"
+  ]
+ ],
+ "#listOfCounters{display:none!important}": [
+  [
+   "maxpark.com"
+  ]
+ ],
+ "a[href=\"http://www.bigmir.net/\"]{display:none!important}": [
+  [
+   "westnews.com.ua"
+  ]
+ ],
+ ".zn-story-bottom{display:none!important}": [
+  [
+   "cnn.com"
+  ]
+ ],
+ ".bottom-footer > .dossier{display:none!important}": [
+  [
+   "fr.de"
+  ]
+ ],
+ "#taboola-below-home-thumbnails-homepage{display:none!important}": [
+  [
+   "zdnet.com"
+  ]
+ ],
+ ".bottom-recommended,.rail-recommended{display:none!important}": [
+  [
+   "businessinsider.com"
+  ]
+ ],
+ "#taboola-recirc{display:none!important}": [
+  [
+   "reuters.com"
+  ]
+ ],
+ ".js-page > * > .dv-post-header > [class] > [class] > [id] > [class][id],.o-columns > .o-columns__side > [class] > [class][id] > [class][id]{display:none!important}": [
+  [
+   "drive2.ru"
+  ]
+ ],
+ ".is-tracked[data-metrika=\"recomm\"],.js-scrolltracking[data-adkind=\"relap\"]{display:none!important}": [
+  [
+   "drive2.ru",
+   "drive2.com"
+  ]
+ ],
+ "#block-thehill-blocks-amp-outbrain{display:none!important}": [
+  [
+   "thehill.com"
+  ]
+ ],
+ ".relap{display:none!important}": [
+  [
+   "znak.com"
+  ]
+ ],
+ ".side_menu:has(> div > div.plugin-freearea > div.ninja-recommend-block){display:none!important}": [
+  [
+   "dvdrev.com"
+  ]
+ ],
+ ".section__inner:has(> #recommended-posts-result){display:none!important}": [
+  [
+   "vivi.tv"
+  ]
+ ],
+ ".s-entry > section > div.c-heading:has(> div#taboola-below-article-thumbnails-desktop){display:none!important}": [
+  [
+   "full-count.jp"
+  ]
+ ],
+ "section.sec:has(> #piano_recs_inline_title){display:none!important}": [
+  [
+   "kobe-np.co.jp"
+  ]
+ ],
+ ".wrap_general:has(> #taboola-below-article-thumbnails-mg),article > section.block-area:has(> div#taboola-below-article-thumbnails-mg){display:none!important}": [
+  [
+   "crank-in.net"
+  ]
+ ],
+ "div.--wid:has(> div#taboola-below-article-thumbnails-bottom){display:none!important}": [
+  [
+   "jbpress.ismedia.jp"
+  ]
+ ],
+ ".p-articleList__heading:has(+ div#taboola-below-article-thumbnails-desktop){display:none!important}": [
+  [
+   "mdpr.jp"
+  ]
+ ],
+ ".elementSectionHeadingsWithSuffix:has(+ div[id^=\"taboola-below-article-thumbnails-gendai_biz-desktop\"]){display:none!important}": [
+  [
+   "gendai.media"
+  ]
+ ],
+ ".story-content-wrapper > div.embed_block:has(> div[ub-in-page]){display:none!important}": [
+  [
+   "kuow.org"
+  ]
+ ],
+ ".right-container > div.sidewrapper:has(> div.side > a[href=\"http://www.ziyu.net/\"]){display:none!important}": [
+  [
+   "hinatasoku.blog.jp"
+  ]
+ ],
+ ".article > div.plugin-memo:has(> div.side > div.ninja-recommend-block){display:none!important}": [
+  [
+   "aatyu.livedoor.blog"
+  ]
+ ],
+ ".container > div.box:has(> a[href^=\"https://www.liveinternet.ru/click\"]){display:none!important}": [
+  [
+   "screenov.eu"
+  ]
+ ],
+ "aside > section.bot-post:has(> center > a[href^=\"https://www.liveinternet.ru/\"]){display:none!important}": [
+  [
+   "infokam.su"
+  ]
+ ],
+ ".v_left > div.moduletable:has(script[src^=\"https://www.googletagmanager.com/\"]){display:none!important}": [
+  [
+   "valetudo.ru"
+  ]
+ ],
+ "#banner > div.RightColumn:has(> a[href^=\"//www.liveinternet.ru/\"]){display:none!important}": [
+  [
+   "unews.pro"
+  ]
+ ],
+ ".sidebar > div.widget:has(> div > a[href$=\"liveinternet.ru/click\"]){display:none!important}": [
+  [
+   "fatcatslim.ru"
+  ]
+ ],
+ ".tm-sidebar-b > div.uk-panel:has(script[src^=\"https://adcounter\"]){display:none!important}": [
+  [
+   "myfirstcomp.ru"
+  ]
+ ],
+ "td[valign=\"top\"] > table > tbody > tr:has(> td > table[cellpadding=\"0\"] a[href^=\"http://top100.rambler.ru/\"]){display:none!important}": [
+  [
+   "thg.ru"
+  ]
+ ],
+ "body > main[role=\"main\"] > div.ue-l-article:has(> div.ue-l-article__inner > div.ue-l-article__main-column > aside > div[id^=\"taboola\"]){display:none!important}": [
+  [
+   "elmundo.es"
+  ]
+ ],
+ "#sidebar > div.widget:has(span#openstat1){display:none!important}": [
+  [
+   "specialcom.net"
+  ]
+ ],
+ "#reachMedia,#shadowMedia{display:none!important}": [
+  [
+   "football-ukraine.com"
+  ]
+ ],
+ "#wt_overlay{display:none!important}": [
+  [
+   "europcar.com"
+  ]
+ ],
+ ".b-counters > ul{display:none!important}": [
+  [
+   "m24.ru"
+  ]
+ ],
+ ".counters{display:none!important}": [
+  [
+   "vesti-ua.net",
+   "udaff.com"
+  ]
+ ],
+ ".counts{display:none!important}": [
+  [
+   "kinotan.ru",
+   "kinotochka.club",
+   "legend.az"
+  ]
+ ],
+ ".r-recommend{display:none!important}": [
+  [
+   "newslab.ru"
+  ]
+ ],
+ ".read-next{display:none!important}": [
+  [
+   "life.ru"
+  ]
+ ],
+ ".revolvermaps,footer > div.counter{display:none!important}": [
+  [
+   "radioprofusion.com"
+  ]
+ ],
+ ".wrap-footer .counter{display:none!important}": [
+  [
+   "espreso.tv"
+  ]
+ ],
+ ".ya-metrika{display:none!important}": [
+  [
+   "vse42.ru"
+  ]
+ ],
+ "a[href=\"http://mycounter.com.ua/\"]{display:none!important}": [
+  [
+   "theplanet.ws"
+  ]
+ ],
+ "a[href=\"http://www.infoorel.ru/stat/stat.php\"]{display:none!important}": [
+  [
+   "infoorel.ru"
+  ]
+ ],
+ "a[href^=\"http://cqcounter.com/\"]{display:none!important}": [
+  [
+   "armyrecognition.com"
+  ]
+ ],
+ "a[href^=\"http://metrika.yandex.ru/\"]{display:none!important}": [
+  [
+   "3dnews.ru"
+  ]
+ ],
+ "a[href^=\"http://waplog.net/\"]{display:none!important}": [
+  [
+   "seclub.org"
+  ]
+ ],
+ "a[href^=\"http://www.kerch.net/counter/\"]{display:none!important}": [
+  [
+   "kerch.com.ru"
+  ]
+ ],
+ "a[href^=\"http://www.net.kg/stat.php\"]{display:none!important}": [
+  [
+   "megatorrents.kg"
+  ]
+ ],
+ "img[height=\"40\"][width=\"88\"]{display:none!important}": [
+  [
+   "megalifez.net"
+  ]
+ ],
+ "img[style=\"width: 88px; height: 31px; border: 0\"]{display:none!important}": [
+  [
+   "versii.com"
+  ]
+ ],
+ "img[width=\"31\"][height=\"31\"]{display:none!important}": [
+  [
+   "hentaiz.org"
+  ]
+ ],
+ "td[width=\"88\"][height=\"31\"]{display:none!important}": [
+  [
+   "dreamprogs.net"
+  ]
+ ],
+ ".ds-modal-overlay{display:none!important}": [
+  [
+   "chat.deepseek.com"
+  ]
+ ],
+ "body > div[id^=\"ads\"]{display:none!important}": [
+  [
+   "elahmad.com"
+  ]
+ ],
+ ".hello_from_adguard_tracking_params{display:none!important}": [
+  [
+   "adguard.info",
+   "adguard.com",
+   "adguard.app"
+  ]
+ ],
+ ".block-user *{opacity: 1 !important; pointer-events: auto !important; touch-action: auto !important}": [
+  [
+   "hgtv.com"
+  ]
+ ],
+ "#ulCommentWidget[style*=\"display\"]{display: block !important}": [
+  [
+   "itmedia.co.jp"
+  ]
+ ],
+ "#engagement-top{display: none !important}body{overflow: auto !important}": [
+  [
+   "elcomercio.es"
+  ]
+ ],
+ "body.anti-flicker{opacity: 1 !important}": [
+  [
+   "ads.spotify.com"
+  ]
+ ],
+ ".co-Widget[style=\"min-height: 6000px;\"]{min-height: auto !important}": [
+  [
+   "infoseek.co.jp"
+  ]
+ ],
+ "#primary{display: block !important}": [
+  [
+   "adseek.site"
+  ]
+ ],
+ "body[style=\"opacity: 0;\"]{opacity: 1 !important}": [
+  [
+   "bitdefender.com",
+   "mustar.meitetsu.co.jp"
+  ]
+ ],
+ ".inviewSection:not(.is-show){transform: translateY(0) !important; opacity: 1 !important}": [
+  [
+   "e-begin.jp"
+  ]
+ ],
+ "html[class^=\"loading\"]{visibility: visible !important}": [
+  [
+   "anikore.jp"
+  ]
+ ]
+}

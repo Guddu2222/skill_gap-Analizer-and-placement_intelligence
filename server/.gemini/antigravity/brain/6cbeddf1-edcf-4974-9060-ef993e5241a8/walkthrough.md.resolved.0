@@ -1,0 +1,34 @@
+# Verifiable Skills Integration Walkthrough
+
+I have successfully implemented the **GitHub and LeetCode Integration** feature from our newly proposed Placement Intelligence plan! 🚀
+
+## What Was Changed
+
+1. **Backend Model & API:** 
+   - Expanded the [Student.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/models/Student.js) Mongoose schema to include `githubUsername`, `leetcodeUrl`, and `leetcodeUsername`.
+   - Updated the profile modification route ([student-features.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/routes/student-features.js)) to parse and persist these new fields natively.
+
+2. **AI Skill Gap Service ([skillGapAnalysis.service.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/services/skillGapAnalysis.service.js)):** 
+   - Introduced a new backend utility [fetchExternalStats](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/services/skillGapAnalysis.service.js#93-125) that dynamically requests your real-time developer metrics via the official GitHub API and LeetCode Stats API.
+   - Refactored the [prepareAnalysisPrompt](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/services/skillGapAnalysis.service.js#126-231) function to feed the verified stats (e.g., number of public repositories, followers, easy/medium/hard questions solved) directly into the AI context prompt.
+   - The AI will now consider this verifiable proof-of-work when assigning proficiencies and generating your Placement Readiness insights!
+
+3. **Frontend UI ([ProfileEditModal.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/student/ProfileEditModal.jsx)):** 
+   - Restructured the **Links** tab within the [ProfileEditModal](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/student/ProfileEditModal.jsx#70-547) component.
+   - Added clean, validated input fields for GitHub and LeetCode usernames.
+
+## How to Test it
+
+Since your development servers are already running, you can test this instantly:
+
+1. **Open the Student Dashboard.**
+2. **Edit Profile:** Click on the "Edit Profile" button.
+3. **Add Accounts:** Navigate to the **Links** tab on the left sidebar. Enter your actual GitHub and/or LeetCode usernames and click "Save Changes".
+4. **Run Analysis:** Click the **Start Analysis Now** button (or trigger a re-analysis).
+5. **Verify:** The AI generation will fetch your live data under the hood and utilize it to assess your skill gaps! 
+
+> [!TIP]
+> Make sure to type your exact username for accuracy. For instance, testing with a highly active LeetCode username will yield a strictly stronger Readiness Score in the AI algorithm than testing with an empty profile. 
+
+---
+Please test it out and reply to this message! If everything functions flawlessly, let me know if you would like to proceed to implementing the **Placement Readiness Score** or the **Job Matching Hub** next.

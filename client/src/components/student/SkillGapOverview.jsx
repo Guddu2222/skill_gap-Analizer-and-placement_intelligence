@@ -1,486 +1,493 @@
-import React from "react";
-import {
-  Target,
-  TrendingUp,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-  ArrowRight,
-  Star,
-  Zap,
-  Trophy,
-  BookOpen,
-  ChevronRight,
-  Activity,
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Target, Zap } from "lucide-react";
+
+// Priority Config for Critical Gaps
+const priorityConfig = {
+  HIGH: { bg: "bg-orange-100", text: "text-orange-700", dot: "bg-orange-500", label: "HIGH" },
+  CRITICAL: { bg: "bg-red-100", text: "text-red-700", dot: "bg-red-500", label: "CRITICAL" },
+  MEDIUM: { bg: "bg-amber-100", text: "text-amber-700", dot: "bg-amber-500", label: "MEDIUM" },
+  LOW: { bg: "bg-emerald-100", text: "text-emerald-700", dot: "bg-emerald-500", label: "LOW" },
+};
+
+// Colors for Core Strengths
+const strengthColors = [
+  { from: "from-emerald-400", to: "to-teal-500", bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-700", badge: "bg-emerald-100 text-emerald-700" },
+  { from: "from-blue-400", to: "to-indigo-500", bg: "bg-blue-50", border: "border-blue-200", text: "text-blue-700", badge: "bg-blue-100 text-blue-700" },
+  { from: "from-violet-400", to: "to-purple-500", bg: "bg-violet-50", border: "border-violet-200", text: "text-violet-700", badge: "bg-violet-100 text-violet-700" },
+];
+
+// Colors for Roadmap
+const phaseColors = [
+  { bg: "bg-violet-600", light: "bg-violet-100", text: "text-violet-700", border: "border-violet-200", line: "bg-violet-200" },
+  { bg: "bg-blue-600", light: "bg-blue-100", text: "text-blue-700", border: "border-blue-200", line: "bg-blue-200" },
+  { bg: "bg-indigo-600", light: "bg-indigo-100", text: "text-indigo-700", border: "border-indigo-200", line: "bg-indigo-200" },
+  { bg: "bg-purple-600", light: "bg-purple-100", text: "text-purple-700", border: "border-purple-200", line: "bg-purple-200" },
+];
 
 const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
+  const [animatedScore, setAnimatedScore] = useState(0);
+
+  // Parse total weeks from estimatedTimeToReady
+  let totalWeeksText = String(analysis?.estimatedTimeToReady || "0");
+  let totalWeeks = parseInt(totalWeeksText.match(/\d+/)?.[0] || "0");
+
+  useEffect(() => {
+    if (!analysis) return;
+    const maxScore = analysis.overallReadinessScore || 0;
+    
+    // Reset and animate
+    setAnimatedScore(0);
+    const timer = setTimeout(() => {
+      const interval = setInterval(() => {
+        setAnimatedScore((prev) => {
+          if (prev >= maxScore) {
+            clearInterval(interval);
+            return maxScore;
+          }
+          return prev + 1;
+        });
+      }, 20);
+      return () => clearInterval(interval);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [analysis?.overallReadinessScore]);
+
   if (!analysis) {
     return (
-      <div className="bg-white/60 backdrop-blur-xl rounded-3xl p-16 text-center shadow-2xl shadow-slate-200/50 border border-white">
-        <div className="relative w-24 h-24 mx-auto mb-6 flex items-center justify-center">
-          <div className="absolute inset-0 bg-indigo-100 rounded-full animate-ping opacity-75"></div>
-          <div className="relative bg-indigo-50 text-indigo-600 w-20 h-20 rounded-full flex items-center justify-center shadow-inner">
-            <Target className="w-10 h-10" />
-          </div>
+      <div className="bg-white/60 backdrop-blur-xl rounded-2xl p-16 text-center shadow-sm border border-slate-100">
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <Target className="w-12 h-12 text-indigo-500" />
+          <h3 className="text-xl font-bold text-slate-800">Profile Not Analyzed Yet</h3>
+          <p className="text-slate-500 max-w-md">Let our AI discover your skill gaps and recommend exact steps.</p>
+          <button
+            onClick={onReanalyze}
+            disabled={isAnalyzing}
+            className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl font-bold hover:shadow-lg disabled:opacity-70 transition-all flex items-center gap-2"
+          >
+            {isAnalyzing ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <Zap className="w-4 h-4" />
+            )}
+            {isAnalyzing ? "Analyzing..." : "Launch Analysis"}
+          </button>
         </div>
-        <h3 className="text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">
-          Profile Not Analyzed Yet
-        </h3>
-        <p className="text-slate-500 mb-8 max-w-md mx-auto text-lg">
-          Unlock your personalized roadmap to success. Let our AI discover your
-          skill gaps and recommend the exact steps you need to take.
-        </p>
-        <button
-          onClick={onReanalyze}
-          disabled={isAnalyzing}
-          className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-2xl font-bold hover:shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-1 transition-all duration-300 flex items-center space-x-3 mx-auto disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-        >
-          {isAnalyzing ? (
-            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-          ) : (
-            <Zap className="w-5 h-5" />
-          )}
-          <span>
-            {isAnalyzing ? "Analyzing with AI..." : "Launch AI Analysis"}
-          </span>
-          {!isAnalyzing && <ArrowRight className="w-5 h-5 ml-2" />}
-        </button>
       </div>
     );
   }
 
-  const getPriorityBadge = (priority) => {
-    const styles = {
-      critical: "bg-rose-100/80 text-rose-700 border-rose-200",
-      high: "bg-orange-100/80 text-orange-700 border-orange-200",
-      medium: "bg-amber-100/80 text-amber-700 border-amber-200",
-      low: "bg-emerald-100/80 text-emerald-700 border-emerald-200",
-    };
-    const style = styles[priority?.toLowerCase()] || styles.medium;
-    return `px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${style}`;
-  };
-
-  const getReadinessLevel = (score) => {
-    if (score >= 80)
-      return {
-        text: "Exceptional",
-        color: "text-emerald-400",
-        bg: "bg-emerald-400/10",
-      };
-    if (score >= 60)
-      return {
-        text: "On Track",
-        color: "text-indigo-400",
-        bg: "bg-indigo-400/10",
-      };
-    if (score >= 40)
-      return {
-        text: "Needs Focus",
-        color: "text-amber-400",
-        bg: "bg-amber-400/10",
-      };
-    return {
-      text: "Critical Action Required",
-      color: "text-rose-400",
-      bg: "bg-rose-400/10",
-    };
-  };
-
-  const readinessLevel = getReadinessLevel(analysis.overallReadinessScore || 0);
+  const score = analysis.overallReadinessScore || 0;
+  const percentage = Math.min(Math.max((score / 100) * 100, 0), 100);
+  const lastUpdated = new Date(analysis.updatedAt || analysis.createdAt).toLocaleDateString();
 
   return (
-    <div className="space-y-10 animate-fadeIn">
-      {/* Premium Readiness Score Card */}
-      <div className="relative overflow-hidden bg-white/40 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white">
-        {/* Subtle background glow effects */}
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-indigo-500/10 blur-[100px] pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-violet-500/10 blur-[80px] pointer-events-none"></div>
-
-        <div className="relative z-10 flex flex-col xl:flex-row items-center xl:items-end justify-between gap-8">
-          {/* Main Info */}
-          <div className="flex-1 w-full text-center xl:text-left">
-            <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 mb-6 shadow-sm">
-              <Trophy className="w-4 h-4 text-indigo-600" />
-              <span className="text-sm font-bold text-indigo-900 tracking-wide uppercase">
-                Readiness Overview
-              </span>
+    <div className="space-y-6 animate-fadeIn">
+      {/* 1. ReadinessOverview */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
+              <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
             </div>
-
-            <h1 className="flex items-baseline justify-center xl:justify-start gap-1 mb-4">
-              <span className="text-7xl md:text-8xl font-black text-slate-800 tracking-tighter">
-                {analysis.overallReadinessScore || 0}
-              </span>
-              <span className="text-2xl md:text-3xl font-bold text-slate-400">
-                /100
-              </span>
-            </h1>
-
-            <p className="text-slate-600 text-lg md:text-xl leading-relaxed max-w-3xl border-l-4 border-indigo-500/50 pl-5 mb-8 font-medium">
-              {analysis.analysisSummary}
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center xl:justify-start gap-4">
-              <div
-                className={`px-5 py-2.5 rounded-2xl font-bold border shadow-sm ${readinessLevel.bg.replace("/10", "/30")} ${readinessLevel.color.replace("400", "700")} z-10`}
-              >
-                <div className="flex items-center gap-2">
-                  <Activity className="w-4 h-4" />
-                  {readinessLevel.text}
-                </div>
-              </div>
-              <div className="px-5 py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-600 font-medium shadow-sm">
-                <span className="text-slate-400 mr-2">Target Role:</span>
-                <span className="text-slate-800 font-bold">
-                  {analysis.targetDomain} • {analysis.targetRole}
-                </span>
-              </div>
-            </div>
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Readiness Overview</span>
           </div>
-
-          {/* Action / Progress Sidebar */}
-          <div className="w-full xl:w-72 flex flex-col items-center xl:items-end space-y-6 pt-6 border-t xl:border-t-0 xl:border-l border-slate-200 xl:pl-8">
-            <button
-              onClick={onReanalyze}
-              disabled={isAnalyzing}
-              className="w-full bg-slate-900 hover:bg-slate-800 text-white transition-all duration-300 rounded-xl py-4 px-6 font-bold flex items-center justify-center gap-3 group shadow-xl hover:shadow-indigo-500/20 disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-              {isAnalyzing ? (
-                <div className="w-5 h-5 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin"></div>
-              ) : (
-                <Zap className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
-              )}
-              <span>{isAnalyzing ? "Analyzing..." : "Refresh Analysis"}</span>
-            </button>
-            <p className="text-xs text-slate-500 font-bold uppercase tracking-wider bg-white/50 px-4 py-2 rounded-xl border border-slate-100">
-              Updated •{" "}
-              {new Date(
-                analysis.updatedAt || analysis.createdAt,
-              ).toLocaleDateString()}
-            </p>
+          <div className="flex items-center gap-2 text-xs text-slate-400">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Updated • {lastUpdated}
           </div>
         </div>
 
-        {/* Progress Bar Bottom */}
-        <div className="relative mt-12 z-10 w-full max-w-4xl mx-auto xl:mx-0">
-          <div className="h-4 bg-slate-200/50 backdrop-blur-sm rounded-full overflow-hidden shadow-inner border border-slate-200">
-            <div
-              className="h-full bg-gradient-to-r from-emerald-400 via-indigo-500 to-violet-500 rounded-full relative"
-              style={{ width: `${analysis.overallReadinessScore || 0}%` }}
-            >
-              <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Vertical Layout for Skills */}
-      <div className="flex flex-col gap-6">
-        {/* Missing Skills Column */}
-        <div className="bg-white/40 backdrop-blur-2xl border border-white rounded-[2.5rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-          <div className="flex items-center gap-5 mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-100 to-white flex items-center justify-center shadow-sm border border-rose-100">
-              <AlertTriangle className="w-7 h-7 text-rose-500" />
-            </div>
-            <div>
-              <h3 className="text-2xl font-black text-slate-800 tracking-tight">
-                Critical Gaps
-              </h3>
-              <p className="text-sm font-semibold text-rose-500/80 uppercase tracking-widest mt-0.5">
-                Immediate Action Required
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            {analysis.missingSkills?.slice(0, 5).map((skill, index) => (
-              <div
-                key={index}
-                className="group bg-white hover:bg-rose-50/30 border border-slate-200 hover:border-rose-200 rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-rose-100/50 hover:-translate-y-1 relative overflow-hidden"
-              >
-                <div className="absolute top-0 left-0 w-1 h-full bg-rose-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div className="flex items-start justify-between mb-4">
-                  <h4 className="font-bold text-slate-800 text-lg leading-tight w-3/4">
-                    {skill.skill}
-                  </h4>
-                  <span className={getPriorityBadge(skill.priority)}>
-                    {skill.priority}
-                  </span>
-                </div>
-                <p className="text-sm text-slate-600 mb-5 line-clamp-2 group-hover:line-clamp-none transition-all leading-relaxed">
-                  {skill.reasoning}
-                </p>
-                <div className="flex flex-wrap items-center gap-3 text-xs font-bold text-slate-600 bg-slate-50/50 px-4 py-3 rounded-xl border border-slate-100">
-                  <span className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-indigo-500" />
-                    {skill.estimatedLearningTime}
-                  </span>
-                  <span className="w-1 h-1 rounded-full bg-slate-300"></span>
-                  <span className="flex items-center gap-2">
-                    <BookOpen className="w-4 h-4 text-orange-500" />
-                    Level:{" "}
-                    <span className="text-slate-800">{skill.difficulty}</span>
-                  </span>
+        <div className="p-6">
+          <div className="flex flex-col md:flex-row gap-8 items-start">
+            {/* Score Visualization */}
+            <div className="flex-shrink-0 flex flex-col items-center gap-4">
+              <div className="relative w-36 h-36">
+                <svg className="w-36 h-36 -rotate-90" viewBox="0 0 144 144">
+                  <circle cx="72" cy="72" r="58" fill="none" stroke="#f1f5f9" strokeWidth="12" />
+                  <circle
+                    cx="72" cy="72" r="58"
+                    fill="none"
+                    stroke="url(#scoreGradient)"
+                    strokeWidth="12"
+                    strokeLinecap="round"
+                    strokeDasharray={`${2 * Math.PI * 58}`}
+                    strokeDashoffset={`${2 * Math.PI * 58 * (1 - percentage / 100)}`}
+                    style={{ transition: "stroke-dashoffset 1.5s ease-in-out" }}
+                  />
+                  <defs>
+                    <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#8b5cf6" />
+                      <stop offset="100%" stopColor="#06b6d4" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-4xl font-black text-slate-800">{animatedScore}</span>
+                  <span className="text-sm text-slate-400 font-medium">/ 100</span>
                 </div>
               </div>
-            ))}
-            {!analysis.missingSkills?.length && (
-              <div className="flex flex-col items-center justify-center py-12 text-center bg-white rounded-2xl border border-slate-200">
-                <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mb-5">
-                  <CheckCircle className="w-10 h-10 text-emerald-500" />
-                </div>
-                <p className="text-slate-800 font-bold text-lg">
-                  No critical missing skills!
-                </p>
-                <p className="text-slate-500 mt-1">You're solid here.</p>
-              </div>
-            )}
-          </div>
-        </div>
 
-        {/* Skills to Improve Column */}
-        <div className="bg-white/40 backdrop-blur-2xl border border-white rounded-[2.5rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-          <div className="flex items-center gap-5 mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-100 to-white flex items-center justify-center shadow-sm border border-amber-100">
-              <TrendingUp className="w-7 h-7 text-amber-500" />
-            </div>
-            <div>
-              <h3 className="text-2xl font-black text-slate-800 tracking-tight">
-                Growth Areas
-              </h3>
-              <p className="text-sm font-semibold text-amber-500/80 uppercase tracking-widest mt-0.5">
-                Level Up Your Foundation
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            {analysis.skillsToImprove?.slice(0, 5).map((skill, index) => (
-              <div
-                key={index}
-                className="group bg-white hover:bg-amber-50/30 border border-slate-200 hover:border-amber-200 rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-amber-100/50 hover:-translate-y-1 relative overflow-hidden"
-              >
-                <div className="absolute top-0 left-0 w-1 h-full bg-amber-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <h4 className="font-bold text-slate-800 text-lg mb-5 leading-tight">
-                  {skill.skill}
-                </h4>
-                <div className="relative mb-5 bg-slate-50 p-4 rounded-xl border border-slate-100">
-                  <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">
-                    <span className="flex items-center gap-1">
-                      <ArrowRight className="w-3 h-3" /> {skill.currentLevel}
-                    </span>
-                    <span className="text-indigo-600 flex items-center gap-1">
-                      <Target className="w-3 h-3" /> {skill.requiredLevel}
-                    </span>
+              {/* Tags */}
+              <div className="flex flex-col gap-2 w-full">
+                {score < 60 && (
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-lg">
+                    <svg className="w-3.5 h-3.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <span className="text-amber-700 text-xs font-semibold">Critical Action Required</span>
                   </div>
-                  <div className="h-2.5 w-full bg-slate-200 rounded-full overflow-hidden flex shadow-inner">
-                    <div className="h-full bg-slate-400 w-1/3"></div>
-                    <div className="h-full bg-gradient-to-r from-amber-400 to-amber-500 w-1/3 animate-pulse"></div>
+                )}
+                {student?.targetRole && (
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-violet-50 border border-violet-200 rounded-lg">
+                    <svg className="w-3.5 h-3.5 text-violet-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <span className="text-violet-700 text-xs font-semibold">{student.targetRole}</span>
                   </div>
-                </div>
-                <p className="text-sm text-slate-600 leading-relaxed group-hover:text-slate-700 transition-colors">
-                  {skill.reasoning}
-                </p>
-              </div>
-            ))}
-            {!analysis.skillsToImprove?.length && (
-              <div className="flex flex-col items-center justify-center py-12 text-center bg-white rounded-2xl border border-slate-200">
-                <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mb-5">
-                  <Star className="w-10 h-10 text-emerald-500" />
-                </div>
-                <p className="text-slate-800 font-bold text-lg">
-                  No improvements needed.
-                </p>
-                <p className="text-slate-500 mt-1">Looking good!</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Strong Skills Column */}
-        <div className="bg-white/40 backdrop-blur-2xl border border-white rounded-[2.5rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-          <div className="flex items-center gap-5 mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-100 to-white flex items-center justify-center shadow-sm border border-emerald-100">
-              <CheckCircle className="w-7 h-7 text-emerald-500" />
-            </div>
-            <div>
-              <h3 className="text-2xl font-black text-slate-800 tracking-tight">
-                Core Strengths
-              </h3>
-              <p className="text-sm font-semibold text-emerald-500/80 uppercase tracking-widest mt-0.5">
-                Competitive Advantages
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            {analysis.strongSkills?.slice(0, 5).map((skill, index) => (
-              <div
-                key={index}
-                className="relative group bg-gradient-to-br from-emerald-50/80 to-white hover:to-emerald-50/50 border border-emerald-100 hover:border-emerald-300 rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-100/60 hover:-translate-y-1 overflow-hidden"
-              >
-                <div className="absolute -top-4 -right-4 p-4 opacity-5 group-hover:opacity-10 transition-opacity transform group-hover:rotate-12 group-hover:scale-110 duration-500">
-                  <Star className="w-32 h-32 fill-emerald-500 text-emerald-500" />
-                </div>
-                <div className="relative z-10">
-                  <h4 className="font-bold text-slate-800 text-lg mb-4 pr-8">
-                    {skill.skill}
-                  </h4>
-                  <div className="flex flex-wrap items-center gap-2 mb-5">
-                    <span className="px-3 py-1.5 bg-white text-emerald-700 shadow-sm rounded-xl text-xs font-black border border-emerald-200/60">
-                      {skill.strengthLevel}
-                    </span>
-                    <span
-                      className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border shadow-sm ${
-                        skill.marketDemand?.toLowerCase() === "high"
-                          ? "bg-indigo-50 text-indigo-700 border-indigo-200/60"
-                          : "bg-white text-slate-600 border-slate-200"
-                      }`}
-                    >
-                      {skill.marketDemand} Demand
-                    </span>
-                  </div>
-                  <p className="text-sm text-emerald-950/70 leading-relaxed font-semibold bg-white/50 p-4 rounded-xl border border-emerald-100/50">
-                    {skill.leverageAdvice}
-                  </p>
-                </div>
-              </div>
-            ))}
-            {!analysis.strongSkills?.length && (
-              <div className="flex flex-col items-center justify-center py-12 text-center bg-white rounded-2xl border border-slate-200">
-                <p className="text-slate-800 font-bold text-lg">
-                  Keep building to develop core strengths.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Strategic Roadmap - Fully Redesigned */}
-      <div className="relative w-full bg-white/40 backdrop-blur-2xl border border-white rounded-[3rem] p-8 md:p-14 shadow-[0_10px_40px_rgb(0,0,0,0.06)] overflow-hidden mt-6 mb-6 group/roadmap">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none group-hover/roadmap:bg-indigo-500/10 transition-colors duration-1000"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none group-hover/roadmap:bg-emerald-500/10 transition-colors duration-1000"></div>
-
-        {/* Header Section */}
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 px-4">
-          <div>
-            <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-50 to-violet-50 border border-indigo-100/50 mb-6 shadow-sm hover:shadow-md transition-shadow">
-              <Target className="w-5 h-5 text-indigo-600" />
-              <span className="text-sm font-bold text-indigo-900 tracking-widest uppercase">
-                Strategic Roadmap
-              </span>
-            </div>
-            <h3 className="text-4xl md:text-5xl font-black text-slate-800 tracking-tight">
-              Your Path to Excellence
-            </h3>
-          </div>
-
-          {/* Integrated Timeline Badge */}
-          <div className="flex flex-col items-start lg:items-end hover:-translate-y-1 transition-transform duration-300">
-            <p className="text-slate-500 font-bold mb-3 uppercase tracking-widest text-xs ml-2">
-              Target Completion
-            </p>
-            <div className="flex items-center gap-5 bg-white pl-4 pr-8 py-4 rounded-[2rem] shadow-xl shadow-indigo-100/50 border border-indigo-50 cursor-default">
-              <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center animate-pulse">
-                <Clock className="w-7 h-7 text-indigo-600" />
-              </div>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-indigo-600 to-violet-600">
-                  {String(analysis.estimatedTimeToReady || "0").match(/\d+/)
-                    ? String(analysis.estimatedTimeToReady || "0").match(
-                        /\d+/,
-                      )[0]
-                    : "0"}
-                </span>
-                <span className="text-xl font-black text-slate-300">WKS</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Vertical Timeline */}
-        <div className="relative z-10 max-w-5xl mx-auto px-4">
-          {/* The continuous vertical line */}
-          <div className="absolute left-[39px] md:left-[51px] top-8 bottom-8 w-1 bg-gradient-to-b from-indigo-500 via-violet-400 to-indigo-100 rounded-full opacity-30"></div>
-
-          <div className="space-y-12">
-            {analysis.priorityLearningPath?.map((step, index) => (
-              <div
-                key={index}
-                className="relative flex items-start gap-8 md:gap-12 group"
-              >
-                {/* Timeline Node */}
-                <div className="relative z-10 shrink-0 mt-2">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white border-[6px] border-indigo-50 rounded-full flex items-center justify-center shadow-xl group-hover:border-indigo-100 transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-1 cursor-default">
-                    <span className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-br from-indigo-600 to-violet-600">
-                      {index + 1}
-                    </span>
-                  </div>
-                  <div className="absolute inset-0 rounded-full border border-indigo-300 opacity-0 group-hover:opacity-100 group-hover:animate-ping pointer-events-none"></div>
-                </div>
-
-                {/* Content Card */}
-                <div className="flex-1 bg-white p-8 md:p-10 rounded-[2.5rem] border border-slate-100/80 shadow-lg shadow-slate-200/40 group-hover:shadow-2xl group-hover:shadow-indigo-200 group-hover:-translate-y-2 group-hover:border-indigo-100 transition-all duration-500 relative overflow-hidden cursor-default">
-                  {/* Subtle hover gradient flare */}
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-indigo-50 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-
-                  {/* Animated header layout */}
-                  <div className="flex items-center gap-3 mb-2 relative h-8">
-                    <Zap className="w-6 h-6 text-indigo-500 opacity-0 group-hover:opacity-100 -translate-x-8 group-hover:translate-x-0 transition-all duration-500 absolute left-0" />
-                    <h4 className="text-xl md:text-2xl font-bold text-slate-800 group-hover:translate-x-10 transition-transform duration-500 absolute left-0">
-                      Phase {index + 1}
-                    </h4>
-                  </div>
-
-                  <p className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium mt-6 group-hover:text-slate-900 transition-colors duration-300 relative z-10">
-                    {step}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Actionable Advice Widget */}
-      {analysis.careerAdvice && (
-        <div className="relative overflow-hidden bg-slate-900 rounded-[2.5rem] p-10 md:p-12 shadow-2xl">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-violet-600/10 rounded-full blur-[100px] pointer-events-none"></div>
-          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
-
-          <div className="relative z-10 flex flex-col md:flex-row gap-10 items-center md:items-start">
-            <div className="w-24 h-24 rounded-[2rem] bg-indigo-500 flex items-center justify-center flex-shrink-0 shadow-[0_0_40px_rgba(99,102,241,0.4)] border border-indigo-400">
-              <Star className="w-12 h-12 text-white fill-white" />
-            </div>
-            <div className="text-center md:text-left flex-1">
-              <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 mb-5">
-                <span className="text-xs font-bold text-indigo-300 tracking-widest uppercase">
-                  Expert Guidance
-                </span>
-              </div>
-              <h3 className="text-3xl font-black text-white mb-6 tracking-tight">
-                Executive Career Advice
-              </h3>
-              <div className="text-slate-300 text-lg leading-relaxed font-light border-l-4 border-indigo-500 pl-6">
-                {Array.isArray(analysis.careerAdvice) ? (
-                  <ul className="space-y-4">
-                    {analysis.careerAdvice.map((advice, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0"></span>
-                        <span>{advice}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>{analysis.careerAdvice}</p>
                 )}
               </div>
             </div>
+
+            {/* Summary Text */}
+            <div className="flex-1">
+              <h2 className="text-xl font-bold text-slate-800 mb-3">AI-Powered Analysis</h2>
+              <div className="relative">
+                <div className="absolute left-0 top-0 bottom-0 w-1 rounded-full bg-gradient-to-b from-violet-500 to-indigo-500" />
+                <p className="pl-4 text-slate-600 text-sm leading-relaxed">
+                  {analysis.analysisSummary}
+                </p>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="mt-5">
+                <div className="flex justify-between text-xs text-slate-500 mb-1.5">
+                  <span>Overall Readiness Progress</span>
+                  <span className="font-semibold text-violet-600">{score}%</span>
+                </div>
+                <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-1000 delay-500"
+                    style={{
+                      width: `${percentage}%`,
+                      background: "linear-gradient(90deg, #8b5cf6, #06b6d4)",
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="grid grid-cols-3 gap-3 mt-4">
+                {[
+                  { label: "Skills Score", value: `${score}%`, color: "from-violet-500 to-purple-600", bg: "bg-violet-50", text: "text-violet-700" },
+                  { label: "Profile", value: `${student?.profileCompletionPercentage || 0}%`, color: "from-blue-500 to-cyan-500", bg: "bg-blue-50", text: "text-blue-700" },
+                  { label: "Resume", value: `${student?.resumeUrl ? 100 : 0}%`, color: "from-green-500 to-emerald-500", bg: "bg-green-50", text: "text-green-700" },
+                ].map((s) => (
+                  <div key={s.label} className={`${s.bg} rounded-xl p-3 text-center`}>
+                    <p className={`text-lg font-bold ${s.text}`}>{s.value}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Refresh Button */}
+          <div className="mt-6 flex items-center justify-between">
+            <button 
+              onClick={onReanalyze}
+              disabled={isAnalyzing}
+              className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-sm font-medium rounded-xl hover:from-violet-700 hover:to-indigo-700 transition-all shadow-md shadow-violet-200 group disabled:opacity-75 disabled:cursor-not-allowed"
+            >
+              {isAnalyzing ? (
+                <svg className="w-4 h-4 animate-spin text-white" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8l-8-0z"></path>
+                </svg>
+              ) : (
+                <svg className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              )}
+              {isAnalyzing ? "Analyzing..." : "Refresh Analysis"}
+            </button>
+            <span className="text-xs text-slate-400">
+              Last analyzed: {lastUpdated}
+            </span>
           </div>
         </div>
-      )}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* 2. Critical Gaps */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden h-fit">
+          <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 bg-gradient-to-r from-red-50 to-orange-50">
+            <div className="w-8 h-8 rounded-xl bg-red-100 flex items-center justify-center">
+              <svg className="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-slate-800">Critical Gaps</h3>
+              <p className="text-xs font-semibold text-red-600 uppercase tracking-wider">Immediate Action Required</p>
+            </div>
+            <div className="ml-auto flex items-center gap-1.5 px-3 py-1 bg-red-100 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <span className="text-red-700 text-xs font-bold">{analysis.missingSkills?.length || 0} Issues</span>
+            </div>
+          </div>
+          <div className="p-6 space-y-4">
+            {analysis.missingSkills?.length ? (
+              analysis.missingSkills.map((gap, index) => {
+                const config = priorityConfig[gap.priority?.toUpperCase()] || priorityConfig.HIGH;
+                return (
+                  <div key={index} className="relative flex gap-4 p-4 rounded-xl border border-slate-100 hover:border-red-200 hover:bg-red-50/30 transition-all duration-200 group">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white text-sm font-bold shadow-md">
+                      {index + 1}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-3 mb-2">
+                        <h4 className="font-bold text-slate-800 text-sm">{gap.skill}</h4>
+                        <span className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${config.bg} ${config.text}`}>
+                          <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
+                          {config.label}
+                        </span>
+                      </div>
+                      <p className="text-slate-500 text-xs leading-relaxed mb-3">{gap.reasoning}</p>
+                      <div className="flex items-center gap-3 text-[11px] text-slate-500">
+                        <span className="font-semibold text-slate-700">Level: {gap.difficulty}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+               <div className="text-center p-4 text-slate-500 text-sm">No critical gaps! Great progress.</div>
+            )}
+          </div>
+        </div>
+
+        {/* 3. Core Strengths */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden h-fit">
+          <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 bg-gradient-to-r from-emerald-50 to-teal-50">
+            <div className="w-8 h-8 rounded-xl bg-emerald-100 flex items-center justify-center">
+              <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-slate-800">Core Strengths</h3>
+              <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Competitive Advantages</p>
+            </div>
+            <div className="ml-auto flex items-center gap-1 text-amber-400">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="w-4 h-4 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
+                ))}
+            </div>
+          </div>
+          <div className="p-6 grid gap-4">
+            {analysis.strongSkills?.length ? (
+              analysis.strongSkills.map((strength, index) => {
+                const color = strengthColors[index % strengthColors.length];
+                return (
+                  <div key={index} className={`relative flex items-center gap-4 p-4 rounded-xl border ${color.border} ${color.bg} hover:shadow-md transition-all duration-200 group overflow-hidden`}>
+                    <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-xl shadow-md border border-white">✨</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <h4 className={`font-bold text-sm ${color.text}`}>{strength.skill}</h4>
+                        <div className="flex items-center gap-2">
+                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${color.badge}`}>
+                            {strength.marketDemand}
+                          </span>
+                        </div>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-0.5">{strength.leverageAdvice}</p>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-center p-4 text-slate-500 text-sm">Building core strengths...</div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Growth Areas */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden lg:max-w-4xl">
+        <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 bg-gradient-to-r from-amber-50 to-yellow-50">
+          <div className="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center">
+            <svg className="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-base font-bold text-slate-800">Growth Areas</h3>
+            <p className="text-xs font-semibold text-amber-600 uppercase tracking-wider">Level Up Your Foundation</p>
+          </div>
+          <div className="ml-auto flex items-center px-3 py-1 bg-amber-100 rounded-full">
+            <span className="text-amber-700 text-xs font-bold">{analysis.skillsToImprove?.length || 0} Skills</span>
+          </div>
+        </div>
+        <div className="p-6 space-y-6">
+          {analysis.skillsToImprove?.map((area, index) => {
+            // Map text severity or skill gap to a percentage
+            const difficultyLevelMap = { beginner: 25, intermediate: 50, advanced: 85 };
+            const currentLevelText = (area.currentLevel || "").toLowerCase();
+            const currentLevelStr = Object.keys(difficultyLevelMap).find(k => currentLevelText.includes(k)) || "intermediate";
+            const currentNumber = difficultyLevelMap[currentLevelStr] || 50;
+            const targetNumber = 95; // default high target
+
+            const gap = targetNumber - currentNumber;
+
+            return (
+              <div key={index} className="group">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-slate-800 text-sm">{area.skill}</span>
+                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-full">+{gap}% to target</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs">
+                    <span className="text-slate-500">Current</span>
+                    <span className="font-bold text-slate-800">{currentNumber}%</span>
+                    <span className="text-slate-300">→</span>
+                    <span className="font-bold text-amber-600">{targetNumber}%</span>
+                    <span className="text-slate-500">Target</span>
+                  </div>
+                </div>
+                <div className="relative h-4 bg-slate-100 rounded-full overflow-hidden mb-2">
+                  <div className="absolute top-0 left-0 h-full rounded-full opacity-30" style={{ width: `${targetNumber}%`, background: "linear-gradient(90deg, #f59e0b, #fbbf24)" }} />
+                  <div className="absolute top-0 left-0 h-full rounded-full transition-all duration-1000" style={{ width: `${currentNumber}%`, background: "linear-gradient(90deg, #3b82f6, #6366f1)" }} />
+                  <div className="absolute top-0 bottom-0 w-0.5 bg-amber-500" style={{ left: `${targetNumber}%` }} />
+                </div>
+                <p className="text-xs text-slate-500 leading-relaxed">{area.reasoning}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 5. Strategic Roadmap */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100" style={{ background: "linear-gradient(135deg, #667eea15 0%, #764ba215 100%)" }}>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-md">
+              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
+            </div>
+            <div>
+              <div className="flex items-center gap-2"><span className="text-xs font-semibold text-violet-600 uppercase tracking-widest">Strategic Roadmap</span></div>
+              <h3 className="text-lg font-bold text-slate-800">Your Path to Excellence</h3>
+            </div>
+          </div>
+          <div className="flex flex-col items-end gap-1">
+            <span className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold">Target Completion</span>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-violet-100 rounded-xl">
+              <svg className="w-4 h-4 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="text-2xl font-black text-violet-700">{totalWeeks}</span>
+              <span className="text-xs text-violet-600 font-medium">WKS</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-6 md:p-8">
+          <div className="relative">
+            {analysis.priorityLearningPath?.map((stepString, index) => {
+              const color = phaseColors[index % phaseColors.length];
+              const isLast = index === analysis.priorityLearningPath.length - 1;
+              const isCurrent = index === 0; // Fake assumption: first step is active
+
+              // basic regex to split "Phase/Step 1: Title - description" if possible
+              const stepMatch = stepString.match(/^(?:Step|Phase)\s*\d*[:\-]*\s*([^-\.]+)(?:[-.](.*))?$/i);
+              let title = `Phase ${index + 1}`;
+              let description = stepString;
+
+              if (stepMatch && stepMatch[1]) {
+                 title = stepMatch[1].trim();
+                 description = stepMatch[2] ? stepMatch[2].trim() : stepString;
+              }
+
+              return (
+                <div key={index} className="flex gap-6 mb-0">
+                  <div className="flex flex-col items-center">
+                    <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white font-black text-sm shadow-lg z-10 ring-4 ring-white ${isCurrent ? color.bg : "bg-slate-200"}`}>
+                      {isCurrent ? <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path d="M5 13l4 4L19 7" /></svg> : (index + 1)}
+                    </div>
+                    {!isLast && <div className={`w-0.5 flex-1 min-h-[60px] mt-1 mb-1 ${isCurrent ? color.line : "bg-slate-100"}`} />}
+                  </div>
+
+                  <div className={`flex-1 mb-6 p-5 rounded-2xl border transition-all duration-200 hover:shadow-md ${isCurrent ? `${color.light} ${color.border} shadow-sm` : "bg-slate-50 border-slate-100 hover:border-slate-200"}`}>
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <div className="flex items-center gap-2">
+                        {isCurrent && (
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${color.light} ${color.text}`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${color.bg} animate-pulse`} />
+                            Active
+                          </span>
+                        )}
+                        <h4 className={`font-bold text-sm ${isCurrent ? color.text : "text-slate-700"}`}>
+                          Phase {index + 1}: {title}
+                        </h4>
+                      </div>
+                      <span className="flex-shrink-0 flex items-center gap-1 px-2.5 py-1 bg-white rounded-lg border border-slate-200 text-[10px] text-slate-500 font-semibold shadow-sm">
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        ~{Math.max(1, Math.floor(totalWeeks / analysis.priorityLearningPath.length))} weeks
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-600 leading-relaxed">{description}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* 6. Career Advice */}
+      <div className="rounded-2xl overflow-hidden shadow-xl lg:max-w-4xl">
+        <div className="relative p-8" style={{ background: "linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)" }}>
+          <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #8b5cf6 0%, transparent 70%)" }} />
+          <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #06b6d4 0%, transparent 70%)" }} />
+
+          <div className="relative flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+              </svg>
+            </div>
+            <div>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-400/30 text-amber-300 text-[10px] font-bold uppercase tracking-widest mb-1">
+                ✨ Expert Guidance
+              </span>
+              <h3 className="text-white text-xl font-bold">Executive Career Advice</h3>
+            </div>
+          </div>
+
+          <div className="relative space-y-4">
+            {(Array.isArray(analysis.careerAdvice) ? analysis.careerAdvice : [analysis.careerAdvice]).map((advice, index, arr) => (
+              <div key={index} className="flex gap-4 group">
+                <div className="flex-shrink-0 flex flex-col items-center pt-1">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold shadow-md">
+                    {index + 1}
+                  </div>
+                  {index < arr.length - 1 && <div className="w-px flex-1 bg-white/10 mt-1 min-h-[20px]" />}
+                </div>
+                <div className="flex-1 pb-2">
+                  <p className="text-white/80 text-sm leading-relaxed group-hover:text-white transition-colors">{advice}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      
     </div>
   );
 };

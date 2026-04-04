@@ -1,0 +1,8 @@
+# Task Checklist for Integrating Personal Landing Component
+
+- [ ] Analyze existing dependencies (`tailwind-merge`, `lucide-react` already present in package.json)
+- [ ] Document instructions for TypeScript and shadcn/ui setup
+- [ ] Create `src/components/ui` folder and add `personal-landing.tsx`
+- [ ] Replace image placeholders with Unsplash stock images
+- [ ] Integrate `<PersonalLanding />` into [App.jsx](file:///d:/project/Portfolio/frontend/src/App.jsx)
+- [ ] Document component requirements, props, and behavior (answers to guidelines)

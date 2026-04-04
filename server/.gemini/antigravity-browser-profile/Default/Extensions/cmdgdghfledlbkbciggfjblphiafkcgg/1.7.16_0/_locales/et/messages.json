@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Olete blokeerinud"
+   },
+   "ads": {
+      "message": "Reklaamid"
+   },
+   "dataSavedTitle": {
+      "message": "Andmed salvestatud"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Rakenda kogu saidile"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Sügavus"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Eelvaade"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Salvesta"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Valija"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Spetsiifilisus"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Olete valinud"
+   },
+   "elementBlocker_title": {
+      "message": "Elementide eemaldaja"
+   },
+   "extDesc": {
+      "message": "Blokeerige reklaamid ja hüpikaknad kõigil veebisaitidel, mida iga päev sirvite"
+   },
+   "extName": {
+      "message": "SBlock – superreklaamide blokeerija"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super reklaamide blokeerija"
+   },
+   "filteringModeBasic": {
+      "message": "Põhiline"
+   },
+   "filteringModeSuper": {
+      "message": "Super Block"
+   },
+   "footerMadeLove": {
+      "message": "Armastusega tehtud"
+   },
+   "footerShareFriends": {
+      "message": "Jaga oma sõpradega"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Laadige kiiremini"
+   },
+   "loveSblockButton": {
+      "message": "Armastad SBlocki?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Jäta arvustus."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "Sellel lehel SBlocki ei toetata"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Blokeerige kohalikus keeles reklaamid"
+   },
+   "optionBlockManually": {
+      "message": "Blokeeri käsitsi"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Avatud"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Lähtesta kõik"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Valija"
+   },
+   "optionBlockTracker": {
+      "message": "Blokeeri jälgija"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignoreeri küpsiste aktsepteerimise hüpikaknaid"
+   },
+   "optionPopupsSocial": {
+      "message": "Blokeeri sotsiaalvidinad"
+   },
+   "reportIssueButton": {
+      "message": "Teatage probleemist"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Räägi meile lähemalt."
+   },
+   "secDuration": {
+      "message": "sek"
+   },
+   "thisPageTitle": {
+      "message": "See leht"
+   },
+   "thisWebsiteTitle": {
+      "message": "See veebisait"
+   },
+   "timeSavedTitle": {
+      "message": "Aega säästetud"
+   }
+}

@@ -1,0 +1,28 @@
+<current_dom_explanation>
+This is a temporary snapshot of the current page's DOM structure. The DOM will change if you navigate to or interact with another page. Use a tool like browser_get_dom to capture and preserve the DOM in your trajectory if needed for later reference.
+</current_dom_explanation>
+<current_dom>
+Sign in with Google
+Choose an account
+to continue to
+[0] (281,435)<button >skillgaplogin />
+[1] (694,380)<div class='VV3oRb YZVTmd SmR8' role='link' />
+	[2] (694,380)<div  />
+		[3] (694,380)<div  />
+			[4] (536,380)<div  />
+				[5] (536,380)<img  />
+			[6] (713,380)<div  />
+				[7] (713,365)<div >Guddu Prasad sah />
+				[8] (713,398)<div >sahguddu164@gmail.com />
+[9] (694,469)<div class='VV3oRb YZVTmd SmR8' role='link' />
+	[10] (616,469)<div  />
+		[11] (536,469)<div  />
+		[12] (635,469)<div >Use another account />
+[13] (196,781)<div class='VfPpkd-TkwUic' role='combobox' />
+	English (United Kingdom)
+	[14] (196,781)<div  />
+[15] (741,781)<a class='AVAq4d TrZEUc' href='https://support.google.com/accounts?hl=en-GB&p=account_iph'>Help />
+[16] (803,781)<a class='AVAq4d TrZEUc' href='https://accounts.google.com/TOS?loc=IN&hl=en-GB&privacy=true'>Privacy />
+[17] (868,781)<a class='AVAq4d TrZEUc' href='https://accounts.google.com/TOS?loc=IN&hl=en-GB'>Terms />
+
+</current_dom>

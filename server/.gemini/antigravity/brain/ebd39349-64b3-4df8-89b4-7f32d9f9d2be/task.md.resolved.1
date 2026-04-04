@@ -1,0 +1,5 @@
+# Task List
+
+- [x] Analyze the "User already exists" error on email verification step.
+- [x] Identify root cause: An unverified user from a previous buggy run is stuck in the database.
+- [x] Update backend `/api/auth/register` to handle re-registration of unverified users gracefully by updating their existing records and sending a new authentication code instead of rejecting the signup request.

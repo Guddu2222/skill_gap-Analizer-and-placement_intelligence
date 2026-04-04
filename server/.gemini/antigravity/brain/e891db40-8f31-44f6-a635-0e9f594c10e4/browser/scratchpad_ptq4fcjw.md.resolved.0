@@ -1,0 +1,6 @@
+# Task: Verify Hero Section Redesign
+
+- [ ] Navigate to http://localhost:5174/
+- [ ] Wait for animations to finish
+- [ ] Capture a screenshot of the Hero section
+- [ ] Verify floating widgets and large typography

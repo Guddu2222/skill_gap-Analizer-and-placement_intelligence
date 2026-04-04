@@ -1,0 +1,38 @@
+<current_dom_explanation>
+This is a temporary snapshot of the current page's DOM structure. The DOM will change if you navigate to or interact with another page. Use a tool like browser_get_dom to capture and preserve the DOM in your trajectory if needed for later reference.
+</current_dom_explanation>
+<current_dom>
+[0] (500,500)<div  />
+	PlacementIQ
+	[1] (122,176)<a class='
+              flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
+              bg-blue-50 text-blue-700
+            ' href='/college'>Dashboard />
+	[2] (122,247)<a class='
+              flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
+              text-gray-600 hover:bg-gray-50 hover:text-gray-900
+            ' href='/college/drives'>Campus Drives />
+	[3] (122,318)<a class='
+              flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
+              text-gray-600 hover:bg-gray-50 hover:text-gray-900
+            ' href='/college/students'>Students />
+	[4] (122,389)<a class='
+              flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
+              text-gray-600 hover:bg-gray-50 hover:text-gray-900
+            ' href='/college/recruiters'>Recruiters />
+	[5] (122,460)<a class='
+              flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
+              text-gray-600 hover:bg-gray-50 hover:text-gray-900
+            ' href='/college/analytics'>Analytics />
+	[6] (122,867)<button class='flex items-center gap-3 px-4 py-3 w-full text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-xl transition-all'>Settings />
+	[7] (122,944)<button class='flex items-center gap-3 px-4 py-3 w-full text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all'>Logout />
+	Placement Command Center
+	Academic Year Overview
+	No token, authorization denied
+	[8] (903,89)<button class='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 disabled:opacity-50'>Export Data />
+	You are not linked to a college, or the college record is missing. Dashboard and student data are available only for college admins with an associated college.
+	[9] (394,417)<button class='flex-1 px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 bg-blue-600 text-white shadow-lg'>Overview />
+	[10] (623,417)<button class='flex-1 px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-100'>Students />
+	[11] (852,417)<button class='flex-1 px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-100'>Skills Analytics />
+
+</current_dom>

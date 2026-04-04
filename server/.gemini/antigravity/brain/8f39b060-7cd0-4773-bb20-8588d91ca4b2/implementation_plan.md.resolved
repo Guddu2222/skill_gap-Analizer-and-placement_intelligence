@@ -1,0 +1,71 @@
+# Gmail Verification Implementation Plan
+
+## Goal Description
+Implement a secure email verification process using a 6-digit code sent to the user's Gmail address. This ensures that users provide a valid email and that the account is verified before full access is granted.
+
+## User Review Required
+> [!IMPORTANT]
+> This change requires a valid Gmail account and an App Password for the backend to send emails. The user will need to provide `EMAIL_USER` and `EMAIL_PASS` in the [.env](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/.env) file.
+
+## Proposed Changes
+
+### Server
+
+#### [NEW] [sendEmail.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/utils/sendEmail.js)
+- Create a utility function to send emails using `nodemailer` and Gmail.
+
+#### [MODIFY] [User.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/models/User.js)
+- Add fields:
+    - `verificationCode`: String
+    - `verificationCodeExpires`: Date
+    - `isVerified`: Boolean (default: false)
+
+#### [MODIFY] [auth.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/routes/auth.js)
+- Update `/register`:
+    - Generate a 6-digit random code.
+    - Save code and expiration to the user.
+    - Send email with the code.
+    - Return a message indicating email sent.
+- Add `/verify-email`:
+    - Accept email and code.
+    - Verify code matches and is not expired.
+    - Set `isVerified` to true.
+    - Clear verification fields.
+- Add `/resend-verification`:
+    - Generate new code.
+    - Send email.
+
+### Client
+
+#### [MODIFY] [EmailVerificationPage.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/EmailVerificationPage.jsx)
+- Add state for verification code input (6 digits).
+- Add functionality to submit the code to `/verify-email`.
+- Handle success (redirect to login/dashboard) and error (show message).
+- Implement resend functionality calling `/resend-verification`.
+
+## Verification Plan
+
+### Automated Tests
+- None currently.
+
+### Manual Verification
+1.  **Environment Setup**:
+    - Add `EMAIL_USER` (my email) and `EMAIL_PASS` (app password) to [.env](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/.env).
+2.  **Signup Flow**:
+    - Go to `/signup` (or role selection -> signup).
+    - Fill form with a valid Gmail address.
+    - Submit.
+    - Check terminal/network tab for successful response.
+    - Check Gmail inbox for the verification code.
+3.  **Verification Flow**:
+    - Enter the received code on `/verify-email` page.
+    - Click Verify.
+    - Expected: Success message and redirection.
+    - Check Database: `isVerified` should be true.
+4.  **Error Handling**:
+    - Enter wrong code -> Error message.
+    - Enter expired code -> Error message.
+5.  **Resend Flow**:
+    - Click Resend.
+    - Check Gmail for new code.
+    - Old code should be invalid (if we overwrite).

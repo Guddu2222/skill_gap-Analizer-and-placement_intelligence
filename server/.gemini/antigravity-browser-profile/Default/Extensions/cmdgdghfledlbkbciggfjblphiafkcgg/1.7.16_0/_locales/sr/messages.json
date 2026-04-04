@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Блокирали сте"
+   },
+   "ads": {
+      "message": "Огласи"
+   },
+   "dataSavedTitle": {
+      "message": "Подаци су сачувани"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Примените на све сајтове"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Дубина"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Преглед"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Сачувај"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Селектор"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Специфичност"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Изабрали сте"
+   },
+   "elementBlocker_title": {
+      "message": "Елемент Ремовер"
+   },
+   "extDesc": {
+      "message": "Блокирајте огласе и искачуће прозоре на свим веб локацијама које свакодневно прегледате"
+   },
+   "extName": {
+      "message": "СБлоцк - Супер Ад Блоцкер"
+   },
+   "extNameFirstShort": {
+      "message": "СБлоцк"
+   },
+   "extNameLastShort": {
+      "message": "Супер блокатор огласа"
+   },
+   "filteringModeBasic": {
+      "message": "Басиц"
+   },
+   "filteringModeSuper": {
+      "message": "Супер Блоцк"
+   },
+   "footerMadeLove": {
+      "message": "Направљено с љубављу у"
+   },
+   "footerShareFriends": {
+      "message": "Поделите са својим пријатељима"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Учитај брже"
+   },
+   "loveSblockButton": {
+      "message": "Волите СБлоцк?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Оставите рецензију."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "СБлоцк није подржан на овој страници"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Блокирајте огласе на локалном језику"
+   },
+   "optionBlockManually": {
+      "message": "Блокирајте ручно"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Отвори"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Ресетуј све"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Селектор"
+   },
+   "optionBlockTracker": {
+      "message": "Блоцк трацкер"
+   },
+   "optionPopupsCookie": {
+      "message": "Игнориши искачуће прозоре за прихватање колачића"
+   },
+   "optionPopupsSocial": {
+      "message": "Блокирајте виџете за друштвене мреже"
+   },
+   "reportIssueButton": {
+      "message": "Пријавите проблем"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Реци нам више."
+   },
+   "secDuration": {
+      "message": "сец"
+   },
+   "thisPageTitle": {
+      "message": "Ова страница"
+   },
+   "thisWebsiteTitle": {
+      "message": "Ова веб локација"
+   },
+   "timeSavedTitle": {
+      "message": "Уштеђено време"
+   }
+}

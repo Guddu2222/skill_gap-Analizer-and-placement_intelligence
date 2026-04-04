@@ -1,0 +1,59 @@
+# Placement Intelligence Platform - Walkthrough
+
+## Prerequisite
+- Node.js installed
+- MongoDB installed and running locally on port 27017
+
+## Project Structure
+- **server**: Node.js/Express, MongoDB Backend
+- **client**: React + Vite, Tailwind CSS Frontend
+
+## How to Run
+
+### 1. Backend Setup
+1. Open a terminal and navigate to `server`:
+   ```bash
+   cd server
+   ```
+2. Install dependencies (if not done):
+   ```bash
+   npm install
+   ```
+3. Seed the database (optional):
+   ```bash
+   node seed/seedData.js
+   ```
+4. Start the server:
+   ```bash
+   npm run dev
+   ```
+   Server runs on `http://localhost:5000`
+
+### 2. Frontend Setup
+1. Open a new terminal and navigate to `client`:
+   ```bash
+   cd client
+   ```
+2. Install dependencies (if not done):
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+   Frontend runs on `http://localhost:5173` (typically)
+
+## Features Implemented
+- **Landing Page**: Modern UI with "PlacementAI" branding.
+- **College Dashboard**: Placement analytics, trends, and action items.
+- **Recruiter Dashboard**: Hiring funnel, stats, and interview schedule.
+- **Student Dashboard**: Skill analysis (Radar chart), learning roadmap.
+- **Backend API**:
+    - Auth (Register/Login)
+    - Jobs (CRUD)
+    - Analytics (Mock data endpoint)
+
+## Verification
+- Navigate to `http://localhost:5173/` to see the Landing Page.
+- Click "Log in" or navigate to `/college`, `/recruiter`, `/student` to see respective dashboards.

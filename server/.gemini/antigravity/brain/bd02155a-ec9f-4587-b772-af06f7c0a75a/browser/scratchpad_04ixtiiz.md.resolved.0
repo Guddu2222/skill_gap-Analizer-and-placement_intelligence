@@ -1,0 +1,8 @@
+# Debugging Blank Page Issue Task
+
+- [ ] Navigate to http://localhost:5173/signin
+- [ ] Wait 2 seconds and take a screenshot
+- [ ] Click "Google" button to trigger OAuth
+- [ ] Observe redirection and final URL
+- [ ] Check DevTools Console for errors
+- [ ] Screenshot final state and Console

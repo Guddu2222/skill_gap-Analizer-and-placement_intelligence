@@ -1,0 +1,23 @@
+# Vercel Deployment Fixes Walkthrough
+
+I have implemented the necessary configuration changes to ensure that both your frontend and backend run seamlessly on Vercel without throwing 404 errors. 
+
+## Changes Made
+
+### 1. Frontend (Client) Fixes
+Added [vercel.json](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/vercel.json) to intercept unknown routing paths (like `/student` or `/login`) and properly route them back to the [index.html](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/index.html) file where React Router can take over.
+
+### 2. Backend (Server) Fixes
+- Added `module.exports = app` to the bottom of [index.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/index.js) so Vercel can wrap your Express server into serverless functions.
+- Added [vercel.json](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/vercel.json) to explicitly tell Vercel to compile and expose the Node.js API using the `@vercel/node` runtime.
+
+## Next Steps to Deploy
+
+Now that these configurations are securely in your codebase, all you have to do is:
+1. **Commit and Push:** Add these changes to your git repository (`git add .`, `git commit -m "fix Vercel 404 deployments"`, `git push`).
+2. **Watch Vercel Re-Deploy:** Vercel will trigger an automatic new build. Once finished, navigating directly to dashboard routes on your live URL will properly work, and fetching API data from the backend will no longer result in 404 errors. 
+
+> [!TIP]
+> Ensure that Vercel configuration for your client (Frontend) points back to the URL of your Vercel Node server. This is frequently set in the Vercel dashboard using the `VITE_API_URL` environment variable.
+
+Feel free to verify these locally first using the command line (your local Vite and Express servers won't be impacted negatively by these Vercel configurations).

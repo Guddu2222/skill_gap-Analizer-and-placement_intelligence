@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Bạn đã chặn"
+   },
+   "ads": {
+      "message": "Quảng cáo"
+   },
+   "dataSavedTitle": {
+      "message": "Đã lưu dữ liệu"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Áp dụng cho tất cả các trang web"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Độ sâu"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Xem trước"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Cứu"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Bộ chọn"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Tính đặc hiệu"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Bạn đã chọn"
+   },
+   "elementBlocker_title": {
+      "message": "Loại bỏ phần tử"
+   },
+   "extDesc": {
+      "message": "Chặn quảng cáo và cửa sổ bật lên trên Tất cả các trang web bạn duyệt hàng ngày"
+   },
+   "extName": {
+      "message": "SBlock - Trình chặn quảng cáo siêu hạng"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Siêu chặn quảng cáo"
+   },
+   "filteringModeBasic": {
+      "message": "Nền tảng"
+   },
+   "filteringModeSuper": {
+      "message": "Siêu khối"
+   },
+   "footerMadeLove": {
+      "message": "Được làm bằng tình yêu trong"
+   },
+   "footerShareFriends": {
+      "message": "Chia sẻ với bạn bè của bạn"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Tải nhanh hơn"
+   },
+   "loveSblockButton": {
+      "message": "Yêu SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Để lại một đánh giá."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock không được hỗ trợ trên trang này"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Chặn quảng cáo bằng ngôn ngữ địa phương"
+   },
+   "optionBlockManually": {
+      "message": "Chặn thủ công"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Mở"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Đặt lại tất cả"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Bộ chọn"
+   },
+   "optionBlockTracker": {
+      "message": "Chặn theo dõi"
+   },
+   "optionPopupsCookie": {
+      "message": "Bỏ qua cửa sổ bật lên chấp nhận cookie"
+   },
+   "optionPopupsSocial": {
+      "message": "Chặn các tiện ích xã hội"
+   },
+   "reportIssueButton": {
+      "message": "Báo cáo một vấn đề"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Hãy cho chúng tôi biết thêm."
+   },
+   "secDuration": {
+      "message": "giây"
+   },
+   "thisPageTitle": {
+      "message": "Trang này"
+   },
+   "thisWebsiteTitle": {
+      "message": "Trang web này"
+   },
+   "timeSavedTitle": {
+      "message": "Đã lưu thời gian"
+   }
+}

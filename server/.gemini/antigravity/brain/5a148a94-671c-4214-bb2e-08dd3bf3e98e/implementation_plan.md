@@ -1,0 +1,51 @@
+# Integrating Personal Landing Component
+
+This document outlines the approach to integrate the `PersonalLanding` component into the existing MERN stack portfolio frontend.
+
+## 1. Analysis & Answers to Guidelines
+
+**1. Analyze the component structure and identify all required dependencies**
+The component relies on React (`useRef`, `useState`), `tailwind-merge` (for className merging), and `lucide-react` (for SVG icons). 
+*Status*: `tailwind-merge` and `lucide-react` are **already installed** in `package.json`.
+
+**2. Review the component's arguments and state**
+- `HeroSection`, `AboutBlock`, `SocialsBlock` are stateless UI building blocks.
+- `ConnectSection` uses local state (`message`, `showToast`, `error`) and `useRef` to manage form input, validation, and visual feedback (toast notification).
+
+**3. Identify required context providers hooks**
+- No external context providers or global state managers (like Redux/Zustand) are required since state is localized to the `ConnectSection`.
+
+**4. Questions to Ask**
+- **What data/props will be passed to this component?** Currently, the component has hardcoded data (e.g., "Hi, I'm Ankit", social links). In the future, this could accept a `userData` prop mapping to the MongoDB backend to dynamicize the portfolio.
+- **Are there any specific state management requirements?** Local `useState` handles the form typing and simple submission toast perfectly. For full backend integration, this would need an API call `fetch('/api/contact', ...)` in `handleSend`.
+- **Are there any required assets?** Uses one avatar image. I will replace the placeholder with an Unsplash stock profile image.
+- **What is the expected responsive behavior?** It uses Tailwind's mobile-first utilities (`text-5xl md:text-6xl`, `flex-wrap`) to ensure it looks excellent across device widths.
+- **What is the best place to use this component?** It perfectly fits as the main landing screen, replacing the current `Hero` component entirely. It will be mounted in `App.jsx` as the first section.
+
+## 2. shadcn/ui & TypeScript Setup Instructions
+
+The prompt requested instructions if the `.tsx` component is added to a non-TS/shadcn project:
+1. **TypeScript Setup**: Since this is a Vite project, Vite will compile `.tsx` successfully out-of-the-box using esbuild. To get full type checking, you would run `npm i -D typescript @types/node` and initialize `npx tsc --init`.
+2. **Components Default Path**: The default path for shadcn is `src/components/ui`. This isolates generic, reusable UI parts (buttons, dialogs, purely visual blocks) structurally from higher-level feature components.
+3. **shadcn/ui CLI**: Because `tailwind-merge` and `lucide-react` are already present, you can initialize shadcn anytime by running `npx shadcn-ui@latest init`. This asks for the components folder (`src/components/ui`) and the utility file (`src/lib/utils.ts` usually containing a `cn` helper merging `clsx` and `twMerge`).
+
+## 3. Proposed Changes
+
+### `frontend`
+#### [NEW] src/components/ui/personal-landing.tsx
+- Creating the `personal-landing.tsx` component in `src/components/ui` as requested. 
+- Using standard `lucide-react` icons.
+- Replacing the `dicebear` avatar with a sleek Unsplash profile image.
+
+#### [MODIFY] src/App.jsx
+- Import `PersonalLanding` from `./components/ui/personal-landing`.
+- Replace the existing `<Hero />` call with `<PersonalLanding />`. We will leave `<Projects />`, `<Experience />`, and `<Contact />` for now, though you might want to eventually remove the old Contact if `ConnectSection` replaces it!
+
+## Verification Plan
+
+### Manual Verification
+1. Run the local Vite server (`npm run dev`).
+2. Visit `http://localhost:5173`.
+3. Verify the layout renders matching the prompt's aesthetic (glow effects, animated background).
+4. Verify the Connect Form validates input (min 3 chars) and shows the Toast on success.
+5. Verify responsive layout shrinks gracefully on mobile views.

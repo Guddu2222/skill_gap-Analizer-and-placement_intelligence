@@ -1,0 +1,26 @@
+# Authentication UI & Security Enhancements
+
+## Phase 1: Planning
+- [x] Analyze user's provided UI design (Glassmorphism).
+- [x] Review current backend authentication flow ([server/controllers/authController.js](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js), [server/models/User.js](file:///d:/project/Smart%20Expense%20Manager/server/models/User.js)).
+- [x] Draft [implementation_plan.md](file:///C:/Users/guddu/.gemini/antigravity/brain/c4b3a8aa-1ebf-40fe-9675-ed77cbb7fd67/implementation_plan.md) for UI overhaul and backend security upgrades (Cookies & Email Verification).
+- [x] Get user approval on the implementation plan.
+
+## Phase 2: Backend Authentication Enhancements
+- [/] **Database & Models**: Update [User](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#45-77) model to include `isVerified` and `verificationToken`/`otp` fields.
+- [/] **Email Service**: Set up `nodemailer` utility for sending verification emails.
+- [ ] **Registration Flow**: Modfiy signup endpoint to send a verification email instead of immediately granting full access.
+- [ ] **Verification Endpoint**: Create an endpoint to verify the email token/OTP.
+- [ ] **Cookie Sessions**: Update [login](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#45-77) and [register](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#11-44) endpoints to issue HTTP-only cookies instead of returning raw JWTs in the response body. Add a `logout` endpoint to clear the cookie.
+- [ ] **Middleware**: Update `authMiddleware` to read the JWT from cookies rather than the Authorization header.
+
+## Phase 3: Frontend UI Revamp (Glassmorphism)
+- [ ] **Assets**: Generate or source a high-quality abstract background image `authBg.png`.
+- [ ] **Register Component**: Redesign [Register.jsx](file:///d:/project/Smart%20Expense%20Manager/client/src/pages/Register.jsx) using the provided glassmorphism Tailwind CSS styling. Integrate email verification UI flow (e.g., prompt user to check email).
+- [ ] **Login Component**: Redesign [Login.jsx](file:///d:/project/Smart%20Expense%20Manager/client/src/pages/Login.jsx) based on the new design.
+- [ ] **Context/API**: Update `AuthContext` and Axios instances to include `withCredentials: true` so cookies are sent automatically.
+
+## Phase 4: Verification & Polish
+- [ ] Test complete signup -> verify -> login flow.
+- [ ] Verify HTTP-only cookies are being set properly.
+- [ ] Review error handling and form validation.

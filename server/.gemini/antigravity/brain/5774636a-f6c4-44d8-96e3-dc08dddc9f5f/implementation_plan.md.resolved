@@ -1,0 +1,25 @@
+# Restructuring Dashboard Navigation
+
+To clean up the dashboard UI, we are entirely removing the horizontal tab bar and mapping those powerful features dynamically into the core platform Sidebar!
+
+## Proposed Changes
+
+### 1. Route Configuration ([client/src/App.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/App.jsx))
+We will add standard React Router routes for all 8 student features so they have their own URLs.
+* **[MODIFY] [client/src/App.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/App.jsx)**
+  * Add explicit routes for `/student/overview`, `/student/paths`, `/student/skills`, etc.
+  * Pass a hardcoded `activeRoute` prop to the [StudentDashboard](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/StudentDashboard.jsx#21-425) component for each route.
+
+### 2. Global Sidebar Updates ([client/src/components/Sidebar.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/Sidebar.jsx))
+* **[MODIFY] [client/src/components/Sidebar.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/Sidebar.jsx)**
+  * Update the `student` role navigation array to include the newly routed features.
+  * Import mapping icons for these routes (`BookOpen`, `Target`, `Award`, etc.).
+
+### 3. Dashboard Component Logic & UI Clean up ([client/src/pages/StudentDashboard.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/StudentDashboard.jsx))
+* **[MODIFY] [client/src/pages/StudentDashboard.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/StudentDashboard.jsx)**
+  * Add an `activeRoute` prop to the component signature.
+  * Implement a `useEffect` hook to synchronize the local component `activeTab` with the URL-driven `activeRoute`.
+  * Completely delete the massive `<div className="bg-white rounded-2xl... Navigation Tabs">` block containing the 8 horizontal buttons!
+
+## Review Required
+Once you approve this structural change, I will automatically tear out the clutter and inject these features into your clean Sidebar!

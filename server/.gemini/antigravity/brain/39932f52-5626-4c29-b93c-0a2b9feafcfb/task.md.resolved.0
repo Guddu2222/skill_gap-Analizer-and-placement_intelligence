@@ -1,0 +1,25 @@
+# Implementing Progressive Profiling (Option 2)
+
+## Phase 1: Planning
+- [x] Analyze current frontend ([Step4SkillsResume.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/signup-steps/Step4SkillsResume.jsx), [StudentSignup.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/StudentSignup.jsx)) and backend ([Student.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/models/Student.js) model).
+- [ ] Create implementation plan and task breakdown.
+
+## Phase 2: Frontend Signup Redesign (Skill Collection only)
+- [ ] Refactor [Step4SkillsResume.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/signup-steps/Step4SkillsResume.jsx) to remove Resume fields entirely.
+- [ ] Rename the component references in [StudentSignup.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/StudentSignup.jsx).
+- [ ] Polish the UI of the Skills section to be premium and modern.
+
+## Phase 3: Dashboard Resume Upload UI
+- [ ] Create a specialized `ResumeUploadWidget.jsx` with drag-and-drop, upload progress animation, and a premium Glassmorphism aesthetic.
+- [ ] Integrate the `ResumeUploadWidget` into [StudentDashboard.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/StudentDashboard.jsx) if the student has not yet uploaded a resume.
+- [ ] Bind widget state to API wrapper.
+
+## Phase 4: Backend File Upload Integration
+- [ ] Install necessary packages (`multer`, `cloudinary`, `multer-storage-cloudinary`) on the backend.
+- [ ] Create a Cloudinary config and multer upload middleware.
+- [ ] Create a `POST /api/student/resume-upload` endpoint that handles the file, updates the [Student](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/StudentSignup.jsx#13-179) document's `resumeUrl`, and returns the updated completion percentage.
+- [ ] Ensure the file endpoints are secured.
+
+## Phase 5: Verification & Polish
+- [ ] Test the entire signup flow (ensuring no resume requirement blocking).
+- [ ] Test the dashboard resume upload and progress bar updates.

@@ -1,0 +1,30 @@
+# Image Upload Feature for Crop Advisory
+
+This plan outlines the steps to implement an image upload feature allowing farmers to upload pictures of their crops alongside their query for more accurate advice.
+
+## Proposed Changes
+
+### Backend Updates
+
+#### [MODIFY] [server/index.js](file:///d:/project/AI-Powered%20Local%20Crop%20Advisory%20System/server/index.js)
+- Update `express.json()` middleware to increase the request body size limit (e.g., to '10mb' or '50mb') to accommodate base64-encoded image payloads.
+- Update the `/api/advise` endpoint to destructure `image` (an object containing `inlineData` with base64 `data` and `mimeType`) from `req.body` in addition to the `prompt`.
+- Modify the Gemini API call to pass an array `[systemInstruction, image]` to `generateContent` if an image is provided.
+- Adjust the `systemInstruction` slightly to prompt the AI to analyze the provided image if present.
+
+### Frontend Updates
+
+#### [MODIFY] [client/src/App.jsx](file:///d:/project/AI-Powered%20Local%20Crop%20Advisory%20System/client/src/App.jsx)
+- Introduce new state variables `selectedImage` (File object) and `imagePreview` (base64 data URL).
+- Add an `<input type="file" accept="image/*" />` to the UI, likely styled as an icon button next to the microphone.
+- Implement a helper function to convert the selected file to a base64 `Promise` via `FileReader`.
+- Update the UI to display a thumbnail of the `imagePreview` with a clear button to remove it.
+- Modify the [getAdvisory](file:///d:/project/AI-Powered%20Local%20Crop%20Advisory%20System/client/src/App.jsx#75-102) function to include the base64 string and its mime-type in the JSON request body sent to the backend.
+
+## Verification Plan
+
+### Manual Verification
+1. Open the web app and write a query without an image to ensure the old functionality still works.
+2. Select an image using the new upload button and ensure the thumbnail preview renders correctly.
+3. Submit a query with the image (e.g., "What is wrong with these leaves?") and verify the AI responds based on the visual context.
+4. Verify error handling for files that are too large or unsupported formats.

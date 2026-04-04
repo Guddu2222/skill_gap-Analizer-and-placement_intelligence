@@ -1,0 +1,38 @@
+# Placement Intelligence Platform Tasks
+
+- [/] Project Initialization <!-- id: 0 -->
+    - [x] Create monorepo structure (client, server) <!-- id: 1 -->
+    - [x] Initialize backend (Node/Express) <!-- id: 2 -->
+    - [x] Initialize frontend (React/Vite/Tailwind) <!-- id: 3 -->
+- [/] Backend Implementation <!-- id: 4 -->
+    - [x] Database Schema (Mongoose) <!-- id: 5 -->
+    - [x] API Routes (Auth, Students, Jobs, analytics) <!-- id: 6 -->
+- [x] Frontend Implementation <!-- id: 7 -->
+    - [x] Landing Page (PlacementAI) <!-- id: 8 -->
+    - [x] Placement Command Center (College Dashboard) <!-- id: 9 -->
+    - [x] Recruiter Dashboard (PlacementIQ) <!-- id: 10 -->
+    - [x] Student Dashboard <!-- id: 11 -->
+- [x] Integration <!-- id: 12 -->
+    - [x] Connect Frontend to Backend APIs <!-- id: 13 -->
+- [x] Debugging <!-- id: 14 -->
+    - [x] Fix missing frontend scripts and dependencies <!-- id: 15 -->
+    - [x] Create missing Vite config and entry files <!-- id: 16 -->
+    - [x] Create missing Vite config and entry files <!-- id: 16 -->
+    - [x] Fix missing PostCSS config <!-- id: 17 -->
+- [x] Student Features Implementation <!-- id: 18 -->
+    - [x] Backend: Alumni & Interview Schemas <!-- id: 19 -->
+    - [x] Backend: Student Intelligence APIs (Skill Gap, Fit Score) <!-- id: 20 -->
+    - [x] Frontend: Skill Intelligence Page <!-- id: 21 -->
+    - [x] Frontend: Alumni Network Page <!-- id: 22 -->
+    - [x] Frontend: Interview Prep Page <!-- id: 23 -->
+- [/] College Features Implementation <!-- id: 24 -->
+    - [x] Backend: Analytics for Curriculum Gap & At-Risk <!-- id: 25 -->
+    - [x] Backend: Automated Shortlisting API <!-- id: 26 -->
+    - [x] Frontend: Dashboard Widgets (Gap Analysis, At-Risk) <!-- id: 27 -->
+    - [x] Frontend: Recruiter CRM Page <!-- id: 28 -->
+- [x] Recruiter Features Implementation <!-- id: 29 -->
+    - [x] Backend: Offer Probability & ROI APIs <!-- id: 30 -->
+    - [x] Backend: Automated Scheduling API <!-- id: 31 -->
+    - [x] Frontend: Smart Shortlisting & Scheduling UI <!-- id: 32 -->
+- [ ] UI Refinements <!-- id: 33 -->
+    - [ ] Update Landing Page Cards with Images <!-- id: 34 -->

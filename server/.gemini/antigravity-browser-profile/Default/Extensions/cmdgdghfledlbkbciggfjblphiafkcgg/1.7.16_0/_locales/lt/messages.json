@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Jūs užblokavote"
+   },
+   "ads": {
+      "message": "Skelbimai"
+   },
+   "dataSavedTitle": {
+      "message": "Duomenys išsaugoti"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Taikyti visai svetainei"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Gylis"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Peržiūra"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Išsaugoti"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Rinkiklis"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Specifiškumas"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Jūs pasirinkote"
+   },
+   "elementBlocker_title": {
+      "message": "Elementų šalinimo priemonė"
+   },
+   "extDesc": {
+      "message": "Blokuokite skelbimus ir iššokančiuosius langus visose svetainėse, kurias naršote kiekvieną dieną"
+   },
+   "extName": {
+      "message": "SBlock – super skelbimų blokatorius"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super skelbimų blokatorius"
+   },
+   "filteringModeBasic": {
+      "message": "Pagrindinis"
+   },
+   "filteringModeSuper": {
+      "message": "Super blokas"
+   },
+   "footerMadeLove": {
+      "message": "Pagaminta su meile"
+   },
+   "footerShareFriends": {
+      "message": "Pasidalinkite su draugais"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Įkelkite greičiau"
+   },
+   "loveSblockButton": {
+      "message": "Mėgsti SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Palikite atsiliepimą."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock šiame puslapyje nepalaikomas"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Blokuoti skelbimus vietine kalba"
+   },
+   "optionBlockManually": {
+      "message": "Blokuoti rankiniu būdu"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Atidaryti"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Iš naujo nustatyti viską"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Rinkiklis"
+   },
+   "optionBlockTracker": {
+      "message": "Blokuoti sekiklį"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignoruoti iššokančius slapukų priėmimo langus"
+   },
+   "optionPopupsSocial": {
+      "message": "Blokuoti socialinius valdiklius"
+   },
+   "reportIssueButton": {
+      "message": "Pranešti apie problemą"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Papasakok daugiau."
+   },
+   "secDuration": {
+      "message": "sek"
+   },
+   "thisPageTitle": {
+      "message": "Šis puslapis"
+   },
+   "thisWebsiteTitle": {
+      "message": "Ši svetainė"
+   },
+   "timeSavedTitle": {
+      "message": "Sutaupytas laikas"
+   }
+}

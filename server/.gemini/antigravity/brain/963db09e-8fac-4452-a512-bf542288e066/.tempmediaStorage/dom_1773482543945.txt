@@ -1,0 +1,12 @@
+[0] (500,500)<div  />
+	Kisan Mitra AI 🌾
+	Haryana's Hyperlocal Crop Advisor
+	💡
+	Tip:
+	Tap the mic & ask in Hindi or English — "Gehu ke patte peele ho rahe hain"
+	🤖
+	Namaste! Main aapka krishi sahayak hoon. Koi bhi fasal ki samasya bataiye — main diagnosis aur upay dunga. 🌱
+	[1] (500,819)<button aria-label='Start recording' class='relative flex items-center justify-center w-20 h-20 rounded-full shadow-lg
+              transition-all duration-300 ease-out transform active:scale-95 hover:scale-105
+              bg-gradient-to-br from-green-500 to-emerald-600 shadow-green-200' />
+	Tap to ask your farming question

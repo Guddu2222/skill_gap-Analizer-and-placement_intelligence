@@ -1,0 +1,90 @@
+<current_dom_explanation>
+This is a temporary snapshot of the current page's DOM structure. The DOM will change if you navigate to or interact with another page. Use a tool like browser_get_dom to capture and preserve the DOM in your trajectory if needed for later reference.
+</current_dom_explanation>
+<current_dom>
+Start your free trial with $300 in credit. Don't worry – you won't be charged if you run out of credit.
+[0] (678,35)<a aria-label='Learn more about the free trial programme. external, opens new window' class='cfc-doc-link' href='https://cloud.google.com/free/?hl=en_GB' />
+	[1] (671,36)<span >Learn more />
+	[2] (711,36)<cm-icon aria-label='external, opens new window' class='cm-icon-external-link' role='img' />
+[3] (866,35)<button aria-label='Dismiss full account activation banner' class='mdc-button mat-mdc-button-base gmat-mdc-button mat-mdc-button mat-unthemed cm-button ng-star-inserted'>Dismiss />
+	Dismiss
+[4] (951,35)<button aria-label='Start free' class='mdc-button mat-mdc-button-base gmat-mdc-button mat-primary cm-button mdc-button--unelevated mat-mdc-unelevated-button ng-star-inserted'>Start free />
+	Start free
+Skip to main content
+Keyboard shortcuts
+Accessibility help
+Accessibility feedback
+[5] (27,107)<button aria-label='Navigation menu (.)' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button pcc-platform-bar-button mat-focus-indicator mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' />
+	[6] (27,107)<cm-icon  />
+[7] (115,107)<a aria-label='Google Cloud Platform Home' class='cfc-logo-anchor mat-focus-indicator' href='/?project=skillgap-analizer' />
+[8] (267,107)<button aria-label='You're currently working in skillgap-analizer. Hit enter to switch projects, folders or organisations' class='mdc-button mat-mdc-button-base gmat-mdc-button ng-tns-c1471083725-2 mat-mdc-button cfc-switcher-button new-switcher-button mat-unthemed cm-button' />
+	skillgap-analizer
+[9] (524,107)<div class='pcc-combobox' role='combobox' />
+	[10] (541,107)<input aria-label='Enter query to search for resources, docs, products and more' class='cm-input gmat-mdc-input mat-mdc-input-element pcc-search-input ng-untouched ng-pristine ng-valid cdk-text-field-autofill-monitored' id='mat-input-0' placeholder='Search (/) for resources, docs, products and more' />
+Search
+[11] (824,107)<button aria-label='Open or close Gemini Cloud Assist chat (Alt G)' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button pcc-platform-bar-button mat-focus-indicator mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='pcc-duet-chat-container' />
+	[12] (824,107)<cm-icon  />
+[13] (863,107)<button aria-label='Activate Cloud Shell (G then S)' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button pcc-platform-bar-button mat-focus-indicator mat-unthemed cm-button cfc-tooltip ng-star-inserted cfc-tooltip-disable-user-select-on-touch-device' />
+	[14] (863,107)<cm-icon  />
+[15] (901,107)<button aria-label='1 unread notifications. Open notifications' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button pcc-platform-bar-button mat-focus-indicator mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' />
+	[16] (901,107)<div  />
+		[17] (901,107)<div  />
+			[18] (901,98)<div >1 />
+[19] (939,107)<button aria-label='Settings and utilities' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button pcc-platform-bar-button mat-focus-indicator mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='pcc-utilities-menu-trigger' />
+	[20] (939,107)<cm-icon  />
+[21] (977,107)<button aria-label='Account: Guddu Prasad sah (sahguddu164@gmail.com)' class='cfc-accountchooser-link mat-focus-indicator cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device' />
+[22] (108,179)<a class='cfc-section-title-content-container cfc-section-path mat-focus-indicator cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' href='/apis?project=skillgap-analizer' />
+	[23] (20,179)<shell-nav-icon  />
+		[24] (20,179)<cm-icon  />
+	[25] (134,179)<span  />
+		[26] (118,179)<span >APIs and services />
+[27] (228,179)<button aria-label='Favourite APIs and services to top' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-button-small cfc-console-nav-section-pin-button hidden mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' />
+	[28] (228,180)<cm-icon  />
+[29] (110,253)<a aria-label='Enabled APIs and services, 1 of 5' class='mdc-button mat-mdc-button-base gmat-mdc-button section-nav-item mat-mdc-button mat-mdc-button-disabled-interactive mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' href='/apis/dashboard?project=skillgap-analizer' id='cfctest-section-nav-item-metropolis_enabled_apis_and_services' />
+	[30] (110,253)<span  />
+		[31] (20,253)<shell-nav-icon  />
+			[32] (20,253)<cm-icon  />
+		[33] (123,253)<span >Enabled APIs and services />
+[34] (228,253)<button aria-label='More options' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-button-small nav-pin-menu-button unpinned mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='nav-pin-menu-button-metropolis_enabled_apis_and_services' />
+	[35] (228,255)<cm-icon  />
+[36] (110,306)<a aria-label='Library, 2 of 5' class='mdc-button mat-mdc-button-base gmat-mdc-button section-nav-item mat-mdc-button mat-mdc-button-disabled-interactive mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' href='/apis/library?project=skillgap-analizer' id='cfctest-section-nav-item-marketplace_api_library' />
+	[37] (110,306)<span  />
+		[38] (20,306)<shell-nav-icon  />
+			[39] (20,306)<cm-icon  />
+		[40] (123,306)<span >Library />
+[41] (228,306)<button aria-label='More options' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-button-small nav-pin-menu-button unpinned mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='nav-pin-menu-button-marketplace_api_library' />
+	[42] (228,308)<cm-icon  />
+[43] (110,359)<a aria-label='Credentials, 3 of 5' class='mdc-button mat-mdc-button-base gmat-mdc-button section-nav-item mat-mdc-button selected mat-mdc-button-disabled-interactive mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' href='/apis/credentials?project=skillgap-analizer' id='cfctest-section-nav-item-metropolis_api_credentials' />
+	[44] (110,359)<span  />
+		[45] (20,359)<shell-nav-icon  />
+			[46] (20,359)<cm-icon  />
+		[47] (123,359)<span >Credentials />
+[48] (228,359)<button aria-label='More options' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-button-small nav-pin-menu-button unpinned mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='nav-pin-menu-button-metropolis_api_credentials' />
+	[49] (228,360)<cm-icon  />
+[50] (110,411)<a aria-label='OAuth consent screen, 4 of 5' class='mdc-button mat-mdc-button-base gmat-mdc-button section-nav-item mat-mdc-button mat-mdc-button-disabled-interactive mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' href='/apis/credentials/consent?project=skillgap-analizer' id='cfctest-section-nav-item-oauth_api_consent' />
+	[51] (110,411)<span  />
+		[52] (20,411)<shell-nav-icon  />
+			[53] (20,411)<cm-icon  />
+		[54] (123,411)<span >OAuth consent screen />
+[55] (228,411)<button aria-label='More options' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-button-small nav-pin-menu-button unpinned mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='nav-pin-menu-button-oauth_api_consent' />
+	[56] (228,413)<cm-icon  />
+[57] (110,464)<a aria-label='Page usage agreements, 5 of 5' class='mdc-button mat-mdc-button-base gmat-mdc-button section-nav-item mat-mdc-button mat-mdc-button-disabled-interactive mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' href='/apis/agreements?project=skillgap-analizer' id='cfctest-section-nav-item-api_agreements' />
+	[58] (110,464)<span  />
+		[59] (20,464)<shell-nav-icon  />
+			[60] (20,464)<cm-icon  />
+		[61] (123,464)<span >Page usage agreements />
+[62] (228,464)<button aria-label='More options' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-button-small nav-pin-menu-button unpinned mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='nav-pin-menu-button-api_agreements' />
+	[63] (228,466)<cm-icon  />
+[64] (16,965)<button aria-label='Toggle APIs and services navigation menu' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button nav-minimize-toggle-button mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device' id='nav-minimize-toggle-button' />
+	[65] (20,965)<shell-nav-icon  />
+		[66] (20,965)<cm-icon  />
+Chat with Gemini Cloud Assist
+Chat with an AI-powered collaborator to get answers to topics related to Google Cloud.
+Tip: Use Alt G to open and close the chat.
+[67] (584,388)<button class='mdc-button mat-mdc-button-base gmat-mdc-button cfc-callout-custom-dismiss-message-button mat-mdc-button ng-tns-c967477307-6 mat-unthemed cm-button ng-star-inserted'>Learn more />
+	Learn more
+[68] (823,180)<button aria-label='Close callout' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-callout-close-button cfc-button-small ng-tns-c967477307-6 mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device' />
+	[69] (823,181)<cfc-icon  />
+		[70] (823,181)<mat-icon class='mat-icon notranslate mat-icon-no-color ng-star-inserted' role='img' />
+
+</current_dom>

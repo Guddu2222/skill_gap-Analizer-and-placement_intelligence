@@ -1,0 +1,16 @@
+# Task Plan: Verifiable Skills Integration (GitHub/LeetCode)
+
+## Objective
+Implement dynamic skill capturing by allowing students to link their GitHub and LeetCode accounts. Update their skill radar based on actual verifiable data.
+
+## Checklist
+- [x] **Backend - Data Model Update**
+  - Locate the Student user model and add `githubUsername` and `leetcodeUsername`.
+- [x] **Backend - API Updates**
+  - Update profile update endpoints to save the new connected account usernames.
+  - Create a new utility/service for fetching user stats from GitHub (e.g., top languages, commit activity) and LeetCode (e.g., solved problems count).
+- [ ] **Frontend - UI Additions**
+  - Update [ProfileEditModal.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/student/ProfileEditModal.jsx) to include a "Connected Accounts" section.
+  - Allow users to input and save their usernames.
+- [ ] **Integration - Skill Adjustment**
+  - In the dashboard, fetch these external stats and use them (or feed them to the Gemini API step) to adjust the user's verifiable skill proficiencies on the Skill Radar Chart.

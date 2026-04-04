@@ -1,0 +1,18 @@
+# Task: Debug Blank White Page in React App
+
+## Goal
+Diagnose why the React app shows a blank white page after Google OAuth redirect, specifically on the `/oauth-callback` route.
+
+## Plan
+1. [ ] Navigate to `http://localhost:5173/oauth-callback?token=testtoken123&role=student&userId=abc456`
+2. [ ] Wait 2 seconds for initial load.
+3. [ ] Capture full screen screenshot.
+4. [ ] Capture console logs for errors.
+5. [ ] List network requests for failed ones.
+6. [ ] Execute JS to get DOM content for debugging:
+    * `document.body.innerHTML`
+    * `document.getElementById('root').innerHTML`
+7. [ ] Report findings.
+
+## Progress
+- Initialized scratchpad.

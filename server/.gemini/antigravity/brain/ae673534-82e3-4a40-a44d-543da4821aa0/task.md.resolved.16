@@ -1,0 +1,30 @@
+# Task List
+
+## Phase 2: Social Features
+
+- [/] **Backend Implementation** <!-- id: 18 -->
+    - [x] Update User model (or create Follower model) for following/followers <!-- id: 19 -->
+    - [x] Implement API endpoints for follow/unfollow <!-- id: 20 -->
+    - [x] Implement API endpoint for retrieving user feed (workouts of followed users) <!-- id: 21 -->
+- [x] **Frontend Implementation** <!-- id: 22 -->
+    - [x] Create "Find Users" or "Community" page to follow others <!-- id: 23 -->
+    - [x] Create "Feed" page to display activity from followed users <!-- id: 24 -->
+    - [x] Integrate follow/unfollow actions in UI <!-- id: 25 -->
+
+## Phase 1: UX & Core Polish (Completed)
+
+- [x] **UI Overhaul** <!-- id: 7 -->
+    - [x] Install and configure Tailwind CSS (if missing) <!-- id: 8 -->
+    - [x] Implement Glassmorphism/Dark Theme design system <!-- id: 9 -->
+    - [x] Update global styles and layout <!-- id: 10 -->
+- [x] **Navigation** <!-- id: 11 -->
+    - [x] Create responsive mobile bottom navigation bar <!-- id: 12 -->
+    - [x] Refactor existing desktop navigation <!-- id: 13 -->
+- [x] **Dashboard Upgrade** <!-- id: 14 -->
+    - [x] Install chart library (Recharts is already installed) <!-- id: 15 -->
+    - [x] Implement interactive "Weekly Activity" chart <!-- id: 16 -->
+    - [x] Integrate chart with real data (or mock data initially) <!-- id: 17 -->
+
+## Debugging (Completed)
+- [x] Fix MongoDB Atlas IP Whitelist Issue <!-- id: 6 -->
+- [x] Verify the fix <!-- id: 5 -->

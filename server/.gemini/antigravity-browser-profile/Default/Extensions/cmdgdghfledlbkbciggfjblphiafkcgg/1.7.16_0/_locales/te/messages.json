@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "మీరు బ్లాక్ చేసారు"
+   },
+   "ads": {
+      "message": "ప్రకటనలు"
+   },
+   "dataSavedTitle": {
+      "message": "డేటా సేవ్ చేయబడింది"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "అన్ని సైట్‌లకు వర్తించండి"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "లోతు"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "ప్రివ్యూ"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "సేవ్ చేయండి"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "సెలెక్టర్"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "విశిష్టత"
+   },
+   "elementBlocker_subtitle": {
+      "message": "మీరు ఎంచుకున్నారు"
+   },
+   "elementBlocker_title": {
+      "message": "ఎలిమెంట్ రిమూవర్"
+   },
+   "extDesc": {
+      "message": "మీరు ప్రతిరోజూ బ్రౌజ్ చేసే అన్ని వెబ్‌సైట్‌లలో ప్రకటనలు మరియు పాప్-అప్‌లను బ్లాక్ చేయండి"
+   },
+   "extName": {
+      "message": "SBlock - సూపర్ యాడ్ బ్లాకర్"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "సూపర్ యాడ్ బ్లాకర్"
+   },
+   "filteringModeBasic": {
+      "message": "ప్రాథమిక"
+   },
+   "filteringModeSuper": {
+      "message": "సూపర్ బ్లాక్"
+   },
+   "footerMadeLove": {
+      "message": "ప్రేమతో తయారు చేయబడింది"
+   },
+   "footerShareFriends": {
+      "message": "మీ స్నేహితులతో పంచుకోండి"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "వేగంగా లోడ్ చేయండి"
+   },
+   "loveSblockButton": {
+      "message": "SBlockని ఇష్టపడుతున్నారా?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "సమీక్షను వదిలివేయండి."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "ఈ పేజీలో SBlockకు మద్దతు లేదు"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "స్థానిక భాషా ప్రకటనలను బ్లాక్ చేయండి"
+   },
+   "optionBlockManually": {
+      "message": "మాన్యువల్‌గా బ్లాక్ చేయండి"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "తెరవండి"
+   },
+   "optionBlockManuallyReset": {
+      "message": "అన్నింటినీ రీసెట్ చేయండి"
+   },
+   "optionBlockManuallySelector": {
+      "message": "సెలెక్టర్"
+   },
+   "optionBlockTracker": {
+      "message": "బ్లాక్ ట్రాకర్"
+   },
+   "optionPopupsCookie": {
+      "message": "కుక్కీల పాపప్‌లను ఆమోదించడాన్ని విస్మరించండి"
+   },
+   "optionPopupsSocial": {
+      "message": "సామాజిక విడ్జెట్‌లను బ్లాక్ చేయండి"
+   },
+   "reportIssueButton": {
+      "message": "సమస్యను నివేదించండి"
+   },
+   "reportIssueButtonDesc": {
+      "message": "మాకు మరింత చెప్పండి."
+   },
+   "secDuration": {
+      "message": "సెకను"
+   },
+   "thisPageTitle": {
+      "message": "ఈ పేజీ"
+   },
+   "thisWebsiteTitle": {
+      "message": "ఈ వెబ్‌సైట్"
+   },
+   "timeSavedTitle": {
+      "message": "సమయం ఆదా అయింది"
+   }
+}

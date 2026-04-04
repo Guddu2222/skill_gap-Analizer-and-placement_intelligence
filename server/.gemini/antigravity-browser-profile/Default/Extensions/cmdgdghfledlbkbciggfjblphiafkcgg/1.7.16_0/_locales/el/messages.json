@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Έχετε μπλοκάρει"
+   },
+   "ads": {
+      "message": "Διαφημίσεις"
+   },
+   "dataSavedTitle": {
+      "message": "Τα δεδομένα αποθηκεύτηκαν"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Εφαρμογή σε όλους τους ιστότοπους"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Βάθος"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Πρεμιέρα"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Εκτός"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Εκλέκτορας"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Ιδιαιτερότητα"
+   },
+   "elementBlocker_subtitle": {
+      "message": "έχετε επιλέξει"
+   },
+   "elementBlocker_title": {
+      "message": "Αφαίρεση στοιχείων"
+   },
+   "extDesc": {
+      "message": "Αποκλεισμός διαφημίσεων και αναδυόμενων παραθύρων σε όλους τους ιστότοπους που περιηγείστε καθημερινά"
+   },
+   "extName": {
+      "message": "SBlock - Super Ad Blocker"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super Ad Blocker"
+   },
+   "filteringModeBasic": {
+      "message": "Βασικός"
+   },
+   "filteringModeSuper": {
+      "message": "Super Block"
+   },
+   "footerMadeLove": {
+      "message": "Φτιαγμένο με αγάπη μέσα"
+   },
+   "footerShareFriends": {
+      "message": "Μοιραστείτε με τους φίλους σας"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Φόρτωση πιο γρήγορα"
+   },
+   "loveSblockButton": {
+      "message": "Αγαπάτε το SBlock;"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Αφήστε μια κριτική."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "Το SBlock δεν υποστηρίζεται σε αυτήν τη σελίδα"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Αποκλεισμός διαφημίσεων τοπικής γλώσσας"
+   },
+   "optionBlockManually": {
+      "message": "Αποκλεισμός χειροκίνητα"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Ανοιχτό"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Επαναφορά όλων"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Εκλέκτορας"
+   },
+   "optionBlockTracker": {
+      "message": "Αποκλεισμός παρακολούθησης"
+   },
+   "optionPopupsCookie": {
+      "message": "Αγνοήστε τα αναδυόμενα παράθυρα αποδοχής cookie"
+   },
+   "optionPopupsSocial": {
+      "message": "Αποκλεισμός γραφικών στοιχείων κοινωνικής δικτύωσης"
+   },
+   "reportIssueButton": {
+      "message": "Αναφέρετε ένα πρόβλημα"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Πες μας περισσότερα."
+   },
+   "secDuration": {
+      "message": "δευτ"
+   },
+   "thisPageTitle": {
+      "message": "Αυτή η σελίδα"
+   },
+   "thisWebsiteTitle": {
+      "message": "Αυτός ο ιστότοπος"
+   },
+   "timeSavedTitle": {
+      "message": "Εξοικονομήθηκε χρόνος"
+   }
+}

@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "તમે અવરોધિત કર્યું છે"
+   },
+   "ads": {
+      "message": "જાહેરાતો"
+   },
+   "dataSavedTitle": {
+      "message": "ડેટા સાચવ્યો"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "બધી સાઇટ પર લાગુ કરો"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "ઊંડાઈ"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "પૂર્વાવલોકન"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "સાચવો"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "પસંદગીકાર"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "વિશિષ્ટતા"
+   },
+   "elementBlocker_subtitle": {
+      "message": "તમે પસંદ કર્યું છે"
+   },
+   "elementBlocker_title": {
+      "message": "એલિમેન્ટ રીમુવર"
+   },
+   "extDesc": {
+      "message": "તમે દરરોજ બ્રાઉઝ કરો છો તે બધી વેબસાઇટ્સ પર જાહેરાતો અને પોપ-અપ્સને અવરોધિત કરો"
+   },
+   "extName": {
+      "message": "SBlock - સુપર એડ બ્લોકર"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "સુપર એડ બ્લોકર"
+   },
+   "filteringModeBasic": {
+      "message": "પાયાની"
+   },
+   "filteringModeSuper": {
+      "message": "સુપર બ્લોક"
+   },
+   "footerMadeLove": {
+      "message": "માં પ્રેમથી બનાવેલ છે"
+   },
+   "footerShareFriends": {
+      "message": "તમારા મિત્રો સાથે શેર કરો"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "ઝડપથી લોડ કરો"
+   },
+   "loveSblockButton": {
+      "message": "SBlock ને પ્રેમ કરો છો?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "એક સમીક્ષા છોડો."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock આ પૃષ્ઠ પર સમર્થિત નથી"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "સ્થાનિક ભાષાની જાહેરાતોને અવરોધિત કરો"
+   },
+   "optionBlockManually": {
+      "message": "મેન્યુઅલી અવરોધિત કરો"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "ખોલો"
+   },
+   "optionBlockManuallyReset": {
+      "message": "બધા રીસેટ કરો"
+   },
+   "optionBlockManuallySelector": {
+      "message": "પસંદગીકાર"
+   },
+   "optionBlockTracker": {
+      "message": "બ્લોક ટ્રેકર"
+   },
+   "optionPopupsCookie": {
+      "message": "કુકીઝ પૉપઅપ સ્વીકારવાની અવગણના કરો"
+   },
+   "optionPopupsSocial": {
+      "message": "સામાજિક વિજેટ્સને અવરોધિત કરો"
+   },
+   "reportIssueButton": {
+      "message": "સમસ્યાની જાણ કરો"
+   },
+   "reportIssueButtonDesc": {
+      "message": "અમને વધુ કહો."
+   },
+   "secDuration": {
+      "message": "સેકન્ડ"
+   },
+   "thisPageTitle": {
+      "message": "આ પૃષ્ઠ"
+   },
+   "thisWebsiteTitle": {
+      "message": "આ વેબસાઈટ"
+   },
+   "timeSavedTitle": {
+      "message": "સમય બચ્યો"
+   }
+}

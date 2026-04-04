@@ -1,0 +1,51 @@
+# Profile Update Feature – Walkthrough
+
+## What Was Built
+
+A complete **Edit Profile** flow that lets any student update their information after signup.
+
+---
+
+## Files Changed
+
+### Backend
+#### [student-features.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/routes/student-features.js)
+- Added `PUT /api/student-features/update-profile` — authenticated endpoint covering all 6 profile sections.
+- Returns the fresh populated student document so the UI can update immediately without a page reload.
+
+### Client – Services
+#### [api.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/services/api.js)
+- Added `updateStudentProfile(payload)` helper.
+
+### Client – New Component
+#### [ProfileEditModal.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/student/ProfileEditModal.jsx)
+Full-featured modal with **6 tabs**:
+
+| Tab | Fields |
+|-----|--------|
+| Basic Info | firstName, lastName, phone, dateOfBirth, gender |
+| Academic | department, degree, specialization, cgpa, graduationYear, semester, backlogs |
+| Skills | Add/remove; per-skill proficiency (beginner → expert) |
+| Links | LinkedIn, GitHub, Portfolio URLs |
+| Career | targetRole, relocation toggle, salary range, preferred locations |
+| Address | addressLine1/2, city, state, pincode, country |
+
+Features: success/error toast, inline validation (CGPA range, salary min≤max), Prev/Next tab nav, pre-populated with existing data.
+
+### Client – Dashboard
+#### [StudentDashboard.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/StudentDashboard.jsx)
+- Imported `ProfileEditModal` and `Pencil` icon.
+- Added `showEditProfile` state.
+- Added **✏️ Edit Profile** button beneath the profile completion bar.
+- Renders `<ProfileEditModal>` with `onProfileUpdate` callback that sets the new student object in state — dashboard header (name, role, college, % bar) updates instantly.
+
+---
+
+## How to Test
+
+1. Sign in as an **existing student** and go to `/student`
+2. In the header (top-right), click **✏️ Edit Profile**
+3. The modal opens — switch between all 6 tabs
+4. Make changes (e.g. update Target Role, add a skill)
+5. Click **Save Changes** → green toast → modal closes → dashboard header reflects changes immediately
+6. Refresh the page → changes are persisted in the DB

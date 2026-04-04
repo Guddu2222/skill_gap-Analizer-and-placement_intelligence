@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan to refactor Student Dashboard routing to use React Router in the Sidebar instead of local tab state",
+  "updatedAt": "2026-03-31T14:11:01.881187300Z",
+  "version": "4"
+}

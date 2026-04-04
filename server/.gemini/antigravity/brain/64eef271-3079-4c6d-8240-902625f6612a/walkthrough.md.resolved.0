@@ -1,0 +1,29 @@
+# Student Signup Flow Implementation Walkthrough
+
+## Overview
+We've successfully built and integrated a production-ready, comprehensive 6-step student signup flow into the Skill Gap Analyser and Placement Intelligence platform.
+
+## What was Changed
+
+### Frontend
+- Created distinct React components for each step inside `client/src/pages/signup/signup-steps/`:
+  - **Step 1:** Basic Info (Name, Email, Phone, DOB, Gender, Password) 
+  - **Step 2:** Academic Info (College Search, Roll Number, Department, Degree, Years, CGPA, Backlogs)
+  - **Step 3:** Education History (10th and 12th details including board, percentage, and passing year)
+  - **Step 4:** Skills & Resume (Tag-based skills addition, external URLs like LinkedIn/GitHub)
+  - **Step 5:** Experience & Projects (Dynamic fields for past internships, employment, and projects)
+  - **Step 6:** Preferences (Address, Expected Salary, Preferred Locations, and Relocation parameters)
+- Built the **StudentSignup** controller (`client/src/pages/signup/StudentSignup.jsx`) that handles navigation, state retention between steps, and makes the final API call once Step 6 is submitted.
+- Built **EmailVerificationPage** (`client/src/pages/signup/EmailVerificationPage.jsx`) to handle the final 6-digit OTP verification gracefully before pushing the user to login.
+- Cleaned up obsolete signup files to prevent routing confusion.
+
+### Backend
+- Upgraded the **Student Schema** (`server/models/Student.js`) significantly to natively support embedded `education10th`, `education12th`, `experiences`, and `projects` documents. Also added a pre-save hook that accurately calculates `profileCompletionPercentage` based on what fields were provided.
+- Updated the `/api/auth/register` API endpoint in `server/routes/auth.js` to extract, normalize, and save all new parameters directly into the newly expanded Student document schema.
+
+## Verification Performed
+- Ran `npm run build` on the frontend. The Vite build completed successfully without transpilation errors.
+- Ran the backend server script in check mode to ensure Mongoose schemas compile cleanly and connect to the database.
+
+## Validation Results
+Both the client and server code are structurally sound and have been integrated with the main App router. You can now seamlessly navigate to the signup page `/signup/student` and observe the full 6-step data collection logic leading directly into the email verification flow.

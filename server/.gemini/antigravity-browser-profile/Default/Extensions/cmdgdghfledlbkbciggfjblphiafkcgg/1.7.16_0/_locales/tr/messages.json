@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Engelledin"
+   },
+   "ads": {
+      "message": "Reklamlar"
+   },
+   "dataSavedTitle": {
+      "message": "Veriler kaydedildi"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Tüm siteye uygula"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Derinlik"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Önizleme"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Kaydetmek"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Seçici"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "özgüllük"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Seçtiğiniz"
+   },
+   "elementBlocker_title": {
+      "message": "Eleman Sökücü"
+   },
+   "extDesc": {
+      "message": "Her gün göz attığınız tüm web sitelerinde reklamları ve pop-up'ları engelleyin"
+   },
+   "extName": {
+      "message": "SBlock - Süper Reklam Engelleyici"
+   },
+   "extNameFirstShort": {
+      "message": "S Blok"
+   },
+   "extNameLastShort": {
+      "message": "Süper Reklam Engelleyici"
+   },
+   "filteringModeBasic": {
+      "message": "Temel"
+   },
+   "filteringModeSuper": {
+      "message": "Süper Blok"
+   },
+   "footerMadeLove": {
+      "message": "Sevgiyle yapıldı"
+   },
+   "footerShareFriends": {
+      "message": "Arkadaşlarınızla paylaşın"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Daha hızlı yükle"
+   },
+   "loveSblockButton": {
+      "message": "Sblock'u seviyor musun?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Bir inceleme bırakın."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock bu sayfada desteklenmiyor"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Yerel dil reklamlarını engelle"
+   },
+   "optionBlockManually": {
+      "message": "Manuel olarak engelle"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Açık"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Tümünü sıfırla"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Seçici"
+   },
+   "optionBlockTracker": {
+      "message": "Blok izleyici"
+   },
+   "optionPopupsCookie": {
+      "message": "Çerezleri kabul et açılır pencerelerini yoksay"
+   },
+   "optionPopupsSocial": {
+      "message": "Sosyal widget'ları engelle"
+   },
+   "reportIssueButton": {
+      "message": "Bir sorunu bildirin"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Bize daha fazlasını anlat."
+   },
+   "secDuration": {
+      "message": "saniye"
+   },
+   "thisPageTitle": {
+      "message": "Bu sayfa"
+   },
+   "thisWebsiteTitle": {
+      "message": "Bu web sitesi"
+   },
+   "timeSavedTitle": {
+      "message": "Kazanılan zaman"
+   }
+}

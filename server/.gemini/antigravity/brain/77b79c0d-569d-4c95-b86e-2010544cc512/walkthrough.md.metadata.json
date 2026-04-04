@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "The walkthrough explains the changes made: updating the schema for `careerAdvice`, improving the AI prompt to return array of strings, parsing it defensively, and rendering a bulleted list in the frontend. It also covers the explanation of the base score.",
+  "updatedAt": "2026-03-21T03:47:27.410807300Z"
+}

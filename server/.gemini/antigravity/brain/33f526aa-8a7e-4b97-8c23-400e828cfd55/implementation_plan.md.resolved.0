@@ -1,0 +1,30 @@
+# Skill Gap Analysis Integration Plan
+
+## Goal
+Integrate the user's proposed AI-Powered Skill Gap Analysis architecture into our existing Placement Intelligence Platform.
+
+## Current State Analysis
+Our application currently uses MongoDB (via Mongoose), but the user's proposed code is written using Sequelize (SQL). We need to adapt the proposed schema to Mongoose. We also already have some basic skill gap functionality in [student-features.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/routes/student-features.js).
+
+## Proposed Architecture Mapping
+
+### 1. Database Schema Translation (Sequelize to Mongoose)
+The user proposed several models that need to be translated to Mongoose schemas.
+*   `SkillGapAnalysis` -> `models/SkillGapAnalysis.js`
+*   `DomainSkillRequirement` -> `models/DomainSkillRequirement.js`
+*   `SkillLearningPath` -> `models/SkillLearningPath.js`
+*   `JobMarketTrend` -> `models/JobMarketTrend.js`
+
+### 2. AI Service Integration
+*   The user's code uses `SkillGapAnalysisService` utilizing Gemini, Claude, and OpenAI.
+*   We need to adapt this to work with our Mongoose backend and ensure the environment variables for the chosen AI provider (likely Gemini since we have `@google/generative-ai` in package.json? Wait, let's verify if we have it).
+
+### 3. API Routes
+*   The user proposed `routes/skillGap.routes.js`. We can adapt this and integrate it into our `api/` routes, specifically keeping it separate or enhancing the existing `/skill-gap` route in [student-features.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/routes/student-features.js).
+
+### 4. Next Steps for Planning
+1.  Verify the existing database type (Confirmed Mongoose).
+2.  Review existing package dependencies to see what AI SDKs are installed.
+3.  Rewrite the proposed MongoDB schemas.
+4.  Rewrite the AI service to use Mongoose calls instead of Sequelize.
+5.  Set up the routes.

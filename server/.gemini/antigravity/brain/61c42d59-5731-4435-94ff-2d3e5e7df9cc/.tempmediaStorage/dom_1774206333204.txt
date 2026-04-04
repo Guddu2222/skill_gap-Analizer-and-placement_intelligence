@@ -1,0 +1,36 @@
+<current_dom_explanation>
+This is a temporary snapshot of the current page's DOM structure. The DOM will change if you navigate to or interact with another page. Use a tool like browser_get_dom to capture and preserve the DOM in your trajectory if needed for later reference.
+</current_dom_explanation>
+<current_dom>
+[0] (500,407)<div  />
+	[1] (500,1)<input class='w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300' placeholder='Search your college...' />
+	Can't find your college?
+	[2] (352,59)<a class='text-blue-600 hover:text-blue-700 font-semibold' href='#'>Request to add />
+	[3] (500,124)<label class='block text-sm font-semibold text-gray-700 mb-2'>Roll Number / Registration Number * />
+	[4] (500,187)<input class='w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300' placeholder='e.g., 20CS101' />
+	[5] (500,274)<label class='block text-sm font-semibold text-gray-700 mb-2'>College Internal Roll Number
+Optional />
+		Optional
+	[6] (500,337)<input class='w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent' placeholder='e.g., CS-2023-047 (assigned by your college)' />
+	Different from the university roll number above. This helps your placement officer find you easily.
+	[7] (328,454)<label class='block text-sm font-semibold text-gray-700 mb-2'>Department / Branch * />
+	[8] (328,517)<select class='w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white border-gray-300' />
+	[9] (672,454)<label class='block text-sm font-semibold text-gray-700 mb-2'>Degree * />
+	[10] (672,517)<select class='w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white border-gray-300' />
+	[11] (500,604)<label class='block text-sm font-semibold text-gray-700 mb-2'>Specialization
+(Optional) />
+		(Optional)
+	[12] (500,667)<input class='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent' placeholder='e.g., Machine Learning, Data Science' />
+	[13] (270,754)<label class='block text-sm font-semibold text-gray-700 mb-2'>Admission Year * />
+	[14] (270,818)<select class='w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white' />
+	[15] (500,754)<label class='block text-sm font-semibold text-gray-700 mb-2'>Graduation Year * />
+	[16] (500,818)<select class='w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white border-gray-300' />
+	[17] (730,754)<label class='block text-sm font-semibold text-gray-700 mb-2'>Current Semester * />
+	[18] (730,818)<select class='w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white border-gray-300' />
+	[19] (270,905)<label class='block text-sm font-semibold text-gray-700 mb-2'>Current CGPA * />
+	[20] (270,968)<input class='w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300' placeholder='8.5' />
+	[21] (500,905)<label class='block text-sm font-semibold text-gray-700 mb-2'>Active Backlogs />
+	[22] (730,905)<label class='block text-sm font-semibold text-gray-700 mb-2'>Cleared Backlogs />
+	[23] (730,968)<input class='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent' placeholder='0' />
+
+</current_dom>

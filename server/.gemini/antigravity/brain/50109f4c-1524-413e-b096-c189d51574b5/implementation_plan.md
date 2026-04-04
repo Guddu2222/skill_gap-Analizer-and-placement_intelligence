@@ -1,0 +1,26 @@
+# Fix Server Port Conflict and Add Error Handling
+
+The server is currently unable to start because port 5000 is already in use by another process. Additionally, some controllers lack proper error handling for asynchronous operations, which can lead to server crashes.
+
+## Proposed Changes
+
+### Server Configuration
+
+#### [MODIFY] [index.js](file:///d:/project/Fittness%20tracking%20website/server/src/index.js)
+- Update server start logic to handle `EADDRINUSE` specifically and provide a helpful error message.
+- Add a timeout or retry logic for DB connection if necessary (optional).
+
+### Friends Controller
+
+#### [MODIFY] [friendController.js](file:///d:/project/Fittness%20tracking%20website/server/src/controllers/friendController.js)
+- Wrap `follow`, `unfollow`, and `leaderboard` functions in `try-catch` blocks to prevent unhandled rejections.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run dev` and verify the server starts (after clearing the port).
+- Manually trigger a DB error (e.g., by temporarily changing the URI) and verify it's caught.
+
+### Manual Verification
+- Verify that following/unfollowing users works as expected without crashing the server.
+- Verify the leaderboard displays correctly.

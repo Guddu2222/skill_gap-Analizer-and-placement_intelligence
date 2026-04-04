@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "আপনি ব্লক করেছেন"
+   },
+   "ads": {
+      "message": "বিজ্ঞাপন"
+   },
+   "dataSavedTitle": {
+      "message": "ডেটা সংরক্ষিত"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "সমস্ত সাইটে আবেদন"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "গভীরতা"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "পূর্বরূপ"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "সংরক্ষণ করুন"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "নির্বাচক"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "বিশেষত্ব"
+   },
+   "elementBlocker_subtitle": {
+      "message": "আপনি নির্বাচন করেছেন"
+   },
+   "elementBlocker_title": {
+      "message": "এলিমেন্ট রিমুভার"
+   },
+   "extDesc": {
+      "message": "আপনি প্রতিদিন ব্রাউজ করা সমস্ত ওয়েবসাইটে বিজ্ঞাপন এবং পপ-আপগুলিকে ব্লক করুন৷"
+   },
+   "extName": {
+      "message": "SBlock - সুপার অ্যাড ব্লকার"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "সুপার অ্যাড ব্লকার"
+   },
+   "filteringModeBasic": {
+      "message": "মৌলিক"
+   },
+   "filteringModeSuper": {
+      "message": "সুপার ব্লক"
+   },
+   "footerMadeLove": {
+      "message": "মধ্যে প্রেম দিয়ে তৈরি"
+   },
+   "footerShareFriends": {
+      "message": "আপনার বন্ধুদের সাথে শেয়ার করুন"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "দ্রুত লোড করুন"
+   },
+   "loveSblockButton": {
+      "message": "SBlock ভালোবাসেন?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "একটি পর্যালোচনা ছেড়ে."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock এই পৃষ্ঠায় সমর্থিত নয়"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "স্থানীয় ভাষার বিজ্ঞাপন ব্লক করুন"
+   },
+   "optionBlockManually": {
+      "message": "ম্যানুয়ালি ব্লক করুন"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "খোলা"
+   },
+   "optionBlockManuallyReset": {
+      "message": "সব রিসেট করুন"
+   },
+   "optionBlockManuallySelector": {
+      "message": "নির্বাচক"
+   },
+   "optionBlockTracker": {
+      "message": "ব্লক ট্র্যাকার"
+   },
+   "optionPopupsCookie": {
+      "message": "কুকি পপআপ গ্রহণ উপেক্ষা করুন"
+   },
+   "optionPopupsSocial": {
+      "message": "সামাজিক উইজেট ব্লক করুন"
+   },
+   "reportIssueButton": {
+      "message": "একটি সমস্যা রিপোর্ট"
+   },
+   "reportIssueButtonDesc": {
+      "message": "আমাদের আরো বলুন."
+   },
+   "secDuration": {
+      "message": "সেকেন্ড"
+   },
+   "thisPageTitle": {
+      "message": "এই পাতা"
+   },
+   "thisWebsiteTitle": {
+      "message": "এই ওয়েবসাইট"
+   },
+   "timeSavedTitle": {
+      "message": "সময় সাশ্রয়"
+   }
+}

@@ -1,0 +1,380 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/App.jsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=0ef34432"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+let prevRefreshReg;
+let prevRefreshSig;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  prevRefreshReg = window.$RefreshReg$;
+  prevRefreshSig = window.$RefreshSig$;
+  window.$RefreshReg$ = RefreshRuntime.getRefreshReg("D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx");
+  window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+}
+import __vite__cjsImport3_react from "/node_modules/.vite/deps/react.js?v=0ef34432"; const React = __vite__cjsImport3_react.__esModule ? __vite__cjsImport3_react.default : __vite__cjsImport3_react;
+import { BrowserRouter as Router, Routes, Route } from "/node_modules/.vite/deps/react-router-dom.js?v=0ef34432";
+import LandingPage from "/src/pages/LandingPage.jsx";
+import CollegeDashboard from "/src/pages/CollegeDashboard.jsx";
+import RecruiterDashboard from "/src/pages/RecruiterDashboard.jsx";
+import StudentDashboard from "/src/pages/StudentDashboard.jsx";
+import SignInPage from "/src/pages/SignInPage.jsx?t=1775051097022";
+import ForgotPasswordPage from "/src/pages/ForgotPasswordPage.jsx";
+import ResetPasswordPage from "/src/pages/ResetPasswordPage.jsx";
+import RecruiterCRM from "/src/pages/RecruiterCRM.jsx";
+import SmartShortlist from "/src/pages/SmartShortlist.jsx";
+import RoleSelectionPage from "/src/pages/signup/RoleSelectionPage.jsx";
+import StudentSignup from "/src/pages/signup/StudentSignup.jsx";
+import CollegeSignup from "/src/pages/signup/CollegeSignup.jsx";
+import RecruiterSignup from "/src/pages/signup/RecruiterSignup.jsx";
+import EmailVerificationPage from "/src/pages/signup/EmailVerificationPage.jsx";
+const App = () => {
+  return /* @__PURE__ */ jsxDEV(Router, { children: /* @__PURE__ */ jsxDEV(Routes, { children: [
+    /* @__PURE__ */ jsxDEV(Route, { path: "/", element: /* @__PURE__ */ jsxDEV(LandingPage, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 43,
+      columnNumber: 34
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 43,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(Route, { path: "/login", element: /* @__PURE__ */ jsxDEV(SignInPage, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 46,
+      columnNumber: 39
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 46,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(Route, { path: "/signin", element: /* @__PURE__ */ jsxDEV(SignInPage, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 47,
+      columnNumber: 40
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 47,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(Route, { path: "/forgot-password", element: /* @__PURE__ */ jsxDEV(ForgotPasswordPage, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 48,
+      columnNumber: 49
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 48,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(Route, { path: "/reset-password/:token", element: /* @__PURE__ */ jsxDEV(ResetPasswordPage, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 49,
+      columnNumber: 55
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 49,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(Route, { path: "/reset-password", element: /* @__PURE__ */ jsxDEV(ResetPasswordPage, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 50,
+      columnNumber: 48
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 50,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(Route, { path: "/signup", element: /* @__PURE__ */ jsxDEV(RoleSelectionPage, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 53,
+      columnNumber: 40
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 53,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(Route, { path: "/signup/student", element: /* @__PURE__ */ jsxDEV(StudentSignup, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 54,
+      columnNumber: 48
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 54,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(Route, { path: "/signup/college", element: /* @__PURE__ */ jsxDEV(CollegeSignup, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 55,
+      columnNumber: 48
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 55,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(Route, { path: "/signup/recruiter", element: /* @__PURE__ */ jsxDEV(RecruiterSignup, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 56,
+      columnNumber: 50
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 56,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(
+      Route,
+      {
+        path: "/signup/verify-email",
+        element: /* @__PURE__ */ jsxDEV(EmailVerificationPage, {}, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+          lineNumber: 59,
+          columnNumber: 20
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+        lineNumber: 57,
+        columnNumber: 9
+      },
+      this
+    ),
+    /* @__PURE__ */ jsxDEV(Route, { path: "/college", element: /* @__PURE__ */ jsxDEV(CollegeDashboard, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 63,
+      columnNumber: 41
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 63,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(Route, { path: "/college/recruiters", element: /* @__PURE__ */ jsxDEV(RecruiterCRM, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 64,
+      columnNumber: 52
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 64,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(Route, { path: "/recruiter", element: /* @__PURE__ */ jsxDEV(RecruiterDashboard, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 65,
+      columnNumber: 43
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 65,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(Route, { path: "/recruiter/smart-shortlist", element: /* @__PURE__ */ jsxDEV(SmartShortlist, {}, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 66,
+      columnNumber: 59
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+      lineNumber: 66,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(
+      Route,
+      {
+        path: "/student",
+        element: /* @__PURE__ */ jsxDEV(StudentDashboard, { activeRoute: "overview" }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+          lineNumber: 71,
+          columnNumber: 20
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+        lineNumber: 69,
+        columnNumber: 9
+      },
+      this
+    ),
+    /* @__PURE__ */ jsxDEV(
+      Route,
+      {
+        path: "/student/overview",
+        element: /* @__PURE__ */ jsxDEV(StudentDashboard, { activeRoute: "overview" }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+          lineNumber: 75,
+          columnNumber: 20
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+        lineNumber: 73,
+        columnNumber: 9
+      },
+      this
+    ),
+    /* @__PURE__ */ jsxDEV(
+      Route,
+      {
+        path: "/student/paths",
+        element: /* @__PURE__ */ jsxDEV(StudentDashboard, { activeRoute: "learning" }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+          lineNumber: 79,
+          columnNumber: 20
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+        lineNumber: 77,
+        columnNumber: 9
+      },
+      this
+    ),
+    /* @__PURE__ */ jsxDEV(
+      Route,
+      {
+        path: "/student/skills",
+        element: /* @__PURE__ */ jsxDEV(StudentDashboard, { activeRoute: "skills" }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+          lineNumber: 83,
+          columnNumber: 20
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+        lineNumber: 81,
+        columnNumber: 9
+      },
+      this
+    ),
+    /* @__PURE__ */ jsxDEV(
+      Route,
+      {
+        path: "/student/courses",
+        element: /* @__PURE__ */ jsxDEV(StudentDashboard, { activeRoute: "courses" }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+          lineNumber: 87,
+          columnNumber: 20
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+        lineNumber: 85,
+        columnNumber: 9
+      },
+      this
+    ),
+    /* @__PURE__ */ jsxDEV(
+      Route,
+      {
+        path: "/student/compare",
+        element: /* @__PURE__ */ jsxDEV(StudentDashboard, { activeRoute: "competitive" }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+          lineNumber: 91,
+          columnNumber: 20
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+        lineNumber: 89,
+        columnNumber: 9
+      },
+      this
+    ),
+    /* @__PURE__ */ jsxDEV(
+      Route,
+      {
+        path: "/student/opportunities",
+        element: /* @__PURE__ */ jsxDEV(StudentDashboard, { activeRoute: "opportunities" }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+          lineNumber: 95,
+          columnNumber: 20
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+        lineNumber: 93,
+        columnNumber: 9
+      },
+      this
+    ),
+    /* @__PURE__ */ jsxDEV(
+      Route,
+      {
+        path: "/student/mentorship",
+        element: /* @__PURE__ */ jsxDEV(StudentDashboard, { activeRoute: "mentorship" }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+          lineNumber: 99,
+          columnNumber: 20
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+        lineNumber: 97,
+        columnNumber: 9
+      },
+      this
+    ),
+    /* @__PURE__ */ jsxDEV(
+      Route,
+      {
+        path: "/student/interviews",
+        element: /* @__PURE__ */ jsxDEV(StudentDashboard, { activeRoute: "interviews" }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+          lineNumber: 103,
+          columnNumber: 20
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+        lineNumber: 101,
+        columnNumber: 9
+      },
+      this
+    )
+  ] }, void 0, true, {
+    fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+    lineNumber: 42,
+    columnNumber: 7
+  }, this) }, void 0, false, {
+    fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx",
+    lineNumber: 41,
+    columnNumber: 5
+  }, this);
+};
+_c = App;
+export default App;
+var _c;
+$RefreshReg$(_c, "App");
+if (import.meta.hot && !inWebWorker) {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+if (import.meta.hot && !inWebWorker) {
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("D:/project/Skill_Gap Analyser and placement intelligence/client/src/App.jsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+
+//# sourceMappingURL=data:application/json;base64,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QSxPQTdEM0Q7QUFBQTtBQUFBO0FBQUE7QUFBQSxTQStEQSxLQWhFRjtBQUFBO0FBQUE7QUFBQTtBQUFBLFNBaUVBO0FBRUo7QUFBRUMsS0FyRUlEO0FBdUVOLGVBQWVBO0FBQUksSUFBQUM7QUFBQSxhQUFBQSxJQUFBIiwibmFtZXMiOlsiUmVhY3QiLCJCcm93c2VyUm91dGVyIiwiUm91dGVyIiwiUm91dGVzIiwiUm91dGUiLCJMYW5kaW5nUGFnZSIsIkNvbGxlZ2VEYXNoYm9hcmQiLCJSZWNydWl0ZXJEYXNoYm9hcmQiLCJTdHVkZW50RGFzaGJvYXJkIiwiU2lnbkluUGFnZSIsIkZvcmdvdFBhc3N3b3JkUGFnZSIsIlJlc2V0UGFzc3dvcmRQYWdlIiwiUmVjcnVpdGVyQ1JNIiwiU21hcnRTaG9ydGxpc3QiLCJSb2xlU2VsZWN0aW9uUGFnZSIsIlN0dWRlbnRTaWdudXAiLCJDb2xsZWdlU2lnbnVwIiwiUmVjcnVpdGVyU2lnbnVwIiwiRW1haWxWZXJpZmljYXRpb25QYWdlIiwiQXBwIiwiX2MiXSwiaWdub3JlTGlzdCI6W10sInNvdXJjZXMiOlsiQXBwLmpzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgeyBCcm93c2VyUm91dGVyIGFzIFJvdXRlciwgUm91dGVzLCBSb3V0ZSB9IGZyb20gXCJyZWFjdC1yb3V0ZXItZG9tXCI7XG5pbXBvcnQgTGFuZGluZ1BhZ2UgZnJvbSBcIi4vcGFnZXMvTGFuZGluZ1BhZ2VcIjtcbmltcG9ydCBDb2xsZWdlRGFzaGJvYXJkIGZyb20gXCIuL3BhZ2VzL0NvbGxlZ2VEYXNoYm9hcmRcIjtcbmltcG9ydCBSZWNydWl0ZXJEYXNoYm9hcmQgZnJvbSBcIi4vcGFnZXMvUmVjcnVpdGVyRGFzaGJvYXJkXCI7XG5pbXBvcnQgU3R1ZGVudERhc2hib2FyZCBmcm9tIFwiLi9wYWdlcy9TdHVkZW50RGFzaGJvYXJkXCI7XG5pbXBvcnQgU2lnbkluUGFnZSBmcm9tIFwiLi9wYWdlcy9TaWduSW5QYWdlXCI7XG5pbXBvcnQgRm9yZ290UGFzc3dvcmRQYWdlIGZyb20gXCIuL3BhZ2VzL0ZvcmdvdFBhc3N3b3JkUGFnZVwiO1xuaW1wb3J0IFJlc2V0UGFzc3dvcmRQYWdlIGZyb20gXCIuL3BhZ2VzL1Jlc2V0UGFzc3dvcmRQYWdlXCI7XG5pbXBvcnQgUmVjcnVpdGVyQ1JNIGZyb20gXCIuL3BhZ2VzL1JlY3J1aXRlckNSTVwiO1xuaW1wb3J0IFNtYXJ0U2hvcnRsaXN0IGZyb20gXCIuL3BhZ2VzL1NtYXJ0U2hvcnRsaXN0XCI7XG5cbi8vIFNpZ251cCBQYWdlc1xuaW1wb3J0IFJvbGVTZWxlY3Rpb25QYWdlIGZyb20gXCIuL3BhZ2VzL3NpZ251cC9Sb2xlU2VsZWN0aW9uUGFnZVwiO1xuaW1wb3J0IFN0dWRlbnRTaWdudXAgZnJvbSBcIi4vcGFnZXMvc2lnbnVwL1N0dWRlbnRTaWdudXBcIjtcbmltcG9ydCBDb2xsZWdlU2lnbnVwIGZyb20gXCIuL3BhZ2VzL3NpZ251cC9Db2xsZWdlU2lnbnVwXCI7XG5pbXBvcnQgUmVjcnVpdGVyU2lnbnVwIGZyb20gXCIuL3BhZ2VzL3NpZ251cC9SZWNydWl0ZXJTaWdudXBcIjtcbmltcG9ydCBFbWFpbFZlcmlmaWNhdGlvblBhZ2UgZnJvbSBcIi4vcGFnZXMvc2lnbnVwL0VtYWlsVmVyaWZpY2F0aW9uUGFnZVwiO1xuXG5jb25zdCBBcHAgPSAoKSA9PiB7XG4gIHJldHVybiAoXG4gICAgPFJvdXRlcj5cbiAgICAgIDxSb3V0ZXM+XG4gICAgICAgIDxSb3V0ZSBwYXRoPVwiL1wiIGVsZW1lbnQ9ezxMYW5kaW5nUGFnZSAvPn0gLz5cblxuICAgICAgICB7LyogQXV0aGVudGljYXRpb24gUm91dGVzICovfVxuICAgICAgICA8Um91dGUgcGF0aD1cIi9sb2dpblwiIGVsZW1lbnQ9ezxTaWduSW5QYWdlIC8+fSAvPlxuICAgICAgICA8Um91dGUgcGF0aD1cIi9zaWduaW5cIiBlbGVtZW50PXs8U2lnbkluUGFnZSAvPn0gLz5cbiAgICAgICAgPFJvdXRlIHBhdGg9XCIvZm9yZ290LXBhc3N3b3JkXCIgZWxlbWVudD17PEZvcmdvdFBhc3N3b3JkUGFnZSAvPn0gLz5cbiAgICAgICAgPFJvdXRlIHBhdGg9XCIvcmVzZXQtcGFzc3dvcmQvOnRva2VuXCIgZWxlbWVudD17PFJlc2V0UGFzc3dvcmRQYWdlIC8+fSAvPlxuICAgICAgICA8Um91dGUgcGF0aD1cIi9yZXNldC1wYXNzd29yZFwiIGVsZW1lbnQ9ezxSZXNldFBhc3N3b3JkUGFnZSAvPn0gLz5cblxuICAgICAgICB7LyogU2lnbnVwIFJvdXRlcyAqL31cbiAgICAgICAgPFJvdXRlIHBhdGg9XCIvc2lnbnVwXCIgZWxlbWVudD17PFJvbGVTZWxlY3Rpb25QYWdlIC8+fSAvPlxuICAgICAgICA8Um91dGUgcGF0aD1cIi9zaWdudXAvc3R1ZGVudFwiIGVsZW1lbnQ9ezxTdHVkZW50U2lnbnVwIC8+fSAvPlxuICAgICAgICA8Um91dGUgcGF0aD1cIi9zaWdudXAvY29sbGVnZVwiIGVsZW1lbnQ9ezxDb2xsZWdlU2lnbnVwIC8+fSAvPlxuICAgICAgICA8Um91dGUgcGF0aD1cIi9zaWdudXAvcmVjcnVpdGVyXCIgZWxlbWVudD17PFJlY3J1aXRlclNpZ251cCAvPn0gLz5cbiAgICAgICAgPFJvdXRlXG4gICAgICAgICAgcGF0aD1cIi9zaWdudXAvdmVyaWZ5LWVtYWlsXCJcbiAgICAgICAgICBlbGVtZW50PXs8RW1haWxWZXJpZmljYXRpb25QYWdlIC8+fVxuICAgICAgICAvPlxuXG4gICAgICAgIHsvKiBEYXNoYm9hcmQgUm91dGVzICovfVxuICAgICAgICA8Um91dGUgcGF0aD1cIi9jb2xsZWdlXCIgZWxlbWVudD17PENvbGxlZ2VEYXNoYm9hcmQgLz59IC8+XG4gICAgICAgIDxSb3V0ZSBwYXRoPVwiL2NvbGxlZ2UvcmVjcnVpdGVyc1wiIGVsZW1lbnQ9ezxSZWNydWl0ZXJDUk0gLz59IC8+XG4gICAgICAgIDxSb3V0ZSBwYXRoPVwiL3JlY3J1aXRlclwiIGVsZW1lbnQ9ezxSZWNydWl0ZXJEYXNoYm9hcmQgLz59IC8+XG4gICAgICAgIDxSb3V0ZSBwYXRoPVwiL3JlY3J1aXRlci9zbWFydC1zaG9ydGxpc3RcIiBlbGVtZW50PXs8U21hcnRTaG9ydGxpc3QgLz59IC8+XG5cbiAgICAgICAgey8qIFN0dWRlbnQgRGFzaGJvYXJkIFJvdXRlcyAqL31cbiAgICAgICAgPFJvdXRlXG4gICAgICAgICAgcGF0aD1cIi9zdHVkZW50XCJcbiAgICAgICAgICBlbGVtZW50PXs8U3R1ZGVudERhc2hib2FyZCBhY3RpdmVSb3V0ZT1cIm92ZXJ2aWV3XCIgLz59XG4gICAgICAgIC8+XG4gICAgICAgIDxSb3V0ZVxuICAgICAgICAgIHBhdGg9XCIvc3R1ZGVudC9vdmVydmlld1wiXG4gICAgICAgICAgZWxlbWVudD17PFN0dWRlbnREYXNoYm9hcmQgYWN0aXZlUm91dGU9XCJvdmVydmlld1wiIC8+fVxuICAgICAgICAvPlxuICAgICAgICA8Um91dGVcbiAgICAgICAgICBwYXRoPVwiL3N0dWRlbnQvcGF0aHNcIlxuICAgICAgICAgIGVsZW1lbnQ9ezxTdHVkZW50RGFzaGJvYXJkIGFjdGl2ZVJvdXRlPVwibGVhcm5pbmdcIiAvPn1cbiAgICAgICAgLz5cbiAgICAgICAgPFJvdXRlXG4gICAgICAgICAgcGF0aD1cIi9zdHVkZW50L3NraWxsc1wiXG4gICAgICAgICAgZWxlbWVudD17PFN0dWRlbnREYXNoYm9hcmQgYWN0aXZlUm91dGU9XCJza2lsbHNcIiAvPn1cbiAgICAgICAgLz5cbiAgICAgICAgPFJvdXRlXG4gICAgICAgICAgcGF0aD1cIi9zdHVkZW50L2NvdXJzZXNcIlxuICAgICAgICAgIGVsZW1lbnQ9ezxTdHVkZW50RGFzaGJvYXJkIGFjdGl2ZVJvdXRlPVwiY291cnNlc1wiIC8+fVxuICAgICAgICAvPlxuICAgICAgICA8Um91dGVcbiAgICAgICAgICBwYXRoPVwiL3N0dWRlbnQvY29tcGFyZVwiXG4gICAgICAgICAgZWxlbWVudD17PFN0dWRlbnREYXNoYm9hcmQgYWN0aXZlUm91dGU9XCJjb21wZXRpdGl2ZVwiIC8+fVxuICAgICAgICAvPlxuICAgICAgICA8Um91dGVcbiAgICAgICAgICBwYXRoPVwiL3N0dWRlbnQvb3Bwb3J0dW5pdGllc1wiXG4gICAgICAgICAgZWxlbWVudD17PFN0dWRlbnREYXNoYm9hcmQgYWN0aXZlUm91dGU9XCJvcHBvcnR1bml0aWVzXCIgLz59XG4gICAgICAgIC8+XG4gICAgICAgIDxSb3V0ZVxuICAgICAgICAgIHBhdGg9XCIvc3R1ZGVudC9tZW50b3JzaGlwXCJcbiAgICAgICAgICBlbGVtZW50PXs8U3R1ZGVudERhc2hib2FyZCBhY3RpdmVSb3V0ZT1cIm1lbnRvcnNoaXBcIiAvPn1cbiAgICAgICAgLz5cbiAgICAgICAgPFJvdXRlXG4gICAgICAgICAgcGF0aD1cIi9zdHVkZW50L2ludGVydmlld3NcIlxuICAgICAgICAgIGVsZW1lbnQ9ezxTdHVkZW50RGFzaGJvYXJkIGFjdGl2ZVJvdXRlPVwiaW50ZXJ2aWV3c1wiIC8+fVxuICAgICAgICAvPlxuICAgICAgPC9Sb3V0ZXM+XG4gICAgPC9Sb3V0ZXI+XG4gICk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBBcHA7XG4iXSwiZmlsZSI6IkQ6L3Byb2plY3QvU2tpbGxfR2FwIEFuYWx5c2VyIGFuZCBwbGFjZW1lbnQgaW50ZWxsaWdlbmNlL2NsaWVudC9zcmMvQXBwLmpzeCJ9

@@ -1,0 +1,14 @@
+# Signup and Verification Improvement
+
+- [ ] Analyze existing signup and verification flow <!-- id: 0 -->
+    - [ ] Review frontend signup components in `client/src/pages/signup` <!-- id: 1 -->
+    - [ ] Review backend routes in `server/routes` <!-- id: 2 -->
+    - [ ] Check email sending logic <!-- id: 3 -->
+- [ ] Design improvements for Gmail verification <!-- id: 4 -->
+    - [ ] Ensure secure code generation <!-- id: 5 -->
+    - [ ] Implement/Update email sending with Nodemailer <!-- id: 6 -->
+    - [ ] Verify code validation logic <!-- id: 7 -->
+- [ ] Implement changes <!-- id: 8 -->
+    - [ ] Update backend logic <!-- id: 9 -->
+    - [ ] Update frontend handling <!-- id: 10 -->
+- [ ] Verify the complete flow <!-- id: 11 -->

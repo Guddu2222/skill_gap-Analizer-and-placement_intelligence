@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "차단했습니다"
+   },
+   "ads": {
+      "message": "광고"
+   },
+   "dataSavedTitle": {
+      "message": "저장된 데이터"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "모든 사이트에 적용"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "깊이"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "시사"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "구하다"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "선택자"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "특성"
+   },
+   "elementBlocker_subtitle": {
+      "message": "당신이 선택했습니다"
+   },
+   "elementBlocker_title": {
+      "message": "요소 제거제"
+   },
+   "extDesc": {
+      "message": "매일 탐색하는 모든 웹사이트에서 광고 및 팝업을 차단합니다."
+   },
+   "extName": {
+      "message": "SBlock - 슈퍼 광고 차단기"
+   },
+   "extNameFirstShort": {
+      "message": "S블록"
+   },
+   "extNameLastShort": {
+      "message": "슈퍼 광고 차단기"
+   },
+   "filteringModeBasic": {
+      "message": "기초적인"
+   },
+   "filteringModeSuper": {
+      "message": "슈퍼블록"
+   },
+   "footerMadeLove": {
+      "message": "사랑을 담아 만든"
+   },
+   "footerShareFriends": {
+      "message": "친구들과 공유하세요"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "더 빠르게 로드"
+   },
+   "loveSblockButton": {
+      "message": "S블록을 좋아하시나요?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "리뷰를 남겨주세요."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "이 페이지에서는 S블록이 지원되지 않습니다."
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "현지 언어 광고 차단"
+   },
+   "optionBlockManually": {
+      "message": "수동으로 차단"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "열려 있는"
+   },
+   "optionBlockManuallyReset": {
+      "message": "모두 재설정"
+   },
+   "optionBlockManuallySelector": {
+      "message": "선택자"
+   },
+   "optionBlockTracker": {
+      "message": "블록 추적기"
+   },
+   "optionPopupsCookie": {
+      "message": "쿠키 허용 팝업 무시"
+   },
+   "optionPopupsSocial": {
+      "message": "소셜 위젯 차단"
+   },
+   "reportIssueButton": {
+      "message": "문제 신고"
+   },
+   "reportIssueButtonDesc": {
+      "message": "자세한 내용을 알려주세요."
+   },
+   "secDuration": {
+      "message": "비서"
+   },
+   "thisPageTitle": {
+      "message": "이 페이지"
+   },
+   "thisWebsiteTitle": {
+      "message": "이 웹사이트"
+   },
+   "timeSavedTitle": {
+      "message": "절약된 시간"
+   }
+}

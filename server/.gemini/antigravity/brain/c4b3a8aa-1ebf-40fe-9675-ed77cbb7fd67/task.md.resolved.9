@@ -1,0 +1,26 @@
+# Authentication UI & Security Enhancements
+
+## Phase 1-4: Auth Improvements Complete
+- [x] Initial UI Revamp, Email Verification structure, and Cookie Sessions completed.
+
+## Phase 5: Gmail Configuration Update
+- [x] **Environment**: Update [server/.env](file:///d:/project/Smart%20Expense%20Manager/server/.env) with provided Gmail and Cloudinary credentials.
+- [x] **Email Utility**: Update [server/utils/sendEmail.js](file:///d:/project/Smart%20Expense%20Manager/server/utils/sendEmail.js) to use `service: 'gmail'` instead of custom SMTP host/port to simplify configuration and guarantee delivery.
+
+## Phase 6: Profile Image Upload (Cloudinary)
+- [x] **Dependencies**: Install `multer`, `cloudinary`, and `multer-storage-cloudinary` in backend.
+- [x] **Config**: Create [server/config/cloudinary.js](file:///d:/project/Smart%20Expense%20Manager/server/config/cloudinary.js) to initialize Cloudinary and set up the Multer storage engine.
+- [x] **Model**: Add `profileImage` (String) to the [User](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#139-158) schema.
+- [x] **Routes & Controllers**: 
+   - Update [registerUser](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#28-71) endpoint to handle `multipart/form-data` using Multer.
+   - Extract the uploaded Cloudinary URL (`req.file.path`) and save it to the database during signup.
+- [x] **Frontend Registration**: 
+   - Add a file input to [Register.jsx](file:///d:/project/Smart%20Expense%20Manager/client/src/pages/Register.jsx).
+   - Implement temporary image preview functionality.
+   - Refactor the Axios call to transmit `FormData` instead of JSON.
+- [x] **Frontend Display**: Update [DashboardLayout](file:///d:/project/Smart%20Expense%20Manager/client/src/components/DashboardLayout.jsx#6-81) (or a similar protected component) to render the `user.profileImage` or a default fallback avatar.
+
+## Phase 7: OTP 6-Digit Verification
+- [x] **Backend Logic**: Update [registerUser](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#28-71) to generate a 6-digit numeric string instead of hex string.
+- [x] **New Routes**: Add `POST /api/auth/verify-email` and `POST /api/auth/resend-verification`.
+- [x] **Frontend Page**: Integrate the new `EmailVerificationPage.jsx` logic using lucide-react. Send OTP payload correctly.

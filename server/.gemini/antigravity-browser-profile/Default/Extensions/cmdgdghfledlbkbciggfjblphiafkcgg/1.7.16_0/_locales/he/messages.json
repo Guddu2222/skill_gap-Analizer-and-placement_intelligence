@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "אתה חסמת"
+   },
+   "ads": {
+      "message": "מודעות"
+   },
+   "dataSavedTitle": {
+      "message": "הנתונים נשמרו"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "החל על כל האתר"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "עוֹמֶק"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "תצוגה מקדימה"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "לְהַצִיל"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "בורר"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "ספֵּצִיפִיוּת"
+   },
+   "elementBlocker_subtitle": {
+      "message": "בחרת"
+   },
+   "elementBlocker_title": {
+      "message": "מסיר אלמנטים"
+   },
+   "extDesc": {
+      "message": "חסום מודעות וחלונות קופצים בכל האתרים שבהם אתה גולש מדי יום"
+   },
+   "extName": {
+      "message": "SBlock - Super Ad Blocker"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "סופר חוסם פרסומות"
+   },
+   "filteringModeBasic": {
+      "message": "בסיסי"
+   },
+   "filteringModeSuper": {
+      "message": "סופר בלוק"
+   },
+   "footerMadeLove": {
+      "message": "נעשה באהבה ב"
+   },
+   "footerShareFriends": {
+      "message": "שתף עם חבריך"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "טען מהר יותר"
+   },
+   "loveSblockButton": {
+      "message": "אוהבים SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "השאירו ביקורת."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock אינו נתמך בדף זה"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "חסום מודעות בשפה המקומית"
+   },
+   "optionBlockManually": {
+      "message": "חסום ידנית"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "לִפְתוֹחַ"
+   },
+   "optionBlockManuallyReset": {
+      "message": "אפס הכל"
+   },
+   "optionBlockManuallySelector": {
+      "message": "בורר"
+   },
+   "optionBlockTracker": {
+      "message": "גשש חסימה"
+   },
+   "optionPopupsCookie": {
+      "message": "התעלם מקופץ של קבלת קובצי Cookie"
+   },
+   "optionPopupsSocial": {
+      "message": "חסום ווידג'טים חברתיים"
+   },
+   "reportIssueButton": {
+      "message": "דווח על בעיה"
+   },
+   "reportIssueButtonDesc": {
+      "message": "ספר לנו עוד."
+   },
+   "secDuration": {
+      "message": "שניות"
+   },
+   "thisPageTitle": {
+      "message": "הדף הזה"
+   },
+   "thisWebsiteTitle": {
+      "message": "האתר הזה"
+   },
+   "timeSavedTitle": {
+      "message": "זמן נחסך"
+   }
+}

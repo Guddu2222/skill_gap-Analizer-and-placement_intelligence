@@ -1,0 +1,7 @@
+# Refactor Student Dashboard Navigation
+
+- [x] Analyze frontend routing in App.jsx and StudentDashboard.jsx
+- [ ] Move horizontal tab navigation items into Sidebar.jsx mapped paths
+- [ ] Implement nested routes or URL parameter based rendering in StudentDashboard.jsx
+- [ ] Remove hardcoded tab bar from StudentDashboard.jsx
+- [ ] Verify navigation state persists across the new routing schema

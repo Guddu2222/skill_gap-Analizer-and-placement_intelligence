@@ -1,0 +1,11 @@
+# OAuth Social Login — Task Checklist
+
+- [/] Install passport + strategy packages (server)
+- [ ] Modify `server/models/User.js` — add OAuth fields
+- [ ] Create `server/config/passport.js` — strategy config
+- [ ] Modify `server/routes/auth.js` — add OAuth routes
+- [ ] Modify `server/index.js` — initialize passport
+- [ ] Modify `server/.env` — add OAuth credential placeholders
+- [ ] Create `client/src/pages/OAuthCallbackPage.jsx`
+- [ ] Modify `client/src/App.jsx` — register /oauth-callback route
+- [ ] Verify server restarts cleanly

@@ -1,0 +1,8 @@
+# Simplify Student Signup Flow
+
+- [ ] Inspect backend `POST /api/auth/register` and [Student](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/StudentSignup.jsx#13-181) model
+- [ ] Determine required fields for student registration vs optional fields
+- [ ] Draft an implementation plan and request user review
+- [ ] Update frontend [StudentSignup.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/StudentSignup.jsx) (remove steps 2-6)
+- [ ] Update backend validation/controller for register endpoint (if necessary)
+- [ ] Verify the new signup flow

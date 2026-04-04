@@ -1,0 +1,2 @@
+# Fix Gemini API 404 Error
+- [ ] Task 1: Update `gemini-pro` to `gemini-1.5-flash` in [interview.service.js](file:///D:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/services/interview.service.js)

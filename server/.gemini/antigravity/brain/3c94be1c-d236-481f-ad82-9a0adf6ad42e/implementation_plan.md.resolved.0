@@ -1,0 +1,58 @@
+# Simplify Student Signup Flow
+
+This plan outlines the steps to streamline the student signup process, taking it from a 7-step process down to a 2-step process (Basic Info -> Verification). This implements the "Progressive Profiling" pattern to reduce friction and improve conversion rates.
+
+## User Review Required
+
+> [!WARNING]
+> This change permanently removes the collection of Academic, Experience, Skills, and Preferences data from the initial signup flow. Students will need to fill this out later from their Dashboard. Please ensure you are comfortable with this UX change before we proceed.
+
+## Proposed Changes
+
+---
+
+### Frontend
+
+#### [MODIFY] [StudentSignup.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/StudentSignup.jsx)
+
+- Remove imports for `Step2AcademicInfo` through `Step6Preferences`.
+- Simplify `formData` state to only contain fields from Step 1 (firstName, lastName, email, phone, dateOfBirth, gender, password, confirmPassword).
+- Adjust `totalSteps` to `2`.
+- Update [submitStudentData](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/StudentSignup.jsx#87-115) to post the simplified payload.
+- Update [renderStep](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/StudentSignup.jsx#136-174) to only handle `case 1: Step1BasicInfo` and `case 2: EmailVerificationPage`.
+- Make [nextStep()](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/StudentSignup.jsx#116-124) trigger [submitStudentData()](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/StudentSignup.jsx#87-115) directly from step 1.
+
+#### [MODIFY] [Step1BasicInfo.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/signup-steps/Step1BasicInfo.jsx)
+
+- Update UI text from "Step 1 of 6" to "Basic Information" or "Step 1 of 2".
+- Update the progress bar to show 50% completion instead of 16.6%.
+- Update the submit button text from "Continue" to "Create Account".
+
+#### [DELETE] Unused Step Components
+We will delete the following components from `d:\project\Skill_Gap Analyser and placement intelligence\client\src\pages\signup\signup-steps\` as they are no longer used in signup:
+- [Step2AcademicInfo.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/signup-steps/Step2AcademicInfo.jsx)
+- [Step3EducationHistory.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/signup-steps/Step3EducationHistory.jsx)
+- [Step4SkillsResume.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/signup-steps/Step4SkillsResume.jsx)
+- [Step5ExperienceProjects.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/signup-steps/Step5ExperienceProjects.jsx)
+- [Step6Preferences.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/signup-steps/Step6Preferences.jsx)
+
+*(Note: We assume the Student Profile Edit feature handles these fields already. If they don't, we can keep these files as a reference, but we will delete them to clean up the signup directory).*
+
+---
+
+### Backend (No functional changes required)
+
+The backend endpoint `POST /api/auth/register` and the [Student](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/StudentSignup.jsx#13-181) Mongoose schema are already robust enough to handle the missing fields by assigning defaults (e.g., `rollNumber` defaults to first part of email, `year` defaults to current year).
+
+## Verification Plan
+
+### Automated Tests
+- The backend does not appear to have a standard unit test suite setup for auth controllers but we can run standard linter commands `npm run lint` in the client directory.
+
+### Manual Verification
+1. Open the dev environment (`npm run dev` in the client directory, backend node server running).
+2. Navigate to `/signup` and select the **Student** role.
+3. Verify that only the Basic Info form appears.
+4. Fill out the form correctly and click "Create Account".
+5. Verify that the application transitions immediately to the **Email Verification** view.
+6. Verify in the database (MongoDB) that a `User` and [Student](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/StudentSignup.jsx#13-181) document were successfully created for the new user, with default values applied where data wasn't provided (e.g., rollNumber).

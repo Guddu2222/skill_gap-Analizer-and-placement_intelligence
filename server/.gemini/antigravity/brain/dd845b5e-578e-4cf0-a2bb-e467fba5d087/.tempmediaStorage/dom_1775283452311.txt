@@ -1,0 +1,42 @@
+<current_dom_explanation>
+This is a temporary snapshot of the current page's DOM structure. The DOM will change if you navigate to or interact with another page. Use a tool like browser_get_dom to capture and preserve the DOM in your trajectory if needed for later reference.
+</current_dom_explanation>
+<current_dom>
+[0] (500,500)<div  />
+	SkillBridge
+	Student Portal
+	[1] (216,64)<button class='flex-shrink-0 w-6 h-6 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-white/10' title='Collapse sidebar' />
+	Navigation
+	[2] (121,246)<a class='relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden bg-white/15 text-white shadow-lg' href='/student/overview' />
+		[3] (121,246)<div  />
+		[4] (27,246)<span  />
+		[5] (76,246)<span >Overview />
+		[6] (221,246)<span  />
+	[7] (121,307)<a class='relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden text-white/50 hover:text-white/80 hover:bg-white/8' href='/student/paths' />
+		[8] (27,307)<span  />
+		[9] (75,307)<span >My Paths />
+	[10] (121,368)<a class='relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden text-white/50 hover:text-white/80 hover:bg-white/8' href='/student/skills' />
+		[11] (27,368)<span  />
+		[12] (79,368)<span >Skill Radar />
+	[13] (121,429)<a class='relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden text-white/50 hover:text-white/80 hover:bg-white/8' href='/student/courses' />
+		[14] (27,429)<span  />
+		[15] (72,429)<span >Courses />
+	[16] (121,490)<a class='relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden text-white/50 hover:text-white/80 hover:bg-white/8' href='/student/compare' />
+		[17] (27,490)<span  />
+		[18] (74,490)<span >Compare />
+	[19] (121,551)<a class='relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden text-white/50 hover:text-white/80 hover:bg-white/8' href='/student/opportunities' />
+		[20] (27,551)<span  />
+		[21] (89,551)<span >Opportunities />
+	[22] (121,613)<a class='relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden text-white/50 hover:text-white/80 hover:bg-white/8' href='/student/mentorship' />
+		[23] (27,613)<span  />
+		[24] (82,613)<span >Mentorship />
+	[25] (121,674)<a class='relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden text-white/50 hover:text-white/80 hover:bg-white/8' href='/student/interviews' />
+		[26] (27,674)<span  />
+		[27] (79,674)<span >Interviews />
+	[28] (121,887)<button class='relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden' />
+		[29] (72,887)<span >Settings />
+	[30] (121,948)<button class='relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-400/70 hover:text-red-400 hover:bg-red-400/10 transition-all duration-200 group overflow-hidden' />
+		[31] (68,948)<span >Logout />
+	Failed to load profile. Please try reloading.
+
+</current_dom>

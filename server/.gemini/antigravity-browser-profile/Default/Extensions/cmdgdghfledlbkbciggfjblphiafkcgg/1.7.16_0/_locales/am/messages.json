@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "አግደሃል"
+   },
+   "ads": {
+      "message": "ማስታወቂያዎች"
+   },
+   "dataSavedTitle": {
+      "message": "ውሂብ ተቀምጧል"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "ለሁሉም ጣቢያ ያመልክቱ"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "ጥልቀት"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "ቅድመ እይታ"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "አስቀምጥ"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "መራጭ"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "ልዩነት"
+   },
+   "elementBlocker_subtitle": {
+      "message": "መርጠዋል"
+   },
+   "elementBlocker_title": {
+      "message": "ንጥረ ነገር ማስወገጃ"
+   },
+   "extDesc": {
+      "message": "በየቀኑ በሚያስሱዋቸው ሁሉም ድረ-ገጾች ላይ ማስታወቂያዎችን እና ብቅ-ባዮችን ያግዱ"
+   },
+   "extName": {
+      "message": "SBlock - ሱፐር ማስታወቂያ ማገጃ"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "ልዕለ ማስታወቂያ ማገጃ"
+   },
+   "filteringModeBasic": {
+      "message": "መሰረታዊ"
+   },
+   "filteringModeSuper": {
+      "message": "ልዕለ ብሎክ"
+   },
+   "footerMadeLove": {
+      "message": "ውስጥ በፍቅር የተሰራ"
+   },
+   "footerShareFriends": {
+      "message": "ለጓደኞችዎ ያካፍሉ።"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "በፍጥነት ጫን"
+   },
+   "loveSblockButton": {
+      "message": "SBlock ይወዳሉ?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "ግምገማ ይተዉ።"
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock በዚህ ገጽ ላይ አይደገፍም።"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "የአካባቢ ቋንቋ ማስታወቂያዎችን አግድ"
+   },
+   "optionBlockManually": {
+      "message": "በእጅ አግድ"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "ክፈት"
+   },
+   "optionBlockManuallyReset": {
+      "message": "ሁሉንም ዳግም አስጀምር"
+   },
+   "optionBlockManuallySelector": {
+      "message": "መራጭ"
+   },
+   "optionBlockTracker": {
+      "message": "መከታተያ አግድ"
+   },
+   "optionPopupsCookie": {
+      "message": "ኩኪዎችን ብቅ-ባዮችን ችላ ይበሉ"
+   },
+   "optionPopupsSocial": {
+      "message": "ማህበራዊ መግብሮችን አግድ"
+   },
+   "reportIssueButton": {
+      "message": "ጉዳይ ሪፖርት አድርግ"
+   },
+   "reportIssueButtonDesc": {
+      "message": "የበለጠ ንገረን።"
+   },
+   "secDuration": {
+      "message": "ሰከንድ"
+   },
+   "thisPageTitle": {
+      "message": "ይህ ገጽ"
+   },
+   "thisWebsiteTitle": {
+      "message": "ይህ ድር ጣቢያ"
+   },
+   "timeSavedTitle": {
+      "message": "ጊዜ ተቀምጧል"
+   }
+}

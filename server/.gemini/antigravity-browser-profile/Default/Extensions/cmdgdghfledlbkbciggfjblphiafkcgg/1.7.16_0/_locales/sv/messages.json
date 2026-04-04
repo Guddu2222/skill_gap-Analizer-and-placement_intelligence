@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Du har blockerat"
+   },
+   "ads": {
+      "message": "Annonser"
+   },
+   "dataSavedTitle": {
+      "message": "Data sparas"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Ansök på alla webbplatser"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Djup"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Förhandsvisning"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Spara"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Väljare"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Specificitet"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Du har valt"
+   },
+   "elementBlocker_title": {
+      "message": "Element Remover"
+   },
+   "extDesc": {
+      "message": "Blockera annonser och popup-fönster på alla webbplatser du besöker varje dag"
+   },
+   "extName": {
+      "message": "SBlock - Super Ad Blocker"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super Ad Blocker"
+   },
+   "filteringModeBasic": {
+      "message": "Grundläggande"
+   },
+   "filteringModeSuper": {
+      "message": "Super Block"
+   },
+   "footerMadeLove": {
+      "message": "Gjort med kärlek i"
+   },
+   "footerShareFriends": {
+      "message": "Dela med dina vänner"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Ladda snabbare"
+   },
+   "loveSblockButton": {
+      "message": "Älskar SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Lämna en recension."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock stöds inte på den här sidan"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Blockera annonser på lokala språk"
+   },
+   "optionBlockManually": {
+      "message": "Blockera manuellt"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Öppna"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Återställ alla"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Väljare"
+   },
+   "optionBlockTracker": {
+      "message": "Block tracker"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignorera popup-fönster för acceptera cookies"
+   },
+   "optionPopupsSocial": {
+      "message": "Blockera sociala widgets"
+   },
+   "reportIssueButton": {
+      "message": "Rapportera ett problem"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Berätta mer."
+   },
+   "secDuration": {
+      "message": "sek"
+   },
+   "thisPageTitle": {
+      "message": "Denna sida"
+   },
+   "thisWebsiteTitle": {
+      "message": "Denna webbplats"
+   },
+   "timeSavedTitle": {
+      "message": "Tid sparad"
+   }
+}

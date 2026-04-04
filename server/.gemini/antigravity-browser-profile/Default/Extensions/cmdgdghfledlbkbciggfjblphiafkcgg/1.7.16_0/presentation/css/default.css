@@ -1,0 +1,87 @@
+:root {
+  --gray-5: rgb(16 16 22);
+  --gray-10: rgb(27 27 35);
+  --gray-15: rgb(37 37 47);
+  --gray-20: rgb(47 47 59);
+  --gray-25: rgb(58 58 72);
+  --gray-30: rgb(69 69 85);
+  --gray-35: rgb(81 81 98);
+  --gray-40: rgb(93 93 110);
+  --primary-5: rgb(3 16 40);
+  --primary-10: rgb(5 27 59);
+  --primary-20: rgb(14 47 95);
+  --primary-30: rgb(24 69 134);
+  --primary-40: rgb(34 93 176);
+
+  --main-width: 352px;
+  --max-popup-height: 600px;
+  --main-padding: 12px;
+
+  --color-always-white: rgb(255 255 255);
+  --color-black: rgb(0 0 0);
+  --color-white: rgb(255 255 255);
+  --off-layer-white: rgba(255, 255, 255, 0.96);
+  --color-light-blue: rgb(242 248 255);
+  --color-light-blue-disable: rgb(229 241 255);
+  --color-hr: rgb(195, 203, 217);
+  --color-disable: rgb(109, 117, 141);
+  --color-disable-2: rgb(109, 117, 141);
+  --color-red-0: rgb(234 0 0);
+  --color-red-1: rgb(243 0 0);
+  --color-red-2: rgb(187 0 0);
+  --color-logo: rgb(234 0 0);
+  --color-facobook: rgb(8, 102, 255);
+  --linear-gradient-90: linear-gradient(0deg, var(--color-red-2) 0%, var(--color-red-1) 100%);
+  --linear-gradient-fill-url: '';
+
+  --font-size-xs: 10px;
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 24px;
+  --font-size-xl2: 28px;
+
+  --surface-0: var(--color-white);
+  --ink-1: var(--color-black);
+
+  --link-ink: var(--primary-40);
+  --link-hover-ink: var(--primary-30);
+
+  --font-family: roboto;
+
+  --toggle-mobile-hieght: 24px;
+  --toggle-mobile-width: 60px;
+  --toggle-mobile-border: 6px;
+  --toggle-big-width: calc(var(--main-width) - (var(--main-padding) * 2));
+  --toggle-big-hieght: 48px;
+  --toggle-big-border: 8px;
+  --transition-1: 200ms;
+  --border-radius-full: 100px;
+  --border-radius-circle: 9999px;
+  --box-title-height: 40px;
+}
+
+body.dark-mode {
+  --color-black: rgb(255 255 255);
+  --color-white: rgb(0 0 0);
+  --off-layer-white: rgba(17, 17, 17, 0.96);
+  --color-light-blue: rgb(17, 17, 17);
+  --color-light-blue-disable: rgb(17, 17, 17);
+  --color-hr: rgb(67, 67, 67);
+  --color-disable: rgb(126, 126, 126);
+  --color-disable-2: rgb(67, 67, 67);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface-0: var(--color-black);
+    --surface-1: var(--gray-10);
+    --surface-2: var(--gray-20);
+    --surface-3: var(--gray-30);
+  }
+  :root input,
+  :root select,
+  :root textarea {
+    color-scheme: dark;
+  }
+}

@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "ブロックしました"
+   },
+   "ads": {
+      "message": "広告"
+   },
+   "dataSavedTitle": {
+      "message": "保存されたデータ"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "全サイトに適用"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "深さ"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "プレビュー"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "保存"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "セレクタ"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "特異性"
+   },
+   "elementBlocker_subtitle": {
+      "message": "選択しました"
+   },
+   "elementBlocker_title": {
+      "message": "エレメントリムーバー"
+   },
+   "extDesc": {
+      "message": "毎日閲覧するすべての Web サイトで広告とポップアップをブロックします"
+   },
+   "extName": {
+      "message": "SBlock - スーパー広告ブロッカー"
+   },
+   "extNameFirstShort": {
+      "message": "Sブロック"
+   },
+   "extNameLastShort": {
+      "message": "スーパー広告ブロッカー"
+   },
+   "filteringModeBasic": {
+      "message": "基本"
+   },
+   "filteringModeSuper": {
+      "message": "スーパーブロック"
+   },
+   "footerMadeLove": {
+      "message": "愛情を込めて作られました"
+   },
+   "footerShareFriends": {
+      "message": "友達と共有する"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "読み込みを高速化"
+   },
+   "loveSblockButton": {
+      "message": "Sブロックは好きですか？"
+   },
+   "loveSblockButtonDesc": {
+      "message": "レビューを残してください。"
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock はこのページではサポートされていません"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "現地言語の広告をブロックする"
+   },
+   "optionBlockManually": {
+      "message": "手動でブロックする"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "開ける"
+   },
+   "optionBlockManuallyReset": {
+      "message": "すべてリセット"
+   },
+   "optionBlockManuallySelector": {
+      "message": "セレクタ"
+   },
+   "optionBlockTracker": {
+      "message": "ブロックトラッカー"
+   },
+   "optionPopupsCookie": {
+      "message": "Cookie を受け入れるポップアップを無視する"
+   },
+   "optionPopupsSocial": {
+      "message": "ソーシャルウィジェットをブロックする"
+   },
+   "reportIssueButton": {
+      "message": "問題を報告する"
+   },
+   "reportIssueButtonDesc": {
+      "message": "もっと詳しく教えてください。"
+   },
+   "secDuration": {
+      "message": "秒"
+   },
+   "thisPageTitle": {
+      "message": "このページ"
+   },
+   "thisWebsiteTitle": {
+      "message": "このウェブサイト"
+   },
+   "timeSavedTitle": {
+      "message": "時間の節約"
+   }
+}

@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Вы заблокировали"
+   },
+   "ads": {
+      "message": "Объявления"
+   },
+   "dataSavedTitle": {
+      "message": "Данные сохранены"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Применить ко всему сайту"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Глубина"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Предварительный просмотр"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Сохранять"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Селектор"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Специфика"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Вы выбрали"
+   },
+   "elementBlocker_title": {
+      "message": "Удаление элементов"
+   },
+   "extDesc": {
+      "message": "Блокируйте рекламу и всплывающие окна на всех веб-сайтах, которые вы просматриваете каждый день."
+   },
+   "extName": {
+      "message": "SBlock - Суперблокировщик рекламы"
+   },
+   "extNameFirstShort": {
+      "message": "СБлок"
+   },
+   "extNameLastShort": {
+      "message": "Суперблокировщик рекламы"
+   },
+   "filteringModeBasic": {
+      "message": "Базовый"
+   },
+   "filteringModeSuper": {
+      "message": "Супер Блок"
+   },
+   "footerMadeLove": {
+      "message": "Сделано с любовью в"
+   },
+   "footerShareFriends": {
+      "message": "Поделитесь с друзьями"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Загружайтесь быстрее"
+   },
+   "loveSblockButton": {
+      "message": "Любишь SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Оставьте отзыв."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock не поддерживается на этой странице"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Блокировать рекламу на местном языке"
+   },
+   "optionBlockManually": {
+      "message": "Блокировать вручную"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Открыть"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Сбросить все"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Селектор"
+   },
+   "optionBlockTracker": {
+      "message": "Блок трекер"
+   },
+   "optionPopupsCookie": {
+      "message": "Игнорировать всплывающие окна принятия файлов cookie"
+   },
+   "optionPopupsSocial": {
+      "message": "Блокировать социальные виджеты"
+   },
+   "reportIssueButton": {
+      "message": "Сообщить о проблеме"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Расскажите нам больше."
+   },
+   "secDuration": {
+      "message": "сек"
+   },
+   "thisPageTitle": {
+      "message": "Эта страница"
+   },
+   "thisWebsiteTitle": {
+      "message": "Этот сайт"
+   },
+   "timeSavedTitle": {
+      "message": "Экономия времени"
+   }
+}

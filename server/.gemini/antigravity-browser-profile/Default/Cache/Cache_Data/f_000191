@@ -1,0 +1,246 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/student/MentorshipTab.jsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=0ef34432"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+let prevRefreshReg;
+let prevRefreshSig;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  prevRefreshReg = window.$RefreshReg$;
+  prevRefreshSig = window.$RefreshSig$;
+  window.$RefreshReg$ = RefreshRuntime.getRefreshReg("D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx");
+  window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+}
+import __vite__cjsImport3_react from "/node_modules/.vite/deps/react.js?v=0ef34432"; const React = __vite__cjsImport3_react.__esModule ? __vite__cjsImport3_react.default : __vite__cjsImport3_react;
+import { Linkedin, Mail, GraduationCap, Users } from "/node_modules/.vite/deps/lucide-react.js?v=0ef34432";
+const alumniData = [
+  {
+    id: 1,
+    name: "Priya Sharma",
+    role: "SDE II",
+    company: "Amazon",
+    batch: 2022,
+    dept: "CSE",
+    skills: ["Java", "AWS", "System Design"]
+  },
+  {
+    id: 2,
+    name: "Rahul Verma",
+    role: "Frontend Engineer",
+    company: "Uber",
+    batch: 2023,
+    dept: "ISE",
+    skills: ["React", "Redux", "Performance"]
+  },
+  {
+    id: 3,
+    name: "Ankit Gupta",
+    role: "Data Scientist",
+    company: "Microsoft",
+    batch: 2021,
+    dept: "CSE",
+    skills: ["Python", "ML", "Azure"]
+  },
+  {
+    id: 4,
+    name: "Sneha Reddy",
+    role: "Product Manager",
+    company: "Google",
+    batch: 2020,
+    dept: "ECE",
+    skills: ["Strategy", "Analytics", "UX"]
+  }
+];
+const MentorshipTab = () => {
+  return /* @__PURE__ */ jsxDEV("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "flex items-center justify-between mb-2", children: /* @__PURE__ */ jsxDEV("div", { children: [
+      /* @__PURE__ */ jsxDEV("h2", { className: "text-2xl font-bold text-slate-800", children: "Alumni Mentorship" }, void 0, false, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+        lineNumber: 67,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("p", { className: "text-slate-500", children: "Connect with seniors working in your dream companies." }, void 0, false, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+        lineNumber: 70,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+      lineNumber: 66,
+      columnNumber: 9
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+      lineNumber: 65,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "flex gap-3 overflow-x-auto pb-2 custom-scrollbar", children: ["Recommended for you", "Google", "Microsoft", "Amazon", "Uber"].map(
+      (filter, i) => /* @__PURE__ */ jsxDEV(
+        "button",
+        {
+          className: `px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${i === 0 ? "bg-indigo-600 text-white shadow-md" : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 hover:border-indigo-200"}`,
+          children: filter
+        },
+        i,
+        false,
+        {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+          lineNumber: 80,
+          columnNumber: 11
+        },
+        this
+      )
+    ) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+      lineNumber: 77,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6", children: alumniData.map(
+      (alumni) => /* @__PURE__ */ jsxDEV(
+        "div",
+        {
+          className: "bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all group",
+          children: [
+            /* @__PURE__ */ jsxDEV("div", { className: "flex items-start justify-between mb-4", children: [
+              /* @__PURE__ */ jsxDEV("div", { className: "w-14 h-14 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center text-indigo-600 font-bold text-xl shadow-inner", children: alumni.name.charAt(0) }, void 0, false, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+                lineNumber: 101,
+                columnNumber: 15
+              }, this),
+              /* @__PURE__ */ jsxDEV(
+                "a",
+                {
+                  href: "#",
+                  className: "w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all",
+                  children: /* @__PURE__ */ jsxDEV(Linkedin, { className: "w-4 h-4" }, void 0, false, {
+                    fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+                    lineNumber: 108,
+                    columnNumber: 17
+                  }, this)
+                },
+                void 0,
+                false,
+                {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+                  lineNumber: 104,
+                  columnNumber: 15
+                },
+                this
+              )
+            ] }, void 0, true, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+              lineNumber: 100,
+              columnNumber: 13
+            }, this),
+            /* @__PURE__ */ jsxDEV("h3", { className: "text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition-colors", children: alumni.name }, void 0, false, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+              lineNumber: 112,
+              columnNumber: 13
+            }, this),
+            /* @__PURE__ */ jsxDEV("p", { className: "text-indigo-600 font-semibold text-sm mb-3", children: [
+              alumni.role,
+              " @ ",
+              alumni.company
+            ] }, void 0, true, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+              lineNumber: 115,
+              columnNumber: 13
+            }, this),
+            /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-2 text-slate-500 text-xs mb-5 bg-slate-50 px-3 py-2 rounded-lg border border-slate-100", children: [
+              /* @__PURE__ */ jsxDEV(GraduationCap, { className: "w-4 h-4 text-slate-400" }, void 0, false, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+                lineNumber: 120,
+                columnNumber: 15
+              }, this),
+              /* @__PURE__ */ jsxDEV("span", { className: "font-medium", children: [
+                "Batch of ",
+                alumni.batch,
+                " • ",
+                alumni.dept
+              ] }, void 0, true, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+                lineNumber: 121,
+                columnNumber: 15
+              }, this)
+            ] }, void 0, true, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+              lineNumber: 119,
+              columnNumber: 13
+            }, this),
+            /* @__PURE__ */ jsxDEV("div", { className: "flex flex-wrap gap-2 mb-6", children: alumni.skills.map(
+              (skill, j) => /* @__PURE__ */ jsxDEV(
+                "span",
+                {
+                  className: "px-2.5 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded-md border border-slate-200",
+                  children: skill
+                },
+                j,
+                false,
+                {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+                  lineNumber: 128,
+                  columnNumber: 13
+                },
+                this
+              )
+            ) }, void 0, false, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+              lineNumber: 126,
+              columnNumber: 13
+            }, this),
+            /* @__PURE__ */ jsxDEV("button", { className: "w-full py-2.5 bg-slate-900 border border-transparent text-white font-semibold rounded-xl hover:bg-indigo-600 hover:shadow-lg transition-all flex items-center justify-center gap-2", children: [
+              /* @__PURE__ */ jsxDEV(Mail, { className: "w-4 h-4" }, void 0, false, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+                lineNumber: 138,
+                columnNumber: 15
+              }, this),
+              "Request Mentorship"
+            ] }, void 0, true, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+              lineNumber: 137,
+              columnNumber: 13
+            }, this)
+          ]
+        },
+        alumni.id,
+        true,
+        {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+          lineNumber: 96,
+          columnNumber: 9
+        },
+        this
+      )
+    ) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+      lineNumber: 94,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, true, {
+    fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx",
+    lineNumber: 64,
+    columnNumber: 5
+  }, this);
+};
+_c = MentorshipTab;
+export default MentorshipTab;
+var _c;
+$RefreshReg$(_c, "MentorshipTab");
+if (import.meta.hot && !inWebWorker) {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+if (import.meta.hot && !inWebWorker) {
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/MentorshipTab.jsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+
+//# sourceMappingURL=data:application/json;base64,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c0ZOLGVBQWVBO0FBQWMsSUFBQVE7QUFBQSxhQUFBQSxJQUFBIiwibmFtZXMiOlsiUmVhY3QiLCJMaW5rZWRpbiIsIk1haWwiLCJHcmFkdWF0aW9uQ2FwIiwiVXNlcnMiLCJhbHVtbmlEYXRhIiwiaWQiLCJuYW1lIiwicm9sZSIsImNvbXBhbnkiLCJiYXRjaCIsImRlcHQiLCJza2lsbHMiLCJNZW50b3JzaGlwVGFiIiwibWFwIiwiZmlsdGVyIiwiaSIsImFsdW1uaSIsImNoYXJBdCIsInNraWxsIiwiaiIsIl9jIl0sImlnbm9yZUxpc3QiOltdLCJzb3VyY2VzIjpbIk1lbnRvcnNoaXBUYWIuanN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCB7IExpbmtlZGluLCBNYWlsLCBHcmFkdWF0aW9uQ2FwLCBVc2VycyB9IGZyb20gXCJsdWNpZGUtcmVhY3RcIjtcblxuY29uc3QgYWx1bW5pRGF0YSA9IFtcbiAge1xuICAgIGlkOiAxLFxuICAgIG5hbWU6IFwiUHJpeWEgU2hhcm1hXCIsXG4gICAgcm9sZTogXCJTREUgSUlcIixcbiAgICBjb21wYW55OiBcIkFtYXpvblwiLFxuICAgIGJhdGNoOiAyMDIyLFxuICAgIGRlcHQ6IFwiQ1NFXCIsXG4gICAgc2tpbGxzOiBbXCJKYXZhXCIsIFwiQVdTXCIsIFwiU3lzdGVtIERlc2lnblwiXSxcbiAgfSxcbiAge1xuICAgIGlkOiAyLFxuICAgIG5hbWU6IFwiUmFodWwgVmVybWFcIixcbiAgICByb2xlOiBcIkZyb250ZW5kIEVuZ2luZWVyXCIsXG4gICAgY29tcGFueTogXCJVYmVyXCIsXG4gICAgYmF0Y2g6IDIwMjMsXG4gICAgZGVwdDogXCJJU0VcIixcbiAgICBza2lsbHM6IFtcIlJlYWN0XCIsIFwiUmVkdXhcIiwgXCJQZXJmb3JtYW5jZVwiXSxcbiAgfSxcbiAge1xuICAgIGlkOiAzLFxuICAgIG5hbWU6IFwiQW5raXQgR3VwdGFcIixcbiAgICByb2xlOiBcIkRhdGEgU2NpZW50aXN0XCIsXG4gICAgY29tcGFueTogXCJNaWNyb3NvZnRcIixcbiAgICBiYXRjaDogMjAyMSxcbiAgICBkZXB0OiBcIkNTRVwiLFxuICAgIHNraWxsczogW1wiUHl0aG9uXCIsIFwiTUxcIiwgXCJBenVyZVwiXSxcbiAgfSxcbiAge1xuICAgIGlkOiA0LFxuICAgIG5hbWU6IFwiU25laGEgUmVkZHlcIixcbiAgICByb2xlOiBcIlByb2R1Y3QgTWFuYWdlclwiLFxuICAgIGNvbXBhbnk6IFwiR29vZ2xlXCIsXG4gICAgYmF0Y2g6IDIwMjAsXG4gICAgZGVwdDogXCJFQ0VcIixcbiAgICBza2lsbHM6IFtcIlN0cmF0ZWd5XCIsIFwiQW5hbHl0aWNzXCIsIFwiVVhcIl0sXG4gIH0sXG5dO1xuXG5jb25zdCBNZW50b3JzaGlwVGFiID0gKCkgPT4ge1xuICByZXR1cm4gKFxuICAgIDxkaXYgY2xhc3NOYW1lPVwic3BhY2UteS02XCI+XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktYmV0d2VlbiBtYi0yXCI+XG4gICAgICAgIDxkaXY+XG4gICAgICAgICAgPGgyIGNsYXNzTmFtZT1cInRleHQtMnhsIGZvbnQtYm9sZCB0ZXh0LXNsYXRlLTgwMFwiPlxuICAgICAgICAgICAgQWx1bW5pIE1lbnRvcnNoaXBcbiAgICAgICAgICA8L2gyPlxuICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInRleHQtc2xhdGUtNTAwXCI+XG4gICAgICAgICAgICBDb25uZWN0IHdpdGggc2VuaW9ycyB3b3JraW5nIGluIHlvdXIgZHJlYW0gY29tcGFuaWVzLlxuICAgICAgICAgIDwvcD5cbiAgICAgICAgPC9kaXY+XG4gICAgICA8L2Rpdj5cblxuICAgICAgey8qIEZpbHRlcnMgKi99XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggZ2FwLTMgb3ZlcmZsb3cteC1hdXRvIHBiLTIgY3VzdG9tLXNjcm9sbGJhclwiPlxuICAgICAgICB7W1wiUmVjb21tZW5kZWQgZm9yIHlvdVwiLCBcIkdvb2dsZVwiLCBcIk1pY3Jvc29mdFwiLCBcIkFtYXpvblwiLCBcIlViZXJcIl0ubWFwKFxuICAgICAgICAgIChmaWx0ZXIsIGkpID0+IChcbiAgICAgICAgICAgIDxidXR0b25cbiAgICAgICAgICAgICAga2V5PXtpfVxuICAgICAgICAgICAgICBjbGFzc05hbWU9e2BweC00IHB5LTIgcm91bmRlZC14bCB0ZXh0LXNtIGZvbnQtc2VtaWJvbGQgd2hpdGVzcGFjZS1ub3dyYXAgdHJhbnNpdGlvbi1hbGwgJHtcbiAgICAgICAgICAgICAgICBpID09PSAwXG4gICAgICAgICAgICAgICAgICA/IFwiYmctaW5kaWdvLTYwMCB0ZXh0LXdoaXRlIHNoYWRvdy1tZFwiXG4gICAgICAgICAgICAgICAgICA6IFwiYmctd2hpdGUgdGV4dC1zbGF0ZS02MDAgaG92ZXI6Ymctc2xhdGUtNTAgYm9yZGVyIGJvcmRlci1zbGF0ZS0yMDAgaG92ZXI6Ym9yZGVyLWluZGlnby0yMDBcIlxuICAgICAgICAgICAgICB9YH1cbiAgICAgICAgICAgID5cbiAgICAgICAgICAgICAge2ZpbHRlcn1cbiAgICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICAgICksXG4gICAgICAgICl9XG4gICAgICA8L2Rpdj5cblxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJncmlkIGdyaWQtY29scy0xIG1kOmdyaWQtY29scy0yIGxnOmdyaWQtY29scy0zIGdhcC02XCI+XG4gICAgICAgIHthbHVtbmlEYXRhLm1hcCgoYWx1bW5pKSA9PiAoXG4gICAgICAgICAgPGRpdlxuICAgICAgICAgICAga2V5PXthbHVtbmkuaWR9XG4gICAgICAgICAgICBjbGFzc05hbWU9XCJiZy13aGl0ZSBwLTYgcm91bmRlZC0yeGwgYm9yZGVyIGJvcmRlci1zbGF0ZS0yMDAgc2hhZG93LXNtIGhvdmVyOnNoYWRvdy14bCB0cmFuc2l0aW9uLWFsbCBncm91cFwiXG4gICAgICAgICAgPlxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLXN0YXJ0IGp1c3RpZnktYmV0d2VlbiBtYi00XCI+XG4gICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwidy0xNCBoLTE0IGJnLWdyYWRpZW50LXRvLWJyIGZyb20taW5kaWdvLTEwMCB0by1wdXJwbGUtMTAwIHJvdW5kZWQtMnhsIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIHRleHQtaW5kaWdvLTYwMCBmb250LWJvbGQgdGV4dC14bCBzaGFkb3ctaW5uZXJcIj5cbiAgICAgICAgICAgICAgICB7YWx1bW5pLm5hbWUuY2hhckF0KDApfVxuICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgPGFcbiAgICAgICAgICAgICAgICBocmVmPVwiI1wiXG4gICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwidy04IGgtOCByb3VuZGVkLWZ1bGwgYmctc2xhdGUtNTAgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgdGV4dC1zbGF0ZS00MDAgaG92ZXI6dGV4dC1pbmRpZ28tNjAwIGhvdmVyOmJnLWluZGlnby01MCB0cmFuc2l0aW9uLWFsbFwiXG4gICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICA8TGlua2VkaW4gY2xhc3NOYW1lPVwidy00IGgtNFwiIC8+XG4gICAgICAgICAgICAgIDwvYT5cbiAgICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgICA8aDMgY2xhc3NOYW1lPVwidGV4dC1sZyBmb250LWJvbGQgdGV4dC1zbGF0ZS04MDAgZ3JvdXAtaG92ZXI6dGV4dC1pbmRpZ28tNjAwIHRyYW5zaXRpb24tY29sb3JzXCI+XG4gICAgICAgICAgICAgIHthbHVtbmkubmFtZX1cbiAgICAgICAgICAgIDwvaDM+XG4gICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LWluZGlnby02MDAgZm9udC1zZW1pYm9sZCB0ZXh0LXNtIG1iLTNcIj5cbiAgICAgICAgICAgICAge2FsdW1uaS5yb2xlfSBAIHthbHVtbmkuY29tcGFueX1cbiAgICAgICAgICAgIDwvcD5cblxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMiB0ZXh0LXNsYXRlLTUwMCB0ZXh0LXhzIG1iLTUgYmctc2xhdGUtNTAgcHgtMyBweS0yIHJvdW5kZWQtbGcgYm9yZGVyIGJvcmRlci1zbGF0ZS0xMDBcIj5cbiAgICAgICAgICAgICAgPEdyYWR1YXRpb25DYXAgY2xhc3NOYW1lPVwidy00IGgtNCB0ZXh0LXNsYXRlLTQwMFwiIC8+XG4gICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImZvbnQtbWVkaXVtXCI+XG4gICAgICAgICAgICAgICAgQmF0Y2ggb2Yge2FsdW1uaS5iYXRjaH0g4oCiIHthbHVtbmkuZGVwdH1cbiAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleCBmbGV4LXdyYXAgZ2FwLTIgbWItNlwiPlxuICAgICAgICAgICAgICB7YWx1bW5pLnNraWxscy5tYXAoKHNraWxsLCBqKSA9PiAoXG4gICAgICAgICAgICAgICAgPHNwYW5cbiAgICAgICAgICAgICAgICAgIGtleT17an1cbiAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT1cInB4LTIuNSBweS0xIGJnLXNsYXRlLTEwMCB0ZXh0LXNsYXRlLTYwMCB0ZXh0LXhzIGZvbnQtc2VtaWJvbGQgcm91bmRlZC1tZCBib3JkZXIgYm9yZGVyLXNsYXRlLTIwMFwiXG4gICAgICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgICAge3NraWxsfVxuICAgICAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICAgICAgKSl9XG4gICAgICAgICAgICA8L2Rpdj5cblxuICAgICAgICAgICAgPGJ1dHRvbiBjbGFzc05hbWU9XCJ3LWZ1bGwgcHktMi41IGJnLXNsYXRlLTkwMCBib3JkZXIgYm9yZGVyLXRyYW5zcGFyZW50IHRleHQtd2hpdGUgZm9udC1zZW1pYm9sZCByb3VuZGVkLXhsIGhvdmVyOmJnLWluZGlnby02MDAgaG92ZXI6c2hhZG93LWxnIHRyYW5zaXRpb24tYWxsIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIGdhcC0yXCI+XG4gICAgICAgICAgICAgIDxNYWlsIGNsYXNzTmFtZT1cInctNCBoLTRcIiAvPlxuICAgICAgICAgICAgICBSZXF1ZXN0IE1lbnRvcnNoaXBcbiAgICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICApKX1cbiAgICAgIDwvZGl2PlxuICAgIDwvZGl2PlxuICApO1xufTtcblxuZXhwb3J0IGRlZmF1bHQgTWVudG9yc2hpcFRhYjtcbiJdLCJmaWxlIjoiRDovcHJvamVjdC9Ta2lsbF9HYXAgQW5hbHlzZXIgYW5kIHBsYWNlbWVudCBpbnRlbGxpZ2VuY2UvY2xpZW50L3NyYy9jb21wb25lbnRzL3N0dWRlbnQvTWVudG9yc2hpcFRhYi5qc3gifQ==

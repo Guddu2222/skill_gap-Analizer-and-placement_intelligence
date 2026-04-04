@@ -1,0 +1,41 @@
+# Smart Expense Manager Task List
+
+This track defines our 6-week roadmap for the Smart Expense Manager.
+
+## Week 1: Backend Setup & Auth
+- [x] Initialize Express.js backend project (`server/`)
+- [x] Set up MongoDB connection (Mongoose)
+- [x] Create `User` model (Owner, Accountant roles)
+- [x] Implement robust JWT Authentication (register, login)
+- [x] Build Auth middleware for protecting routes
+
+## Week 2: Core APIs
+- [x] Create `Expense` and `Income` Models
+- [x] Implement CRUD APIs for Income/Expenses
+- [x] Build efficient filtering/pagination logic for records
+- [x] Develop MongoDB Aggregation pipelines for Monthly Reports
+
+## Week 3: Frontend Foundation
+- [x] Initialize React App using Vite (`client/`)
+- [x] Configure Tailwind CSS & Dark Mode (`class` strategy)
+- [x] Setup React Router & Auth Context State
+- [x] Build beautiful Login & Registration UI pages
+- [x] Create Dashboard Layout (Sidebar, Top nav)
+
+## Week 4: Dashboard & Expense UI
+- [x] Build Data Tables for Expenses/Income
+- [x] Create sleek Add/Edit Modals with form validation
+- [x] Integrate Chart.js for visualization (Income vs Expense)
+- [x] Implement Monthly Comparison Chart (This month vs Last month)
+
+## Week 5: Invoice Generator
+- [x] Create `Invoice` Model & backend APIs
+- [x] Build Invoice Management UI in React
+- [x] Integrate `pdfkit` (or `puppeteer`) for Invoice PDF Generator
+- [x] Add PDF Download handler and UI feedback
+
+## Week 6: Polish & Extra Features
+- [x] Implement Budget Limit Alerts (backend checks + frontend notifications)
+- [x] Ensure 100% Mobile Responsiveness (Tailwind media queries)
+- [x] Polish UI (Toast notifications, Skeleton loaders, micro-animations)
+- [x] Final deployment prep & README.md 작성

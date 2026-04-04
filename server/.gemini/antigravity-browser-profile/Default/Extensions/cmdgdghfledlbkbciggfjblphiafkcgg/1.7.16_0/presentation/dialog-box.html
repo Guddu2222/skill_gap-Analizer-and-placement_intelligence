@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>dialog-box</title>
+  </head>
+  <body>
+    <div class="background-white d-none" id="dialog">
+      <div id="dialog-header" class="header p-2 pointer">
+        <div class="text-lg color-white" data-i18n="elementBlocker_title"></div>
+        <div id="close-dialog" data-icon="close" class="icon-white width-4"></div>
+      </div>
+      <div class="p-2.5">
+        <div class="text-lg text-center mb-2.5" data-i18n="elementBlocker_subtitle"></div>
+        <div id="select-text-box" class="background-light-blue radius-1 p-3 text-center text-sm weight-5 overflow-h mb-2.5"></div>
+        <label class="d-flex text-md weight-7 align-items-center justify-content-between mb-2.5">
+          <span data-i18n="elementBlocker_depthSelector"> </span>
+          <input id="ancestors-slider" class="d-flex range-picker" type="range" min="0" max="5" value="0" step="1" />
+        </label>
+        <label class="d-flex text-md weight-7 align-items-center justify-content-between mb-2.5">
+          <span data-i18n="elementBlocker_specificitySelector"></span>
+          <input id="specificity-slider" class="d-flex range-picker" type="range" min="0" max="2" value="2" step="1" />
+        </label>
+        <div class="option-sections">
+          <label>
+            <input type="checkbox" class="m-0 vertical-middle" id="previewCheckbox" />
+            <span class="text-md weight-7" data-i18n="elementBlocker_previewBtn"></span>
+          </label>
+          <div class="d-flex">
+            <div class="button border-1-red-1 color-red-1 radius-full text-lg text-center pointer me-1" id="selectorButton">
+              <span data-icon="selector" class="d-inline-block width-5 icon-gradient pe-1"></span>
+              <span data-i18n="elementBlocker_selectorBtn"></span>
+            </div>
+            <div class="button bg-gradient-90 radius-full color-white text-lg text-center pointer" id="saveButton" data-i18n="elementBlocker_saveBtn"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="curtain"></div>
+    <span id="jsonI18n" style="display: none">{{jsonI18n}}</span>
+  </body>
+</html>

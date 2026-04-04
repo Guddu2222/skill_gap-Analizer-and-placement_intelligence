@@ -1,0 +1,30 @@
+<current_dom_explanation>
+This is a temporary snapshot of the current page's DOM structure. The DOM will change if you navigate to or interact with another page. Use a tool like browser_get_dom to capture and preserve the DOM in your trajectory if needed for later reference.
+</current_dom_explanation>
+<current_dom>
+PS
+.
+[0] (420,48)<a class='hover:text-white transition-colors' href='#about'>About />
+[1] (469,48)<a class='hover:text-white transition-colors' href='#projects'>Projects />
+[2] (530,48)<a class='hover:text-white transition-colors' href='#experience'>Experience />
+[3] (955,48)<a class='px-4 py-2 text-sm font-medium bg-white text-black rounded-full hover:scale-105 transition-transform' href='#contact'>Let's Talk />
+Engineering
+The Web.
+Hi, I'm
+Your Name
+, a Full Stack MERN Developer. I architect scalable backend systems and design premium, high-performance React applications.
+[4] (138,440)<a class='px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-zinc-200 transition-colors' href='#projects'>Explore Work />
+[5] (253,440)<a class='px-8 py-4 glass-card text-white font-medium rounded-full hover:bg-white/10 transition-colors border border-zinc-800' href='https://github.com'>View GitHub />
+[Your Portrait Image Here]
+Current Location
+New York, NY
+01:23 AM
+Core Stack
+React
+Node.js
+Mongo
+Tailwind
+Selected
+Work
+
+</current_dom>

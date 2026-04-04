@@ -1,0 +1,6 @@
+# Resolving Deployed Login Failure
+
+- [x] Inspect [client/src/services/api.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/services/api.js) for hardcoded localhost or missing environment variables
+- [x] Implement VITE_API_BASE_URL to dynamically switch between local and production environments
+- [x] Create implementation plan based on findings
+- [x] Verify functionality

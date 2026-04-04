@@ -1,0 +1,49 @@
+# Implement Student Logout and Persistent Login
+
+This document outlines the plan to update the authentication system to allow students to stay logged in for multiple days, and to provide a clear logout mechanism from the dashboard.
+
+## Overview
+
+Currently, the JWT tokens issued during login expire after 1 hour, meaning students are frequently logged out. Additionally, the [Sidebar](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/Sidebar.jsx#6-68) component used across all dashboards (including the Student Dashboard) lacks a functional "Logout" button.
+
+We will modify the backend authentication routes to issue tokens with a 7-day expiration, and we will update the frontend [Sidebar](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/Sidebar.jsx#6-68) component to include a logout action that clears the authentication state and redirects the user to the login page.
+
+## Proposed Changes
+
+### Backend Changes
+
+#### [MODIFY] server/routes/auth.js
+We need to update the JWT signing options to increase the token expiration time from 1 hour (`'1h'`) to 7 days (`'7d'`).
+
+*   Locate the `jwt.sign()` calls within the `/login` route (and potentially registration if it auto-logs in).
+*   Change the `expiresIn` option from `'1h'` to `'7d'`.
+
+### Frontend Changes
+
+#### [MODIFY] client/src/components/Sidebar.jsx
+We need to add a "Logout" button to the bottom of the sidebar (near the Settings button) that, when clicked, clears the local storage and navigates the user back to the login page.
+
+*   Import `useNavigate` from `react-router-dom`.
+*   Import the `LogOut` icon from `lucide-react`.
+*   Create a `handleLogout` function that:
+    1. Removes the `token` from `localStorage`.
+    2. Removes the `userRole` from `localStorage`.
+    3. Uses `navigate('/login')` to redirect the user.
+*   Add a `<button>` at the bottom of the sidebar executing `handleLogout`.
+
+## Verification Plan
+
+### Automated Tests
+There are no dedicated backend unit tests for token expiration time readily visible in the standard test suites, so we will rely heavily on manual verification for this specific JWT behavior change alongside side-effects.
+
+### Manual Verification
+1.  **Verify Persistent Login:**
+    *   Log in as a student.
+    *   Inspect local storage to ensure the token is present.
+    *   (Optional - Advanced) Decode the JWT via a tool like jwt.io to verify the `exp` claim is 7 days in the future rather than 1 hour.
+    *   Close the browser tab and reopen it to ensure the dashboard loads without requiring a new login.
+2.  **Verify Logout:**
+    *   Click the new "Logout" button in the Sidebar.
+    *   Ensure the application redirects to `/login`.
+    *   Ensure the `token` and `userRole` are removed from `localStorage`.
+    *   Attempt to navigate back to `/student` via the URL bar directly and ensure it either redirects back to login or cleanly handles the unauthenticated state (depending on generic app routing setup).
