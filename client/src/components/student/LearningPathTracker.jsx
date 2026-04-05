@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import {
   BookOpen,
   CheckCircle,
@@ -39,18 +40,14 @@ const LearningPathTracker = ({ learningPaths, onUpdate }) => {
 
   const toggleMilestone = async (pathId, milestoneIndex, completed) => {
     try {
-      await api.patch(`/skill-gap/learning-paths/${pathId}/progress`, {
+      const response = await api.patch(`/skill-gap/learning-paths/${pathId}/progress`, {
         milestoneIndex,
         completed,
       });
 
-      // Update local state conditionally to avoid full refresh delay if possible
-      if (selectedPath && selectedPath._id === pathId) {
-        const newPaths = { ...selectedPath };
-        newPaths.milestones[milestoneIndex].completed = completed;
-        if (completed)
-          newPaths.milestones[milestoneIndex].completedDate = new Date();
-        setSelectedPath(newPaths);
+      // Update local state with the backend-calculated progress
+      if (selectedPath && selectedPath._id === pathId && response.data.learningPath) {
+        setSelectedPath(response.data.learningPath);
       }
 
       if (onUpdate) onUpdate();
@@ -274,6 +271,11 @@ const LearningPathDetailModal = ({
 }) => {
   const [localProgress, setLocalProgress] = useState(path.progressPercentage);
 
+  // Sync local progress when server auto-calculates new progress from milestones
+  React.useEffect(() => {
+    setLocalProgress(path.progressPercentage);
+  }, [path.progressPercentage]);
+
   const handleProgressChange = (e) => {
     const value = parseInt(e.target.value);
     setLocalProgress(value);
@@ -283,7 +285,7 @@ const LearningPathDetailModal = ({
     onUpdateProgress(path._id, localProgress);
   };
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
       <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
         {/* Header */}
@@ -523,7 +525,8 @@ const LearningPathDetailModal = ({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

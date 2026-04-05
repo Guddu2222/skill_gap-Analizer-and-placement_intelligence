@@ -237,6 +237,26 @@ router.patch("/learning-paths/:id/progress", auth, async (req, res) => {
           milestones[milestoneIndex].completedDate = new Date();
         }
         learningPath.milestones = milestones;
+
+        // Auto-calculate progress based on completed milestones
+        const completedCount = milestones.filter(m => m.completed).length;
+        const totalCount = milestones.length;
+        if (totalCount > 0) {
+          const autoProgress = Math.round((completedCount / totalCount) * 100);
+          learningPath.progressPercentage = autoProgress;
+
+          if (autoProgress >= 100) {
+            learningPath.progressPercentage = 100;
+            learningPath.status = "completed";
+            learningPath.completedAt = new Date();
+          } else if (autoProgress > 0 && learningPath.status === "not_started") {
+            learningPath.status = "in_progress";
+            learningPath.startedAt = new Date();
+          } else if (autoProgress > 0 && autoProgress < 100 && learningPath.status === "completed") {
+            learningPath.status = "in_progress";
+            learningPath.completedAt = undefined;
+          }
+        }
       }
     }
 
