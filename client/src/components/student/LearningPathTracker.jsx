@@ -32,7 +32,7 @@ const LearningPathTracker = ({ learningPaths, onUpdate }) => {
       if (onUpdate) onUpdate();
     } catch (error) {
       console.error("Error updating progress:", error);
-    } finally {
+    }  finally {
       setUpdatingProgress(false);
     }
   };
@@ -317,32 +317,67 @@ const LearningPathDetailModal = ({
           </div>
 
           {/* Progress Control */}
-          <div className="mt-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">Update Progress</span>
-              <span className="text-2xl font-bold">{localProgress}%</span>
+          <div className="mt-8 bg-black/10 rounded-xl p-5 border border-white/10">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-semibold uppercase tracking-wider text-blue-100">
+                Update Progress
+              </span>
+              <span className="text-3xl font-bold bg-white text-transparent bg-clip-text drop-shadow-sm">
+                {localProgress}%
+              </span>
             </div>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={localProgress}
-              onChange={handleProgressChange}
-              className="w-full"
-            />
-            <div className="flex items-center justify-between mt-2">
+
+            <div className="relative flex items-center mb-6 py-2">
+              <style dangerouslySetInnerHTML={{__html: `
+                .custom-progress-slider::-webkit-slider-thumb {
+                  -webkit-appearance: none;
+                  appearance: none;
+                  width: 22px;
+                  height: 22px;
+                  border-radius: 50%;
+                  background: white;
+                  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+                  cursor: pointer;
+                  transition: transform 0.1s;
+                }
+                .custom-progress-slider::-webkit-slider-thumb:hover {
+                  transform: scale(1.15);
+                }
+                .custom-progress-slider::-moz-range-thumb {
+                  width: 22px;
+                  height: 22px;
+                  border-radius: 50%;
+                  background: white;
+                  cursor: pointer;
+                  border: none;
+                }
+              `}} />
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={localProgress}
+                onChange={handleProgressChange}
+                className="custom-progress-slider w-full h-2.5 rounded-full appearance-none cursor-pointer outline-none focus:ring-2 focus:ring-white/50"
+                style={{
+                  background: `linear-gradient(to right, rgba(255,255,255,0.95) ${localProgress}%, rgba(255,255,255,0.2) ${localProgress}%)`,
+                }}
+              />
+            </div>
+
+            <div className="flex items-center justify-between gap-4">
               <button
                 onClick={() =>
                   setLocalProgress(Math.max(0, localProgress - 10))
                 }
-                className="px-3 py-1 bg-white/20 rounded text-sm hover:bg-white/30 transition-colors"
+                className="flex-1 py-2.5 bg-white/10 rounded-lg text-sm font-medium hover:bg-white/20 transition-all active:scale-95 border border-white/5"
               >
                 -10%
               </button>
               <button
                 onClick={handleSaveProgress}
                 disabled={updating || localProgress === path.progressPercentage}
-                className="px-6 py-2 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-[2] py-2.5 bg-white text-indigo-600 rounded-lg font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-50 disabled:scale-100 disabled:cursor-not-allowed"
               >
                 {updating ? "Saving..." : "Save Progress"}
               </button>
@@ -350,7 +385,7 @@ const LearningPathDetailModal = ({
                 onClick={() =>
                   setLocalProgress(Math.min(100, localProgress + 10))
                 }
-                className="px-3 py-1 bg-white/20 rounded text-sm hover:bg-white/30 transition-colors"
+                className="flex-1 py-2.5 bg-white/10 rounded-lg text-sm font-medium hover:bg-white/20 transition-all active:scale-95 border border-white/5"
               >
                 +10%
               </button>
