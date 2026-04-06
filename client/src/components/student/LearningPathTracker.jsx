@@ -527,7 +527,7 @@ const LearningPathDetailModal = ({
       </div>
     </div>,
     document.body
-  );
+   );
 };
 
 export default LearningPathTracker;

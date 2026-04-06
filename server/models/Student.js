@@ -130,6 +130,11 @@ const studentSchema = new mongoose.Schema(
       enum: ["eligible", "applying", "placed", "opted_out", "unplaced"],
       default: "eligible",
     },
+    visibilityPreferences: {
+      showPlacementScore: { type: Boolean, default: true },
+      showLearningPaths: { type: Boolean, default: true },
+      showCgpa: { type: Boolean, default: false },
+    },
     isPlaced: { type: Boolean, default: false },
     placementPackage: { type: Number }, // CTC in lakhs
     placedCompany: { type: String },

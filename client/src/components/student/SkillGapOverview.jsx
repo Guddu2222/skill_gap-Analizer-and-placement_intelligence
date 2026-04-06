@@ -92,7 +92,7 @@ const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
                 <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Readiness Overview</span>
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Skill Match AI Score</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-400">
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -166,7 +166,7 @@ const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
               {/* Progress Bar */}
               <div className="mt-5">
                 <div className="flex justify-between text-xs text-slate-500 mb-1.5">
-                  <span>Overall Readiness Progress</span>
+                  <span>AI Skill Match Confidence</span>
                   <span className="font-semibold text-violet-600">{score}%</span>
                 </div>
                 <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
@@ -192,6 +192,21 @@ const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
                     <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
                   </div>
                 ))}
+              </div>
+              
+              {/* Formula Explanation */}
+              <div className="mt-4 p-3.5 bg-slate-50 border border-slate-100 rounded-xl flex flex-col xl:flex-row xl:items-center justify-between gap-3 text-xs text-slate-600">
+                <div className="flex flex-col">
+                  <span className="font-bold text-slate-800">Placement Readiness Formula</span>
+                  <span className="text-[11px] text-slate-500 mt-0.5">Your global readiness ({student?.placementReadinessScore || 0}/100) aggregates these stats.</span>
+                </div>
+                <div className="flex items-center gap-1.5 font-mono text-[10px] bg-white px-2.5 py-1.5 rounded border border-slate-200 shadow-sm shrink-0 whitespace-nowrap">
+                  <span className="text-violet-600 font-bold">40% Skills</span>
+                  <span className="opacity-50">+</span>
+                  <span className="text-blue-600 font-bold">40% Profile</span>
+                  <span className="opacity-50">+</span>
+                  <span className="text-green-600 font-bold">20% Resume</span>
+                </div>
               </div>
             </div>
           </div>

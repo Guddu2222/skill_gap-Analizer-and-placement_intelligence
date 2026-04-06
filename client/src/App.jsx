@@ -87,6 +87,10 @@ const App = () => {
           path="/student/interviews"
           element={<StudentDashboard activeRoute="interviews" />}
         />
+        <Route
+          path="/student/settings"
+          element={<StudentDashboard activeRoute="settings" />}
+        />
       </Routes>
     </Router>
   );

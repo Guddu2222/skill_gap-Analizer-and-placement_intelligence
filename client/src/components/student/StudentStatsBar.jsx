@@ -31,6 +31,7 @@ const StudentStatsBar = ({ student, skillGapAnalysis, learningPaths = [] }) => {
       border: "border-violet-100",
       textColor: "text-violet-700",
       iconBg: "bg-violet-100",
+      tooltip: "Calculated dynamically:\n• 40% AI Skills Analysis\n• 40% Profile Completion\n• 20% Resume Upload",
     },
     {
       label: "Skills Analyzed",
@@ -93,9 +94,22 @@ const StudentStatsBar = ({ student, skillGapAnalysis, learningPaths = [] }) => {
               {stat.suffix}
             </span>
           </p>
-          <p className="text-xs text-slate-500 mt-1.5 font-medium">
-            {stat.label}
-          </p>
+          <div className="flex items-center justify-between mt-1.5 w-full">
+            <p className="text-xs text-slate-500 font-medium">
+              {stat.label}
+            </p>
+            {stat.tooltip && (
+              <div className="relative group/tooltip flex items-center">
+                <svg className="w-3.5 h-3.5 text-slate-400 hover:text-violet-500 transition-colors cursor-help" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div className="absolute bottom-full right-0 mb-2 w-48 p-3 bg-slate-800 text-white text-[11px] font-medium tracking-wide rounded-xl shadow-xl opacity-0 translate-y-1 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible group-hover/tooltip:translate-y-0 transition-all duration-200 z-50 pointer-events-none whitespace-pre-wrap leading-relaxed border border-slate-700">
+                  {stat.tooltip}
+                  <div className="absolute top-full right-2 -mt-[1px] border-[5px] border-transparent border-t-slate-800" />
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Hover glow */}
           <div

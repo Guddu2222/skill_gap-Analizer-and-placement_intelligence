@@ -195,20 +195,48 @@ const Sidebar = ({ role = "college" }) => {
         className="px-2 py-4 space-y-0.5 border-t"
         style={{ borderColor: "rgba(255,255,255,0.08)" }}
       >
-        <button
-          className="relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden"
-          style={{ color: "rgba(255,255,255,0.45)" }}
+        <NavLink
+          to={`/${role}/settings`}
+          className={({ isActive }) =>
+            `relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden ${
+              isActive
+                ? "bg-white/15 text-white shadow-lg"
+                : "hover:bg-white/10"
+            }`
+          }
+          style={({ isActive }) =>
+            !isActive ? { color: "rgba(255,255,255,0.45)" } : undefined
+          }
           title={collapsed ? "Settings" : undefined}
         >
-          <Settings className="w-4 h-4 flex-shrink-0 group-hover:text-white/70 transition-colors" />
-          {!collapsed && <span className="group-hover:text-white/70 transition-colors">Settings</span>}
-          {collapsed && (
-            <div className="absolute left-full ml-2 px-2.5 py-1.5 bg-slate-800 text-white text-xs font-medium rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 shadow-xl z-50">
-              Settings
-              <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-2 h-2 bg-slate-800 rotate-45" />
-            </div>
+          {({ isActive }) => (
+            <>
+              {isActive && (
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-indigo-500/5 rounded-xl" />
+              )}
+              <Settings
+                className={`w-4 h-4 flex-shrink-0 transition-colors ${
+                  isActive ? "text-violet-400" : "group-hover:text-white/70"
+                }`}
+              />
+              {!collapsed && (
+                <span
+                  className={`transition-colors ${
+                    isActive ? "text-white" : "group-hover:text-white/70"
+                  }`}
+                >
+                  Settings
+                </span>
+              )}
+              {collapsed && (
+                <div className="absolute left-full ml-2 px-2.5 py-1.5 bg-slate-800 text-white text-xs font-medium rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 shadow-xl z-50">
+                  Settings
+                  <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-2 h-2 bg-slate-800 rotate-45" />
+                </div>
+              )}
+            </>
           )}
-        </button>
+        </NavLink>
 
         <button
           onClick={handleLogout}

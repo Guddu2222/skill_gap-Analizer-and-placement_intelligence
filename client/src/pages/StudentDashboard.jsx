@@ -31,6 +31,7 @@ import MentorshipTab from "../components/student/MentorshipTab";
 import InterviewDashboard from "../components/student/interview/InterviewDashboard";
 import InterviewSession from "../components/student/interview/InterviewSession";
 import InterviewFeedbackCard from "../components/student/interview/InterviewFeedbackCard";
+import StudentSettings from "../components/student/settings/StudentSettings";
 
 const SIDEBAR_COLLAPSED_KEY = "sgapi_sidebar_collapsed";
 
@@ -218,7 +219,10 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
 
         {/* ── Page Content ── */}
         <main className="px-6 py-6 max-w-7xl mx-auto">
-
+      {activeTab === "settings" ? (
+        <StudentSettings student={student} onUpdate={fetchDashboardData} />
+      ) : (
+        <>
           {/* ═══════════════════════════════════════════════
               PREMIUM HERO BANNER
           ═══════════════════════════════════════════════ */}
@@ -456,6 +460,8 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
               )}
             </div>
           )}
+        </>
+      )}
         </main>
       </div>
 
