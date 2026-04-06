@@ -94,7 +94,7 @@ const StudentStatsBar = ({ student, skillGapAnalysis, learningPaths = [] }) => {
               {stat.suffix}
             </span>
           </p>
-          <div className="flex items-center justify-between mt-1.5 w-full">
+          <div className="flex items-center justify-start gap-1.5 mt-1.5 w-full">
             <p className="text-xs text-slate-500 font-medium">
               {stat.label}
             </p>

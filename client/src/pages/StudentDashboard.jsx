@@ -133,7 +133,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
   if (loading) {
     return (
       <div className="flex bg-slate-950 min-h-screen">
-        <Sidebar role="student" />
+        <Sidebar role="student" collapsed={sidebarCollapsed} onToggle={setSidebarCollapsed} />
         <main className={`flex-1 ${sidebarWidth} transition-all duration-300 flex items-center justify-center min-h-screen`}>
           <div className="flex flex-col items-center gap-4">
             <div className="relative w-16 h-16">
@@ -153,7 +153,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
   if (!student) {
     return (
       <div className="flex bg-slate-950 min-h-screen">
-        <Sidebar role="student" />
+        <Sidebar role="student" collapsed={sidebarCollapsed} onToggle={setSidebarCollapsed} />
         <main className={`flex-1 ${sidebarWidth} flex items-center justify-center`}>
           <p className="text-slate-400">
             Failed to load profile. Please try reloading.
@@ -170,7 +170,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
   // ─── Main Render ─────────────────────────────────────────────────────────────
   return (
     <div className="flex bg-slate-50 min-h-screen font-sans">
-      <Sidebar role="student" />
+      <Sidebar role="student" collapsed={sidebarCollapsed} onToggle={setSidebarCollapsed} />
 
       {/* ── Main Content Area ── */}
       <div className={`flex-1 ${sidebarWidth} transition-all duration-300 min-h-screen`}>
@@ -292,7 +292,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
               </div>
 
               {/* ── Right: Readiness Card + Edit Button ── */}
-              <div className="flex flex-col gap-3 w-full md:w-60 relative z-20">
+              <div className="flex flex-col gap-3 w-full md:w-64 relative z-20 shrink-0">
                 <ReadinessScoreWidget
                   score={student.placementReadinessScore}
                   components={

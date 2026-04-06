@@ -13,19 +13,19 @@ const ReadinessScoreWidget = ({ score, components }) => {
 
   return (
     <div className="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/20 relative group overflow-hidden">
-      <div className="flex justify-between items-start mb-3">
+      <div className="flex justify-between items-start mb-3 gap-2">
         <div>
-          <h3 className="text-white font-medium text-sm flex items-center gap-1.5">
+          <h3 className="text-white font-medium text-sm leading-tight">
             Placement Readiness
             <span
-              className="cursor-help"
+              className="cursor-help inline-block ml-1.5 align-text-bottom"
               title="Based on your skills (40%), profile (40%), and resume (20%)"
             >
               <Info className="w-3.5 h-3.5 text-indigo-200" />
             </span>
           </h3>
         </div>
-        <div className="flex items-baseline gap-1">
+        <div className="flex items-baseline gap-1 whitespace-nowrap shrink-0">
           <span className="text-white font-bold text-2xl">{score || 0}</span>
           <span className="text-indigo-200 text-xs font-medium">/ 100</span>
         </div>

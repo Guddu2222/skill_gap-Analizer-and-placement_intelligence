@@ -21,9 +21,20 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-const Sidebar = ({ role = "college" }) => {
+const Sidebar = ({ role = "college", collapsed: controlledCollapsed, onToggle }) => {
   const navigate = useNavigate();
-  const [collapsed, setCollapsed] = useState(false);
+  const [localCollapsed, setLocalCollapsed] = useState(false);
+  
+  const isControlled = controlledCollapsed !== undefined;
+  const collapsed = isControlled ? controlledCollapsed : localCollapsed;
+
+  const handleToggle = () => {
+    if (isControlled && onToggle) {
+      onToggle(!collapsed);
+    } else {
+      setLocalCollapsed(!localCollapsed);
+    }
+  };
 
   const links = {
     college: [
@@ -115,7 +126,7 @@ const Sidebar = ({ role = "college" }) => {
           </div>
         )}
         <button
-          onClick={() => setCollapsed((v) => !v)}
+          onClick={handleToggle}
           className="flex-shrink-0 w-6 h-6 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-white/10"
           style={{ color: "rgba(255,255,255,0.4)" }}
           title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
