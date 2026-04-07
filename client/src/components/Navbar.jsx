@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 
-const Navbar = () => {
+const Navbar = ({ theme = "dark" }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -38,7 +38,7 @@ const Navbar = () => {
     {
       name: "Company",
       hasDropdown: true,
-      items: ["About Us", "Careers", "Contact", "Press"],
+      items: ["Careers", "Contact", "Press"],
     },
   ];
 
@@ -74,7 +74,11 @@ const Navbar = () => {
                 </svg>
               </div>
               <span
-                className={`text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent ${isScrolled ? "text-gray-900" : "text-white"}`}
+                className={`text-xl font-bold ${
+                  isScrolled || theme === "light"
+                    ? "bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent"
+                    : "text-white"
+                }`}
               >
                 SkillBridge
               </span>
@@ -83,6 +87,19 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
+            <a
+              href="/about"
+              className={`
+                px-4 py-2 rounded-lg font-medium transition-all duration-200
+                ${
+                  isScrolled || theme === "light"
+                    ? "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+                    : "text-white/90 hover:text-white hover:bg-white/10"
+                }
+              `}
+            >
+              About Us
+            </a>
             {navItems.map((item) => (
               <div
                 key={item.name}
@@ -94,7 +111,7 @@ const Navbar = () => {
                   className={`
                   px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-1
                   ${
-                    isScrolled
+                    isScrolled || theme === "light"
                       ? "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
                       : "text-white/90 hover:text-white hover:bg-white/10"
                   }
@@ -114,7 +131,7 @@ const Navbar = () => {
                     {item.items.map((subItem, index) => (
                       <a
                         key={index}
-                        href="#"
+                        href={subItem === 'About Us' ? '/about' : '#'}
                         className="block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-150"
                       >
                         {subItem}
@@ -133,7 +150,7 @@ const Navbar = () => {
               className={`
                 px-4 py-2 rounded-lg font-medium transition-all duration-200
                 ${
-                  isScrolled
+                  isScrolled || theme === "light"
                     ? "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
                     : "text-white/90 hover:text-white hover:bg-white/10"
                 }
@@ -156,11 +173,11 @@ const Navbar = () => {
           >
             {isMobileMenuOpen ? (
               <X
-                className={`w-6 h-6 ${isScrolled ? "text-gray-900" : "text-white"}`}
+                className={`w-6 h-6 ${isScrolled || theme === "light" ? "text-gray-900" : "text-white"}`}
               />
             ) : (
               <Menu
-                className={`w-6 h-6 ${isScrolled ? "text-gray-900" : "text-white"}`}
+                className={`w-6 h-6 ${isScrolled || theme === "light" ? "text-gray-900" : "text-white"}`}
               />
             )}
           </button>
@@ -171,6 +188,12 @@ const Navbar = () => {
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg">
           <div className="px-4 py-6 space-y-4">
+            <a
+              href="/about"
+              className="block w-full px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
+            >
+              About Us
+            </a>
             {navItems.map((item) => (
               <div key={item.name}>
                 <button
@@ -193,7 +216,7 @@ const Navbar = () => {
                     {item.items.map((subItem, index) => (
                       <a
                         key={index}
-                        href="#"
+                        href={subItem === 'About Us' ? '/about' : '#'}
                         className="block px-4 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg"
                       >
                         {subItem}

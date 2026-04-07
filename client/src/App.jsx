@@ -9,6 +9,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import RecruiterCRM from "./pages/RecruiterCRM";
 import SmartShortlist from "./pages/SmartShortlist";
+import AboutUs from "./pages/AboutUs";
 
 // Signup Pages
 import RoleSelectionPage from "./pages/signup/RoleSelectionPage";
@@ -22,6 +23,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/about" element={<AboutUs />} />
 
         {/* Authentication Routes */}
         <Route path="/login" element={<SignInPage />} />

@@ -12,6 +12,7 @@ import {
   Target,
   Award,
   MessageSquare,
+  Info,
 } from "lucide-react";
 
 const Sidebar = ({ role = "college" }) => {
@@ -96,6 +97,13 @@ const Sidebar = ({ role = "college" }) => {
       </nav>
 
       <div className="p-4 border-t border-gray-50 space-y-2">
+        <NavLink 
+          to="/about"
+          className="flex items-center gap-3 px-4 py-3 w-full text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-xl transition-all"
+        >
+          <Info className="w-5 h-5" />
+          About Us
+        </NavLink>
         <button className="flex items-center gap-3 px-4 py-3 w-full text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-xl transition-all">
           <Settings className="w-5 h-5" />
           Settings

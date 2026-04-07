@@ -113,9 +113,14 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Footer Placeholder */}
+      {/* Footer */}
       <footer className="bg-gray-900 text-white py-12 border-t border-gray-800">
         <div className="container mx-auto px-6 text-center">
+          <div className="flex justify-center gap-6 mb-6">
+            <Link to="/about" className="text-gray-400 hover:text-white transition-colors">
+              About Us
+            </Link>
+          </div>
           <p className="text-gray-500 text-sm">
             © 2026 SkillBridge. All rights reserved.
           </p>
