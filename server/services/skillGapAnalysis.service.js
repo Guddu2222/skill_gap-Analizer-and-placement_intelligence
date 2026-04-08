@@ -206,7 +206,7 @@ Nice-to-have: ${(domainRequirements.niceToHaveSkills || []).map((s) => s.skill).
 **Task:**
 Analyze this student's readiness for a ${targetRole || "entry-level"} role in ${targetDomain} and provide:
 
-1. **Skill Gap Analysis**: Identify missing critical skills and chronologically order them into sequential learning phases (1 to 5).
+1. **Skill Gap Analysis**: Identify missing critical skills and chronologically order them into sequential learning phases (1 to 5). Combine heavily overlapping skills into a single topic to avoid redundancy (e.g., merge "Object-Oriented Programming" and "Object-Oriented Design").
 2. **Skills to Improve**: Current skills that need advancement
 3. **Strong Skills**: Skills where the student excels
 4. **Market Readiness Score**: 0-100 score of job readiness based on their profile data
