@@ -421,12 +421,16 @@ const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
 
               // basic regex to split "Phase/Step 1: Title - description" if possible
               const stepMatch = stepString.match(/^(?:Step|Phase)\s*\d*[:\-]*\s*([^-\.]+)(?:[-.](.*))?$/i);
-              let title = `Phase ${index + 1}`;
+              let title = "Execute Priority Goal";
               let description = stepString;
 
               if (stepMatch && stepMatch[1]) {
                  title = stepMatch[1].trim();
                  description = stepMatch[2] ? stepMatch[2].trim() : stepString;
+              } else {
+                 if (stepString.length < 30) {
+                     title = stepString;
+                 }
               }
 
               return (

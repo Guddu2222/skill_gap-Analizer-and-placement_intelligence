@@ -404,6 +404,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
               {activeTab === "learning" && (
                 <LearningPathTracker
                   learningPaths={learningPaths}
+                  student={student}
                   onUpdate={fetchDashboardData}
                 />
               )}

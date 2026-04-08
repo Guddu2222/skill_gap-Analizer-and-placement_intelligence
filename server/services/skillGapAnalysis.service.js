@@ -206,7 +206,7 @@ Nice-to-have: ${(domainRequirements.niceToHaveSkills || []).map((s) => s.skill).
 **Task:**
 Analyze this student's readiness for a ${targetRole || "entry-level"} role in ${targetDomain} and provide:
 
-1. **Skill Gap Analysis**: Identify missing critical skills
+1. **Skill Gap Analysis**: Identify missing critical skills and chronologically order them into sequential learning phases (1 to 5).
 2. **Skills to Improve**: Current skills that need advancement
 3. **Strong Skills**: Skills where the student excels
 4. **Market Readiness Score**: 0-100 score of job readiness based on their profile data
@@ -222,6 +222,8 @@ Analyze this student's readiness for a ${targetRole || "entry-level"} role in ${
   "missing_skills": [
     {
       "skill": "skill name",
+      "phase_number": 1, 
+      "phase_title": "Short title of the phase, e.g. 'Web Fundamentals'",
       "priority": "critical|high|medium|low",
       "reasoning": "why this skill is important",
       "difficulty": "easy|medium|hard",
@@ -273,8 +275,8 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
 
     try {
       const model = this.gemini.getGenerativeModel({
-        model: "gemini-2.5-flash",
-      }); // Use flash for speed, 1.5-pro for complex reasonining
+        model: "gemini-1.5-flash",
+      }); // Use 1.5-flash for speed, 1.5-pro for complex reasoning
 
       const result = await model.generateContent({
         contents: [{ role: "user", parts: [{ text: prompt }] }],
@@ -347,6 +349,8 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
         missing_skills: [
           {
             skill: "General Problem Solving",
+            phase_number: 1,
+            phase_title: "Core Fundamentals",
             priority: "high",
             reasoning: "Always a critical gap",
             difficulty: "medium",
@@ -564,6 +568,8 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
         skillName: skillObj.skill,
         currentLevel: "none",
         targetLevel: "intermediate",
+        phaseNumber: skillObj.phase_number || 1,
+        phaseTitle: skillObj.phase_title || "Core Fundamentals",
         learningResources: resources.courses.map((r) => ({
           type: "course",
           ...r,
@@ -609,12 +615,12 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
         "readiness_score": 60,
         "market_score": 65,
         "missing_skills": [
-          { "skill": "React", "priority": "high", "reasoning": "Standard for frontend", "difficulty": "medium", "estimated_learning_time": "4 weeks" },
-          { "skill": "Node.js", "priority": "high", "reasoning": "Standard for backend", "difficulty": "medium", "estimated_learning_time": "4 weeks" }
+          { "skill": "React", "phase_number": 1, "phase_title": "Frontend Frameworks", "priority": "high", "reasoning": "Standard for frontend", "difficulty": "medium", "estimated_learning_time": "4 weeks" },
+          { "skill": "Node.js", "phase_number": 2, "phase_title": "Backend Engineering", "priority": "high", "reasoning": "Standard for backend", "difficulty": "medium", "estimated_learning_time": "4 weeks" }
         ],
         "skills_to_improve": [],
         "strong_skills": [],
-        "priority_learning_path": ["Learn React", "Learn Node"],
+        "priority_learning_path": ["Step 1: Learn React - Standard for frontend", "Step 2: Learn Node.js - Standard for backend"],
         "estimated_weeks": 8,
         "career_advice": ["Configure the GEMINI_API_KEY in the backend .env or verify its validity."],
         "red_flags": []
