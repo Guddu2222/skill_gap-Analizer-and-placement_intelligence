@@ -589,14 +589,28 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
   generateMilestones(skill, weeks) {
     const milestones = [];
     const totalMilestones = Math.min(Math.max(1, weeks), 8); // 1-8 milestones
+    
+    // Progressive titles for chronological learning steps
+    const progressionNames = [
+      "Foundations & Setup",
+      "Core Concepts & Syntax",
+      "Intermediate Implementation",
+      "Advanced Techniques & Patterns",
+      "Real-world Application & Architecture",
+      "Performance Optimization & Debugging",
+      "Testing & Best Practices",
+      "Mastery & Interview Preparation"
+    ];
 
     for (let i = 1; i <= totalMilestones; i++) {
       const dueDate = new Date();
       dueDate.setDate(dueDate.getDate() + i * 7);
+      
+      const theme = progressionNames[i - 1] || "Continued Practice";
 
       milestones.push({
-        title: `Week ${i}: Learn ${skill} Basics`,
-        description: `Complete required readings and tutorials for ${skill} phase ${i}`,
+        title: `Week ${i}: ${theme}`,
+        description: `Complete required readings, tutorials, and practical exercises for ${skill} focusing on ${theme.toLowerCase()}.`,
         completed: false,
         dueDate: dueDate,
       });
