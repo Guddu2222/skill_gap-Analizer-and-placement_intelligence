@@ -298,4 +298,53 @@ router.get("/domains", async (req, res) => {
   }
 });
 
+// Reschedule Learning Path Dates
+router.post("/learning-paths/:id/reschedule", auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const student = await Student.findOne({ user: req.user.userId });
+    
+    if (!student) {
+      return res.status(404).json({ error: "Student profile not found" });
+    }
+
+    const learningPath = await SkillLearningPath.findOne({
+      _id: id,
+      student: student._id,
+    });
+
+    if (!learningPath) {
+      return res.status(404).json({ error: "Learning path not found" });
+    }
+
+    // Shift dates starting from today for uncompleted milestones
+    const milestones = [...learningPath.milestones];
+    let offsetWeeks = 1;
+    let modified = false;
+
+    for (let i = 0; i < milestones.length; i++) {
+        if (!milestones[i].completed) {
+            const newDate = new Date();
+            newDate.setDate(newDate.getDate() + offsetWeeks * 7);
+            milestones[i].dueDate = newDate;
+            offsetWeeks++;
+            modified = true;
+        }
+    }
+
+    if (modified) {
+        learningPath.milestones = milestones;
+        await learningPath.save();
+    }
+
+    res.json({
+      success: true,
+      learningPath,
+    });
+  } catch (error) {
+    console.error("Reschedule progress error:", error);
+    res.status(500).json({ error: "Failed to reschedule learning path" });
+  }
+});
+
 module.exports = router;

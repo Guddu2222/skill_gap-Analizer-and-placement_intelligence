@@ -67,6 +67,24 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
     }
   };
 
+  const handleReschedulePath = async (pathId) => {
+    try {
+      const response = await api.post(
+        `/skill-gap/learning-paths/${pathId}/reschedule`
+      );
+      if (
+        selectedPath &&
+        selectedPath._id === pathId &&
+        response.data.learningPath
+      ) {
+        setSelectedPath(response.data.learningPath);
+      }
+      if (onUpdate) onUpdate();
+    } catch (error) {
+      console.error("Error rescheduling path:", error);
+    }
+  };
+
   const LearningPathCard = ({ path, isLocked }) => (
     <div
       className={`bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 cursor-pointer relative ${
@@ -432,6 +450,7 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
           onClose={() => setSelectedPath(null)}
           onUpdateProgress={updateProgress}
           onToggleMilestone={toggleMilestone}
+          onReschedulePath={handleReschedulePath}
           updating={updatingProgress}
         />
       )}
@@ -446,6 +465,7 @@ const LearningPathDetailModal = ({
   onClose,
   onUpdateProgress,
   onToggleMilestone,
+  onReschedulePath,
   updating,
 }) => {
   const [localProgress, setLocalProgress] = useState(path.progressPercentage);
@@ -587,9 +607,19 @@ const LearningPathDetailModal = ({
         <div className="p-6 overflow-y-auto flex-1">
           {/* Milestones */}
           <div className="mb-8">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">
-              Learning Milestones
-            </h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-gray-900">
+                Learning Milestones
+              </h3>
+              <button 
+                onClick={() => onReschedulePath(path._id)}
+                className="flex items-center text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors"
+                title="Shift all incomplete milestones to start from today"
+              >
+                <svg className="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                Reschedule Deadlines
+              </button>
+            </div>
             <div className="space-y-3">
               {path.milestones?.map((milestone, index) => (
                 <div
