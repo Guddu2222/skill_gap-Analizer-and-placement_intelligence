@@ -9,7 +9,7 @@ import { Target, Zap, BookOpen, User } from "lucide-react";
  *  - skillGapAnalysis: object or null from fetchLatestSkillGapAnalysis
  *  - learningPaths: array from fetchLearningPaths
  */
-const StudentStatsBar = ({ student, skillGapAnalysis, learningPaths = [] }) => {
+const StudentStatsBar = ({ student, skillGapAnalysis, learningPaths = [], onStatClick }) => {
   const totalSkillsAnalyzed = skillGapAnalysis
     ? (skillGapAnalysis.missingSkills?.length || 0) +
       (skillGapAnalysis.strongSkills?.length || 0) +
@@ -43,6 +43,7 @@ const StudentStatsBar = ({ student, skillGapAnalysis, learningPaths = [] }) => {
       border: "border-blue-100",
       textColor: "text-blue-700",
       iconBg: "bg-blue-100",
+      action: () => onStatClick && onStatClick("skills_modal")
     },
     {
       label: "Learning Paths",
@@ -54,6 +55,7 @@ const StudentStatsBar = ({ student, skillGapAnalysis, learningPaths = [] }) => {
       border: "border-emerald-100",
       textColor: "text-emerald-700",
       iconBg: "bg-emerald-100",
+      action: () => onStatClick && onStatClick("learning")
     },
     {
       label: "Profile Complete",
@@ -65,6 +67,7 @@ const StudentStatsBar = ({ student, skillGapAnalysis, learningPaths = [] }) => {
       border: "border-amber-100",
       textColor: "text-amber-700",
       iconBg: "bg-amber-100",
+      action: () => onStatClick && onStatClick("settings")
     },
   ];
 
@@ -73,7 +76,8 @@ const StudentStatsBar = ({ student, skillGapAnalysis, learningPaths = [] }) => {
       {stats.map((stat, i) => (
         <div
           key={stat.label}
-          className={`${stat.bg} ${stat.border} rounded-2xl p-5 border shadow-sm hover:shadow-md transition-all duration-300 group relative overflow-hidden`}
+          onClick={stat.action}
+          className={`${stat.bg} ${stat.border} rounded-2xl p-5 border shadow-sm hover:shadow-md transition-all duration-300 group relative overflow-hidden ${stat.action ? "cursor-pointer hover:-translate-y-1" : ""}`}
           style={{ animationDelay: `${i * 80}ms` }}
         >
           {/* Decorative gradient line */}
@@ -99,13 +103,13 @@ const StudentStatsBar = ({ student, skillGapAnalysis, learningPaths = [] }) => {
               {stat.label}
             </p>
             {stat.tooltip && (
-              <div className="relative group/tooltip flex items-center">
+              <div className="relative group/tooltip flex items-center" onClick={(e) => e.stopPropagation()}>
                 <svg className="w-3.5 h-3.5 text-slate-400 hover:text-violet-500 transition-colors cursor-help" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <div className="absolute bottom-full right-0 mb-2 w-48 p-3 bg-slate-800 text-white text-[11px] font-medium tracking-wide rounded-xl shadow-xl opacity-0 translate-y-1 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible group-hover/tooltip:translate-y-0 transition-all duration-200 z-50 pointer-events-none whitespace-pre-wrap leading-relaxed border border-slate-700">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-slate-800 text-white text-[11px] font-medium tracking-wide rounded-xl shadow-xl opacity-0 translate-y-1 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible group-hover/tooltip:translate-y-0 transition-all duration-200 z-50 pointer-events-none whitespace-pre-wrap leading-relaxed border border-slate-700">
                   {stat.tooltip}
-                  <div className="absolute top-full right-2 -mt-[1px] border-[5px] border-transparent border-t-slate-800" />
+                  <div className="absolute top-full left-1/2 -ml-[5px] -mt-[1px] border-[5px] border-transparent border-t-slate-800" />
                 </div>
               </div>
             )}

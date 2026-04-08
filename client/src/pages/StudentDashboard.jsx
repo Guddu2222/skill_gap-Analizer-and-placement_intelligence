@@ -32,6 +32,7 @@ import InterviewDashboard from "../components/student/interview/InterviewDashboa
 import InterviewSession from "../components/student/interview/InterviewSession";
 import InterviewFeedbackCard from "../components/student/interview/InterviewFeedbackCard";
 import StudentSettings from "../components/student/settings/StudentSettings";
+import AnalyzedSkillsModal from "../components/student/AnalyzedSkillsModal";
 
 const SIDEBAR_COLLAPSED_KEY = "sgapi_sidebar_collapsed";
 
@@ -43,6 +44,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
   const [analyzing, setAnalyzing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showEditProfile, setShowEditProfile] = useState(false);
+  const [showSkillsModal, setShowSkillsModal] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
     () => localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === "true"
   );
@@ -340,6 +342,15 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
             student={student}
             skillGapAnalysis={skillGapAnalysis}
             learningPaths={learningPaths}
+            onStatClick={(tab) => {
+              if (tab === "skills_modal") {
+                setShowSkillsModal(true);
+              } else {
+                setActiveTab(tab);
+                // Smooth scroll down to the tab content area
+                window.scrollTo({ top: document.body.scrollHeight / 2, behavior: 'smooth' });
+              }
+            }}
           />
 
           {/* ═══════════════════════════════════════════════
@@ -466,7 +477,6 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
         </main>
       </div>
 
-      {/* ── Profile Edit Modal ── */}
       <ProfileEditModal
         student={student}
         open={showEditProfile}
@@ -485,6 +495,13 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
             await handleAnalyzeSkills(updatedStudent);
           }
         }}
+      />
+
+      {/* ── Analyzed Skills View Modal ── */}
+      <AnalyzedSkillsModal 
+        isOpen={showSkillsModal} 
+        onClose={() => setShowSkillsModal(false)}
+        analysis={skillGapAnalysis}
       />
     </div>
   );
