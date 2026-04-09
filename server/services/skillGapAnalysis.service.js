@@ -291,6 +291,14 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
       return text;
     } catch (error) {
       console.error("Gemini API error. Falling back to mock:", error);
+      
+      const errorMessage = error.message ? error.message.toLowerCase() : "";
+      if (errorMessage.includes("429") || errorMessage.includes("quota") || errorMessage.includes("exhausted")) {
+        const rateLimitError = new Error("AI analysis limit reached due to high traffic. Please try again in a few minutes.");
+        rateLimitError.status = 429;
+        throw rateLimitError;
+      }
+
       return this.getMockGeminiResponse(error.message || "Unknown API Error");
     }
   }

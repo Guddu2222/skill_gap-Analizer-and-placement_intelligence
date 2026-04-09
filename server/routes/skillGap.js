@@ -21,6 +21,22 @@ router.post("/analyze", auth, async (req, res) => {
       return res.status(400).json({ error: "Target domain is required" });
     }
 
+    // Cooldown check (5 minutes)
+    const latestAnalysis = await SkillGapAnalysis.findOne({ student: studentId }).sort({ createdAt: -1 });
+    if (latestAnalysis) {
+      const COOLDOWN_MINUTES = 5;
+      const now = new Date();
+      const diffMs = now - new Date(latestAnalysis.createdAt);
+      const diffMins = diffMs / (1000 * 60);
+
+      if (diffMins < COOLDOWN_MINUTES) {
+        const remainingTime = Math.ceil(COOLDOWN_MINUTES - diffMins);
+        return res.status(429).json({ 
+          error: `Please wait ${remainingTime} minute(s) before generating a new analysis to prevent system limits.` 
+        });
+      }
+    }
+
     const result = await skillGapService.analyzeSkillGap(
       studentId,
       targetDomain,
@@ -38,6 +54,13 @@ router.post("/analyze", auth, async (req, res) => {
       "Skill gap analysis route error details:",
       error.stack || error,
     );
+    
+    if (error.status === 429) {
+      return res.status(429).json({
+        error: error.message,
+      });
+    }
+    
     res.status(500).json({
       error: "Failed to analyze skill gap",
       message: error.message,

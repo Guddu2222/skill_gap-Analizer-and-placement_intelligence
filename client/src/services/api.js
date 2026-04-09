@@ -214,11 +214,18 @@ export const fetchSkillGap = async () => {
 
 // ==================== SKILL GAP ANALYSIS API ====================
 export const triggerSkillGapAnalysis = async (targetDomain, targetRole) => {
-  const { data } = await api.post("/skill-gap/analyze", {
-    targetDomain,
-    targetRole,
-  });
-  return data;
+  try {
+    const { data } = await api.post("/skill-gap/analyze", {
+      targetDomain,
+      targetRole,
+    });
+    return data;
+  } catch (error) {
+    if (error.response?.data?.error) {
+      throw new Error(error.response.data.error);
+    }
+    throw error;
+  }
 };
 
 export const fetchLatestSkillGapAnalysis = async () => {
