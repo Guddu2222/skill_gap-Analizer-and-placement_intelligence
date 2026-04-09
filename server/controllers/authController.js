@@ -302,7 +302,13 @@ exports.register = async (req, res) => {
     try {
       await sendVerificationEmail(user.email, verificationCode);
     } catch (err) {
-      console.error("Email send error:", err);
+      console.error("❌ [Register] Verification email FAILED to send:", err.message);
+      // Roll back: delete the user so they can retry registration cleanly
+      await user.deleteOne().catch(() => {});
+      return res.status(500).json({
+        msg: "Account created but we could not send the verification email. Please try again or contact support.",
+        emailError: true,
+      });
     }
 
     const payload = { userId: user.id, role: user.role };
@@ -402,9 +408,10 @@ exports.resendVerification = async (req, res) => {
 
     try {
       await sendVerificationEmail(user.email, verificationCode);
-      res.json({ success: true, msg: "Verification code resent" });
+      res.json({ success: true, msg: "Verification code resent successfully. Please check your inbox (and spam folder)." });
     } catch (err) {
-      res.status(500).json({ error: "Failed to send verification email" });
+      console.error("❌ [Resend] Verification email FAILED:", err.message);
+      res.status(500).json({ error: "Failed to send verification email. Please try again in a few minutes." });
     }
   } catch (err) {
     console.error("Resend error:", err.message);
