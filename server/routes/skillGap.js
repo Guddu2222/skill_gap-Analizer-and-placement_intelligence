@@ -237,14 +237,62 @@ router.patch("/learning-paths/:id/progress", auth, async (req, res) => {
       return res.status(404).json({ error: "Learning path not found" });
     }
 
+    let skillAddedToProfile = false;
+
+    // Helper to auto-add or update skill in Student profile
+    const syncSkillToProfile = async () => {
+      if (!learningPath.skillName) return;
+      const skillNameToMatch = learningPath.skillName.toLowerCase().trim();
+      let skillExists = false;
+
+      if (!student.skills) student.skills = [];
+
+      for (let i = 0; i < student.skills.length; i++) {
+        const s = student.skills[i];
+        if (s.skillName && s.skillName.toLowerCase().trim() === skillNameToMatch) {
+          skillExists = true;
+          // Update proficiency if applicable
+          if (learningPath.targetLevel) {
+            const levels = ["beginner", "intermediate", "advanced", "expert"];
+            const currentIdx = levels.indexOf(s.proficiencyLevel) || 0;
+            const targetIdx = levels.indexOf(learningPath.targetLevel);
+            if (targetIdx > currentIdx) {
+              s.proficiencyLevel = learningPath.targetLevel;
+            }
+          }
+          // Mark as verified
+          s.verified = true;
+          s.verifiedBy = "Skill Gap Analyser (Learning Path)";
+          break;
+        }
+      }
+
+      if (!skillExists) {
+        student.skills.push({
+          skillName: learningPath.skillName,
+          proficiencyLevel: learningPath.targetLevel || "intermediate",
+          verified: true,
+          verifiedBy: "Skill Gap Analyser (Learning Path)",
+        });
+      }
+
+      await student.save();
+      skillAddedToProfile = true;
+    };
+
     // Update progress
     if (progress !== undefined) {
       learningPath.progressPercentage = progress;
 
       if (progress >= 100) {
         learningPath.progressPercentage = 100;
+        const wasCompleted = learningPath.status === "completed";
         learningPath.status = "completed";
         learningPath.completedAt = new Date();
+        
+        if (!wasCompleted) {
+          await syncSkillToProfile();
+        }
       } else if (progress > 0 && learningPath.status === "not_started") {
         learningPath.status = "in_progress";
         learningPath.startedAt = new Date();
@@ -270,8 +318,13 @@ router.patch("/learning-paths/:id/progress", auth, async (req, res) => {
 
           if (autoProgress >= 100) {
             learningPath.progressPercentage = 100;
+            const wasCompleted = learningPath.status === "completed";
             learningPath.status = "completed";
             learningPath.completedAt = new Date();
+            
+            if (!wasCompleted) {
+              await syncSkillToProfile();
+            }
           } else if (autoProgress > 0 && learningPath.status === "not_started") {
             learningPath.status = "in_progress";
             learningPath.startedAt = new Date();
@@ -288,6 +341,7 @@ router.patch("/learning-paths/:id/progress", auth, async (req, res) => {
     res.json({
       success: true,
       learningPath,
+      skillAddedToProfile,
     });
   } catch (error) {
     console.error("Update progress error:", error);

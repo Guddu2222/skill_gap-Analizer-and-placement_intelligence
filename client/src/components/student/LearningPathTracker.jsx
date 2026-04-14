@@ -17,6 +17,12 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
   const [selectedPath, setSelectedPath] = useState(null);
   const [updatingProgress, setUpdatingProgress] = useState(false);
   const [viewMode, setViewMode] = useState("roadmap");
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const showToast = (message) => {
+    setToastMessage(message);
+    setTimeout(() => setToastMessage(null), 4000);
+  };
 
   const getStatusColor = (status) => {
     const colors = {
@@ -31,9 +37,12 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
   const updateProgress = async (pathId, progress) => {
     setUpdatingProgress(true);
     try {
-      await api.patch(`/skill-gap/learning-paths/${pathId}/progress`, {
+      const response = await api.patch(`/skill-gap/learning-paths/${pathId}/progress`, {
         progress,
       });
+      if (response.data.skillAddedToProfile) {
+        showToast(`🎉 Congratulations! ${selectedPath?.skillName || 'Skill'} has been verified and added to your profile.`);
+      }
       if (onUpdate) onUpdate();
     } catch (error) {
       console.error("Error updating progress:", error);
@@ -59,6 +68,10 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
         response.data.learningPath
       ) {
         setSelectedPath(response.data.learningPath);
+      }
+
+      if (response.data.skillAddedToProfile) {
+        showToast(`🎉 Congratulations! ${selectedPath?.skillName || 'Skill'} has been verified and added to your profile.`);
       }
 
       if (onUpdate) onUpdate();
@@ -324,6 +337,19 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
           </button>
         </div>
       </div>
+
+      {/* Global Toast Banner */}
+      {toastMessage && (
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-[100] animate-fadeIn bg-indigo-600 text-white px-6 py-3 rounded-full shadow-2xl flex items-center space-x-3">
+          <CheckCircle className="w-5 h-5 text-green-300" />
+          <span className="font-semibold text-sm">{toastMessage}</span>
+          <button onClick={() => setToastMessage(null)} className="ml-2 hover:bg-white/20 p-1 rounded-full">
+            <List className="w-4 h-4 opacity-0" /> {/* Placeholder for spacing */}
+            <Target className="w-4 h-4 opacity-0" />
+            <svg className="w-4 h-4 absolute top-1/2 translate-y-[-50%] right-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+      )}
 
       {viewMode === "roadmap" ? (
         /* ROADMAP TIMELINE UI */
