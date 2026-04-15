@@ -275,8 +275,8 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
 
     try {
       const model = this.gemini.getGenerativeModel({
-        model: "gemini-1.5-flash",
-      }); // Use 1.5-flash for speed, 1.5-pro for complex reasoning
+        model: "gemini-2.0-flash",
+      }); // gemini-2.0-flash: fast, cost-efficient, supports JSON response mode
 
       const result = await model.generateContent({
         contents: [{ role: "user", parts: [{ text: prompt }] }],
