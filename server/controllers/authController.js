@@ -303,11 +303,11 @@ exports.register = async (req, res) => {
       await sendVerificationEmail(user.email, verificationCode);
     } catch (err) {
       console.error("❌ [Register] Verification email FAILED to send:", err.message);
-      // Roll back: delete the user so they can retry registration cleanly
-      await user.deleteOne().catch(() => {});
-      return res.status(500).json({
-        msg: "Account created but we could not send the verification email. Please try again or contact support.",
+      // Don't delete the account — let the user retry via "Resend Code"
+      return res.status(200).json({
         emailError: true,
+        email: user.email,
+        msg: "Account created but we could not send the verification email. Please use the 'Resend Code' option on the next screen.",
       });
     }
 

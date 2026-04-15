@@ -10,6 +10,7 @@ const StudentSignup = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [emailWarning, setEmailWarning] = useState("");
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -27,6 +28,7 @@ const StudentSignup = () => {
   const submitStudentData = async () => {
     setLoading(true);
     setError("");
+    setEmailWarning("");
     try {
       // Reformat the payload slightly to match the backend expectations
       const payload = {
@@ -37,8 +39,17 @@ const StudentSignup = () => {
 
       const data = await register(payload);
 
-      if (data) {
-        // Success! Proceed to verification
+      if (data?.emailError) {
+        // Account was created but the email couldn't be sent — go to
+        // verification screen anyway so the user can use "Resend it".
+        setEmailWarning(
+          "We couldn't send the verification email automatically. " +
+          "Please click \"Resend it\" on the next screen to get your code."
+        );
+        setCurrentStep(2);
+        window.scrollTo(0, 0);
+      } else if (data) {
+        // Normal success — proceed to email verification
         setCurrentStep(2);
         window.scrollTo(0, 0);
       }
@@ -102,7 +113,16 @@ const StudentSignup = () => {
           </div>
         );
       case 2:
-        return <EmailVerificationPage email={formData.email} />;
+        return (
+          <>
+            {emailWarning && (
+              <div className="max-w-md mx-auto mt-6 p-4 text-sm text-amber-800 bg-amber-50 border border-amber-300 rounded-lg shadow-sm font-medium text-center">
+                ⚠️ {emailWarning}
+              </div>
+            )}
+            <EmailVerificationPage email={formData.email} />
+          </>
+        );
       default:
         return null;
     }
