@@ -33,6 +33,7 @@ import InterviewSession from "../components/student/interview/InterviewSession";
 import InterviewFeedbackCard from "../components/student/interview/InterviewFeedbackCard";
 import StudentSettings from "../components/student/settings/StudentSettings";
 import AnalyzedSkillsModal from "../components/student/AnalyzedSkillsModal";
+import codingBoyImg from "../assets/dashboard-coding-boy.jpg";
 
 const SIDEBAR_COLLAPSED_KEY = "sgapi_sidebar_collapsed";
 
@@ -250,13 +251,24 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
           {/* ═══════════════════════════════════════════════
               PREMIUM HERO BANNER
           ═══════════════════════════════════════════════ */}
-          <div className="relative rounded-3xl overflow-hidden mb-6 shadow-2xl">
+          <div className="relative rounded-3xl overflow-hidden mb-6 shadow-2xl min-h-[220px]">
             {/* Gradient background */}
             <div
               className="absolute inset-0"
               style={{
                 background:
                   "linear-gradient(135deg, #1e1b4b 0%, #312e81 30%, #4c1d95 60%, #1e3a8a 100%)",
+              }}
+            />
+            
+            {/* Coding Boy Image */}
+            <img 
+              src={codingBoyImg} 
+              alt="Student Hacker" 
+              className="absolute right-0 top-0 h-[120%] w-[55%] md:w-[45%] object-cover opacity-60 md:opacity-80 pointer-events-none transform -translate-y-[10%]"
+              style={{ 
+                WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 40%, black 100%)", 
+                maskImage: "linear-gradient(to right, transparent 0%, black 40%, black 100%)" 
               }}
             />
             {/* Animated orb overlays */}
