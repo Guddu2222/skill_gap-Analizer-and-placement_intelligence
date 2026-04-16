@@ -1,0 +1,43 @@
+# Modern UI & 3D Component Integration Plan
+
+The goal is to transform the existing [Dashboard.jsx](file:///d:/project/Smart%20Expense%20Manager/client/src/pages/Dashboard.jsx) and [Expenses.jsx](file:///d:/project/Smart%20Expense%20Manager/client/src/pages/Expenses.jsx) into a premium, modern, and highly interactive user interface. We will draw inspiration from top-tier UI libraries like PrebuiltUI, utilizing Tailwind CSS for glassmorphism, gradients, and micro-animations.
+
+## User Review Required
+> [!IMPORTANT]
+> - **New Dependencies:** Installed `three`, `@react-three/fiber`, and `@react-three/drei` to render 3D component. Installed `framer-motion` for smooth UI micro-animations.
+> - **Visual Style:** The new design features a modern premium light mode with rich purple accents and highly stylised shadows (`shadow-[0_8px_30px_rgb(0,0,0,0.04)]`).
+
+## Proposed Changes
+
+### Dependencies
+#### [MODIFY] package.json
+- Add `three`, `@react-three/fiber`, `@react-three/drei`
+- Add `framer-motion`
+
+***
+
+### Components
+#### [NEW] src/components/ThreeDElement.jsx
+- A reusable 3D component using React Three Fiber.
+- Renders a slow-rotating 3D object next to the dashboard welcome text.
+
+#### [MODIFY] src/pages/Dashboard.jsx
+- **Header:** Transformed into a clean white header with 3D elements and vibrant stats.
+- **Charts:** Fully interactive Doughnut and Line charts styled properly for the light theme context.
+- **Transactions list:** Premium design mimicking exact "ExpenseTrack" layout.
+
+#### [MODIFY] src/pages/Expenses.jsx (Phase 5)
+- **Top Summary:** Search bar + Categorization Dropdowns.
+- **Sidebar Details:** Total expenses this month card (purple gradient) + Category Breakdown.
+- **Main List:** Fully redesigned list structure avoiding basic table wrappers, instead opting for a grid-based card layout.
+
+## Verification Plan
+
+### Automated/Local Tests
+1. **Dependencies Installation:** Verify that `npm install` runs successfully without conflicts.
+2. **Build Test:** Run `npm run build` to ensure the 3D libraries and Motion don't break the Vite build.
+
+### Manual Verification
+1. Open the app in the browser (`http://localhost:5173`).
+2. Navigate to the Dashboard.
+3. Check UI layouts in the ExpenseTrack screen.

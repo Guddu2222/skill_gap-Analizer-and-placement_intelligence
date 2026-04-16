@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Hai bloccato"
+   },
+   "ads": {
+      "message": "Annunci"
+   },
+   "dataSavedTitle": {
+      "message": "Dati salvati"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Applicare a tutto il sito"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Profondità"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Anteprima"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Salva"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Selettore"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Specificità"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Hai selezionato"
+   },
+   "elementBlocker_title": {
+      "message": "Rimozione elementi"
+   },
+   "extDesc": {
+      "message": "Blocca annunci e pop-up su tutti i siti Web che navighi ogni giorno"
+   },
+   "extName": {
+      "message": "SBlock: super blocco degli annunci"
+   },
+   "extNameFirstShort": {
+      "message": "SBlocco"
+   },
+   "extNameLastShort": {
+      "message": "Super blocco annunci"
+   },
+   "filteringModeBasic": {
+      "message": "Di base"
+   },
+   "filteringModeSuper": {
+      "message": "Superblocco"
+   },
+   "footerMadeLove": {
+      "message": "Fatto con amore"
+   },
+   "footerShareFriends": {
+      "message": "Condividi con i tuoi amici"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Carica più velocemente"
+   },
+   "loveSblockButton": {
+      "message": "Ti piace SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Lascia una recensione"
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock non supportato in questa pagina"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Blocca gli annunci nella lingua locale"
+   },
+   "optionBlockManually": {
+      "message": "Blocca manualmente"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Aprire"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Reimposta tutto"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Selettore"
+   },
+   "optionBlockTracker": {
+      "message": "Localizzatore di blocchi"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignora i popup di accettazione dei cookie"
+   },
+   "optionPopupsSocial": {
+      "message": "Blocca i widget sociali"
+   },
+   "reportIssueButton": {
+      "message": "Segnala un problema"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Dicci di più."
+   },
+   "secDuration": {
+      "message": "sez"
+   },
+   "thisPageTitle": {
+      "message": "Questa pagina"
+   },
+   "thisWebsiteTitle": {
+      "message": "Questo sito web"
+   },
+   "timeSavedTitle": {
+      "message": "Tempo risparmiato"
+   }
+}

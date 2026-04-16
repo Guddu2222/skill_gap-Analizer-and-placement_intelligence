@@ -1,0 +1,21 @@
+# Skill Gap Analysis Integration Tasks
+
+## Phase 1: Database Models
+- [/] Create `models/SkillGapAnalysis.js`
+- [ ] Create `models/SkillLearningPath.js`
+- [ ] Create `models/DomainSkillRequirement.js`
+- [ ] Create `models/JobMarketTrend.js`
+
+## Phase 2: AI Service Setup
+- [ ] Install `@google/generative-ai` SDK
+- [ ] Create `services/skillGapAnalysis.service.js`
+- [ ] Configure Gemini AI prompt and error handling logic
+
+## Phase 3: Route Integration
+- [ ] Create `routes/skillGap.js`
+- [ ] Register new routes in [server/index.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/index.js)
+- [ ] Remove overlapping features from [student-features.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/routes/student-features.js) if necessary
+
+## Phase 4: Verification
+- [ ] Test the backend `/api/skill-gap/analyze` endpoint
+- [ ] Test retrieving the latest analysis

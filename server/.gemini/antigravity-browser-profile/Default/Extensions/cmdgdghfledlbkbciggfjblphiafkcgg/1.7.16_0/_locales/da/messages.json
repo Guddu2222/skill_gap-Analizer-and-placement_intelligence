@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Du har blokeret"
+   },
+   "ads": {
+      "message": "Annoncer"
+   },
+   "dataSavedTitle": {
+      "message": "Data gemt"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Anvend på alle websteder"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Dybde"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Forhåndsvisning"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Spare"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Vælger"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Specificitet"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Du har valgt"
+   },
+   "elementBlocker_title": {
+      "message": "Elementfjerner"
+   },
+   "extDesc": {
+      "message": "Bloker annoncer og pop op-vinduer på alle de websteder, du besøger hver dag"
+   },
+   "extName": {
+      "message": "SBlock - Super Ad Blocker"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super Ad Blocker"
+   },
+   "filteringModeBasic": {
+      "message": "Grundlæggende"
+   },
+   "filteringModeSuper": {
+      "message": "Super blok"
+   },
+   "footerMadeLove": {
+      "message": "Lavet med kærlighed i"
+   },
+   "footerShareFriends": {
+      "message": "Del med dine venner"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Indlæs hurtigere"
+   },
+   "loveSblockButton": {
+      "message": "Elsker du SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Skriv en anmeldelse."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock understøttes ikke på denne side"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Bloker lokale sprogannoncer"
+   },
+   "optionBlockManually": {
+      "message": "Bloker manuelt"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Åben"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Nulstil alle"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Vælger"
+   },
+   "optionBlockTracker": {
+      "message": "Blok tracker"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignorer popup-vinduer for accept af cookies"
+   },
+   "optionPopupsSocial": {
+      "message": "Bloker sociale widgets"
+   },
+   "reportIssueButton": {
+      "message": "Rapporter et problem"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Fortæl os mere."
+   },
+   "secDuration": {
+      "message": "sek"
+   },
+   "thisPageTitle": {
+      "message": "Denne side"
+   },
+   "thisWebsiteTitle": {
+      "message": "Denne hjemmeside"
+   },
+   "timeSavedTitle": {
+      "message": "Tid sparet"
+   }
+}

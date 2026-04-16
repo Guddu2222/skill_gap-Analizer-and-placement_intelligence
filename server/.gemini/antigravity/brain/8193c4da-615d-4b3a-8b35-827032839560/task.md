@@ -1,0 +1,53 @@
+# Task List: Modern UI & 3D Dashboard Revamp
+
+- [x] **Phase 1: Planning**
+  - [x] Analyze current `Dashboard.jsx` structure.
+  - [x] Check `package.json` for existing libraries.
+  - [x] Draft implementation plan.
+  - [x] Get user approval for the plan.
+
+- [x] **Phase 2: Dependencies**
+  - [x] Install 3D libraries: `three`, `@react-three/fiber`, `@react-three/drei`.
+  - [x] Install `framer-motion` (optional but highly recommended for modern UI micro-animations).
+
+- [x] **Phase 3: Component Implementation**
+  - [x] Create `ThreeDWallet.jsx` or `ThreeDCoin.jsx` for the dashboard header.
+  - [x] Redesign `Dashboard.jsx`:
+    - [x] Add glassmorphism layout and gradient backgrounds.
+    - [x] Update Stats Cards with hover effects (PrebuiltUI style).
+    - [x] Update Chart container with modern styling.
+  
+- [x] **Phase 4: Verification**
+  - [x] Run the client app locally (`npm run dev`).
+  - [x] Verify 3D component renders smoothly without lag (Manual Verification by User).
+  - [x] Ensure responsiveness on mobile and desktop (Manual Verification by User).
+
+- [x] **Phase 5: Expenses Page Redesign**
+  - [x] Implement new header with `+ Add Expense` button.
+  - [x] Implement search and filter bar.
+  - [x] Implement main transaction table matching mockup (icons, colored category tags, edit/delete buttons).
+  - [x] Implement right sidebar (Category Breakdown, Total Expenses Card).
+
+- [x] **Phase 6: Budget Planning Page Generation**
+  - [x] Implement UI for `Budget Planning` matching the provided mockup.
+  - [x] Add the page to main React Router (`App.jsx`).
+  - [x] Add the page to the sidebar navigation (`DashboardLayout.jsx`).
+
+- [x] **Phase 7: Analytics & Insights Page Generation**
+  - [x] Implement UI for `Analytics & Insights` matching the provided mockup.
+  - [x] Add the page to main React Router (`App.jsx`).
+  - [x] Add the page to the sidebar navigation (`DashboardLayout.jsx`).
+
+- [x] **Phase 8: Main Landing Page**
+  - [x] Build the `Landing.jsx` component incorporating standard marketing sections (Hero, Features, Testimonials, CTA, Footer).
+  - [x] Adjust `/` route in `App.jsx` from a direct Redirect to render the landing page.
+
+- [x] **Phase 9: Invoices Page Modernization**
+  - [x] Upgrade `Invoices.jsx` UI to match the new premium design system (Glassmorphism, Indigo/Purple accents).
+  - [x] Add Top Summary Cards (Total Billed, Pending Revenue, Overdue Amount).
+  - [x] Redesign the Invoice table into a modern list view.
+  - [x] Overhaul the Create Invoice Modal UI.
+
+- [x] **Phase 10: Application Rebranding**
+  - [x] Replace all UI text instances of 'SmartExpense' and 'Smart Expense' with 'Smart Financials'.
+  - [x] Update the HTML document `<title>`.

@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Blokirali ste"
+   },
+   "ads": {
+      "message": "Oglasi"
+   },
+   "dataSavedTitle": {
+      "message": "Podatki shranjeni"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Uporabi za vsa spletna mesta"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Globina"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Predogled"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Shrani"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Selektor"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Specifičnost"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Izbrali ste"
+   },
+   "elementBlocker_title": {
+      "message": "Odstranjevalec elementov"
+   },
+   "extDesc": {
+      "message": "Blokirajte oglase in pojavna okna na vseh spletnih mestih, ki jih brskate vsak dan"
+   },
+   "extName": {
+      "message": "SBlock - Super blokator oglasov"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super blokator oglasov"
+   },
+   "filteringModeBasic": {
+      "message": "Osnovno"
+   },
+   "filteringModeSuper": {
+      "message": "Super blok"
+   },
+   "footerMadeLove": {
+      "message": "Narejeno z ljubeznijo"
+   },
+   "footerShareFriends": {
+      "message": "Delite s prijatelji"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Naloži hitreje"
+   },
+   "loveSblockButton": {
+      "message": "Vam je všeč SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Pusti oceno."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock na tej strani ni podprt"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Blokirajte oglase v lokalnem jeziku"
+   },
+   "optionBlockManually": {
+      "message": "Blokirajte ročno"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Odpri"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Ponastavi vse"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Selektor"
+   },
+   "optionBlockTracker": {
+      "message": "Sledilnik blokov"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignorirajte pojavna okna za sprejemanje piškotkov"
+   },
+   "optionPopupsSocial": {
+      "message": "Blokiraj socialne pripomočke"
+   },
+   "reportIssueButton": {
+      "message": "Prijavite težavo"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Povejte nam več."
+   },
+   "secDuration": {
+      "message": "sek"
+   },
+   "thisPageTitle": {
+      "message": "Ta stran"
+   },
+   "thisWebsiteTitle": {
+      "message": "To spletno mesto"
+   },
+   "timeSavedTitle": {
+      "message": "Prihranjen čas"
+   }
+}

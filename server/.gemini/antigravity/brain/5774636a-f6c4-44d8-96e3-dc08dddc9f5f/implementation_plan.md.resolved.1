@@ -1,0 +1,26 @@
+# Responsive Design Fixes for Mobile, Tablet, and Desktop
+
+The issue causing your application to appear stretched/clipped on mobile (as shown in your screenshot) is due to the floating statistic cards inside your [HeroSection](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/HeroSection.jsx#13-204) having absolute positioning with negative margins (`-right-6` and `-left-6`). Since mobile screens have limited padding, these negative margins push the cards off the edge of the screen, breaking the horizontal layout.
+
+## Proposed Changes
+
+### [MODIFY] client/src/components/HeroSection.jsx
+We will update the styling of the Hero Section's dashboard mockup to use Tailwind's responsive prefixes (`sm:`, `md:`, `lg:`). 
+
+1. **Floating Statistic Cards:**
+   - Change `absolute -top-6 -left-6` to `absolute -top-4 -left-2 md:-top-6 md:-left-6 scale-90 md:scale-100 origin-top-left`.
+   - Change `absolute -bottom-6 -right-6` to `absolute -bottom-4 -right-2 md:-bottom-6 md:-right-6 scale-90 md:scale-100 origin-bottom-right`.
+   This ensures that on mobile devices, the cards scale down slightly and stay within the screen boundaries, while on tablets/laptops, they use the full negative margin spread out.
+
+2. **Main Dashboard Background Padding:**
+   - Change padding `p-8` on the mockup to `p-4 sm:p-6 lg:p-8`. Massive padding on mobile squishes the content.
+
+3. **Stats Grid Mobile Scale:**
+   - On the grid showing "Institutions" and "Placement Rate", adding `text-sm md:text-base` and scaling down icons on mobile will prevent them from breaking out.
+
+## Verification Plan
+
+### Manual Verification
+1. I will apply these responsive utility classes.
+2. The UI will instantly look flawless across all screen sizes (mobile, tablet, desktop, smart TV).
+3. The dashboard hero asset will gracefully resize and tuck the floating cards inside the phone's viewport padding instead of pushing past it.

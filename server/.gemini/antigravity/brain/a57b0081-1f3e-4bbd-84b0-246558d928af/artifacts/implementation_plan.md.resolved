@@ -1,0 +1,40 @@
+# Debugging & Fixing Password Reset Flow
+
+This document details the plan to fix the "Forgot Password" functionality which was previously returning success messages without actually sending the reset email.
+
+## Overview
+The frontend [ForgotPasswordPage.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/ForgotPasswordPage.jsx) functions correctly and hits the backend `/auth/forgot-password` route. However, the backend route generates a valid token but lacks the actual mailing functionality. It contains a `// TODO: Send email with reset link` comment. We need to implement the email template and sending function to complete this flow.
+
+## Proposed Changes
+
+### Backend Changes
+
+#### [MODIFY] server/utils/EmailTemplate.js
+We will add a new exported HTML string `Password_Reset_Email_Template`.
+*   It will have a clean, branded design matching the existing `Verification_Email_Template`.
+*   It will accept a `{resetLink}` placeholder.
+
+#### [MODIFY] server/utils/sendEmail.js
+We will export a new function `sendPasswordResetEmail(email, resetLink)`.
+*   This function will use the existing `transporter` from `Email.config.js`.
+*   It will use the `Password_Reset_Email_Template` we just created.
+*   It will set the subject to "Reset Your Password - PlacementIQ".
+
+#### [MODIFY] server/routes/auth.js
+We need to connect the new email utility to the `/forgot-password` route.
+*   Import the newly created `sendPasswordResetEmail` function from `../utils/sendEmail`.
+*   In the `/forgot-password` route, construct the full reset link using the frontend URL (e.g., `http://localhost:5173/reset-password/${resetToken}`). Note: We will use a hardcoded localhost for now, or preferably an environment variable `process.env.FRONTEND_URL || 'http://localhost:5173'`.
+*   Uncomment/replace the `// TODO` block to call `await sendPasswordResetEmail(user.email, resetLink)`.
+
+## Verification Plan
+
+### Manual Verification
+1.  **Trigger Flow:**
+    *   Navigate to the Forgot Password page on the frontend (`/forgot-password`).
+    *   Enter a valid registered email address and submit.
+2.  **Verify Email Reception:**
+    *   Check the console logs of the backend to ensure no NodeMailer errors occurred.
+    *   Check the actual inbox of the provided email address to verify the HTML email arrives.
+3.  **Verify Link Functionality:**
+    *   Click the link in the email. Ensure it redirects back to the frontend `/reset-password/:token` page.
+    *   Set a new password, submit, and finally try logging in with the newly reset password.

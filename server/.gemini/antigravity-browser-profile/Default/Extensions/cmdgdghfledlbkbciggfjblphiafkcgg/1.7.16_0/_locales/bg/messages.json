@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Вие сте блокирали"
+   },
+   "ads": {
+      "message": "реклами"
+   },
+   "dataSavedTitle": {
+      "message": "Данните са запазени"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Приложи към всички сайтове"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Дълбочина"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Преглед"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Запазване"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Селектор"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Специфичност"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Вие сте избрали"
+   },
+   "elementBlocker_title": {
+      "message": "Премахване на елементи"
+   },
+   "extDesc": {
+      "message": "Блокирайте реклами и изскачащи прозорци на всички уебсайтове, които разглеждате всеки ден"
+   },
+   "extName": {
+      "message": "SBlock - Супер рекламен блокер"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Супер рекламен блокер"
+   },
+   "filteringModeBasic": {
+      "message": "Основен"
+   },
+   "filteringModeSuper": {
+      "message": "Супер блок"
+   },
+   "footerMadeLove": {
+      "message": "Направено с любов в"
+   },
+   "footerShareFriends": {
+      "message": "Споделете с приятелите си"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Зареждайте по-бързо"
+   },
+   "loveSblockButton": {
+      "message": "Обичате SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Оставете отзив."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock не се поддържа на тази страница"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Блокиране на реклами на местен език"
+   },
+   "optionBlockManually": {
+      "message": "Блокирайте ръчно"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Отворете"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Нулиране на всички"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Селектор"
+   },
+   "optionBlockTracker": {
+      "message": "Проследяване на блокове"
+   },
+   "optionPopupsCookie": {
+      "message": "Игнорирайте изскачащите прозорци за приемане на бисквитки"
+   },
+   "optionPopupsSocial": {
+      "message": "Блокиране на социални джаджи"
+   },
+   "reportIssueButton": {
+      "message": "Докладвайте за проблем"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Разкажи ни повече."
+   },
+   "secDuration": {
+      "message": "сек"
+   },
+   "thisPageTitle": {
+      "message": "Тази страница"
+   },
+   "thisWebsiteTitle": {
+      "message": "Този уебсайт"
+   },
+   "timeSavedTitle": {
+      "message": "Спестено време"
+   }
+}

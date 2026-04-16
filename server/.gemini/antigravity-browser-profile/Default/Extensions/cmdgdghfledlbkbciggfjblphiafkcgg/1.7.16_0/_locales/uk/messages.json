@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Ви заблокували"
+   },
+   "ads": {
+      "message": "Оголошення"
+   },
+   "dataSavedTitle": {
+      "message": "Дані збережено"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Застосовувати до всього сайту"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Глибина"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Попередній перегляд"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "зберегти"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Селектор"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Специфіка"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Ви вибрали"
+   },
+   "elementBlocker_title": {
+      "message": "Видалення елементів"
+   },
+   "extDesc": {
+      "message": "Блокуйте рекламу та спливаючі вікна на всіх веб-сайтах, які ви переглядаєте щодня"
+   },
+   "extName": {
+      "message": "SBlock - супер блокувальник реклами"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Супер блокувальник реклами"
+   },
+   "filteringModeBasic": {
+      "message": "Базовий"
+   },
+   "filteringModeSuper": {
+      "message": "Супер Блок"
+   },
+   "footerMadeLove": {
+      "message": "Зроблено з любов'ю в"
+   },
+   "footerShareFriends": {
+      "message": "Поділіться з друзями"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Завантажуйте швидше"
+   },
+   "loveSblockButton": {
+      "message": "Любите SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Залиште відгук."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock не підтримується на цій сторінці"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Блокувати рекламу місцевою мовою"
+   },
+   "optionBlockManually": {
+      "message": "Блокувати вручну"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "ВІДЧИНЕНО"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Скинути все"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Селектор"
+   },
+   "optionBlockTracker": {
+      "message": "Трекер блоків"
+   },
+   "optionPopupsCookie": {
+      "message": "Ігноруйте спливаючі вікна прийняття файлів cookie"
+   },
+   "optionPopupsSocial": {
+      "message": "Блокуйте соціальні віджети"
+   },
+   "reportIssueButton": {
+      "message": "Повідомити про проблему"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Розкажіть нам більше."
+   },
+   "secDuration": {
+      "message": "сек"
+   },
+   "thisPageTitle": {
+      "message": "Ця сторінка"
+   },
+   "thisWebsiteTitle": {
+      "message": "Цей сайт"
+   },
+   "timeSavedTitle": {
+      "message": "Економія часу"
+   }
+}

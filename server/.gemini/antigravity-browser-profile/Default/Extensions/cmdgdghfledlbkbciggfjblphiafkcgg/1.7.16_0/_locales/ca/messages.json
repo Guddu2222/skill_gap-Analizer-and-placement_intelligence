@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Has bloquejat"
+   },
+   "ads": {
+      "message": "Anuncis"
+   },
+   "dataSavedTitle": {
+      "message": "Dades desades"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Aplicar a tot el lloc"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "profunditat"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Vista prèvia"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Desa"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Selector"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Especificitat"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Has seleccionat"
+   },
+   "elementBlocker_title": {
+      "message": "Eliminador d'elements"
+   },
+   "extDesc": {
+      "message": "Bloquegeu anuncis i finestres emergents a tots els llocs web que navegueu cada dia"
+   },
+   "extName": {
+      "message": "SBlock - Super bloquejador d'anuncis"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super bloquejador d'anuncis"
+   },
+   "filteringModeBasic": {
+      "message": "Bàsic"
+   },
+   "filteringModeSuper": {
+      "message": "Super bloc"
+   },
+   "footerMadeLove": {
+      "message": "Fet amb amor a"
+   },
+   "footerShareFriends": {
+      "message": "Comparteix amb els teus amics"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Carrega més ràpid"
+   },
+   "loveSblockButton": {
+      "message": "T'agrada SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Deixa un comentari."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock no és compatible en aquesta pàgina"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Bloqueja els anuncis en llengua local"
+   },
+   "optionBlockManually": {
+      "message": "Bloquejar manualment"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Obert"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Restableix-ho tot"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Selector"
+   },
+   "optionBlockTracker": {
+      "message": "Seguidor de blocs"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignora les finestres emergents d'acceptar galetes"
+   },
+   "optionPopupsSocial": {
+      "message": "Bloqueja els ginys socials"
+   },
+   "reportIssueButton": {
+      "message": "Informar d'un problema"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Explica'ns més."
+   },
+   "secDuration": {
+      "message": "sec"
+   },
+   "thisPageTitle": {
+      "message": "Aquesta pàgina"
+   },
+   "thisWebsiteTitle": {
+      "message": "Aquest lloc web"
+   },
+   "timeSavedTitle": {
+      "message": "Temps estalviat"
+   }
+}

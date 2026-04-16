@@ -1,0 +1,5 @@
+# Task List
+- [x] Initial review of [server/index.js](file:///d:/project/AI-Powered%20Local%20Crop%20Advisory%20System/server/index.js) and frontend.
+- [ ] Determine supported Gemini models using API.
+- [ ] Update model name in Node SDK.
+- [ ] Verify fix by testing the proxy endpoint.

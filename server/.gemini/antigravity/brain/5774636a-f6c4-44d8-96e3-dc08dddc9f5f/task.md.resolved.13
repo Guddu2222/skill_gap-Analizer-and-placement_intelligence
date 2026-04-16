@@ -1,0 +1,8 @@
+# Rebranding: Project SkillBridge
+
+- [x] Identify all occurrences of old project names (Placement Intelligence, PlacementAI, etc.)
+- [x] Rename the frontend [index.html](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/index.html) document title to "SkillBridge"
+- [x] Update frontend UI components ([Navbar.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/Navbar.jsx), [LandingPage.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/LandingPage.jsx), [HeroSection.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/HeroSection.jsx) etc.) to use "SkillBridge"
+- [ ] Update [package.json](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/package.json) names and descriptions to "SkillBridge"
+- [ ] Update backend API welcome messages and references
+- [ ] Create walkthrough of rebranded files

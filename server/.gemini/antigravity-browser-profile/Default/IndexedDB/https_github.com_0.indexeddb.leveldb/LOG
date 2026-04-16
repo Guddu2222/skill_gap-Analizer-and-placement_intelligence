@@ -1,0 +1,6 @@
+2026/03/02-01:26:44.114 1d4c Creating DB C:\Users\guddu\.gemini\antigravity-browser-profile\Default\IndexedDB\https_github.com_0.indexeddb.leveldb since it was missing.
+2026/03/02-01:26:44.127 1d4c Reusing MANIFEST C:\Users\guddu\.gemini\antigravity-browser-profile\Default\IndexedDB\https_github.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/03/02-01:48:27.203 3d54 Level-0 table #5: started
+2026/03/02-01:48:27.212 3d54 Level-0 table #5: 862 bytes OK
+2026/03/02-01:48:27.218 3d54 Delete type=0 #3
+2026/03/02-01:48:27.218 3d54 Manual compaction at level-0 from (begin) .. (end); will stop at (end)

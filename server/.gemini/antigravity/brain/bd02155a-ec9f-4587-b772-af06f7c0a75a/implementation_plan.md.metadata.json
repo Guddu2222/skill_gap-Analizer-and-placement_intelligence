@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Full technical implementation plan for adding Google and LinkedIn OAuth social login to SkillBridge. Covers the complete OAuth 2.0 Authorization Code flow, all files to be created/modified (User model, passport config, auth routes, server entry point, frontend callback page), and step-by-step instructions for obtaining OAuth credentials from Google Cloud Console and LinkedIn Developer Portal.",
+  "updatedAt": "2026-04-02T18:45:15.822971500Z",
+  "requestFeedback": true
+}

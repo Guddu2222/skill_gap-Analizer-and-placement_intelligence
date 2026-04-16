@@ -1,0 +1,13 @@
+[0] (500,500)<div  />
+	PlacementIQ
+	[1] (122,176)<a class='
+              flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
+              bg-blue-50 text-blue-700
+            ' href='/student'>Dashboard />
+	[2] (122,247)<a class='
+              flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
+              text-gray-600 hover:bg-gray-50 hover:text-gray-900
+            ' href='/student/alumni'>Alumni Network />
+	[3] (122,867)<button class='flex items-center gap-3 px-4 py-3 w-full text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-xl transition-all'>Settings />
+	[4] (122,944)<button class='flex items-center gap-3 px-4 py-3 w-full text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all'>Logout />
+	Failed to load profile. Please try reloading.

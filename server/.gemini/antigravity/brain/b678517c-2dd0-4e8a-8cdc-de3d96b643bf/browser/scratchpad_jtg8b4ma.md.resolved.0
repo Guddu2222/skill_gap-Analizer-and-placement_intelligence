@@ -1,0 +1,5 @@
+# Task Checklist
+- [ ] Navigate to http://localhost:5173/student
+- [ ] Wait for page load/crash
+- [ ] Capture console logs
+- [ ] Report error messages

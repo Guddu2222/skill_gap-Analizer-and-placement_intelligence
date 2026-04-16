@@ -1,0 +1,4 @@
+# Task Checklist
+
+- [ ] Update MONGODB_URI in [server/.env](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/.env) with the new cluster URL.
+- [ ] Ensure the DB name (`placement_platform`) is included in the new connection string.

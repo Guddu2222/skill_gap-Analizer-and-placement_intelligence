@@ -1,0 +1,473 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/student/interview/InterviewFeedbackCard.jsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=0ef34432"; const Fragment = __vite__cjsImport0_react_jsxDevRuntime["Fragment"]; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+let prevRefreshReg;
+let prevRefreshSig;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  prevRefreshReg = window.$RefreshReg$;
+  prevRefreshSig = window.$RefreshSig$;
+  window.$RefreshReg$ = RefreshRuntime.getRefreshReg("D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx");
+  window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+}
+var _s = $RefreshSig$(), _s2 = $RefreshSig$();
+import __vite__cjsImport3_react from "/node_modules/.vite/deps/react.js?v=0ef34432"; const React = __vite__cjsImport3_react.__esModule ? __vite__cjsImport3_react.default : __vite__cjsImport3_react; const useState = __vite__cjsImport3_react["useState"]; const useEffect = __vite__cjsImport3_react["useEffect"];
+import { getInterviewDetails } from "/src/services/api.js?t=1774206066138";
+import { ArrowLeft, CheckCircle, XCircle, Award, Lightbulb, BookOpen, ChevronDown, ChevronUp } from "/node_modules/.vite/deps/lucide-react.js?v=0ef34432";
+const ExpandableText = ({ text, maxLength = 250 }) => {
+  _s();
+  const [isExpanded, setIsExpanded] = useState(false);
+  if (!text) return null;
+  const cleanText = text.replace(/```[a-z]*\n/gi, "").replace(/```/gi, "");
+  if (cleanText.length <= maxLength) {
+    return /* @__PURE__ */ jsxDEV("p", { className: "text-slate-700 leading-relaxed whitespace-pre-wrap", children: cleanText }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+      lineNumber: 33,
+      columnNumber: 12
+    }, this);
+  }
+  return /* @__PURE__ */ jsxDEV("div", { children: [
+    /* @__PURE__ */ jsxDEV("p", { className: "text-slate-700 leading-relaxed whitespace-pre-wrap", children: isExpanded ? cleanText : `${cleanText.substring(0, maxLength)}...` }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+      lineNumber: 38,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV(
+      "button",
+      {
+        onClick: () => setIsExpanded(!isExpanded),
+        className: "mt-3 flex items-center gap-1 text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors",
+        children: isExpanded ? /* @__PURE__ */ jsxDEV(Fragment, { children: [
+          /* @__PURE__ */ jsxDEV(ChevronUp, { className: "w-4 h-4" }, void 0, false, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+            lineNumber: 46,
+            columnNumber: 11
+          }, this),
+          " Show Less"
+        ] }, void 0, true, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+          lineNumber: 46,
+          columnNumber: 9
+        }, this) : /* @__PURE__ */ jsxDEV(Fragment, { children: [
+          /* @__PURE__ */ jsxDEV(ChevronDown, { className: "w-4 h-4" }, void 0, false, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+            lineNumber: 48,
+            columnNumber: 11
+          }, this),
+          " Read Full Explanation"
+        ] }, void 0, true, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+          lineNumber: 48,
+          columnNumber: 9
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+        lineNumber: 41,
+        columnNumber: 7
+      },
+      this
+    )
+  ] }, void 0, true, {
+    fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+    lineNumber: 37,
+    columnNumber: 5
+  }, this);
+};
+_s(ExpandableText, "FPNvbbHVlWWR4LKxxNntSxiIS38=");
+_c = ExpandableText;
+const InterviewFeedbackCard = ({ interviewId, onBack }) => {
+  _s2();
+  const [interview, setInterview] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        setLoading(true);
+        const res = await getInterviewDetails(interviewId);
+        if (res.success) {
+          setInterview(res.interview);
+        }
+      } catch (error) {
+        console.error("Failed to fetch interview details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDetails();
+  }, [interviewId]);
+  if (loading) {
+    return /* @__PURE__ */ jsxDEV("div", { className: "flex flex-col items-center justify-center min-h-[50vh]", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin" }, void 0, false, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+        lineNumber: 81,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV("p", { className: "mt-4 text-slate-500 font-medium", children: "Loading your detailed feedback..." }, void 0, false, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+        lineNumber: 82,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+      lineNumber: 80,
+      columnNumber: 7
+    }, this);
+  }
+  if (!interview) {
+    return /* @__PURE__ */ jsxDEV("div", { className: "text-center py-12", children: [
+      /* @__PURE__ */ jsxDEV("p", { className: "text-slate-500", children: "Failed to load interview details." }, void 0, false, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+        lineNumber: 90,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV("button", { onClick: onBack, className: "mt-4 text-indigo-600 font-medium hover:underline", children: "Go Back" }, void 0, false, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+        lineNumber: 91,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+      lineNumber: 89,
+      columnNumber: 7
+    }, this);
+  }
+  const getQuestionText = (questionId) => {
+    const q = interview.questions.find((q2) => q2._id === questionId);
+    return q ? q.questionText : "Unknown Question";
+  };
+  const getQuestionCategory = (questionId) => {
+    const q = interview.questions.find((q2) => q2._id === questionId);
+    return q ? q.category : "General";
+  };
+  return /* @__PURE__ */ jsxDEV("div", { className: "max-w-4xl mx-auto animate-fadeIn space-y-6", children: [
+    /* @__PURE__ */ jsxDEV(
+      "button",
+      {
+        onClick: onBack,
+        className: "flex items-center gap-2 text-slate-500 hover:text-indigo-600 transition-colors font-medium mb-4",
+        children: [
+          /* @__PURE__ */ jsxDEV(ArrowLeft, { className: "w-4 h-4" }, void 0, false, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+            lineNumber: 114,
+            columnNumber: 9
+          }, this),
+          " Back to Dashboard"
+        ]
+      },
+      void 0,
+      true,
+      {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+        lineNumber: 110,
+        columnNumber: 7
+      },
+      this
+    ),
+    /* @__PURE__ */ jsxDEV("div", { className: "bg-white rounded-3xl p-8 shadow-sm border border-slate-200", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 border-b border-slate-100", children: [
+        /* @__PURE__ */ jsxDEV("div", { children: [
+          /* @__PURE__ */ jsxDEV("h2", { className: "text-2xl font-bold text-slate-800 mb-2", children: "Interview Feedback" }, void 0, false, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+            lineNumber: 120,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-2 text-sm text-slate-500", children: [
+            "Role: ",
+            /* @__PURE__ */ jsxDEV("span", { className: "font-semibold text-indigo-600", children: interview.targetRole }, void 0, false, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+              lineNumber: 122,
+              columnNumber: 22
+            }, this),
+            "• Date: ",
+            new Date(interview.createdAt).toLocaleDateString()
+          ] }, void 0, true, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+            lineNumber: 121,
+            columnNumber: 13
+          }, this)
+        ] }, void 0, true, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+          lineNumber: 119,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "bg-gradient-to-br from-indigo-50 to-purple-50 px-6 py-4 rounded-2xl border border-indigo-100 flex items-center gap-4", children: [
+          /* @__PURE__ */ jsxDEV("div", { className: `text-4xl font-black ${interview.overallScore >= 80 ? "text-green-600" : interview.overallScore >= 60 ? "text-yellow-600" : "text-red-500"}`, children: [
+            interview.overallScore,
+            "%"
+          ] }, void 0, true, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+            lineNumber: 129,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "text-sm font-medium text-slate-600", children: [
+            "Overall",
+            /* @__PURE__ */ jsxDEV("br", {}, void 0, false, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+              lineNumber: 133,
+              columnNumber: 22
+            }, this),
+            "Score"
+          ] }, void 0, true, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+            lineNumber: 132,
+            columnNumber: 13
+          }, this)
+        ] }, void 0, true, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+          lineNumber: 128,
+          columnNumber: 11
+        }, this)
+      ] }, void 0, true, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+        lineNumber: 118,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "mt-8 space-y-8", children: [
+        /* @__PURE__ */ jsxDEV("h3", { className: "text-xl font-bold text-slate-800 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxDEV(Award, { className: "w-5 h-5 text-indigo-500" }, void 0, false, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+            lineNumber: 141,
+            columnNumber: 13
+          }, this),
+          "Detailed Breakdown"
+        ] }, void 0, true, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+          lineNumber: 140,
+          columnNumber: 11
+        }, this),
+        interview.responses.map(
+          (response, index) => /* @__PURE__ */ jsxDEV("div", { className: "bg-slate-50 rounded-2xl p-6 border border-slate-200", children: [
+            /* @__PURE__ */ jsxDEV("div", { className: "flex justify-between items-start mb-4", children: [
+              /* @__PURE__ */ jsxDEV("div", { className: "flex gap-3", children: [
+                /* @__PURE__ */ jsxDEV("div", { className: "w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center shrink-0", children: index + 1 }, void 0, false, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                  lineNumber: 150,
+                  columnNumber: 20
+                }, this),
+                /* @__PURE__ */ jsxDEV("div", { children: [
+                  /* @__PURE__ */ jsxDEV("span", { className: "text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 block", children: getQuestionCategory(response.questionId) }, void 0, false, {
+                    fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                    lineNumber: 154,
+                    columnNumber: 22
+                  }, this),
+                  /* @__PURE__ */ jsxDEV("h4", { className: "text-lg font-bold text-slate-800 leading-snug", children: getQuestionText(response.questionId) }, void 0, false, {
+                    fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                    lineNumber: 157,
+                    columnNumber: 22
+                  }, this)
+                ] }, void 0, true, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                  lineNumber: 153,
+                  columnNumber: 20
+                }, this)
+              ] }, void 0, true, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                lineNumber: 149,
+                columnNumber: 17
+              }, this),
+              /* @__PURE__ */ jsxDEV("div", { className: `px-3 py-1 rounded-lg text-sm font-bold border ${response.score >= 8 ? "bg-green-100 text-green-700 border-green-200" : response.score >= 5 ? "bg-yellow-100 text-yellow-700 border-yellow-200" : "bg-red-100 text-red-700 border-red-200"}`, children: [
+                response.score,
+                "/10"
+              ] }, void 0, true, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                lineNumber: 162,
+                columnNumber: 17
+              }, this)
+            ] }, void 0, true, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+              lineNumber: 148,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ jsxDEV("div", { className: "mb-5 pl-11", children: /* @__PURE__ */ jsxDEV("div", { className: "bg-white p-5 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden", children: [
+              /* @__PURE__ */ jsxDEV("div", { className: "absolute top-0 left-0 w-1 h-full bg-slate-400" }, void 0, false, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                lineNumber: 174,
+                columnNumber: 19
+              }, this),
+              /* @__PURE__ */ jsxDEV("div", { className: "text-xs font-bold text-slate-500 uppercase tracking-wider mb-3", children: "Your Answer" }, void 0, false, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                lineNumber: 175,
+                columnNumber: 19
+              }, this),
+              /* @__PURE__ */ jsxDEV("div", { className: "text-slate-700 italic leading-relaxed", children: [
+                '"',
+                response.studentAnswer,
+                '"'
+              ] }, void 0, true, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                lineNumber: 176,
+                columnNumber: 19
+              }, this)
+            ] }, void 0, true, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+              lineNumber: 173,
+              columnNumber: 17
+            }, this) }, void 0, false, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+              lineNumber: 172,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ jsxDEV("div", { className: "pl-11 grid grid-cols-1 md:grid-cols-2 gap-4", children: [
+              /* @__PURE__ */ jsxDEV("div", { className: "bg-emerald-50/50 p-5 rounded-xl border border-emerald-100 shadow-sm relative overflow-hidden flex flex-col h-full", children: [
+                /* @__PURE__ */ jsxDEV("div", { className: "absolute top-0 left-0 w-1 h-full bg-emerald-400" }, void 0, false, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                  lineNumber: 185,
+                  columnNumber: 20
+                }, this),
+                /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-2 text-emerald-700 font-bold text-xs uppercase tracking-wider mb-3", children: [
+                  /* @__PURE__ */ jsxDEV(CheckCircle, { className: "w-4 h-4" }, void 0, false, {
+                    fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                    lineNumber: 187,
+                    columnNumber: 22
+                  }, this),
+                  "Ideal Answer"
+                ] }, void 0, true, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                  lineNumber: 186,
+                  columnNumber: 20
+                }, this),
+                /* @__PURE__ */ jsxDEV("div", { className: "flex-grow", children: /* @__PURE__ */ jsxDEV(ExpandableText, { text: response.idealAnswer }, void 0, false, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                  lineNumber: 191,
+                  columnNumber: 22
+                }, this) }, void 0, false, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                  lineNumber: 190,
+                  columnNumber: 20
+                }, this)
+              ] }, void 0, true, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                lineNumber: 184,
+                columnNumber: 17
+              }, this),
+              /* @__PURE__ */ jsxDEV("div", { className: "bg-indigo-50/50 p-5 rounded-xl border border-indigo-100 shadow-sm relative overflow-hidden flex flex-col h-full", children: [
+                /* @__PURE__ */ jsxDEV("div", { className: "absolute top-0 left-0 w-1 h-full bg-indigo-400" }, void 0, false, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                  lineNumber: 196,
+                  columnNumber: 20
+                }, this),
+                /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-2 text-indigo-700 font-bold text-xs uppercase tracking-wider mb-3", children: [
+                  /* @__PURE__ */ jsxDEV(Lightbulb, { className: "w-4 h-4" }, void 0, false, {
+                    fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                    lineNumber: 198,
+                    columnNumber: 22
+                  }, this),
+                  "Feedback"
+                ] }, void 0, true, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                  lineNumber: 197,
+                  columnNumber: 20
+                }, this),
+                /* @__PURE__ */ jsxDEV("div", { className: "flex-grow", children: /* @__PURE__ */ jsxDEV(ExpandableText, { text: response.aiFeedback }, void 0, false, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                  lineNumber: 202,
+                  columnNumber: 22
+                }, this) }, void 0, false, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                  lineNumber: 201,
+                  columnNumber: 20
+                }, this)
+              ] }, void 0, true, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                lineNumber: 195,
+                columnNumber: 17
+              }, this)
+            ] }, void 0, true, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+              lineNumber: 183,
+              columnNumber: 15
+            }, this),
+            response.recommendedSkill && /* @__PURE__ */ jsxDEV("div", { className: "mt-4 pl-11", children: /* @__PURE__ */ jsxDEV("div", { className: "bg-orange-50/80 p-4 rounded-xl border border-orange-200 flex items-start gap-4", children: [
+              /* @__PURE__ */ jsxDEV("div", { className: "bg-orange-100 p-2 rounded-lg text-orange-600", children: /* @__PURE__ */ jsxDEV(BookOpen, { className: "w-5 h-5" }, void 0, false, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                lineNumber: 212,
+                columnNumber: 23
+              }, this) }, void 0, false, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                lineNumber: 211,
+                columnNumber: 21
+              }, this),
+              /* @__PURE__ */ jsxDEV("div", { children: [
+                /* @__PURE__ */ jsxDEV("h5", { className: "text-orange-800 font-bold mb-1", children: "Recommended Learning Need" }, void 0, false, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                  lineNumber: 215,
+                  columnNumber: 23
+                }, this),
+                /* @__PURE__ */ jsxDEV("p", { className: "text-orange-700 text-sm", children: [
+                  "Based on your answer, the AI recommends reviewing ",
+                  /* @__PURE__ */ jsxDEV("span", { className: "font-bold underline", children: response.recommendedSkill }, void 0, false, {
+                    fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                    lineNumber: 217,
+                    columnNumber: 75
+                  }, this),
+                  " to improve your performance."
+                ] }, void 0, true, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                  lineNumber: 216,
+                  columnNumber: 23
+                }, this)
+              ] }, void 0, true, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+                lineNumber: 214,
+                columnNumber: 21
+              }, this)
+            ] }, void 0, true, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+              lineNumber: 210,
+              columnNumber: 19
+            }, this) }, void 0, false, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+              lineNumber: 209,
+              columnNumber: 13
+            }, this)
+          ] }, index, true, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+            lineNumber: 146,
+            columnNumber: 11
+          }, this)
+        )
+      ] }, void 0, true, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+        lineNumber: 139,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+      lineNumber: 117,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, true, {
+    fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx",
+    lineNumber: 108,
+    columnNumber: 5
+  }, this);
+};
+_s2(InterviewFeedbackCard, "Snu2lu+8aOXMeXnVFTPrjXYf0lE=");
+_c2 = InterviewFeedbackCard;
+export default InterviewFeedbackCard;
+var _c, _c2;
+$RefreshReg$(_c, "ExpandableText");
+$RefreshReg$(_c2, "InterviewFeedbackCard");
+if (import.meta.hot && !inWebWorker) {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+if (import.meta.hot && !inWebWorker) {
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("D:/project/Skill_Gap Analyser and placement intelligence/client/src/components/student/interview/InterviewFeedbackCard.jsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+
+//# sourceMappingURL=data:application/json;base64,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QSx1QkFBQyxTQUNDO0FBQUEsdUNBQUMsUUFBRyxXQUFVLGtDQUFpQyx5Q0FBL0M7QUFBQTtBQUFBO0FBQUE7QUFBQSx1QkFBd0U7QUFBQSxnQkFDeEUsdUJBQUMsT0FBRSxXQUFVLDJCQUEwQjtBQUFBO0FBQUEsa0JBQ2EsdUJBQUMsVUFBSyxXQUFVLHVCQUF1Qk4sbUJBQVNNLG9CQUFoRDtBQUFBO0FBQUE7QUFBQTtBQUFBLHlCQUFpRTtBQUFBLGtCQUFPO0FBQUEscUJBRDVIO0FBQUE7QUFBQTtBQUFBO0FBQUEsdUJBRUE7QUFBQSxtQkFKRjtBQUFBO0FBQUE7QUFBQTtBQUFBLHFCQUtBO0FBQUEsaUJBVEY7QUFBQTtBQUFBO0FBQUE7QUFBQSxtQkFVQSxLQVhGO0FBQUE7QUFBQTtBQUFBO0FBQUEsbUJBWUE7QUFBQSxlQTNFTUwsT0FBVjtBQUFBO0FBQUE7QUFBQTtBQUFBLGlCQThFQTtBQUFBLFFBQ0Q7QUFBQSxXQXRGSDtBQUFBO0FBQUE7QUFBQTtBQUFBLGFBdUZBO0FBQUEsU0E3R0Y7QUFBQTtBQUFBO0FBQUE7QUFBQSxXQThHQTtBQUFBLE9BdkhGO0FBQUE7QUFBQTtBQUFBO0FBQUEsU0F3SEE7QUFFSjtBQUFFM0IsSUE5S0lILHVCQUFxQjtBQUFBLE1BQXJCQTtBQWdMTixlQUFlQTtBQUFzQixJQUFBb0MsSUFBQUM7QUFBQSxhQUFBRCxJQUFBO0FBQUEsYUFBQUMsS0FBQSIsIm5hbWVzIjpbIlJlYWN0IiwidXNlU3RhdGUiLCJ1c2VFZmZlY3QiLCJnZXRJbnRlcnZpZXdEZXRhaWxzIiwiQXJyb3dMZWZ0IiwiQ2hlY2tDaXJjbGUiLCJYQ2lyY2xlIiwiQXdhcmQiLCJMaWdodGJ1bGIiLCJCb29rT3BlbiIsIkNoZXZyb25Eb3duIiwiQ2hldnJvblVwIiwiRXhwYW5kYWJsZVRleHQiLCJ0ZXh0IiwibWF4TGVuZ3RoIiwiX3MiLCJpc0V4cGFuZGVkIiwic2V0SXNFeHBhbmRlZCIsImNsZWFuVGV4dCIsInJlcGxhY2UiLCJsZW5ndGgiLCJzdWJzdHJpbmciLCJJbnRlcnZpZXdGZWVkYmFja0NhcmQiLCJpbnRlcnZpZXdJZCIsIm9uQmFjayIsIl9zMiIsImludGVydmlldyIsInNldEludGVydmlldyIsImxvYWRpbmciLCJzZXRMb2FkaW5nIiwiZmV0Y2hEZXRhaWxzIiwicmVzIiwic3VjY2VzcyIsImVycm9yIiwiY29uc29sZSIsImdldFF1ZXN0aW9uVGV4dCIsInF1ZXN0aW9uSWQiLCJxIiwicXVlc3Rpb25zIiwiZmluZCIsIl9pZCIsInF1ZXN0aW9uVGV4dCIsImdldFF1ZXN0aW9uQ2F0ZWdvcnkiLCJjYXRlZ29yeSIsInRhcmdldFJvbGUiLCJEYXRlIiwiY3JlYXRlZEF0IiwidG9Mb2NhbGVEYXRlU3RyaW5nIiwib3ZlcmFsbFNjb3JlIiwicmVzcG9uc2VzIiwibWFwIiwicmVzcG9uc2UiLCJpbmRleCIsInNjb3JlIiwic3R1ZGVudEFuc3dlciIsImlkZWFsQW5zd2VyIiwiYWlGZWVkYmFjayIsInJlY29tbWVuZGVkU2tpbGwiLCJfYyIsIl9jMiJdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlcyI6WyJJbnRlcnZpZXdGZWVkYmFja0NhcmQuanN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyB1c2VTdGF0ZSwgdXNlRWZmZWN0IH0gZnJvbSAncmVhY3QnO1xyXG5pbXBvcnQgeyBnZXRJbnRlcnZpZXdEZXRhaWxzIH0gZnJvbSAnLi4vLi4vLi4vc2VydmljZXMvYXBpJztcclxuaW1wb3J0IHsgQXJyb3dMZWZ0LCBDaGVja0NpcmNsZSwgWENpcmNsZSwgQXdhcmQsIExpZ2h0YnVsYiwgQm9va09wZW4sIENoZXZyb25Eb3duLCBDaGV2cm9uVXAgfSBmcm9tICdsdWNpZGUtcmVhY3QnO1xyXG5cclxuY29uc3QgRXhwYW5kYWJsZVRleHQgPSAoeyB0ZXh0LCBtYXhMZW5ndGggPSAyNTAgfSkgPT4ge1xyXG4gIGNvbnN0IFtpc0V4cGFuZGVkLCBzZXRJc0V4cGFuZGVkXSA9IHVzZVN0YXRlKGZhbHNlKTtcclxuICBcclxuICBpZiAoIXRleHQpIHJldHVybiBudWxsO1xyXG4gIFxyXG4gIC8vIENsZWFuIHVwIG1hcmtkb3duIGNvZGUgYmxvY2tzIGlmIHByZXNlbnQgdG8gbWFrZSB0aGUgc3VtbWFyeSBjbGVhbmVyXHJcbiAgY29uc3QgY2xlYW5UZXh0ID0gdGV4dC5yZXBsYWNlKC9gYGBbYS16XSpcXG4vZ2ksICcnKS5yZXBsYWNlKC9gYGAvZ2ksICcnKTtcclxuICBcclxuICBpZiAoY2xlYW5UZXh0Lmxlbmd0aCA8PSBtYXhMZW5ndGgpIHtcclxuICAgIHJldHVybiA8cCBjbGFzc05hbWU9XCJ0ZXh0LXNsYXRlLTcwMCBsZWFkaW5nLXJlbGF4ZWQgd2hpdGVzcGFjZS1wcmUtd3JhcFwiPntjbGVhblRleHR9PC9wPjtcclxuICB9XHJcblxyXG4gIHJldHVybiAoXHJcbiAgICA8ZGl2PlxyXG4gICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXNsYXRlLTcwMCBsZWFkaW5nLXJlbGF4ZWQgd2hpdGVzcGFjZS1wcmUtd3JhcFwiPlxyXG4gICAgICAgIHtpc0V4cGFuZGVkID8gY2xlYW5UZXh0IDogYCR7Y2xlYW5UZXh0LnN1YnN0cmluZygwLCBtYXhMZW5ndGgpfS4uLmB9XHJcbiAgICAgIDwvcD5cclxuICAgICAgPGJ1dHRvbiBcclxuICAgICAgICBvbkNsaWNrPXsoKSA9PiBzZXRJc0V4cGFuZGVkKCFpc0V4cGFuZGVkKX1cclxuICAgICAgICBjbGFzc05hbWU9XCJtdC0zIGZsZXggaXRlbXMtY2VudGVyIGdhcC0xIHRleHQtc20gZm9udC1ib2xkIHRleHQtaW5kaWdvLTYwMCBob3Zlcjp0ZXh0LWluZGlnby04MDAgdHJhbnNpdGlvbi1jb2xvcnNcIlxyXG4gICAgICA+XHJcbiAgICAgICAge2lzRXhwYW5kZWQgPyAoXHJcbiAgICAgICAgICA8PjxDaGV2cm9uVXAgY2xhc3NOYW1lPVwidy00IGgtNFwiIC8+IFNob3cgTGVzczwvPlxyXG4gICAgICAgICkgOiAoXHJcbiAgICAgICAgICA8PjxDaGV2cm9uRG93biBjbGFzc05hbWU9XCJ3LTQgaC00XCIgLz4gUmVhZCBGdWxsIEV4cGxhbmF0aW9uPC8+XHJcbiAgICAgICAgKX1cclxuICAgICAgPC9idXR0b24+XHJcbiAgICA8L2Rpdj5cclxuICApO1xyXG59O1xyXG5cclxuXHJcbmNvbnN0IEludGVydmlld0ZlZWRiYWNrQ2FyZCA9ICh7IGludGVydmlld0lkLCBvbkJhY2sgfSkgPT4ge1xyXG4gIGNvbnN0IFtpbnRlcnZpZXcsIHNldEludGVydmlld10gPSB1c2VTdGF0ZShudWxsKTtcclxuICBjb25zdCBbbG9hZGluZywgc2V0TG9hZGluZ10gPSB1c2VTdGF0ZSh0cnVlKTtcclxuXHJcbiAgdXNlRWZmZWN0KCgpID0+IHtcclxuICAgIGNvbnN0IGZldGNoRGV0YWlscyA9IGFzeW5jICgpID0+IHtcclxuICAgICAgdHJ5IHtcclxuICAgICAgICBzZXRMb2FkaW5nKHRydWUpO1xyXG4gICAgICAgIGNvbnN0IHJlcyA9IGF3YWl0IGdldEludGVydmlld0RldGFpbHMoaW50ZXJ2aWV3SWQpO1xyXG4gICAgICAgIGlmIChyZXMuc3VjY2Vzcykge1xyXG4gICAgICAgICAgc2V0SW50ZXJ2aWV3KHJlcy5pbnRlcnZpZXcpO1xyXG4gICAgICAgIH1cclxuICAgICAgfSBjYXRjaCAoZXJyb3IpIHtcclxuICAgICAgICBjb25zb2xlLmVycm9yKFwiRmFpbGVkIHRvIGZldGNoIGludGVydmlldyBkZXRhaWxzOlwiLCBlcnJvcik7XHJcbiAgICAgIH0gZmluYWxseSB7XHJcbiAgICAgICAgc2V0TG9hZGluZyhmYWxzZSk7XHJcbiAgICAgIH1cclxuICAgIH07XHJcblxyXG4gICAgZmV0Y2hEZXRhaWxzKCk7XHJcbiAgfSwgW2ludGVydmlld0lkXSk7XHJcblxyXG4gIGlmIChsb2FkaW5nKSB7XHJcbiAgICByZXR1cm4gKFxyXG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggZmxleC1jb2wgaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIG1pbi1oLVs1MHZoXVwiPlxyXG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwidy0xMiBoLTEyIGJvcmRlci00IGJvcmRlci1pbmRpZ28tMjAwIGJvcmRlci10LWluZGlnby02MDAgcm91bmRlZC1mdWxsIGFuaW1hdGUtc3BpblwiPjwvZGl2PlxyXG4gICAgICAgIDxwIGNsYXNzTmFtZT1cIm10LTQgdGV4dC1zbGF0ZS01MDAgZm9udC1tZWRpdW1cIj5Mb2FkaW5nIHlvdXIgZGV0YWlsZWQgZmVlZGJhY2suLi48L3A+XHJcbiAgICAgIDwvZGl2PlxyXG4gICAgKTtcclxuICB9XHJcblxyXG4gIGlmICghaW50ZXJ2aWV3KSB7XHJcbiAgICByZXR1cm4gKFxyXG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cInRleHQtY2VudGVyIHB5LTEyXCI+XHJcbiAgICAgICAgPHAgY2xhc3NOYW1lPVwidGV4dC1zbGF0ZS01MDBcIj5GYWlsZWQgdG8gbG9hZCBpbnRlcnZpZXcgZGV0YWlscy48L3A+XHJcbiAgICAgICAgPGJ1dHRvbiBvbkNsaWNrPXtvbkJhY2t9IGNsYXNzTmFtZT1cIm10LTQgdGV4dC1pbmRpZ28tNjAwIGZvbnQtbWVkaXVtIGhvdmVyOnVuZGVybGluZVwiPkdvIEJhY2s8L2J1dHRvbj5cclxuICAgICAgPC9kaXY+XHJcbiAgICApO1xyXG4gIH1cclxuXHJcbiAgLy8gSGVscGVyIHRvIG1hcCByZXNwb25zZSBiYWNrIHRvIGNvcnJlc3BvbmRpbmcgcXVlc3Rpb25cclxuICBjb25zdCBnZXRRdWVzdGlvblRleHQgPSAocXVlc3Rpb25JZCkgPT4ge1xyXG4gICAgY29uc3QgcSA9IGludGVydmlldy5xdWVzdGlvbnMuZmluZChxID0+IHEuX2lkID09PSBxdWVzdGlvbklkKTtcclxuICAgIHJldHVybiBxID8gcS5xdWVzdGlvblRleHQgOiAnVW5rbm93biBRdWVzdGlvbic7XHJcbiAgfTtcclxuXHJcbiAgY29uc3QgZ2V0UXVlc3Rpb25DYXRlZ29yeSA9IChxdWVzdGlvbklkKSA9PiB7XHJcbiAgICAgY29uc3QgcSA9IGludGVydmlldy5xdWVzdGlvbnMuZmluZChxID0+IHEuX2lkID09PSBxdWVzdGlvbklkKTtcclxuICAgICByZXR1cm4gcSA/IHEuY2F0ZWdvcnkgOiAnR2VuZXJhbCc7XHJcbiAgfTtcclxuXHJcbiAgcmV0dXJuIChcclxuICAgIDxkaXYgY2xhc3NOYW1lPVwibWF4LXctNHhsIG14LWF1dG8gYW5pbWF0ZS1mYWRlSW4gc3BhY2UteS02XCI+XHJcbiAgICAgIHsvKiBIZWFkZXIgKi99XHJcbiAgICAgIDxidXR0b24gXHJcbiAgICAgICAgb25DbGljaz17b25CYWNrfVxyXG4gICAgICAgIGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIGdhcC0yIHRleHQtc2xhdGUtNTAwIGhvdmVyOnRleHQtaW5kaWdvLTYwMCB0cmFuc2l0aW9uLWNvbG9ycyBmb250LW1lZGl1bSBtYi00XCJcclxuICAgICAgPlxyXG4gICAgICAgIDxBcnJvd0xlZnQgY2xhc3NOYW1lPVwidy00IGgtNFwiIC8+IEJhY2sgdG8gRGFzaGJvYXJkXHJcbiAgICAgIDwvYnV0dG9uPlxyXG5cclxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJiZy13aGl0ZSByb3VuZGVkLTN4bCBwLTggc2hhZG93LXNtIGJvcmRlciBib3JkZXItc2xhdGUtMjAwXCI+XHJcbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGZsZXgtY29sIG1kOmZsZXgtcm93IGp1c3RpZnktYmV0d2VlbiBpdGVtcy1zdGFydCBtZDppdGVtcy1jZW50ZXIgZ2FwLTYgcGItNiBib3JkZXItYiBib3JkZXItc2xhdGUtMTAwXCI+XHJcbiAgICAgICAgICA8ZGl2PlxyXG4gICAgICAgICAgICA8aDIgY2xhc3NOYW1lPVwidGV4dC0yeGwgZm9udC1ib2xkIHRleHQtc2xhdGUtODAwIG1iLTJcIj5JbnRlcnZpZXcgRmVlZGJhY2s8L2gyPlxyXG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIGdhcC0yIHRleHQtc20gdGV4dC1zbGF0ZS01MDBcIj5cclxuICAgICAgICAgICAgICAgUm9sZTogPHNwYW4gY2xhc3NOYW1lPVwiZm9udC1zZW1pYm9sZCB0ZXh0LWluZGlnby02MDBcIj57aW50ZXJ2aWV3LnRhcmdldFJvbGV9PC9zcGFuPlxyXG4gICAgICAgICAgICAgICDigKJcclxuICAgICAgICAgICAgICAgRGF0ZToge25ldyBEYXRlKGludGVydmlldy5jcmVhdGVkQXQpLnRvTG9jYWxlRGF0ZVN0cmluZygpfVxyXG4gICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgXHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImJnLWdyYWRpZW50LXRvLWJyIGZyb20taW5kaWdvLTUwIHRvLXB1cnBsZS01MCBweC02IHB5LTQgcm91bmRlZC0yeGwgYm9yZGVyIGJvcmRlci1pbmRpZ28tMTAwIGZsZXggaXRlbXMtY2VudGVyIGdhcC00XCI+XHJcbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPXtgdGV4dC00eGwgZm9udC1ibGFjayAke2ludGVydmlldy5vdmVyYWxsU2NvcmUgPj0gODAgPyAndGV4dC1ncmVlbi02MDAnIDogaW50ZXJ2aWV3Lm92ZXJhbGxTY29yZSA+PSA2MCA/ICd0ZXh0LXllbGxvdy02MDAnIDogJ3RleHQtcmVkLTUwMCd9YH0+XHJcbiAgICAgICAgICAgICAge2ludGVydmlldy5vdmVyYWxsU2NvcmV9JVxyXG4gICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZXh0LXNtIGZvbnQtbWVkaXVtIHRleHQtc2xhdGUtNjAwXCI+XHJcbiAgICAgICAgICAgICAgT3ZlcmFsbDxici8+U2NvcmVcclxuICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICA8L2Rpdj5cclxuXHJcbiAgICAgICAgey8qIFJlc3BvbnNlcyBCcmVha2Rvd24gKi99XHJcbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJtdC04IHNwYWNlLXktOFwiPlxyXG4gICAgICAgICAgPGgzIGNsYXNzTmFtZT1cInRleHQteGwgZm9udC1ib2xkIHRleHQtc2xhdGUtODAwIGZsZXggaXRlbXMtY2VudGVyIGdhcC0yXCI+XHJcbiAgICAgICAgICAgIDxBd2FyZCBjbGFzc05hbWU9XCJ3LTUgaC01IHRleHQtaW5kaWdvLTUwMFwiIC8+XHJcbiAgICAgICAgICAgIERldGFpbGVkIEJyZWFrZG93blxyXG4gICAgICAgICAgPC9oMz5cclxuXHJcbiAgICAgICAgICB7aW50ZXJ2aWV3LnJlc3BvbnNlcy5tYXAoKHJlc3BvbnNlLCBpbmRleCkgPT4gKFxyXG4gICAgICAgICAgICA8ZGl2IGtleT17aW5kZXh9IGNsYXNzTmFtZT1cImJnLXNsYXRlLTUwIHJvdW5kZWQtMnhsIHAtNiBib3JkZXIgYm9yZGVyLXNsYXRlLTIwMFwiPlxyXG4gICAgICAgICAgICAgIHsvKiBRdWVzdGlvbiBIZWFkZXIgKi99XHJcbiAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGp1c3RpZnktYmV0d2VlbiBpdGVtcy1zdGFydCBtYi00XCI+XHJcbiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggZ2FwLTNcIj5cclxuICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwidy04IGgtOCByb3VuZGVkLWZ1bGwgYmctaW5kaWdvLTEwMCB0ZXh0LWluZGlnby03MDAgZm9udC1ib2xkIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIHNocmluay0wXCI+XHJcbiAgICAgICAgICAgICAgICAgICAgIHtpbmRleCArIDF9XHJcbiAgICAgICAgICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgICAgICAgICAgIDxkaXY+XHJcbiAgICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cInRleHQteHMgZm9udC1ib2xkIHRleHQtc2xhdGUtNTAwIHVwcGVyY2FzZSB0cmFja2luZy13aWRlciBtYi0xIGJsb2NrXCI+XHJcbiAgICAgICAgICAgICAgICAgICAgICAge2dldFF1ZXN0aW9uQ2F0ZWdvcnkocmVzcG9uc2UucXVlc3Rpb25JZCl9XHJcbiAgICAgICAgICAgICAgICAgICAgIDwvc3Bhbj5cclxuICAgICAgICAgICAgICAgICAgICAgPGg0IGNsYXNzTmFtZT1cInRleHQtbGcgZm9udC1ib2xkIHRleHQtc2xhdGUtODAwIGxlYWRpbmctc251Z1wiPlxyXG4gICAgICAgICAgICAgICAgICAgICAgIHtnZXRRdWVzdGlvblRleHQocmVzcG9uc2UucXVlc3Rpb25JZCl9XHJcbiAgICAgICAgICAgICAgICAgICAgIDwvaDQ+XHJcbiAgICAgICAgICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9e2BweC0zIHB5LTEgcm91bmRlZC1sZyB0ZXh0LXNtIGZvbnQtYm9sZCBib3JkZXIgJHtcclxuICAgICAgICAgICAgICAgICAgcmVzcG9uc2Uuc2NvcmUgPj0gOCA/ICdiZy1ncmVlbi0xMDAgdGV4dC1ncmVlbi03MDAgYm9yZGVyLWdyZWVuLTIwMCcgOiBcclxuICAgICAgICAgICAgICAgICAgcmVzcG9uc2Uuc2NvcmUgPj0gNSA/ICdiZy15ZWxsb3ctMTAwIHRleHQteWVsbG93LTcwMCBib3JkZXIteWVsbG93LTIwMCcgOiBcclxuICAgICAgICAgICAgICAgICAgJ2JnLXJlZC0xMDAgdGV4dC1yZWQtNzAwIGJvcmRlci1yZWQtMjAwJ1xyXG4gICAgICAgICAgICAgICAgfWB9PlxyXG4gICAgICAgICAgICAgICAgICB7cmVzcG9uc2Uuc2NvcmV9LzEwXHJcbiAgICAgICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgICAgICA8L2Rpdj5cclxuXHJcbiAgICAgICAgICAgICAgey8qIFN0dWRlbnQgQW5zd2VyICovfVxyXG4gICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibWItNSBwbC0xMVwiPlxyXG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJiZy13aGl0ZSBwLTUgcm91bmRlZC14bCBib3JkZXIgYm9yZGVyLXNsYXRlLTIwMCBzaGFkb3ctc20gcmVsYXRpdmUgb3ZlcmZsb3ctaGlkZGVuXCI+XHJcbiAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYWJzb2x1dGUgdG9wLTAgbGVmdC0wIHctMSBoLWZ1bGwgYmctc2xhdGUtNDAwXCI+PC9kaXY+XHJcbiAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwidGV4dC14cyBmb250LWJvbGQgdGV4dC1zbGF0ZS01MDAgdXBwZXJjYXNlIHRyYWNraW5nLXdpZGVyIG1iLTNcIj5Zb3VyIEFuc3dlcjwvZGl2PlxyXG4gICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInRleHQtc2xhdGUtNzAwIGl0YWxpYyBsZWFkaW5nLXJlbGF4ZWRcIj5cclxuICAgICAgICAgICAgICAgICAgICBcIntyZXNwb25zZS5zdHVkZW50QW5zd2VyfVwiXHJcbiAgICAgICAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgICAgPC9kaXY+XHJcblxyXG4gICAgICAgICAgICAgIHsvKiBBSSBGZWVkYmFjayAmIElkZWFsIEFuc3dlciAqL31cclxuICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInBsLTExIGdyaWQgZ3JpZC1jb2xzLTEgbWQ6Z3JpZC1jb2xzLTIgZ2FwLTRcIj5cclxuICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctZW1lcmFsZC01MC81MCBwLTUgcm91bmRlZC14bCBib3JkZXIgYm9yZGVyLWVtZXJhbGQtMTAwIHNoYWRvdy1zbSByZWxhdGl2ZSBvdmVyZmxvdy1oaWRkZW4gZmxleCBmbGV4LWNvbCBoLWZ1bGxcIj5cclxuICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYWJzb2x1dGUgdG9wLTAgbGVmdC0wIHctMSBoLWZ1bGwgYmctZW1lcmFsZC00MDBcIj48L2Rpdj5cclxuICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTIgdGV4dC1lbWVyYWxkLTcwMCBmb250LWJvbGQgdGV4dC14cyB1cHBlcmNhc2UgdHJhY2tpbmctd2lkZXIgbWItM1wiPlxyXG4gICAgICAgICAgICAgICAgICAgICA8Q2hlY2tDaXJjbGUgY2xhc3NOYW1lPVwidy00IGgtNFwiIC8+XHJcbiAgICAgICAgICAgICAgICAgICAgIElkZWFsIEFuc3dlclxyXG4gICAgICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXgtZ3Jvd1wiPlxyXG4gICAgICAgICAgICAgICAgICAgICA8RXhwYW5kYWJsZVRleHQgdGV4dD17cmVzcG9uc2UuaWRlYWxBbnN3ZXJ9IC8+XHJcbiAgICAgICAgICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICAgICAgXHJcbiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImJnLWluZGlnby01MC81MCBwLTUgcm91bmRlZC14bCBib3JkZXIgYm9yZGVyLWluZGlnby0xMDAgc2hhZG93LXNtIHJlbGF0aXZlIG92ZXJmbG93LWhpZGRlbiBmbGV4IGZsZXgtY29sIGgtZnVsbFwiPlxyXG4gICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJhYnNvbHV0ZSB0b3AtMCBsZWZ0LTAgdy0xIGgtZnVsbCBiZy1pbmRpZ28tNDAwXCI+PC9kaXY+XHJcbiAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIGdhcC0yIHRleHQtaW5kaWdvLTcwMCBmb250LWJvbGQgdGV4dC14cyB1cHBlcmNhc2UgdHJhY2tpbmctd2lkZXIgbWItM1wiPlxyXG4gICAgICAgICAgICAgICAgICAgICA8TGlnaHRidWxiIGNsYXNzTmFtZT1cInctNCBoLTRcIiAvPlxyXG4gICAgICAgICAgICAgICAgICAgICBGZWVkYmFja1xyXG4gICAgICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXgtZ3Jvd1wiPlxyXG4gICAgICAgICAgICAgICAgICAgICA8RXhwYW5kYWJsZVRleHQgdGV4dD17cmVzcG9uc2UuYWlGZWVkYmFja30gLz5cclxuICAgICAgICAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgICAgPC9kaXY+XHJcblxyXG4gICAgICAgICAgICAgIHsvKiBSZWNvbW1lbmRlZCBTa2lsbCAoSWYgc2NvcmUgPD0gNikgKi99XHJcbiAgICAgICAgICAgICAge3Jlc3BvbnNlLnJlY29tbWVuZGVkU2tpbGwgJiYgKFxyXG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJtdC00IHBsLTExXCI+XHJcbiAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctb3JhbmdlLTUwLzgwIHAtNCByb3VuZGVkLXhsIGJvcmRlciBib3JkZXItb3JhbmdlLTIwMCBmbGV4IGl0ZW1zLXN0YXJ0IGdhcC00XCI+XHJcbiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJiZy1vcmFuZ2UtMTAwIHAtMiByb3VuZGVkLWxnIHRleHQtb3JhbmdlLTYwMFwiPlxyXG4gICAgICAgICAgICAgICAgICAgICAgPEJvb2tPcGVuIGNsYXNzTmFtZT1cInctNSBoLTVcIiAvPlxyXG4gICAgICAgICAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICAgICAgICAgIDxkaXY+XHJcbiAgICAgICAgICAgICAgICAgICAgICA8aDUgY2xhc3NOYW1lPVwidGV4dC1vcmFuZ2UtODAwIGZvbnQtYm9sZCBtYi0xXCI+UmVjb21tZW5kZWQgTGVhcm5pbmcgTmVlZDwvaDU+XHJcbiAgICAgICAgICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LW9yYW5nZS03MDAgdGV4dC1zbVwiPlxyXG4gICAgICAgICAgICAgICAgICAgICAgICBCYXNlZCBvbiB5b3VyIGFuc3dlciwgdGhlIEFJIHJlY29tbWVuZHMgcmV2aWV3aW5nIDxzcGFuIGNsYXNzTmFtZT1cImZvbnQtYm9sZCB1bmRlcmxpbmVcIj57cmVzcG9uc2UucmVjb21tZW5kZWRTa2lsbH08L3NwYW4+IHRvIGltcHJvdmUgeW91ciBwZXJmb3JtYW5jZS5cclxuICAgICAgICAgICAgICAgICAgICAgIDwvcD5cclxuICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgICAgICApfVxyXG5cclxuICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICApKX1cclxuICAgICAgICA8L2Rpdj5cclxuICAgICAgPC9kaXY+XHJcbiAgICA8L2Rpdj5cclxuICApO1xyXG59O1xyXG5cclxuZXhwb3J0IGRlZmF1bHQgSW50ZXJ2aWV3RmVlZGJhY2tDYXJkO1xyXG4iXSwiZmlsZSI6IkQ6L3Byb2plY3QvU2tpbGxfR2FwIEFuYWx5c2VyIGFuZCBwbGFjZW1lbnQgaW50ZWxsaWdlbmNlL2NsaWVudC9zcmMvY29tcG9uZW50cy9zdHVkZW50L2ludGVydmlldy9JbnRlcnZpZXdGZWVkYmFja0NhcmQuanN4In0=

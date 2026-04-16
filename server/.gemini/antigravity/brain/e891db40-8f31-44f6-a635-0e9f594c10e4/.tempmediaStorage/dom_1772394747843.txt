@@ -1,0 +1,13 @@
+PS
+.
+[0] (382,49)<a class='hover:text-white transition-colors' href='#about'>About />
+[1] (455,49)<a class='hover:text-white transition-colors' href='#projects'>Projects />
+[2] (544,49)<a class='hover:text-white transition-colors' href='#experience'>Experience />
+[3] (933,49)<a class='px-4 py-2 text-sm font-medium bg-white text-black rounded-full hover:scale-105 transition-transform' href='#contact'>Let's Talk />
+[Your Portrait Image Here]
+Current Location
+New York, NY
+01:22 AM
+Core Stack
+React
+Node.js

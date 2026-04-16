@@ -1,0 +1,41 @@
+# Authentication UI & Security Enhancements
+
+## Phase 1-4: Auth Improvements Complete
+- [x] Initial UI Revamp, Email Verification structure, and Cookie Sessions completed.
+
+## Phase 5: Gmail Configuration Update
+- [x] **Environment**: Update [server/.env](file:///d:/project/Smart%20Expense%20Manager/server/.env) with provided Gmail and Cloudinary credentials.
+- [x] **Email Utility**: Update [server/utils/sendEmail.js](file:///d:/project/Smart%20Expense%20Manager/server/utils/sendEmail.js) to use `service: 'gmail'` instead of custom SMTP host/port to simplify configuration and guarantee delivery.
+
+## Phase 6: Profile Image Upload (Cloudinary)
+- [x] **Dependencies**: Install `multer`, `cloudinary`, and `multer-storage-cloudinary` in backend.
+- [x] **Config**: Create [server/config/cloudinary.js](file:///d:/project/Smart%20Expense%20Manager/server/config/cloudinary.js) to initialize Cloudinary and set up the Multer storage engine.
+- [x] **Model**: Add `profileImage` (String) to the [User](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#134-153) schema.
+- [x] **Routes & Controllers**: 
+   - Update [registerUser](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#28-65) endpoint to handle `multipart/form-data` using Multer.
+   - Extract the uploaded Cloudinary URL (`req.file.path`) and save it to the database during signup.
+- [x] **Frontend Registration**: 
+   - Add a file input to [Register.jsx](file:///d:/project/Smart%20Expense%20Manager/client/src/pages/Register.jsx).
+   - Implement temporary image preview functionality.
+   - Refactor the Axios call to transmit `FormData` instead of JSON.
+- [x] **Frontend Display**: Update [DashboardLayout](file:///d:/project/Smart%20Expense%20Manager/client/src/components/DashboardLayout.jsx#6-81) (or a similar protected component) to render the `user.profileImage` or a default fallback avatar.
+
+## Phase 7: OTP 6-Digit Verification
+- [x] **Backend Logic**: Update [registerUser](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#28-65) to generate a 6-digit numeric string instead of hex string.
+- [x] **New Routes**: Add `POST /api/auth/verify-email` and `POST /api/auth/resend-verification`.
+- [x] **Frontend Page**: Integrate the new `EmailVerificationPage.jsx` logic using lucide-react. Send OTP payload correctly.
+
+## Phase 8: Forgot / Reset Password
+- [x] **Data Model**: Update [User.js](file:///d:/project/Smart%20Expense%20Manager/server/models/User.js) to include fields for `resetPasswordToken` and `resetPasswordExpire`.
+- [x] **Backend Routes**: Add `POST /api/auth/forgot-password` and `PUT /api/auth/reset-password/:token` in [authRoutes.js](file:///d:/project/Smart%20Expense%20Manager/server/routes/authRoutes.js).
+- [x] **Backend Controllers**: 
+   - Write [forgotPassword](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#177-212) to generate a crypto reset token and email a link to the user.
+   - Write [resetPassword](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#213-244) to accept the new password, verify the token, and securely hash the update.
+- [x] **Frontend Pages**: Create [client/src/pages/ForgotPassword.jsx](file:///d:/project/Smart%20Expense%20Manager/client/src/pages/ForgotPassword.jsx) (from user provided code) and [client/src/pages/ResetPassword.jsx](file:///d:/project/Smart%20Expense%20Manager/client/src/pages/ResetPassword.jsx).
+- [x] **Routing**: Add the respective `/forgot-password` and `/reset-password/:token` routes to [App.jsx](file:///d:/project/Smart%20Expense%20Manager/client/src/App.jsx).
+- [x] **UI Link**: Add a "Forgot Password?" link to the existing [Login.jsx](file:///d:/project/Smart%20Expense%20Manager/client/src/pages/Login.jsx) form.
+
+## Phase 9: HTML Email Templates
+- [x] **Templates Definition**: Create [EmailTemplate.js](file:///d:/project/Smart%20Expense%20Manager/server/utils/EmailTemplate.js) with the provided verification, welcome, and password reset HTML templates.
+- [x] **Email Utility Update**: Update the email sender utility to use these specific HTML templates instead of plain text.
+- [x] **Controller Updates**: Refactor [authController.js](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js) to call the new specific email functions ([sendVerificationEmail](file:///d:/project/Smart%20Expense%20Manager/server/utils/sendEmail.js#6-20), [sendPasswordResetEmail](file:///d:/project/Smart%20Expense%20Manager/server/utils/sendEmail.js#36-50), [sendWelcomeEmail](file:///d:/project/Smart%20Expense%20Manager/server/utils/sendEmail.js#21-35)).

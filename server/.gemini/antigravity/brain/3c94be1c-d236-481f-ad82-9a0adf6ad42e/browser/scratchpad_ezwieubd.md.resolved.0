@@ -1,0 +1,12 @@
+# Task: Debug Student Dashboard Loader
+
+## Checklist
+- [ ] Log in at http://localhost:5173/login
+- [ ] Observe the "Failed to load profile" error
+- [ ] Retrieve the status code and response body for `GET /student/profile`
+- [ ] Report findings to the user
+
+## Findings
+- URL: http://localhost:5173/login
+- Email: bridgeskill830@gmail.com
+- Password: 11111111

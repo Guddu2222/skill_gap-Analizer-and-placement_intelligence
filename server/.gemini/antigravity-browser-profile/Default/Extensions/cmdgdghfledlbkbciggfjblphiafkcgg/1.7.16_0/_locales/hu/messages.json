@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Ön letiltotta"
+   },
+   "ads": {
+      "message": "Hirdetések"
+   },
+   "dataSavedTitle": {
+      "message": "Adatok mentve"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Alkalmazás az összes webhelyre"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Mélység"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Előnézet"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Megtakarítás"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Választó"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Specifikusság"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Ön kiválasztotta"
+   },
+   "elementBlocker_title": {
+      "message": "Elemeltávolító"
+   },
+   "extDesc": {
+      "message": "Blokkolja a hirdetéseket és az előugró ablakokat az összes olyan webhelyen, amelyen naponta böngészik"
+   },
+   "extName": {
+      "message": "SBlock - Super Ad Blocker"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Szuper hirdetésblokkoló"
+   },
+   "filteringModeBasic": {
+      "message": "Alapvető"
+   },
+   "filteringModeSuper": {
+      "message": "Szuper blokk"
+   },
+   "footerMadeLove": {
+      "message": "Szeretettel készült"
+   },
+   "footerShareFriends": {
+      "message": "Oszd meg barátaiddal"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Gyorsabb betöltés"
+   },
+   "loveSblockButton": {
+      "message": "Szereted az SBlockot?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Hagyjon véleményt."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "Az SBlock nem támogatott ezen az oldalon"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Blokkolja a helyi nyelvű hirdetéseket"
+   },
+   "optionBlockManually": {
+      "message": "Kézi blokkolás"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Nyitott"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Összes visszaállítása"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Választó"
+   },
+   "optionBlockTracker": {
+      "message": "Blokkkövető"
+   },
+   "optionPopupsCookie": {
+      "message": "A cookie-k elfogadása előugró ablakok figyelmen kívül hagyása"
+   },
+   "optionPopupsSocial": {
+      "message": "Közösségi widgetek blokkolása"
+   },
+   "reportIssueButton": {
+      "message": "Probléma bejelentése"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Mesélj többet."
+   },
+   "secDuration": {
+      "message": "mp"
+   },
+   "thisPageTitle": {
+      "message": "Ez az oldal"
+   },
+   "thisWebsiteTitle": {
+      "message": "Ez a weboldal"
+   },
+   "timeSavedTitle": {
+      "message": "Megtakarított idő"
+   }
+}

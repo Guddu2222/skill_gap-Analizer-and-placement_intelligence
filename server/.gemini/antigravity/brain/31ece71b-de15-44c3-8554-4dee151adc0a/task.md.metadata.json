@@ -1,0 +1,5 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_TASK",
+  "summary":  "Task plan to fix the ERR_MODULE_NOT_FOUND error by installing the missing package.",
+  "updatedAt":  "2026-02-26T09:31:42.762578200Z"
+}

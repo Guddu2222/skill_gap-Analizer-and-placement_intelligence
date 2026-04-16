@@ -1,0 +1,446 @@
+I0226 16:14:56.005857 11788 server.go:1130] Starting language server process with pid 11788
+I0226 16:14:56.006858 11788 server.go:265] Setting GOMAXPROCS to 4
+I0226 16:14:56.025844 11788 server.go:453] Language server will attempt to listen on host 127.0.0.1
+I0226 16:14:56.027635 11788 server.go:468] Language server listening on random port at 50873 for HTTPS
+I0226 16:14:56.027635 11788 server.go:475] Language server listening on random port at 50874 for HTTP
+I0226 16:14:56.552750 11788 reconnectable_client.go:151] Connecting to extension server at port 50872
+I0226 16:14:56.559765 11788 server.go:442] Created reconnectable extension server client at port 50872
+I0226 16:14:56.589578 11788 server.go:584] Using ApiServerClientV2
+W0226 16:14:56.605251 11788 launchmanager.go:78] Entering local chrome mode! This is WRONG unless you are running tests or in eval mode on Linux.
+I0226 16:14:56.648967 11788 server.go:1564] Wrote discovery file: C:\Users\guddu\.gemini\antigravity\daemon\ls_dbf79a6e6a7ec21f.json
+I0226 16:14:56.648967 11788 server.go:1488] initialized server successfully in 642.1091ms
+W0226 19:24:34.435542 11788 log_context.go:115] Cache(loadCodeAssistResponse): Singleflight refresh failed: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:24:34.436404 11788 log_context.go:115] Failed to refresh cache in background: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:24:34.436910 11788 log_context.go:115] Cache(userInfo): Singleflight refresh failed: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:fetchUserInfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:24:34.436910 11788 log_context.go:115] Failed to refresh cache in background: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:fetchUserInfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:24:34.436910 11788 log_context.go:115] Cache(availableModels): Singleflight refresh failed: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:fetchAvailableModels": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:24:34.436910 11788 log_context.go:115] Failed to refresh cache in background: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:fetchAvailableModels": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:24:34.461439 11788 log_context.go:115] Cache(peopleInfo): Singleflight refresh failed: Get "https://www.googleapis.com/oauth2/v2/userinfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:24:34.505093 11788 log_context.go:115] Failed to refresh cache in background: Get "https://www.googleapis.com/oauth2/v2/userinfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:24:34.436404 11788 log_context.go:115] Failed to refresh cache in background: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:29:11.242886 11788 log_context.go:115] Cache(availableModels): Singleflight refresh failed: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:fetchAvailableModels": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:29:11.242886 11788 log_context.go:115] Failed to refresh cache in background: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:fetchAvailableModels": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:29:11.242886 11788 log_context.go:115] Cache(userInfo): Singleflight refresh failed: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:fetchUserInfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:29:11.242886 11788 log_context.go:115] Failed to refresh cache in background: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:fetchUserInfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:29:11.242886 11788 log_context.go:115] Cache(loadCodeAssistResponse): Singleflight refresh failed: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:29:11.242886 11788 log_context.go:115] Failed to refresh cache in background: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:29:11.242886 11788 log_context.go:115] Failed to refresh cache in background: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:29:11.335904 11788 log_context.go:115] Cache(peopleInfo): Singleflight refresh failed: Get "https://www.googleapis.com/oauth2/v2/userinfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 19:29:11.335904 11788 log_context.go:115] Failed to refresh cache in background: Get "https://www.googleapis.com/oauth2/v2/userinfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Cache(peopleInfo): Singleflight refresh failed: Get "https://www.googleapis.com/oauth2/v2/userinfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Failed to refresh cache in background: Get "https://www.googleapis.com/oauth2/v2/userinfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Failed to refresh cache in background: Get "https://www.googleapis.com/oauth2/v2/userinfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Cache(loadCodeAssistResponse): Singleflight refresh failed: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Failed to refresh cache in background: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Cache(fetchAdminControls): Singleflight refresh failed: failed to get load code assist response: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Failed to refresh cache in background: failed to get load code assist response: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Cache(userInfo): Singleflight refresh failed: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:fetchUserInfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Failed to refresh cache in background: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:fetchUserInfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Failed to refresh cache in background: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:fetchUserInfo": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Cache(availableModels): Singleflight refresh failed: failed to get load code assist response: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Failed to refresh cache in background: failed to get load code assist response: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Failed to refresh cache in background: failed to get load code assist response: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:47:57.488947 11788 log_context.go:115] Failed to refresh cache in background: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:48:01.347633 11788 log_context.go:115] Cache(loadCodeAssistResponse): Singleflight refresh failed: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+W0226 21:48:01.347633 11788 log_context.go:115] Cache(availableModels): Singleflight refresh failed: failed to get load code assist response: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+E0226 21:48:01.392584 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/GetCommandModelConfigs (unknown): failed to get load code assist response: Post "https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist": Post "https://oauth2.googleapis.com/token": dial tcp: lookup oauth2.googleapis.com: no such host
+I0226 21:49:16.143241 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x7fa7df09a60aa592
+I0226 21:50:41.431158 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xaad3253430584e19
+I0226 21:50:43.431970 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:50:44.576608 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xcf4e0e982b1298f9
+I0226 21:50:46.459406 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x3e4861f5d1c3aed9
+I0226 21:50:47.462044 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:50:47.921270 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xb461e990b02b927f
+I0226 21:50:49.584845 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x1809cc4969857123
+I0226 21:50:50.313977 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x4a13225ea2f267dc
+I0226 21:50:50.629004 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x46b7edb8be9dfa0a
+I0226 21:50:51.880574 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x70d42d975fef7f50
+I0226 21:50:53.445221 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x4971260ce5744404
+I0226 21:51:02.319149 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xf4263cfb8ce8fe20
+I0226 21:51:08.097769 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:51:09.125586 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xb4960eadc99db145
+I0226 21:51:09.831019 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x96a3bfb090e2983
+I0226 21:51:10.250098 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x7c5b66321f2de9b3
+I0226 21:51:11.218630 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x5308fe33109c22d4
+I0226 21:51:11.469715 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:51:12.456837 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xc5a99bccf9f8f541
+I0226 21:51:13.038246 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:52:34.824983 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:52:36.412929 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x1196732345638806
+I0226 21:53:53.157394 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:53:53.257989 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:53:57.746737 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:54:05.194226 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:54:15.309079 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:54:16.078912 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:54:22.993177 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:54:25.426689 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:54:31.790924 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:54:41.964727 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:54:44.933727 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:54:48.847931 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:54:50.115758 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:54:56.797128 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:54:59.079390 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:54:59.084887 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:55:00.729397 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:55:01.098156 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:55:01.349208 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:55:04.259691 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:55:05.954144 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:55:06.860291 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 21:55:07.556613 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:01:14.243859 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:01:15.128640 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:01:46.372817 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:01:48.363012 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:03:04.886598 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:03:32.668344 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:03:40.413051 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:04:08.875537 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:04:09.666344 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:04:17.347745 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:04:18.236308 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:04:43.092991 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:04:51.682960 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:04:52.426046 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:04:58.621101 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:05:02.480041 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:05:08.331542 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:05:08.671411 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:08:04.057178 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:08:07.689141 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 22:09:56.829736 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:10:56.827283 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:11:56.826734 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:12:56.830524 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:13:56.835680 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:14:56.838156 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:15:56.859177 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:16:56.867173 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:17:55.020020 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 22:17:56.864383 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:18:06.408381 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:18:07.741346 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:18:09.491514 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:18:11.940133 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:18:12.461395 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:18:16.959539 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:18:19.163309 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:18:22.944997 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:18:24.227823 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:18:25.042182 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:18:41.675312 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:18:41.680424 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 22:18:56.886089 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:19:05.410789 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:19:06.574661 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:19:08.406409 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:19:36.201754 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:19:38.487835 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 22:19:56.892281 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:20:25.784475 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:20:38.768360 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 22:20:56.898100 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:21:06.877650 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:21:07.768545 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:21:09.342130 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:21:09.346631 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:21:10.516266 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:21:12.104610 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:21:21.041876 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 22:21:56.907882 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:22:56.903102 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:23:56.916019 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:24:56.914356 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:25:56.916338 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:26:56.931157 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:27:56.998694 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:28:56.964625 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:29:56.957012 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:30:56.974351 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:31:56.993302 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:32:56.988233 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:33:57.000340 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:34:56.998705 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:35:57.009905 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:36:57.023974 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:37:57.032306 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:38:57.047035 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:39:23.761799 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:39:32.219895 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 22:39:34.380909 11788 log.go:380] not valid utf8: content not valid for parsing
+E0226 22:39:57.057391 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:40:57.065223 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:41:57.072674 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:42:57.098009 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:43:57.094112 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:44:57.096883 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:45:06.562156 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:45:12.387148 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:45:15.105554 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 22:45:57.112054 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:46:57.114300 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:47:57.178561 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:48:02.640759 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:48:02.642304 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:48:57.138882 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:49:57.145027 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:50:09.200241 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:50:09.770780 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x2668a01c6c31ff7c
+I0226 22:50:11.339068 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:50:11.514175 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x10f502641cbbca66
+I0226 22:50:12.871077 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x1ca9170e96cbd116
+I0226 22:50:16.315244 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x5f06bdbcad5ea56f
+I0226 22:50:17.829630 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x9f0b6b1d58d614d1
+I0226 22:50:18.937715 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xed4c3f4521a31000
+I0226 22:50:24.852645 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:50:24.947169 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:50:25.157721 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x75934509c6c5dd6d
+I0226 22:50:25.883655 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:50:26.136375 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x31a1652abdef6bb4
+I0226 22:50:26.505353 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xb28cbedad4a3f70b
+I0226 22:50:27.054979 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x8c009a4c14da297f
+I0226 22:50:27.114991 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:50:27.259669 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x2f730f345d022f61
+I0226 22:50:27.491672 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xc67dc683793f7239
+I0226 22:50:28.074231 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xb2f71aee6cfb9ed8
+I0226 22:50:28.606602 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:50:29.208120 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xe5ec22dadc0170dd
+I0226 22:50:55.449816 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 22:50:57.157427 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:51:08.535126 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:51:08.830376 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:51:13.373895 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x90fe1cd3c1a80433
+I0226 22:51:13.565796 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x1ae33e8841b80295
+I0226 22:51:13.673344 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x2c76219854c02728
+I0226 22:51:13.913948 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x8c2648c7d4361a1f
+I0226 22:51:16.411153 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:51:20.028725 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xbddf1b420524a746
+I0226 22:51:20.029350 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x30da12b5cdf67508
+I0226 22:51:20.571176 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xe8810ec409806caa
+I0226 22:51:22.007373 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xf8cb91ecb1c295b4
+I0226 22:51:23.406512 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x7506a8113dd5550c
+I0226 22:51:25.045685 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x2521d5317cf0b187
+I0226 22:51:30.575482 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xdd4f0eb80c6f8f69
+I0226 22:51:30.779339 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x73db873b034ffc5a
+E0226 22:51:57.166537 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:52:18.470665 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xd2d974840744d531
+I0226 22:52:21.796786 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x9d466ffaa5d613e7
+I0226 22:52:21.902569 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xac99596fc21c75da
+I0226 22:52:22.631781 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xabe36e705604d260
+I0226 22:52:33.303177 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x76d0329256fb0063
+I0226 22:52:34.700427 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x503145eb69bf6501
+I0226 22:52:55.710335 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:52:56.808719 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x2da3cc5b0fa13662
+E0226 22:52:57.169293 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:52:57.818015 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x97a9696cce3a35b5
+I0226 22:52:58.230245 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x68f88c479ce8c5e0
+I0226 22:52:58.390303 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:52:58.496851 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x7a1fe123c4bfd9f2
+I0226 22:53:01.763266 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xa5082f2b4103894e
+I0226 22:53:01.862907 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x86d922012689bdfd
+I0226 22:53:06.445416 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xd65c77f1ed2acac4
+I0226 22:53:14.464504 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x82626e0bb70ea743
+I0226 22:53:14.983958 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x14997f220197d68b
+I0226 22:53:51.528422 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xe6bae59cc7f201d1
+I0226 22:53:54.904457 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:53:55.677588 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x123faf482467d6f3
+E0226 22:53:57.170770 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:54:57.200363 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:55:57.201604 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:56:03.472782 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x9a25de7845912a9e
+I0226 22:56:03.921060 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:56:04.715018 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x9911c3d24748cf8f
+I0226 22:56:12.819542 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xde2af349148a85e4
+I0226 22:56:14.126322 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xc7fb25f852b343bc
+I0226 22:56:15.032896 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xbea05df7bb82ec32
+I0226 22:56:19.940463 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x6a7c4b86f0d482b9
+I0226 22:56:20.800993 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xcbef049a2d40e483
+I0226 22:56:21.389489 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x34ff5779aa88afb1
+I0226 22:56:21.818988 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x98eebb2c07478a42
+I0226 22:56:22.016981 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xc14ba9ea43ae827
+I0226 22:56:30.930808 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xf301802bc6335ae7
+I0226 22:56:32.004233 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xc9e2dbd939f1115c
+I0226 22:56:39.225328 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:56:42.905506 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:56:43.858487 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xdd434bdcd291346e
+I0226 22:56:43.888560 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:56:46.172183 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:56:47.266794 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xaebddf9c6c78e0ef
+I0226 22:56:48.330201 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x46834e454846f858
+E0226 22:56:57.193277 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:57:07.204423 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:57:07.390620 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xaa4e55862506a7a8
+I0226 22:57:07.811887 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:57:08.076840 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xbcb5d597137c94f1
+I0226 22:57:08.588972 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x452b8721c8fb06f4
+I0226 22:57:09.211484 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xba93f50c3fe27ab0
+I0226 22:57:09.393214 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:57:10.404323 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xa79c224c4343444a
+I0226 22:57:16.738453 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:57:19.034463 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x4d7fa1cfd8477955
+I0226 22:57:22.073568 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:57:23.004893 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x1d1630e26a22b49f
+I0226 22:57:23.644899 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:57:25.307035 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xfecaf22335e56bfa
+I0226 22:57:26.561474 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x4b17e27b2215ad6
+I0226 22:57:30.751884 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:57:31.859013 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xc01c1c725011e25
+I0226 22:57:32.894337 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xa46a099bd6d97bea
+I0226 22:57:39.761497 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xfbe71a23e6cd46dd
+I0226 22:57:43.401588 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x32a9b29319728622
+I0226 22:57:45.633488 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:57:46.064638 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xe83cfdb7466a4cb4
+I0226 22:57:46.379339 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 22:57:57.202070 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 22:58:05.460574 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:58:06.480852 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x5246d814e8e591a1
+I0226 22:58:08.420227 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:58:09.349340 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 22:58:09.806570 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x10acba3a26837048
+I0226 22:58:11.042512 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xc8f49b0d25f71aae
+I0226 22:58:12.721384 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x9366f0e2cf1ef4ab
+I0226 22:58:12.884864 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 22:58:57.218672 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 22:59:34.661498 11788 log.go:380] failed to check terminal shell support: CheckTerminalShellSupport: unimplemented
+I0226 22:59:34.763939 11788 planner_generator.go:288] Requesting planner with 7 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 22:59:41.195414 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x3b5c8809ff221f06
+I0226 22:59:44.033397 11788 planner_generator.go:288] Requesting planner with 8 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 22:59:45.380259 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x5a2b3a169390fe99
+I0226 22:59:52.536539 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xfe8c9dfee095337a
+E0226 22:59:57.213770 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 23:00:02.890522 11788 planner_generator.go:288] Requesting planner with 10 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:00:09.499504 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x207b599441f0c8c5
+E0226 23:00:57.216021 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:01:57.231379 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:02:57.232801 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:03:57.249510 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:04:57.252145 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:05:57.251613 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:06:57.253085 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:07:57.259816 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:08:57.269572 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:09:57.279120 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 23:10:52.959535 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x12616e699cdbcd97
+I0226 23:10:55.000387 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xaf11081a068faa4d
+I0226 23:10:56.530147 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 23:10:57.277641 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 23:10:57.712997 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x5803bbfbc9dd7e14
+I0226 23:10:59.866661 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x4b3170e3b2f06d33
+E0226 23:11:57.293752 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:12:57.303957 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:13:57.314708 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:14:57.318260 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:15:57.326592 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:16:57.336577 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:17:57.360171 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:18:57.372682 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:19:57.385444 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:20:57.390189 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:21:57.393743 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 23:22:06.860781 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 23:22:07.372061 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 23:22:14.513180 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xfeed2fdc1593cc9f
+I0226 23:22:15.164434 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xe374d2ecd80fcded
+I0226 23:22:18.569344 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x5b92dc89cbfc39be
+I0226 23:22:18.797994 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 23:22:20.768841 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x5728595fea8f285
+I0226 23:22:23.511038 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 23:22:24.445197 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x163a8b0679b83c2f
+I0226 23:22:30.656142 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x97bce8fcadaf9890
+I0226 23:22:33.004069 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x3f23f689b6915be6
+I0226 23:22:33.008755 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xd882e0f7f86ea354
+I0226 23:22:40.739250 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 23:22:40.784554 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xfc9e677435597874
+I0226 23:22:42.521336 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 23:22:43.482624 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xbebb8a0400493cd5
+I0226 23:22:44.424596 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x8be815caf1241309
+I0226 23:22:46.311891 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x750e3dbfc6fb8479
+I0226 23:22:48.609165 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 23:22:48.900447 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x7d218c1913725302
+I0226 23:22:49.545253 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 23:22:49.546326 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 23:22:50.211183 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x519f670ad299598a
+I0226 23:22:53.318143 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 23:22:57.401816 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 23:22:59.660401 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+E0226 23:23:57.414883 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:24:57.434056 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:25:57.444224 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:26:57.493898 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 23:27:22.146445 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xbce0b407d2599280
+I0226 23:27:38.831581 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xc26f7305d6804359
+I0226 23:27:48.752130 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xa004e6d14cdac351
+I0226 23:27:49.945507 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x33107303058533b7
+I0226 23:27:50.571326 11788 client.go:56] CEL: Sending error - type=LS_ERROR ideName=antigravity appName=antigravity_desktop version=1.19.4
+I0226 23:27:50.637146 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x310e54948c39a476
+E0226 23:27:57.456093 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:28:57.458984 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:29:53.607937 11788 log.go:380] failed to check terminal shell support: CheckTerminalShellSupport: unimplemented
+I0226 23:29:53.658485 11788 planner_generator.go:288] Requesting planner with 21 chat messages at model retry attempt 1 and API retry attempt 1
+E0226 23:29:57.460446 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 23:30:01.342048 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xb17513eea659ed1d
+I0226 23:30:01.432860 11788 planner_generator.go:288] Requesting planner with 22 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:30:05.824511 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x3adfd764b2bdb77
+I0226 23:30:05.966070 11788 planner_generator.go:288] Requesting planner with 24 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:30:08.125844 11788 planner_generator.go:323] Encountered retryable api error. retrying in 5s. Error (The model is currently unreachable.): UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server: UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server
+E0226 23:30:13.126893 11788 log.go:380] UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server: UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server
+I0226 23:30:13.139613 11788 planner_generator.go:288] Requesting planner with 25 chat messages at model retry attempt 1 and API retry attempt 2
+I0226 23:30:14.795296 11788 planner_generator.go:323] Encountered retryable api error. retrying in 9.980944855s. Error (The model is currently unreachable.): UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server: UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server
+E0226 23:30:24.778377 11788 log.go:380] UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server: UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server
+I0226 23:30:24.787673 11788 planner_generator.go:288] Requesting planner with 26 chat messages at model retry attempt 1 and API retry attempt 3
+I0226 23:30:29.776986 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x5f1d25e8086655c7
+I0226 23:30:35.638892 11788 planner_generator.go:288] Requesting planner with 28 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:30:41.934079 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x244b663e8b99a5e2
+I0226 23:30:42.026906 11788 planner_generator.go:209] Model output error: current task scope is too simple, consider proceeding without a task boundary
+E0226 23:30:42.026906 11788 log.go:380] current task scope is too simple, consider proceeding without a task boundary
+I0226 23:30:42.040065 11788 planner_generator.go:288] Requesting planner with 30 chat messages at model retry attempt 2 and API retry attempt 1
+I0226 23:30:49.085499 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xb914c64a829b8124
+E0226 23:30:57.465116 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:31:57.484681 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 23:32:02.639821 11788 planner_generator.go:288] Requesting planner with 32 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:32:10.221132 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xad4cb4d19bdb56c2
+I0226 23:32:19.251570 11788 planner_generator.go:288] Requesting planner with 34 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:32:24.898646 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xf0b5224d441efbf5
+I0226 23:32:44.498334 11788 planner_generator.go:288] Requesting planner with 36 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:32:50.648253 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xaf42636273ec21f7
+E0226 23:32:57.488232 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 23:32:59.594410 11788 planner_generator.go:288] Requesting planner with 38 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:33:08.978306 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0xc171ba4e60c43b7a
+I0226 23:33:18.455850 11788 planner_generator.go:288] Requesting planner with 40 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:33:19.528090 11788 planner_generator.go:323] Encountered retryable api error. retrying in 5s. Error (The model is currently unreachable.): UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server: UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server
+E0226 23:33:24.529701 11788 log.go:380] UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server: UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server
+I0226 23:33:24.544758 11788 planner_generator.go:288] Requesting planner with 41 chat messages at model retry attempt 1 and API retry attempt 2
+I0226 23:33:30.853100 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x870ff202edb821da
+I0226 23:33:31.885873 11788 planner_generator.go:209] Model output error: current task scope is too simple, consider proceeding without a task boundary
+E0226 23:33:31.885873 11788 log.go:380] current task scope is too simple, consider proceeding without a task boundary
+I0226 23:33:31.900703 11788 planner_generator.go:288] Requesting planner with 43 chat messages at model retry attempt 2 and API retry attempt 1
+I0226 23:33:41.004756 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x81608bdab9e2bacf
+I0226 23:33:51.081067 11788 planner_generator.go:288] Requesting planner with 45 chat messages at model retry attempt 1 and API retry attempt 1
+E0226 23:33:57.499593 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 23:33:58.591816 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x36e47de8e072fa87
+I0226 23:34:05.551336 11788 planner_generator.go:288] Requesting planner with 47 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:34:14.201401 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x34b37063e31814d5
+I0226 23:34:18.145756 11788 planner_generator.go:288] Requesting planner with 49 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:34:19.311178 11788 planner_generator.go:323] Encountered retryable api error. retrying in 5s. Error (The model is currently unreachable.): UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server: UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server
+E0226 23:34:24.312324 11788 log.go:380] UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server: UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server
+I0226 23:34:24.326142 11788 planner_generator.go:288] Requesting planner with 50 chat messages at model retry attempt 1 and API retry attempt 2
+I0226 23:34:32.002412 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x86d2776b2a2d7218
+I0226 23:34:46.879921 11788 planner_generator.go:288] Requesting planner with 52 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:34:53.983353 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x4e0ede36dc4e45ed
+I0226 23:34:54.051691 11788 planner_generator.go:209] Model output error: current task scope is too simple, consider proceeding without a task boundary
+E0226 23:34:54.051691 11788 log.go:380] current task scope is too simple, consider proceeding without a task boundary
+I0226 23:34:54.061829 11788 planner_generator.go:288] Requesting planner with 54 chat messages at model retry attempt 2 and API retry attempt 1
+E0226 23:34:57.499352 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 23:35:00.059612 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x61f51f8ca7fa9d9e
+I0226 23:35:00.163168 11788 planner_generator.go:288] Requesting planner with 56 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:35:05.839755 11788 http_helpers.go:123] URL: https://daily-cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse Trace: 0x7458fe79d9e20ee9
+I0226 23:35:14.240874 11788 planner_generator.go:288] Requesting planner with 58 chat messages at model retry attempt 1 and API retry attempt 1
+I0226 23:35:15.591079 11788 planner_generator.go:323] Encountered retryable api error. retrying in 5s. Error (The model is currently unreachable.): UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server: UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server
+E0226 23:35:20.592504 11788 log.go:380] UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server: UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server
+I0226 23:35:20.601983 11788 planner_generator.go:288] Requesting planner with 59 chat messages at model retry attempt 1 and API retry attempt 2
+I0226 23:35:21.941697 11788 planner_generator.go:323] Encountered retryable api error. retrying in 9.447893824s. Error (The model is currently unreachable.): UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server: UNAVAILABLE (code 503): No capacity available for model gemini-3.1-pro-high on the server
+E0226 23:35:57.509524 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+E0226 23:36:57.519682 11788 interceptor.go:74] /exa.language_server_pb.LanguageServerService/SendActionToChatPanel (unknown): can't send message because channel is full
+I0226 23:37:04.074698 11788 client.go:416] UnifiedStateSyncClient disconnected.

@@ -1,0 +1,8 @@
+# Task Checklist
+
+- [/] Diagnose server errors
+    - [x] List server directory contents
+    - [ ] Run server to identify current error
+    - [ ] Check for missing files or incorrect imports
+- [ ] Propose and implement fixes
+- [ ] Verify server is running correctly

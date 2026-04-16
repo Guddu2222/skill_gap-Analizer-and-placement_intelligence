@@ -1,0 +1,21 @@
+# Goal Description
+The user wants to replace the dummy data in the "Alumni Network" page with real alumni students fetched from the backend.
+
+## Proposed Changes
+
+### client
+#### [MODIFY] [api.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/services/api.js)
+- Implement `fetchAlumni()` function to send a GET request to `/student-features/alumni`.
+
+#### [MODIFY] [AlumniNetwork.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/AlumniNetwork.jsx)
+- Remove the hardcoded `alumniData` array.
+- Implement React hooks (`useState`, `useEffect`) to call `fetchAlumni()` when the component mounts.
+- Add a loading state (`<div className="animate-spin ..."></div>`) to indicate data fetching.
+- Render the fetched alumni array in the existing grid layout.
+- Map the backend [Alumni](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/AlumniNetwork.jsx#13-70) fields (e.g., `batch`, `department`, `company`, `role`, `skills`, `name`) to the frontend template correctly, handling missing values gracefully.
+- Include a fallback UI if the database currently has 0 alumni entries.
+
+## Verification Plan
+1. Send the plan to the user for approval.
+2. Upon approval, implement the code changes.
+3. Once completed, notify the user that they can test the Alumni Network tab on the frontend. If the database lacks alumni, they might see an empty state, but it will be connected to the true database.

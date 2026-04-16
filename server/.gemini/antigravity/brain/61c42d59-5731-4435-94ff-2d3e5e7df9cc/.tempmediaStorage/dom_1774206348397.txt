@@ -1,0 +1,34 @@
+<current_dom_explanation>
+This is a temporary snapshot of the current page's DOM structure. The DOM will change if you navigate to or interact with another page. Use a tool like browser_get_dom to capture and preserve the DOM in your trajectory if needed for later reference.
+</current_dom_explanation>
+<current_dom>
+[0] (500,149)<div  />
+	[1] (500,16)<label class='block text-sm font-semibold text-gray-700 mb-2'>College Internal Roll Number
+Optional />
+		Optional
+	[2] (500,79)<input class='w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent' placeholder='e.g., CS-2023-047 (assigned by your college)' />
+	Different from the university roll number above. This helps your placement officer find you easily.
+	[3] (328,196)<label class='block text-sm font-semibold text-gray-700 mb-2'>Department / Branch * />
+	[4] (328,259)<select class='w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white border-gray-300' />
+	[5] (672,196)<label class='block text-sm font-semibold text-gray-700 mb-2'>Degree * />
+	[6] (672,259)<select class='w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white border-gray-300' />
+	[7] (500,346)<label class='block text-sm font-semibold text-gray-700 mb-2'>Specialization
+(Optional) />
+		(Optional)
+	[8] (500,409)<input class='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent' placeholder='e.g., Machine Learning, Data Science' />
+	[9] (270,496)<label class='block text-sm font-semibold text-gray-700 mb-2'>Admission Year * />
+	[10] (270,560)<select class='w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white' />
+	[11] (500,496)<label class='block text-sm font-semibold text-gray-700 mb-2'>Graduation Year * />
+	[12] (500,560)<select class='w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white border-gray-300' />
+	[13] (730,496)<label class='block text-sm font-semibold text-gray-700 mb-2'>Current Semester * />
+	[14] (730,560)<select class='w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white border-gray-300' />
+	[15] (270,647)<label class='block text-sm font-semibold text-gray-700 mb-2'>Current CGPA * />
+	[16] (270,710)<input class='w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300' placeholder='8.5' />
+	[17] (500,647)<label class='block text-sm font-semibold text-gray-700 mb-2'>Active Backlogs />
+	[18] (500,710)<input class='w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300' placeholder='0' />
+	[19] (730,647)<label class='block text-sm font-semibold text-gray-700 mb-2'>Cleared Backlogs />
+	[20] (730,710)<input class='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent' placeholder='0' />
+	[21] (328,844)<button class='flex-1 bg-white text-gray-700 border-2 border-gray-300 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-all flex items-center justify-center'>Back />
+	[22] (673,844)<button class='flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center'>Continue />
+
+</current_dom>

@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan to fix the college dashboard showing 0 students. Root cause: students and college admins are linked to different College ObjectIds due to duplicate College documents created during signup. Fix uses a smart fallback query (fuzzy name match across all College docs) and a background student re-link job triggered at login to permanently heal the data.",
+  "updatedAt": "2026-03-22T17:59:23.762802800Z"
+}

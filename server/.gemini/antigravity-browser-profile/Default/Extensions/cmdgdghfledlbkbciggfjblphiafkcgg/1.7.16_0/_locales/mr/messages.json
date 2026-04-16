@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "तुम्ही ब्लॉक केले आहे"
+   },
+   "ads": {
+      "message": "जाहिराती"
+   },
+   "dataSavedTitle": {
+      "message": "डेटा जतन केला"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "सर्व साइटवर लागू करा"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "खोली"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "पूर्वावलोकन"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "जतन करा"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "निवडकर्ता"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "विशिष्टता"
+   },
+   "elementBlocker_subtitle": {
+      "message": "तुम्ही निवडले आहे"
+   },
+   "elementBlocker_title": {
+      "message": "घटक काढणारा"
+   },
+   "extDesc": {
+      "message": "तुम्ही दररोज ब्राउझ करता त्या सर्व वेबसाइटवर जाहिराती आणि पॉप-अप ब्लॉक करा"
+   },
+   "extName": {
+      "message": "SBlock - सुपर जाहिरात ब्लॉकर"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "सुपर जाहिरात ब्लॉकर"
+   },
+   "filteringModeBasic": {
+      "message": "बेसिक"
+   },
+   "filteringModeSuper": {
+      "message": "सुपर ब्लॉक"
+   },
+   "footerMadeLove": {
+      "message": "मध्ये प्रेमाने बनवले"
+   },
+   "footerShareFriends": {
+      "message": "आपल्या मित्रांसह सामायिक करा"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "जलद लोड"
+   },
+   "loveSblockButton": {
+      "message": "SBlock आवडते?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "एक पुनरावलोकन सोडा."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock या पृष्ठावर समर्थित नाही"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "स्थानिक भाषेतील जाहिराती ब्लॉक करा"
+   },
+   "optionBlockManually": {
+      "message": "मॅन्युअली ब्लॉक करा"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "उघडा"
+   },
+   "optionBlockManuallyReset": {
+      "message": "सर्व रीसेट करा"
+   },
+   "optionBlockManuallySelector": {
+      "message": "निवडकर्ता"
+   },
+   "optionBlockTracker": {
+      "message": "ब्लॉक ट्रॅकर"
+   },
+   "optionPopupsCookie": {
+      "message": "कुकीज पॉपअप स्वीकारण्याकडे दुर्लक्ष करा"
+   },
+   "optionPopupsSocial": {
+      "message": "सामाजिक विजेट्स ब्लॉक करा"
+   },
+   "reportIssueButton": {
+      "message": "समस्येची तक्रार करा"
+   },
+   "reportIssueButtonDesc": {
+      "message": "आम्हाला अधिक सांगा."
+   },
+   "secDuration": {
+      "message": "सेकंद"
+   },
+   "thisPageTitle": {
+      "message": "हे पान"
+   },
+   "thisWebsiteTitle": {
+      "message": "ही वेबसाइट"
+   },
+   "timeSavedTitle": {
+      "message": "वेळ वाचला"
+   }
+}

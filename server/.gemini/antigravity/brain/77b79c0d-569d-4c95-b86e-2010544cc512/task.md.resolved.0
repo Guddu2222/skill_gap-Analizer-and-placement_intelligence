@@ -1,0 +1,6 @@
+# Task Plan
+
+- [ ] Investigate why the default score is 22 out of 100 and how to improve it.
+- [ ] Update the [SkillGapOverview](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/student/SkillGapOverview.jsx#17-340) frontend component to render `careerAdvice` as bullet points.
+- [ ] Review and improve the AI prompt for generating career advice (in [skillGapAnalysis.service.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/services/skillGapAnalysis.service.js)).
+- [ ] Explain to the user what the score of 22 means, and how to improve it.

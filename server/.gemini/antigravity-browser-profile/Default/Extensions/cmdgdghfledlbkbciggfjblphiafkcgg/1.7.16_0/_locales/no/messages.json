@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Du har blokkert"
+   },
+   "ads": {
+      "message": "Annonser"
+   },
+   "dataSavedTitle": {
+      "message": "Data lagret"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Bruk på alle nettsteder"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Dybde"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Forhåndsvisning"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Spare"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Velger"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Spesifisitet"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Du har valgt"
+   },
+   "elementBlocker_title": {
+      "message": "Elementfjerner"
+   },
+   "extDesc": {
+      "message": "Blokker annonser og popup-vinduer på alle nettstedene du surfer på hver dag"
+   },
+   "extName": {
+      "message": "SBlock - Super Ad Blocker"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super annonseblokkering"
+   },
+   "filteringModeBasic": {
+      "message": "Grunnleggende"
+   },
+   "filteringModeSuper": {
+      "message": "Super blokk"
+   },
+   "footerMadeLove": {
+      "message": "Laget med kjærlighet i"
+   },
+   "footerShareFriends": {
+      "message": "Del med vennene dine"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Last raskere"
+   },
+   "loveSblockButton": {
+      "message": "Liker du SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Legg igjen en anmeldelse."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock støttes ikke på denne siden"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Blokker annonser på lokalspråk"
+   },
+   "optionBlockManually": {
+      "message": "Blokker manuelt"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Åpne"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Tilbakestill alle"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Velger"
+   },
+   "optionBlockTracker": {
+      "message": "Blokksporer"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignorer popup-vinduer for aksept av informasjonskapsler"
+   },
+   "optionPopupsSocial": {
+      "message": "Blokker sosiale widgets"
+   },
+   "reportIssueButton": {
+      "message": "Rapporter et problem"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Fortell oss mer."
+   },
+   "secDuration": {
+      "message": "sek"
+   },
+   "thisPageTitle": {
+      "message": "Denne siden"
+   },
+   "thisWebsiteTitle": {
+      "message": "Denne nettsiden"
+   },
+   "timeSavedTitle": {
+      "message": "Tid spart"
+   }
+}

@@ -1,0 +1,69 @@
+# Student Profile Update Feature
+
+Students can currently sign up with full details, but have no way to edit those details later. This feature adds an **Edit Profile** button in the dashboard header that opens a beautiful multi-section modal. Changes are persisted to the database and the dashboard refreshes automatically.
+
+---
+
+## Proposed Changes
+
+### Backend – student-features route
+
+#### [MODIFY] [student-features.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/routes/student-features.js)
+
+Add a new authenticated `PUT /student-features/update-profile` endpoint that accepts any editable student fields (Basic Info, Academic, Skills, Links, Career Preferences, Address) and saves them to the [Student](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/StudentDashboard.jsx#17-379) document. Password changes are **not** handled here (that's already covered by the password-reset flow).
+
+---
+
+### Client – API service
+
+#### [MODIFY] [api.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/services/api.js)
+
+Add `updateStudentProfile(payload)` — a thin wrapper around `PUT /student-features/update-profile`.
+
+---
+
+### Client – New Modal Component
+
+#### [NEW] [ProfileEditModal.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/student/ProfileEditModal.jsx)
+
+A full-screen overlay modal with 6 tabbed sections (matching the [Student](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/StudentDashboard.jsx#17-379) schema):
+
+| Tab | Fields |
+|-----|--------|
+| **Basic** | firstName, lastName, phone, dateOfBirth, gender |
+| **Academic** | department, degree, specialization, cgpa, graduationYear, currentSemester, admissionYear |
+| **Skills** | add/remove skills; proficiency selector (beginner/intermediate/advanced/expert) |
+| **Links** | linkedinUrl, githubUrl, portfolioUrl |
+| **Career** | targetRole, willingToRelocate, preferredLocations, expectedSalaryMin/Max |
+| **Address** | city, state, pincode, country |
+
+On **Save Changes**, calls `updateStudentProfile()` then fires `onProfileUpdate(updatedStudent)` so the parent can refresh the displayed data without a full page reload.
+
+---
+
+### Client – Student Dashboard
+
+#### [MODIFY] [StudentDashboard.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/StudentDashboard.jsx)
+
+- Import `ProfileEditModal` and add a boolean `showEditProfile` state.
+- Add an **✏️ Edit Profile** button beside the profile completion widget in the header.
+- Pass `student`, `open`, `onClose`, and `onProfileUpdate` props to `ProfileEditModal`.
+- `onProfileUpdate` sets the returned student object directly in state so the header, tabs, and progress bar all reflect changes immediately.
+
+---
+
+## Verification Plan
+
+### Manual Verification (no automated tests exist for client-side features)
+
+> Both dev servers are already running (`npm run dev` on client port 5173 and server port 5000).
+
+1. Open `http://localhost:5173` and log in as a student.
+2. Navigate to the **Student Dashboard**.
+3. Click the **✏️ Edit Profile** button in the header — the modal should open.
+4. Switch between all 6 tabs and verify forms populate with existing data.
+5. Change **phone**, add a new **skill** (e.g. "Docker"), update **targetRole** → click **Save Changes**.
+6. Verify the success toast appears and the modal closes.
+7. Verify the dashboard header refreshes (targetRole badge updates immediately).
+8. Refresh the page — confirm all changes persisted (data comes from DB).
+9. Test validation: try saving with an invalid CGPA (e.g. `11`) → expect an inline error.

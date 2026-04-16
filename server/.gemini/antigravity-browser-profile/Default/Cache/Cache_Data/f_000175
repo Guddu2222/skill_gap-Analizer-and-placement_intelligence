@@ -1,0 +1,665 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/pages/ResetPasswordPage.jsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=0ef34432"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+let prevRefreshReg;
+let prevRefreshSig;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  prevRefreshReg = window.$RefreshReg$;
+  prevRefreshSig = window.$RefreshSig$;
+  window.$RefreshReg$ = RefreshRuntime.getRefreshReg("D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx");
+  window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+}
+var _s = $RefreshSig$();
+import __vite__cjsImport3_react from "/node_modules/.vite/deps/react.js?v=0ef34432"; const React = __vite__cjsImport3_react.__esModule ? __vite__cjsImport3_react.default : __vite__cjsImport3_react; const useState = __vite__cjsImport3_react["useState"]; const useEffect = __vite__cjsImport3_react["useEffect"];
+import {
+  Link,
+  useParams,
+  useNavigate,
+  useSearchParams
+} from "/node_modules/.vite/deps/react-router-dom.js?v=0ef34432";
+import { Lock, Eye, EyeOff, CheckCircle, AlertCircle } from "/node_modules/.vite/deps/lucide-react.js?v=0ef34432";
+import api from "/src/services/api.js";
+const ResetPasswordPage = () => {
+  _s();
+  const { token: tokenFromParams } = useParams();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const token = tokenFromParams || searchParams.get("token");
+  const [formData, setFormData] = useState({
+    password: "",
+    confirmPassword: ""
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  useEffect(() => {
+    if (!token) {
+      setErrors({
+        general: "Invalid or missing reset token. Please request a new password reset link."
+      });
+    }
+  }, [token]);
+  const calculatePasswordStrength = (password) => {
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (password.match(/[a-z]/)) strength++;
+    if (password.match(/[A-Z]/)) strength++;
+    if (password.match(/[0-9]/)) strength++;
+    if (password.match(/[^a-zA-Z0-9]/)) strength++;
+    setPasswordStrength(strength);
+  };
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setFormData({ ...formData, password: value });
+    calculatePasswordStrength(value);
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors({});
+    const newErrors = {};
+    if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+    }
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setLoading(true);
+    if (!token) {
+      setErrors({
+        general: "Invalid or missing reset token. Please request a new password reset link."
+      });
+      return;
+    }
+    try {
+      const response = await api.post("/auth/reset-password", {
+        token,
+        password: formData.password
+      });
+      if (response.data.success || response.status === 200) {
+        setSuccess(true);
+        setTimeout(() => navigate("/login"), 3e3);
+      } else {
+        setErrors({
+          general: response.data.error || "Failed to reset password"
+        });
+      }
+    } catch (err) {
+      setErrors({
+        general: err.response?.data?.error || err.response?.data?.msg || "Network error. Please try again."
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+  if (success) {
+    return /* @__PURE__ */ jsxDEV("div", { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4", children: /* @__PURE__ */ jsxDEV("div", { className: "max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6", children: /* @__PURE__ */ jsxDEV(CheckCircle, { className: "w-10 h-10 text-green-600" }, void 0, false, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+        lineNumber: 133,
+        columnNumber: 13
+      }, this) }, void 0, false, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+        lineNumber: 132,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("h2", { className: "text-2xl font-bold text-gray-900 mb-3", children: "Password Reset Successfully!" }, void 0, false, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+        lineNumber: 136,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("p", { className: "text-gray-600 mb-8", children: "Your password has been changed. Redirecting to sign in..." }, void 0, false, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+        lineNumber: 140,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV(
+        Link,
+        {
+          to: "/login",
+          className: "inline-flex items-center justify-center w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors",
+          children: "Sign In Now"
+        },
+        void 0,
+        false,
+        {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+          lineNumber: 144,
+          columnNumber: 11
+        },
+        this
+      )
+    ] }, void 0, true, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+      lineNumber: 131,
+      columnNumber: 9
+    }, this) }, void 0, false, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+      lineNumber: 130,
+      columnNumber: 7
+    }, this);
+  }
+  return /* @__PURE__ */ jsxDEV("div", { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4", children: /* @__PURE__ */ jsxDEV("div", { className: "max-w-md w-full", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "bg-white rounded-2xl shadow-xl p-8", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "text-center mb-8", children: [
+        /* @__PURE__ */ jsxDEV("div", { className: "w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxDEV(Lock, { className: "w-8 h-8 text-blue-600" }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+          lineNumber: 161,
+          columnNumber: 15
+        }, this) }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+          lineNumber: 160,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("h2", { className: "text-3xl font-bold text-gray-900 mb-2", children: "Set New Password" }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+          lineNumber: 164,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "text-gray-600", children: "Your new password must be different from previously used passwords" }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+          lineNumber: 167,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+        lineNumber: 159,
+        columnNumber: 11
+      }, this),
+      errors.general && /* @__PURE__ */ jsxDEV("div", { className: "mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start", children: [
+        /* @__PURE__ */ jsxDEV(AlertCircle, { className: "w-5 h-5 text-red-600 mr-3 flex-shrink-0 mt-0.5" }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+          lineNumber: 174,
+          columnNumber: 15
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "text-sm text-red-800", children: errors.general }, void 0, false, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+          lineNumber: 175,
+          columnNumber: 15
+        }, this)
+      ] }, void 0, true, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+        lineNumber: 173,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("form", { onSubmit: handleSubmit, className: "space-y-6", children: [
+        /* @__PURE__ */ jsxDEV("div", { children: [
+          /* @__PURE__ */ jsxDEV("label", { className: "block text-sm font-semibold text-gray-700 mb-2", children: "New Password" }, void 0, false, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+            lineNumber: 182,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "relative", children: [
+            /* @__PURE__ */ jsxDEV(Lock, { className: "absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" }, void 0, false, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+              lineNumber: 186,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV(
+              "input",
+              {
+                type: showPassword ? "text" : "password",
+                value: formData.password,
+                onChange: handlePasswordChange,
+                className: `
+                    w-full pl-10 pr-12 py-3 border rounded-lg 
+                    focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                    ${errors.password ? "border-red-500" : "border-gray-300"}
+                  `,
+                placeholder: "Enter new password",
+                required: true
+              },
+              void 0,
+              false,
+              {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                lineNumber: 187,
+                columnNumber: 17
+              },
+              this
+            ),
+            /* @__PURE__ */ jsxDEV(
+              "button",
+              {
+                type: "button",
+                onClick: () => setShowPassword(!showPassword),
+                className: "absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600",
+                children: showPassword ? /* @__PURE__ */ jsxDEV(EyeOff, { className: "w-5 h-5" }, void 0, false, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                  lineNumber: 205,
+                  columnNumber: 19
+                }, this) : /* @__PURE__ */ jsxDEV(Eye, { className: "w-5 h-5" }, void 0, false, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                  lineNumber: 207,
+                  columnNumber: 19
+                }, this)
+              },
+              void 0,
+              false,
+              {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                lineNumber: 199,
+                columnNumber: 17
+              },
+              this
+            )
+          ] }, void 0, true, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+            lineNumber: 185,
+            columnNumber: 15
+          }, this),
+          formData.password && /* @__PURE__ */ jsxDEV("div", { className: "mt-3", children: [
+            /* @__PURE__ */ jsxDEV("div", { className: "flex items-center justify-between mb-1", children: [
+              /* @__PURE__ */ jsxDEV("span", { className: "text-xs font-medium text-gray-700", children: "Password Strength:" }, void 0, false, {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                lineNumber: 216,
+                columnNumber: 21
+              }, this),
+              /* @__PURE__ */ jsxDEV(
+                "span",
+                {
+                  className: `text-xs font-semibold ${passwordStrength <= 2 ? "text-red-600" : passwordStrength === 3 ? "text-yellow-600" : "text-green-600"}`,
+                  children: passwordStrength <= 2 ? "Weak" : passwordStrength === 3 ? "Medium" : "Strong"
+                },
+                void 0,
+                false,
+                {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                  lineNumber: 219,
+                  columnNumber: 21
+                },
+                this
+              )
+            ] }, void 0, true, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+              lineNumber: 215,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("div", { className: "h-2 bg-gray-200 rounded-full overflow-hidden", children: /* @__PURE__ */ jsxDEV(
+              "div",
+              {
+                className: `h-full transition-all duration-300 ${passwordStrength <= 2 ? "bg-red-500" : passwordStrength === 3 ? "bg-yellow-500" : "bg-green-500"}`,
+                style: { width: `${passwordStrength / 5 * 100}%` }
+              },
+              void 0,
+              false,
+              {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                lineNumber: 236,
+                columnNumber: 21
+              },
+              this
+            ) }, void 0, false, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+              lineNumber: 235,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, true, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+            lineNumber: 214,
+            columnNumber: 15
+          }, this),
+          errors.password && /* @__PURE__ */ jsxDEV("p", { className: "mt-2 text-sm text-red-600", children: errors.password }, void 0, false, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+            lineNumber: 251,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+          lineNumber: 181,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { children: [
+          /* @__PURE__ */ jsxDEV("label", { className: "block text-sm font-semibold text-gray-700 mb-2", children: "Confirm Password" }, void 0, false, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+            lineNumber: 257,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "relative", children: [
+            /* @__PURE__ */ jsxDEV(Lock, { className: "absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" }, void 0, false, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+              lineNumber: 261,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV(
+              "input",
+              {
+                type: showConfirmPassword ? "text" : "password",
+                value: formData.confirmPassword,
+                onChange: (e) => setFormData({
+                  ...formData,
+                  confirmPassword: e.target.value
+                }),
+                className: `
+                    w-full pl-10 pr-12 py-3 border rounded-lg 
+                    focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                    ${errors.confirmPassword ? "border-red-500" : "border-gray-300"}
+                  `,
+                placeholder: "Confirm new password",
+                required: true
+              },
+              void 0,
+              false,
+              {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                lineNumber: 262,
+                columnNumber: 17
+              },
+              this
+            ),
+            /* @__PURE__ */ jsxDEV(
+              "button",
+              {
+                type: "button",
+                onClick: () => setShowConfirmPassword(!showConfirmPassword),
+                className: "absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600",
+                children: showConfirmPassword ? /* @__PURE__ */ jsxDEV(EyeOff, { className: "w-5 h-5" }, void 0, false, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                  lineNumber: 285,
+                  columnNumber: 19
+                }, this) : /* @__PURE__ */ jsxDEV(Eye, { className: "w-5 h-5" }, void 0, false, {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                  lineNumber: 287,
+                  columnNumber: 19
+                }, this)
+              },
+              void 0,
+              false,
+              {
+                fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                lineNumber: 279,
+                columnNumber: 17
+              },
+              this
+            )
+          ] }, void 0, true, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+            lineNumber: 260,
+            columnNumber: 15
+          }, this),
+          errors.confirmPassword && /* @__PURE__ */ jsxDEV("p", { className: "mt-2 text-sm text-red-600", children: errors.confirmPassword }, void 0, false, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+            lineNumber: 292,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+          lineNumber: 256,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "bg-gray-50 rounded-lg p-4", children: [
+          /* @__PURE__ */ jsxDEV("p", { className: "text-sm font-semibold text-gray-700 mb-2", children: "Password must contain:" }, void 0, false, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+            lineNumber: 300,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("ul", { className: "space-y-1 text-sm text-gray-600", children: [
+            /* @__PURE__ */ jsxDEV("li", { className: "flex items-center", children: [
+              /* @__PURE__ */ jsxDEV(
+                "span",
+                {
+                  className: `w-4 h-4 rounded-full mr-2 flex items-center justify-center ${formData.password.length >= 8 ? "bg-green-500" : "bg-gray-300"}`,
+                  children: formData.password.length >= 8 && /* @__PURE__ */ jsxDEV(
+                    "svg",
+                    {
+                      className: "w-3 h-3 text-white",
+                      fill: "currentColor",
+                      viewBox: "0 0 20 20",
+                      children: /* @__PURE__ */ jsxDEV(
+                        "path",
+                        {
+                          fillRule: "evenodd",
+                          d: "M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z",
+                          clipRule: "evenodd"
+                        },
+                        void 0,
+                        false,
+                        {
+                          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                          lineNumber: 318,
+                          columnNumber: 25
+                        },
+                        this
+                      )
+                    },
+                    void 0,
+                    false,
+                    {
+                      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                      lineNumber: 313,
+                      columnNumber: 21
+                    },
+                    this
+                  )
+                },
+                void 0,
+                false,
+                {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                  lineNumber: 305,
+                  columnNumber: 19
+                },
+                this
+              ),
+              "At least 8 characters"
+            ] }, void 0, true, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+              lineNumber: 304,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { className: "flex items-center", children: [
+              /* @__PURE__ */ jsxDEV(
+                "span",
+                {
+                  className: `w-4 h-4 rounded-full mr-2 flex items-center justify-center ${formData.password.match(/[A-Z]/) ? "bg-green-500" : "bg-gray-300"}`,
+                  children: formData.password.match(/[A-Z]/) && /* @__PURE__ */ jsxDEV(
+                    "svg",
+                    {
+                      className: "w-3 h-3 text-white",
+                      fill: "currentColor",
+                      viewBox: "0 0 20 20",
+                      children: /* @__PURE__ */ jsxDEV(
+                        "path",
+                        {
+                          fillRule: "evenodd",
+                          d: "M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z",
+                          clipRule: "evenodd"
+                        },
+                        void 0,
+                        false,
+                        {
+                          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                          lineNumber: 342,
+                          columnNumber: 25
+                        },
+                        this
+                      )
+                    },
+                    void 0,
+                    false,
+                    {
+                      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                      lineNumber: 337,
+                      columnNumber: 21
+                    },
+                    this
+                  )
+                },
+                void 0,
+                false,
+                {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                  lineNumber: 329,
+                  columnNumber: 19
+                },
+                this
+              ),
+              "One uppercase letter"
+            ] }, void 0, true, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+              lineNumber: 328,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { className: "flex items-center", children: [
+              /* @__PURE__ */ jsxDEV(
+                "span",
+                {
+                  className: `w-4 h-4 rounded-full mr-2 flex items-center justify-center ${formData.password.match(/[0-9]/) ? "bg-green-500" : "bg-gray-300"}`,
+                  children: formData.password.match(/[0-9]/) && /* @__PURE__ */ jsxDEV(
+                    "svg",
+                    {
+                      className: "w-3 h-3 text-white",
+                      fill: "currentColor",
+                      viewBox: "0 0 20 20",
+                      children: /* @__PURE__ */ jsxDEV(
+                        "path",
+                        {
+                          fillRule: "evenodd",
+                          d: "M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z",
+                          clipRule: "evenodd"
+                        },
+                        void 0,
+                        false,
+                        {
+                          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                          lineNumber: 366,
+                          columnNumber: 25
+                        },
+                        this
+                      )
+                    },
+                    void 0,
+                    false,
+                    {
+                      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                      lineNumber: 361,
+                      columnNumber: 21
+                    },
+                    this
+                  )
+                },
+                void 0,
+                false,
+                {
+                  fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+                  lineNumber: 353,
+                  columnNumber: 19
+                },
+                this
+              ),
+              "One number"
+            ] }, void 0, true, {
+              fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+              lineNumber: 352,
+              columnNumber: 17
+            }, this)
+          ] }, void 0, true, {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+            lineNumber: 303,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+          lineNumber: 299,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV(
+          "button",
+          {
+            type: "submit",
+            disabled: loading,
+            className: `
+                w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 
+                flex items-center justify-center
+                ${loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"}
+                text-white
+              `,
+            children: loading ? "Resetting Password..." : "Reset Password"
+          },
+          void 0,
+          false,
+          {
+            fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+            lineNumber: 379,
+            columnNumber: 13
+          },
+          this
+        )
+      ] }, void 0, true, {
+        fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+        lineNumber: 179,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+      lineNumber: 158,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV("p", { className: "mt-6 text-center text-sm text-gray-600", children: [
+      "Remember your password?",
+      " ",
+      /* @__PURE__ */ jsxDEV(
+        Link,
+        {
+          to: "/login",
+          className: "text-blue-600 hover:text-blue-700 font-semibold",
+          children: "Sign In"
+        },
+        void 0,
+        false,
+        {
+          fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+          lineNumber: 400,
+          columnNumber: 11
+        },
+        this
+      )
+    ] }, void 0, true, {
+      fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+      lineNumber: 398,
+      columnNumber: 9
+    }, this)
+  ] }, void 0, true, {
+    fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+    lineNumber: 157,
+    columnNumber: 7
+  }, this) }, void 0, false, {
+    fileName: "D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx",
+    lineNumber: 156,
+    columnNumber: 5
+  }, this);
+};
+_s(ResetPasswordPage, "GVnDuIm2+//U2a4dbV15jxq6nbk=", false, function() {
+  return [useParams, useSearchParams, useNavigate];
+});
+_c = ResetPasswordPage;
+export default ResetPasswordPage;
+var _c;
+$RefreshReg$(_c, "ResetPasswordPage");
+if (import.meta.hot && !inWebWorker) {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+if (import.meta.hot && !inWebWorker) {
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("D:/project/Skill_Gap Analyser and placement intelligence/client/src/pages/ResetPasswordPage.jsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+
+//# sourceMappingURL=data:application/json;base64,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QUFBQTtBQUFBO0FBQUEsU0EwUEEsS0EzUEY7QUFBQTtBQUFBO0FBQUE7QUFBQSxTQTRQQTtBQUVKO0FBQUVsQixHQTVYSUQsbUJBQWlCO0FBQUEsVUFDY1QsV0FDWkUsaUJBQ05ELFdBQVc7QUFBQTtBQUFBLEtBSHhCUTtBQThYTixlQUFlQTtBQUFrQixJQUFBOEM7QUFBQSxhQUFBQSxJQUFBIiwibmFtZXMiOlsiUmVhY3QiLCJ1c2VTdGF0ZSIsInVzZUVmZmVjdCIsIkxpbmsiLCJ1c2VQYXJhbXMiLCJ1c2VOYXZpZ2F0ZSIsInVzZVNlYXJjaFBhcmFtcyIsIkxvY2siLCJFeWUiLCJFeWVPZmYiLCJDaGVja0NpcmNsZSIsIkFsZXJ0Q2lyY2xlIiwiYXBpIiwiUmVzZXRQYXNzd29yZFBhZ2UiLCJfcyIsInRva2VuIiwidG9rZW5Gcm9tUGFyYW1zIiwic2VhcmNoUGFyYW1zIiwibmF2aWdhdGUiLCJnZXQiLCJmb3JtRGF0YSIsInNldEZvcm1EYXRhIiwicGFzc3dvcmQiLCJjb25maXJtUGFzc3dvcmQiLCJzaG93UGFzc3dvcmQiLCJzZXRTaG93UGFzc3dvcmQiLCJzaG93Q29uZmlybVBhc3N3b3JkIiwic2V0U2hvd0NvbmZpcm1QYXNzd29yZCIsInBhc3N3b3JkU3RyZW5ndGgiLCJzZXRQYXNzd29yZFN0cmVuZ3RoIiwiZXJyb3JzIiwic2V0RXJyb3JzIiwibG9hZGluZyIsInNldExvYWRpbmciLCJzdWNjZXNzIiwic2V0U3VjY2VzcyIsImdlbmVyYWwiLCJjYWxjdWxhdGVQYXNzd29yZFN0cmVuZ3RoIiwic3RyZW5ndGgiLCJsZW5ndGgiLCJtYXRjaCIsImhhbmRsZVBhc3N3b3JkQ2hhbmdlIiwiZSIsInZhbHVlIiwidGFyZ2V0IiwiaGFuZGxlU3VibWl0IiwicHJldmVudERlZmF1bHQiLCJuZXdFcnJvcnMiLCJPYmplY3QiLCJrZXlzIiwicmVzcG9uc2UiLCJwb3N0IiwiZGF0YSIsInN0YXR1cyIsInNldFRpbWVvdXQiLCJlcnJvciIsImVyciIsIm1zZyIsIndpZHRoIiwiX2MiXSwiaWdub3JlTGlzdCI6W10sInNvdXJjZXMiOlsiUmVzZXRQYXNzd29yZFBhZ2UuanN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyB1c2VTdGF0ZSwgdXNlRWZmZWN0IH0gZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQge1xuICBMaW5rLFxuICB1c2VQYXJhbXMsXG4gIHVzZU5hdmlnYXRlLFxuICB1c2VTZWFyY2hQYXJhbXMsXG59IGZyb20gXCJyZWFjdC1yb3V0ZXItZG9tXCI7XG5pbXBvcnQgeyBMb2NrLCBFeWUsIEV5ZU9mZiwgQ2hlY2tDaXJjbGUsIEFsZXJ0Q2lyY2xlIH0gZnJvbSBcImx1Y2lkZS1yZWFjdFwiO1xuaW1wb3J0IGFwaSBmcm9tIFwiLi4vc2VydmljZXMvYXBpXCI7XG5cbmNvbnN0IFJlc2V0UGFzc3dvcmRQYWdlID0gKCkgPT4ge1xuICBjb25zdCB7IHRva2VuOiB0b2tlbkZyb21QYXJhbXMgfSA9IHVzZVBhcmFtcygpO1xuICBjb25zdCBbc2VhcmNoUGFyYW1zXSA9IHVzZVNlYXJjaFBhcmFtcygpO1xuICBjb25zdCBuYXZpZ2F0ZSA9IHVzZU5hdmlnYXRlKCk7XG5cbiAgLy8gR2V0IHRva2VuIGZyb20gVVJMIHBhcmFtcyBvciBxdWVyeSBzdHJpbmdcbiAgY29uc3QgdG9rZW4gPSB0b2tlbkZyb21QYXJhbXMgfHwgc2VhcmNoUGFyYW1zLmdldChcInRva2VuXCIpO1xuXG4gIGNvbnN0IFtmb3JtRGF0YSwgc2V0Rm9ybURhdGFdID0gdXNlU3RhdGUoe1xuICAgIHBhc3N3b3JkOiBcIlwiLFxuICAgIGNvbmZpcm1QYXNzd29yZDogXCJcIixcbiAgfSk7XG4gIGNvbnN0IFtzaG93UGFzc3dvcmQsIHNldFNob3dQYXNzd29yZF0gPSB1c2VTdGF0ZShmYWxzZSk7XG4gIGNvbnN0IFtzaG93Q29uZmlybVBhc3N3b3JkLCBzZXRTaG93Q29uZmlybVBhc3N3b3JkXSA9IHVzZVN0YXRlKGZhbHNlKTtcbiAgY29uc3QgW3Bhc3N3b3JkU3RyZW5ndGgsIHNldFBhc3N3b3JkU3RyZW5ndGhdID0gdXNlU3RhdGUoMCk7XG4gIGNvbnN0IFtlcnJvcnMsIHNldEVycm9yc10gPSB1c2VTdGF0ZSh7fSk7XG4gIGNvbnN0IFtsb2FkaW5nLCBzZXRMb2FkaW5nXSA9IHVzZVN0YXRlKGZhbHNlKTtcbiAgY29uc3QgW3N1Y2Nlc3MsIHNldFN1Y2Nlc3NdID0gdXNlU3RhdGUoZmFsc2UpO1xuXG4gIHVzZUVmZmVjdCgoKSA9PiB7XG4gICAgLy8gSWYgbm8gdG9rZW4gaXMgcHJvdmlkZWQsIHNob3cgZXJyb3JcbiAgICBpZiAoIXRva2VuKSB7XG4gICAgICBzZXRFcnJvcnMoe1xuICAgICAgICBnZW5lcmFsOlxuICAgICAgICAgIFwiSW52YWxpZCBvciBtaXNzaW5nIHJlc2V0IHRva2VuLiBQbGVhc2UgcmVxdWVzdCBhIG5ldyBwYXNzd29yZCByZXNldCBsaW5rLlwiLFxuICAgICAgfSk7XG4gICAgfVxuICB9LCBbdG9rZW5dKTtcblxuICBjb25zdCBjYWxjdWxhdGVQYXNzd29yZFN0cmVuZ3RoID0gKHBhc3N3b3JkKSA9PiB7XG4gICAgbGV0IHN0cmVuZ3RoID0gMDtcbiAgICBpZiAocGFzc3dvcmQubGVuZ3RoID49IDgpIHN0cmVuZ3RoKys7XG4gICAgaWYgKHBhc3N3b3JkLm1hdGNoKC9bYS16XS8pKSBzdHJlbmd0aCsrO1xuICAgIGlmIChwYXNzd29yZC5tYXRjaCgvW0EtWl0vKSkgc3RyZW5ndGgrKztcbiAgICBpZiAocGFzc3dvcmQubWF0Y2goL1swLTldLykpIHN0cmVuZ3RoKys7XG4gICAgaWYgKHBhc3N3b3JkLm1hdGNoKC9bXmEtekEtWjAtOV0vKSkgc3RyZW5ndGgrKztcbiAgICBzZXRQYXNzd29yZFN0cmVuZ3RoKHN0cmVuZ3RoKTtcbiAgfTtcblxuICBjb25zdCBoYW5kbGVQYXNzd29yZENoYW5nZSA9IChlKSA9PiB7XG4gICAgY29uc3QgdmFsdWUgPSBlLnRhcmdldC52YWx1ZTtcbiAgICBzZXRGb3JtRGF0YSh7IC4uLmZvcm1EYXRhLCBwYXNzd29yZDogdmFsdWUgfSk7XG4gICAgY2FsY3VsYXRlUGFzc3dvcmRTdHJlbmd0aCh2YWx1ZSk7XG4gIH07XG5cbiAgY29uc3QgaGFuZGxlU3VibWl0ID0gYXN5bmMgKGUpID0+IHtcbiAgICBlLnByZXZlbnREZWZhdWx0KCk7XG4gICAgc2V0RXJyb3JzKHt9KTtcblxuICAgIGNvbnN0IG5ld0Vycm9ycyA9IHt9O1xuICAgIGlmIChmb3JtRGF0YS5wYXNzd29yZC5sZW5ndGggPCA4KSB7XG4gICAgICBuZXdFcnJvcnMucGFzc3dvcmQgPSBcIlBhc3N3b3JkIG11c3QgYmUgYXQgbGVhc3QgOCBjaGFyYWN0ZXJzXCI7XG4gICAgfVxuICAgIGlmIChmb3JtRGF0YS5wYXNzd29yZCAhPT0gZm9ybURhdGEuY29uZmlybVBhc3N3b3JkKSB7XG4gICAgICBuZXdFcnJvcnMuY29uZmlybVBhc3N3b3JkID0gXCJQYXNzd29yZHMgZG8gbm90IG1hdGNoXCI7XG4gICAgfVxuXG4gICAgaWYgKE9iamVjdC5rZXlzKG5ld0Vycm9ycykubGVuZ3RoID4gMCkge1xuICAgICAgc2V0RXJyb3JzKG5ld0Vycm9ycyk7XG4gICAgICByZXR1cm47XG4gICAgfVxuXG4gICAgc2V0TG9hZGluZyh0cnVlKTtcblxuICAgIGlmICghdG9rZW4pIHtcbiAgICAgIHNldEVycm9ycyh7XG4gICAgICAgIGdlbmVyYWw6XG4gICAgICAgICAgXCJJbnZhbGlkIG9yIG1pc3NpbmcgcmVzZXQgdG9rZW4uIFBsZWFzZSByZXF1ZXN0IGEgbmV3IHBhc3N3b3JkIHJlc2V0IGxpbmsuXCIsXG4gICAgICB9KTtcbiAgICAgIHJldHVybjtcbiAgICB9XG5cbiAgICB0cnkge1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBhcGkucG9zdChcIi9hdXRoL3Jlc2V0LXBhc3N3b3JkXCIsIHtcbiAgICAgICAgdG9rZW4sXG4gICAgICAgIHBhc3N3b3JkOiBmb3JtRGF0YS5wYXNzd29yZCxcbiAgICAgIH0pO1xuXG4gICAgICBpZiAocmVzcG9uc2UuZGF0YS5zdWNjZXNzIHx8IHJlc3BvbnNlLnN0YXR1cyA9PT0gMjAwKSB7XG4gICAgICAgIHNldFN1Y2Nlc3ModHJ1ZSk7XG4gICAgICAgIHNldFRpbWVvdXQoKCkgPT4gbmF2aWdhdGUoXCIvbG9naW5cIiksIDMwMDApO1xuICAgICAgfSBlbHNlIHtcbiAgICAgICAgc2V0RXJyb3JzKHtcbiAgICAgICAgICBnZW5lcmFsOiByZXNwb25zZS5kYXRhLmVycm9yIHx8IFwiRmFpbGVkIHRvIHJlc2V0IHBhc3N3b3JkXCIsXG4gICAgICAgIH0pO1xuICAgICAgfVxuICAgIH0gY2F0Y2ggKGVycikge1xuICAgICAgc2V0RXJyb3JzKHtcbiAgICAgICAgZ2VuZXJhbDpcbiAgICAgICAgICBlcnIucmVzcG9uc2U/LmRhdGE/LmVycm9yIHx8XG4gICAgICAgICAgZXJyLnJlc3BvbnNlPy5kYXRhPy5tc2cgfHxcbiAgICAgICAgICBcIk5ldHdvcmsgZXJyb3IuIFBsZWFzZSB0cnkgYWdhaW4uXCIsXG4gICAgICB9KTtcbiAgICB9IGZpbmFsbHkge1xuICAgICAgc2V0TG9hZGluZyhmYWxzZSk7XG4gICAgfVxuICB9O1xuXG4gIGlmIChzdWNjZXNzKSB7XG4gICAgcmV0dXJuIChcbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwibWluLWgtc2NyZWVuIGJnLWdyYWRpZW50LXRvLWJyIGZyb20tYmx1ZS01MCB0by1pbmRpZ28tMTAwIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIHAtNFwiPlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cIm1heC13LW1kIHctZnVsbCBiZy13aGl0ZSByb3VuZGVkLTJ4bCBzaGFkb3cteGwgcC04IHRleHQtY2VudGVyXCI+XG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ3LTIwIGgtMjAgYmctZ3JlZW4tMTAwIHJvdW5kZWQtZnVsbCBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBteC1hdXRvIG1iLTZcIj5cbiAgICAgICAgICAgIDxDaGVja0NpcmNsZSBjbGFzc05hbWU9XCJ3LTEwIGgtMTAgdGV4dC1ncmVlbi02MDBcIiAvPlxuICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgPGgyIGNsYXNzTmFtZT1cInRleHQtMnhsIGZvbnQtYm9sZCB0ZXh0LWdyYXktOTAwIG1iLTNcIj5cbiAgICAgICAgICAgIFBhc3N3b3JkIFJlc2V0IFN1Y2Nlc3NmdWxseSFcbiAgICAgICAgICA8L2gyPlxuXG4gICAgICAgICAgPHAgY2xhc3NOYW1lPVwidGV4dC1ncmF5LTYwMCBtYi04XCI+XG4gICAgICAgICAgICBZb3VyIHBhc3N3b3JkIGhhcyBiZWVuIGNoYW5nZWQuIFJlZGlyZWN0aW5nIHRvIHNpZ24gaW4uLi5cbiAgICAgICAgICA8L3A+XG5cbiAgICAgICAgICA8TGlua1xuICAgICAgICAgICAgdG89XCIvbG9naW5cIlxuICAgICAgICAgICAgY2xhc3NOYW1lPVwiaW5saW5lLWZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIHctZnVsbCBiZy1ibHVlLTYwMCB0ZXh0LXdoaXRlIHB5LTMgcHgtNiByb3VuZGVkLWxnIGZvbnQtc2VtaWJvbGQgaG92ZXI6YmctYmx1ZS03MDAgdHJhbnNpdGlvbi1jb2xvcnNcIlxuICAgICAgICAgID5cbiAgICAgICAgICAgIFNpZ24gSW4gTm93XG4gICAgICAgICAgPC9MaW5rPlxuICAgICAgICA8L2Rpdj5cbiAgICAgIDwvZGl2PlxuICAgICk7XG4gIH1cblxuICByZXR1cm4gKFxuICAgIDxkaXYgY2xhc3NOYW1lPVwibWluLWgtc2NyZWVuIGJnLWdyYWRpZW50LXRvLWJyIGZyb20tYmx1ZS01MCB0by1pbmRpZ28tMTAwIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIHAtNFwiPlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJtYXgtdy1tZCB3LWZ1bGxcIj5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJiZy13aGl0ZSByb3VuZGVkLTJ4bCBzaGFkb3cteGwgcC04XCI+XG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZXh0LWNlbnRlciBtYi04XCI+XG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInctMTYgaC0xNiBiZy1ibHVlLTEwMCByb3VuZGVkLWZ1bGwgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgbXgtYXV0byBtYi00XCI+XG4gICAgICAgICAgICAgIDxMb2NrIGNsYXNzTmFtZT1cInctOCBoLTggdGV4dC1ibHVlLTYwMFwiIC8+XG4gICAgICAgICAgICA8L2Rpdj5cblxuICAgICAgICAgICAgPGgyIGNsYXNzTmFtZT1cInRleHQtM3hsIGZvbnQtYm9sZCB0ZXh0LWdyYXktOTAwIG1iLTJcIj5cbiAgICAgICAgICAgICAgU2V0IE5ldyBQYXNzd29yZFxuICAgICAgICAgICAgPC9oMj5cbiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInRleHQtZ3JheS02MDBcIj5cbiAgICAgICAgICAgICAgWW91ciBuZXcgcGFzc3dvcmQgbXVzdCBiZSBkaWZmZXJlbnQgZnJvbSBwcmV2aW91c2x5IHVzZWQgcGFzc3dvcmRzXG4gICAgICAgICAgICA8L3A+XG4gICAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgICB7ZXJyb3JzLmdlbmVyYWwgJiYgKFxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJtYi02IGJnLXJlZC01MCBib3JkZXIgYm9yZGVyLXJlZC0yMDAgcm91bmRlZC1sZyBwLTQgZmxleCBpdGVtcy1zdGFydFwiPlxuICAgICAgICAgICAgICA8QWxlcnRDaXJjbGUgY2xhc3NOYW1lPVwidy01IGgtNSB0ZXh0LXJlZC02MDAgbXItMyBmbGV4LXNocmluay0wIG10LTAuNVwiIC8+XG4gICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInRleHQtc20gdGV4dC1yZWQtODAwXCI+e2Vycm9ycy5nZW5lcmFsfTwvcD5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICl9XG5cbiAgICAgICAgICA8Zm9ybSBvblN1Ym1pdD17aGFuZGxlU3VibWl0fSBjbGFzc05hbWU9XCJzcGFjZS15LTZcIj5cbiAgICAgICAgICAgIHsvKiBOZXcgUGFzc3dvcmQgKi99XG4gICAgICAgICAgICA8ZGl2PlxuICAgICAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPVwiYmxvY2sgdGV4dC1zbSBmb250LXNlbWlib2xkIHRleHQtZ3JheS03MDAgbWItMlwiPlxuICAgICAgICAgICAgICAgIE5ldyBQYXNzd29yZFxuICAgICAgICAgICAgICA8L2xhYmVsPlxuICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInJlbGF0aXZlXCI+XG4gICAgICAgICAgICAgICAgPExvY2sgY2xhc3NOYW1lPVwiYWJzb2x1dGUgbGVmdC0zIHRvcC0xLzIgdHJhbnNmb3JtIC10cmFuc2xhdGUteS0xLzIgdGV4dC1ncmF5LTQwMCB3LTUgaC01XCIgLz5cbiAgICAgICAgICAgICAgICA8aW5wdXRcbiAgICAgICAgICAgICAgICAgIHR5cGU9e3Nob3dQYXNzd29yZCA/IFwidGV4dFwiIDogXCJwYXNzd29yZFwifVxuICAgICAgICAgICAgICAgICAgdmFsdWU9e2Zvcm1EYXRhLnBhc3N3b3JkfVxuICAgICAgICAgICAgICAgICAgb25DaGFuZ2U9e2hhbmRsZVBhc3N3b3JkQ2hhbmdlfVxuICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPXtgXG4gICAgICAgICAgICAgICAgICAgIHctZnVsbCBwbC0xMCBwci0xMiBweS0zIGJvcmRlciByb3VuZGVkLWxnIFxuICAgICAgICAgICAgICAgICAgICBmb2N1czpyaW5nLTIgZm9jdXM6cmluZy1ibHVlLTUwMCBmb2N1czpib3JkZXItdHJhbnNwYXJlbnRcbiAgICAgICAgICAgICAgICAgICAgJHtlcnJvcnMucGFzc3dvcmQgPyBcImJvcmRlci1yZWQtNTAwXCIgOiBcImJvcmRlci1ncmF5LTMwMFwifVxuICAgICAgICAgICAgICAgICAgYH1cbiAgICAgICAgICAgICAgICAgIHBsYWNlaG9sZGVyPVwiRW50ZXIgbmV3IHBhc3N3b3JkXCJcbiAgICAgICAgICAgICAgICAgIHJlcXVpcmVkXG4gICAgICAgICAgICAgICAgLz5cbiAgICAgICAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICAgICAgICAgICAgIG9uQ2xpY2s9eygpID0+IHNldFNob3dQYXNzd29yZCghc2hvd1Bhc3N3b3JkKX1cbiAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT1cImFic29sdXRlIHJpZ2h0LTMgdG9wLTEvMiB0cmFuc2Zvcm0gLXRyYW5zbGF0ZS15LTEvMiB0ZXh0LWdyYXktNDAwIGhvdmVyOnRleHQtZ3JheS02MDBcIlxuICAgICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICAgIHtzaG93UGFzc3dvcmQgPyAoXG4gICAgICAgICAgICAgICAgICAgIDxFeWVPZmYgY2xhc3NOYW1lPVwidy01IGgtNVwiIC8+XG4gICAgICAgICAgICAgICAgICApIDogKFxuICAgICAgICAgICAgICAgICAgICA8RXllIGNsYXNzTmFtZT1cInctNSBoLTVcIiAvPlxuICAgICAgICAgICAgICAgICAgKX1cbiAgICAgICAgICAgICAgICA8L2J1dHRvbj5cbiAgICAgICAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgICAgICAgey8qIFBhc3N3b3JkIFN0cmVuZ3RoICovfVxuICAgICAgICAgICAgICB7Zm9ybURhdGEucGFzc3dvcmQgJiYgKFxuICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibXQtM1wiPlxuICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWJldHdlZW4gbWItMVwiPlxuICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJ0ZXh0LXhzIGZvbnQtbWVkaXVtIHRleHQtZ3JheS03MDBcIj5cbiAgICAgICAgICAgICAgICAgICAgICBQYXNzd29yZCBTdHJlbmd0aDpcbiAgICAgICAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICAgICAgICA8c3BhblxuICAgICAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT17YHRleHQteHMgZm9udC1zZW1pYm9sZCAke1xuICAgICAgICAgICAgICAgICAgICAgICAgcGFzc3dvcmRTdHJlbmd0aCA8PSAyXG4gICAgICAgICAgICAgICAgICAgICAgICAgID8gXCJ0ZXh0LXJlZC02MDBcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICA6IHBhc3N3b3JkU3RyZW5ndGggPT09IDNcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA/IFwidGV4dC15ZWxsb3ctNjAwXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA6IFwidGV4dC1ncmVlbi02MDBcIlxuICAgICAgICAgICAgICAgICAgICAgIH1gfVxuICAgICAgICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgICAgICAge3Bhc3N3b3JkU3RyZW5ndGggPD0gMlxuICAgICAgICAgICAgICAgICAgICAgICAgPyBcIldlYWtcIlxuICAgICAgICAgICAgICAgICAgICAgICAgOiBwYXNzd29yZFN0cmVuZ3RoID09PSAzXG4gICAgICAgICAgICAgICAgICAgICAgICAgID8gXCJNZWRpdW1cIlxuICAgICAgICAgICAgICAgICAgICAgICAgICA6IFwiU3Ryb25nXCJ9XG4gICAgICAgICAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJoLTIgYmctZ3JheS0yMDAgcm91bmRlZC1mdWxsIG92ZXJmbG93LWhpZGRlblwiPlxuICAgICAgICAgICAgICAgICAgICA8ZGl2XG4gICAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPXtgaC1mdWxsIHRyYW5zaXRpb24tYWxsIGR1cmF0aW9uLTMwMCAke1xuICAgICAgICAgICAgICAgICAgICAgICAgcGFzc3dvcmRTdHJlbmd0aCA8PSAyXG4gICAgICAgICAgICAgICAgICAgICAgICAgID8gXCJiZy1yZWQtNTAwXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgOiBwYXNzd29yZFN0cmVuZ3RoID09PSAzXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgPyBcImJnLXllbGxvdy01MDBcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIDogXCJiZy1ncmVlbi01MDBcIlxuICAgICAgICAgICAgICAgICAgICAgIH1gfVxuICAgICAgICAgICAgICAgICAgICAgIHN0eWxlPXt7IHdpZHRoOiBgJHsocGFzc3dvcmRTdHJlbmd0aCAvIDUpICogMTAwfSVgIH19XG4gICAgICAgICAgICAgICAgICAgID48L2Rpdj5cbiAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICApfVxuXG4gICAgICAgICAgICAgIHtlcnJvcnMucGFzc3dvcmQgJiYgKFxuICAgICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cIm10LTIgdGV4dC1zbSB0ZXh0LXJlZC02MDBcIj57ZXJyb3JzLnBhc3N3b3JkfTwvcD5cbiAgICAgICAgICAgICAgKX1cbiAgICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgICB7LyogQ29uZmlybSBQYXNzd29yZCAqL31cbiAgICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9XCJibG9jayB0ZXh0LXNtIGZvbnQtc2VtaWJvbGQgdGV4dC1ncmF5LTcwMCBtYi0yXCI+XG4gICAgICAgICAgICAgICAgQ29uZmlybSBQYXNzd29yZFxuICAgICAgICAgICAgICA8L2xhYmVsPlxuICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInJlbGF0aXZlXCI+XG4gICAgICAgICAgICAgICAgPExvY2sgY2xhc3NOYW1lPVwiYWJzb2x1dGUgbGVmdC0zIHRvcC0xLzIgdHJhbnNmb3JtIC10cmFuc2xhdGUteS0xLzIgdGV4dC1ncmF5LTQwMCB3LTUgaC01XCIgLz5cbiAgICAgICAgICAgICAgICA8aW5wdXRcbiAgICAgICAgICAgICAgICAgIHR5cGU9e3Nob3dDb25maXJtUGFzc3dvcmQgPyBcInRleHRcIiA6IFwicGFzc3dvcmRcIn1cbiAgICAgICAgICAgICAgICAgIHZhbHVlPXtmb3JtRGF0YS5jb25maXJtUGFzc3dvcmR9XG4gICAgICAgICAgICAgICAgICBvbkNoYW5nZT17KGUpID0+XG4gICAgICAgICAgICAgICAgICAgIHNldEZvcm1EYXRhKHtcbiAgICAgICAgICAgICAgICAgICAgICAuLi5mb3JtRGF0YSxcbiAgICAgICAgICAgICAgICAgICAgICBjb25maXJtUGFzc3dvcmQ6IGUudGFyZ2V0LnZhbHVlLFxuICAgICAgICAgICAgICAgICAgICB9KVxuICAgICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPXtgXG4gICAgICAgICAgICAgICAgICAgIHctZnVsbCBwbC0xMCBwci0xMiBweS0zIGJvcmRlciByb3VuZGVkLWxnIFxuICAgICAgICAgICAgICAgICAgICBmb2N1czpyaW5nLTIgZm9jdXM6cmluZy1ibHVlLTUwMCBmb2N1czpib3JkZXItdHJhbnNwYXJlbnRcbiAgICAgICAgICAgICAgICAgICAgJHtlcnJvcnMuY29uZmlybVBhc3N3b3JkID8gXCJib3JkZXItcmVkLTUwMFwiIDogXCJib3JkZXItZ3JheS0zMDBcIn1cbiAgICAgICAgICAgICAgICAgIGB9XG4gICAgICAgICAgICAgICAgICBwbGFjZWhvbGRlcj1cIkNvbmZpcm0gbmV3IHBhc3N3b3JkXCJcbiAgICAgICAgICAgICAgICAgIHJlcXVpcmVkXG4gICAgICAgICAgICAgICAgLz5cbiAgICAgICAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICAgICAgICAgICAgIG9uQ2xpY2s9eygpID0+IHNldFNob3dDb25maXJtUGFzc3dvcmQoIXNob3dDb25maXJtUGFzc3dvcmQpfVxuICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwiYWJzb2x1dGUgcmlnaHQtMyB0b3AtMS8yIHRyYW5zZm9ybSAtdHJhbnNsYXRlLXktMS8yIHRleHQtZ3JheS00MDAgaG92ZXI6dGV4dC1ncmF5LTYwMFwiXG4gICAgICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgICAge3Nob3dDb25maXJtUGFzc3dvcmQgPyAoXG4gICAgICAgICAgICAgICAgICAgIDxFeWVPZmYgY2xhc3NOYW1lPVwidy01IGgtNVwiIC8+XG4gICAgICAgICAgICAgICAgICApIDogKFxuICAgICAgICAgICAgICAgICAgICA8RXllIGNsYXNzTmFtZT1cInctNSBoLTVcIiAvPlxuICAgICAgICAgICAgICAgICAgKX1cbiAgICAgICAgICAgICAgICA8L2J1dHRvbj5cbiAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgIHtlcnJvcnMuY29uZmlybVBhc3N3b3JkICYmIChcbiAgICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJtdC0yIHRleHQtc20gdGV4dC1yZWQtNjAwXCI+XG4gICAgICAgICAgICAgICAgICB7ZXJyb3JzLmNvbmZpcm1QYXNzd29yZH1cbiAgICAgICAgICAgICAgICA8L3A+XG4gICAgICAgICAgICAgICl9XG4gICAgICAgICAgICA8L2Rpdj5cblxuICAgICAgICAgICAgey8qIFBhc3N3b3JkIFJlcXVpcmVtZW50cyAqL31cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctZ3JheS01MCByb3VuZGVkLWxnIHAtNFwiPlxuICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXNtIGZvbnQtc2VtaWJvbGQgdGV4dC1ncmF5LTcwMCBtYi0yXCI+XG4gICAgICAgICAgICAgICAgUGFzc3dvcmQgbXVzdCBjb250YWluOlxuICAgICAgICAgICAgICA8L3A+XG4gICAgICAgICAgICAgIDx1bCBjbGFzc05hbWU9XCJzcGFjZS15LTEgdGV4dC1zbSB0ZXh0LWdyYXktNjAwXCI+XG4gICAgICAgICAgICAgICAgPGxpIGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyXCI+XG4gICAgICAgICAgICAgICAgICA8c3BhblxuICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9e2B3LTQgaC00IHJvdW5kZWQtZnVsbCBtci0yIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyICR7XG4gICAgICAgICAgICAgICAgICAgICAgZm9ybURhdGEucGFzc3dvcmQubGVuZ3RoID49IDhcbiAgICAgICAgICAgICAgICAgICAgICAgID8gXCJiZy1ncmVlbi01MDBcIlxuICAgICAgICAgICAgICAgICAgICAgICAgOiBcImJnLWdyYXktMzAwXCJcbiAgICAgICAgICAgICAgICAgICAgfWB9XG4gICAgICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgICAgIHtmb3JtRGF0YS5wYXNzd29yZC5sZW5ndGggPj0gOCAmJiAoXG4gICAgICAgICAgICAgICAgICAgICAgPHN2Z1xuICAgICAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwidy0zIGgtMyB0ZXh0LXdoaXRlXCJcbiAgICAgICAgICAgICAgICAgICAgICAgIGZpbGw9XCJjdXJyZW50Q29sb3JcIlxuICAgICAgICAgICAgICAgICAgICAgICAgdmlld0JveD1cIjAgMCAyMCAyMFwiXG4gICAgICAgICAgICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGhcbiAgICAgICAgICAgICAgICAgICAgICAgICAgZmlsbFJ1bGU9XCJldmVub2RkXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgZD1cIk0xNi43MDcgNS4yOTNhMSAxIDAgMDEwIDEuNDE0bC04IDhhMSAxIDAgMDEtMS40MTQgMGwtNC00YTEgMSAwIDAxMS40MTQtMS40MTRMOCAxMi41ODZsNy4yOTMtNy4yOTNhMSAxIDAgMDExLjQxNCAwelwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgIGNsaXBSdWxlPVwiZXZlbm9kZFwiXG4gICAgICAgICAgICAgICAgICAgICAgICAvPlxuICAgICAgICAgICAgICAgICAgICAgIDwvc3ZnPlxuICAgICAgICAgICAgICAgICAgICApfVxuICAgICAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICAgICAgQXQgbGVhc3QgOCBjaGFyYWN0ZXJzXG4gICAgICAgICAgICAgICAgPC9saT5cbiAgICAgICAgICAgICAgICA8bGkgY2xhc3NOYW1lPVwiZmxleCBpdGVtcy1jZW50ZXJcIj5cbiAgICAgICAgICAgICAgICAgIDxzcGFuXG4gICAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT17YHctNCBoLTQgcm91bmRlZC1mdWxsIG1yLTIgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgJHtcbiAgICAgICAgICAgICAgICAgICAgICBmb3JtRGF0YS5wYXNzd29yZC5tYXRjaCgvW0EtWl0vKVxuICAgICAgICAgICAgICAgICAgICAgICAgPyBcImJnLWdyZWVuLTUwMFwiXG4gICAgICAgICAgICAgICAgICAgICAgICA6IFwiYmctZ3JheS0zMDBcIlxuICAgICAgICAgICAgICAgICAgICB9YH1cbiAgICAgICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICAgICAge2Zvcm1EYXRhLnBhc3N3b3JkLm1hdGNoKC9bQS1aXS8pICYmIChcbiAgICAgICAgICAgICAgICAgICAgICA8c3ZnXG4gICAgICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9XCJ3LTMgaC0zIHRleHQtd2hpdGVcIlxuICAgICAgICAgICAgICAgICAgICAgICAgZmlsbD1cImN1cnJlbnRDb2xvclwiXG4gICAgICAgICAgICAgICAgICAgICAgICB2aWV3Qm94PVwiMCAwIDIwIDIwXCJcbiAgICAgICAgICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgICAgICAgICA8cGF0aFxuICAgICAgICAgICAgICAgICAgICAgICAgICBmaWxsUnVsZT1cImV2ZW5vZGRcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICBkPVwiTTE2LjcwNyA1LjI5M2ExIDEgMCAwMTAgMS40MTRsLTggOGExIDEgMCAwMS0xLjQxNCAwbC00LTRhMSAxIDAgMDExLjQxNC0xLjQxNEw4IDEyLjU4Nmw3LjI5My03LjI5M2ExIDEgMCAwMTEuNDE0IDB6XCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgY2xpcFJ1bGU9XCJldmVub2RkXCJcbiAgICAgICAgICAgICAgICAgICAgICAgIC8+XG4gICAgICAgICAgICAgICAgICAgICAgPC9zdmc+XG4gICAgICAgICAgICAgICAgICAgICl9XG4gICAgICAgICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgICAgICAgICAgICBPbmUgdXBwZXJjYXNlIGxldHRlclxuICAgICAgICAgICAgICAgIDwvbGk+XG4gICAgICAgICAgICAgICAgPGxpIGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyXCI+XG4gICAgICAgICAgICAgICAgICA8c3BhblxuICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9e2B3LTQgaC00IHJvdW5kZWQtZnVsbCBtci0yIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyICR7XG4gICAgICAgICAgICAgICAgICAgICAgZm9ybURhdGEucGFzc3dvcmQubWF0Y2goL1swLTldLylcbiAgICAgICAgICAgICAgICAgICAgICAgID8gXCJiZy1ncmVlbi01MDBcIlxuICAgICAgICAgICAgICAgICAgICAgICAgOiBcImJnLWdyYXktMzAwXCJcbiAgICAgICAgICAgICAgICAgICAgfWB9XG4gICAgICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgICAgIHtmb3JtRGF0YS5wYXNzd29yZC5tYXRjaCgvWzAtOV0vKSAmJiAoXG4gICAgICAgICAgICAgICAgICAgICAgPHN2Z1xuICAgICAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwidy0zIGgtMyB0ZXh0LXdoaXRlXCJcbiAgICAgICAgICAgICAgICAgICAgICAgIGZpbGw9XCJjdXJyZW50Q29sb3JcIlxuICAgICAgICAgICAgICAgICAgICAgICAgdmlld0JveD1cIjAgMCAyMCAyMFwiXG4gICAgICAgICAgICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGhcbiAgICAgICAgICAgICAgICAgICAgICAgICAgZmlsbFJ1bGU9XCJldmVub2RkXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgZD1cIk0xNi43MDcgNS4yOTNhMSAxIDAgMDEwIDEuNDE0bC04IDhhMSAxIDAgMDEtMS40MTQgMGwtNC00YTEgMSAwIDAxMS40MTQtMS40MTRMOCAxMi41ODZsNy4yOTMtNy4yOTNhMSAxIDAgMDExLjQxNCAwelwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgIGNsaXBSdWxlPVwiZXZlbm9kZFwiXG4gICAgICAgICAgICAgICAgICAgICAgICAvPlxuICAgICAgICAgICAgICAgICAgICAgIDwvc3ZnPlxuICAgICAgICAgICAgICAgICAgICApfVxuICAgICAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICAgICAgT25lIG51bWJlclxuICAgICAgICAgICAgICAgIDwvbGk+XG4gICAgICAgICAgICAgIDwvdWw+XG4gICAgICAgICAgICA8L2Rpdj5cblxuICAgICAgICAgICAgPGJ1dHRvblxuICAgICAgICAgICAgICB0eXBlPVwic3VibWl0XCJcbiAgICAgICAgICAgICAgZGlzYWJsZWQ9e2xvYWRpbmd9XG4gICAgICAgICAgICAgIGNsYXNzTmFtZT17YFxuICAgICAgICAgICAgICAgIHctZnVsbCBweS0zIHB4LTYgcm91bmRlZC1sZyBmb250LXNlbWlib2xkIHRyYW5zaXRpb24tYWxsIGR1cmF0aW9uLTIwMCBcbiAgICAgICAgICAgICAgICBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlclxuICAgICAgICAgICAgICAgICR7XG4gICAgICAgICAgICAgICAgICBsb2FkaW5nXG4gICAgICAgICAgICAgICAgICAgID8gXCJiZy1ibHVlLTQwMCBjdXJzb3Itbm90LWFsbG93ZWRcIlxuICAgICAgICAgICAgICAgICAgICA6IFwiYmctYmx1ZS02MDAgaG92ZXI6YmctYmx1ZS03MDAgZm9jdXM6b3V0bGluZS1ub25lIGZvY3VzOnJpbmctNCBmb2N1czpyaW5nLWJsdWUtMzAwXCJcbiAgICAgICAgICAgICAgICB9XG4gICAgICAgICAgICAgICAgdGV4dC13aGl0ZVxuICAgICAgICAgICAgICBgfVxuICAgICAgICAgICAgPlxuICAgICAgICAgICAgICB7bG9hZGluZyA/IFwiUmVzZXR0aW5nIFBhc3N3b3JkLi4uXCIgOiBcIlJlc2V0IFBhc3N3b3JkXCJ9XG4gICAgICAgICAgICA8L2J1dHRvbj5cbiAgICAgICAgICA8L2Zvcm0+XG4gICAgICAgIDwvZGl2PlxuXG4gICAgICAgIDxwIGNsYXNzTmFtZT1cIm10LTYgdGV4dC1jZW50ZXIgdGV4dC1zbSB0ZXh0LWdyYXktNjAwXCI+XG4gICAgICAgICAgUmVtZW1iZXIgeW91ciBwYXNzd29yZD97XCIgXCJ9XG4gICAgICAgICAgPExpbmtcbiAgICAgICAgICAgIHRvPVwiL2xvZ2luXCJcbiAgICAgICAgICAgIGNsYXNzTmFtZT1cInRleHQtYmx1ZS02MDAgaG92ZXI6dGV4dC1ibHVlLTcwMCBmb250LXNlbWlib2xkXCJcbiAgICAgICAgICA+XG4gICAgICAgICAgICBTaWduIEluXG4gICAgICAgICAgPC9MaW5rPlxuICAgICAgICA8L3A+XG4gICAgICA8L2Rpdj5cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG5cbmV4cG9ydCBkZWZhdWx0IFJlc2V0UGFzc3dvcmRQYWdlO1xuIl0sImZpbGUiOiJEOi9wcm9qZWN0L1NraWxsX0dhcCBBbmFseXNlciBhbmQgcGxhY2VtZW50IGludGVsbGlnZW5jZS9jbGllbnQvc3JjL3BhZ2VzL1Jlc2V0UGFzc3dvcmRQYWdlLmpzeCJ9

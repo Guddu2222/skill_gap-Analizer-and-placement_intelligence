@@ -1,0 +1,33 @@
+# Goal Description
+The user wants to know why new users start with a score of 22 and how to improve it. They also want the "Executive Career Advice" to be formatted nicely as bullet points instead of a single paragraph block.
+
+## Explanation of Score (22/100)
+The readiness score is calculated using [calculateReadinessScore](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/services/skillGapAnalysis.service.js#257-281) in [server/services/skillGapAnalysis.service.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/services/skillGapAnalysis.service.js). For a default 'Software Engineer', there are four core skills:
+- Data Structures & Algorithms (Weight: 15)
+- Object-Oriented Programming (Weight: 12)
+- SQL (Weight: 10)
+- Git (Weight: 8)
+Total weight = 45. 
+If a user registers or connects with only a matching skill of "SQL", their partial score is 10. [(10 / 45) * 100 = 22.2](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/services/skillGapAnalysis.service.js#8-12), which rounds to **22**. 
+**How to improve:** Students need to add more core skills matching exactly the requirements (e.g., "Data Structures & Algorithms", "Object-Oriented Programming", "Git") to their profile, or wait for the system admin to broaden the scoring criteria.
+
+## Proposed Changes
+
+### server
+#### [MODIFY] [SkillGapAnalysis.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/models/SkillGapAnalysis.js)
+- Modify the `careerAdvice` field schema type from `String` to `[String]` (array of strings) to properly store an array of advice points. Mongoose will seamlessly wrap existing string values into an array with one element if previously stored.
+
+#### [MODIFY] [skillGapAnalysis.service.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/services/skillGapAnalysis.service.js)
+- Change the Gemini prompt so the JSON output structure for `career_advice` expects an array of strings: `["Advice point 1", "Advice point 2", ...]`.
+- Update the mock AI response and fallback mechanism to return an array of strings.
+- Add robust parsing in [parseAIResponse](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/services/skillGapAnalysis.service.js#220-256) to ensure `career_advice` is always an array of strings.
+
+### client
+#### [MODIFY] [SkillGapOverview.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/student/SkillGapOverview.jsx)
+- Update the rendering of the `careerAdvice` field. Since it will become an array of strings, we will map over these strings and display them as an unordered bullet list (`<ul>` and `<li>`) with proper spacing, margin, and typography enhancements. If it's a string, we can split it by newlines.
+
+## Verification Plan
+### Manual Verification
+1. I will explain the score of 22 to the user.
+2. The user will be requested to review this change and the explanation.
+3. If they test the new analysis, they will see nicely formatted bullet points in the "Expert Guidance" section.

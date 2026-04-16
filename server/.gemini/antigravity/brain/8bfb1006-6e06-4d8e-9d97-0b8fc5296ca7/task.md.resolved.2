@@ -1,0 +1,41 @@
+# Smart Expense Manager Task List
+
+This track defines our 6-week roadmap for the Smart Expense Manager.
+
+## Week 1: Backend Setup & Auth
+- [x] Initialize Express.js backend project (`server/`)
+- [x] Set up MongoDB connection (Mongoose)
+- [x] Create [User](file:///D:/project/Smart%20Expense%20Manager/server/controllers/authController.js#45-77) model (Owner, Accountant roles)
+- [x] Implement robust JWT Authentication (register, login)
+- [x] Build Auth middleware for protecting routes
+
+## Week 2: Core APIs
+- [x] Create [Expense](file:///D:/project/Smart%20Expense%20Manager/server/controllers/expenseController.js#3-32) and `Income` Models
+- [x] Implement CRUD APIs for Income/Expenses
+- [x] Build efficient filtering/pagination logic for records
+- [x] Develop MongoDB Aggregation pipelines for Monthly Reports
+
+## Week 3: Frontend Foundation
+- [ ] Initialize React App using Vite (`client/`)
+- [ ] Configure Tailwind CSS & Dark Mode (`class` strategy)
+- [ ] Setup React Router & Auth Context State
+- [ ] Build beautiful Login & Registration UI pages
+- [ ] Create Dashboard Layout (Sidebar, Top nav)
+
+## Week 4: Dashboard & Expense UI
+- [ ] Build Data Tables for Expenses/Income
+- [ ] Create sleek Add/Edit Modals with form validation
+- [ ] Integrate Chart.js for visualization (Income vs Expense)
+- [ ] Implement Monthly Comparison Chart (This month vs Last month)
+
+## Week 5: Invoice Generator
+- [ ] Create `Invoice` Model & backend APIs
+- [ ] Build Invoice Management UI in React
+- [ ] Integrate `pdfkit` (or `puppeteer`) for Invoice PDF Generator
+- [ ] Add PDF Download handler and UI feedback
+
+## Week 6: Polish & Extra Features
+- [ ] Implement Budget Limit Alerts (backend checks + frontend notifications)
+- [ ] Ensure 100% Mobile Responsiveness (Tailwind media queries)
+- [ ] Polish UI (Toast notifications, Skeleton loaders, micro-animations)
+- [ ] Final deployment prep & README.md 작성

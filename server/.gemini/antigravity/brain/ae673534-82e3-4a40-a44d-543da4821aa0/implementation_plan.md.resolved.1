@@ -1,0 +1,47 @@
+# Implementation Plan - Phase 1: UX & Core Polish
+
+## Goal
+Transform the current fitness tracker into a modern, premium web application with a "Glassmorphism" design, responsive mobile navigation, and an interactive dashboard.
+
+## User Review Required
+> [!IMPORTANT]
+> This plan involves significant UI changes. The existing "minimalist" or "default" look will be replaced by a dark, glassmorphism-inspired theme.
+- **Theme**: Dark mode by default with vibrant accent colors (Blue/Purple gradients).
+- **Navigation**: Mobile-first bottom navigation bar. Desktop will reuse the same logic but in a sidebar or top bar.
+- **Charts**: Integrating `Recharts` for data visualization.
+
+## Proposed Changes
+
+### Client
+
+#### [MODIFY] [tailwind.config.js](file:///d:/project/Fittness%20tracking%20website/client/tailwind.config.js)
+- Extend theme colors to include "glass" utilities and custom color palette.
+- Add background image or gradient configuration.
+
+#### [MODIFY] [index.css](file:///d:/project/Fittness%20tracking%20website/client/src/index.css)
+- Add base styles for the dark theme background.
+- implement custom `.glass` utility class for reusability.
+
+#### [NEW] [MobileNav.jsx](file:///d:/project/Fittness%20tracking%20website/client/src/components/MobileNav.jsx)
+- A fixed bottom navigation bar for mobile screens.
+- Hidden on desktop (md+ screens).
+
+#### [MODIFY] [Layout.jsx](file:///d:/project/Fittness%20tracking%20website/client/src/components/Layout.jsx) (or App.jsx)
+- Integrate `MobileNav` and adjust main content padding to prevent overlap.
+- Apply the new background style globally.
+
+#### [NEW] [ActivityChart.jsx](file:///d:/project/Fittness%20tracking%20website/client/src/components/ActivityChart.jsx)
+- Use `recharts` to display a bar chart of weekly activity.
+- Mock data initially, then hook up to API if data exists.
+
+#### [MODIFY] [Dashboard.jsx](file:///d:/project/Fittness%20tracking%20website/client/src/pages/Dashboard.jsx)
+- Replace old stats with the new `ActivityChart` component.
+- Apply glassmorphism cards to existing stat widgets.
+
+## Verification Plan
+
+### Manual Verification
+1.  **Visual Inspection**: Open the app in browser (mobile and desktop views).
+2.  **Navigation Testing**: Click all nav items in the new mobile bar and verify routing.
+3.  **Chart Interaction**: Hover over chart bars to see tooltips.
+4.  **Responsive Check**: Resize window to ensure layout adapts correctly (Mobile Nav <-> Desktop Nav).

@@ -1,0 +1,72 @@
+html,
+body {
+  background: transparent !important;
+}
+
+#dialog {
+  position: absolute;
+  width: 352px;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.header {
+  border-radius: 8px 8px 0 0;
+  background: var(--color-disable);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#select-text-box {
+  height: 54px;
+}
+
+#close-dialog svg {
+  vertical-align: middle;
+}
+
+.range-picker {
+  width: 160px !important;
+}
+
+.option-sections {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  width: 110px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#curtain > .highlight {
+  background-color: rgba(242, 133, 133, 0.5);
+  border: 2px dashed var(--color-logo);
+  cursor: cell;
+  position: absolute;
+  z-index: 5;
+}
+
+#curtain {
+  display: block;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.icon_selector{
+    vertical-align: middle;
+}

@@ -1,0 +1,20 @@
+# Changes Made
+To address the formatting of the **Executive Career Advice** and explain the **Score of 22**:
+
+1. **Investigated Readiness Score Calculation**:
+   - The default base score of 22 comes from the system calculating a matching weight of roughly 10 points (for example, knowing SQL) out of a total possible 45 weight points for "Software Engineer" core skills (10 / 45 * 100 ≈ 22). To improve this score, students simply need to acquire and add the exact named core skills (like "Data Structures & Algorithms", "Object-Oriented Programming", or "Git") to their profiles.
+
+2. **Updated AI Prompt and Parsing** (`server/services/skillGapAnalysis.service.js`):
+   - Changed the strict JSON format prompt for Gemini to return `career_advice` as an array of strings (4-5 bullet points) rather than a single paragraph string.
+   - Added a defensive parsing block to handle edge cases in case the AI returns a numbered list in a single string instead of an array.
+
+3. **Modified Database Schema** (`server/models/SkillGapAnalysis.js`):
+   - Changed the `careerAdvice` field type from `String` to `[String]` so Mongoose properly stores the generated array of bullet points.
+
+4. **Enhanced Frontend UI Formatting** (`client/src/components/student/SkillGapOverview.jsx`):
+   - Replaced the single `<p>` tag wrapping the `analysis.careerAdvice` with a conditional render map.
+   - If `careerAdvice` is an array, it is now rendered using standard `<ul>` and `<li>` elements styled with Tailwind for a clean, professional bulleted list look.
+
+## Validation Results
+- Existing analyses with string-based advice will either gracefully fall back to the paragraph format or be split into an array if they contain numbered Markdown (e.g., `1. **...**`).
+- New AI analyses will confidently output correctly formatted bulleted advice, enhancing readability as requested.

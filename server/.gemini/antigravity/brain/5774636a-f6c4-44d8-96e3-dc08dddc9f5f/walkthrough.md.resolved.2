@@ -1,0 +1,29 @@
+# Fixing the Login Network Error
+
+I've successfully updated your frontend code so it no longer forces every user's browser to search their own device for the backend database!
+
+## What Changed in the Code
+In [client/src/services/api.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/services/api.js), the AXIOS base URL was completely hardcoded:
+```javascript
+// BEFORE
+baseURL: 'http://localhost:5000/api'
+
+// AFTER
+baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+```
+This means when you run the app locally, it will naturally fall back to your `localhost:5000` server. But in production, it will gracefully accept whatever URL Vercel feeds it.
+
+## Your Final Steps on Vercel
+Your codebase is now perfect. To solve the problem permanently, just tell Vercel what your production API URL actually is!
+
+1. Go to your **Vercel Dashboard**.
+2. Select your frontend project.
+3. Click on the **Settings** tab.
+4. Click on **Environment Variables** in the left sidebar.
+5. Create a new variable:
+   - **Key:** `VITE_API_URL`
+   - **Value:** Your live backend URL + `/api` (Example: `https://my-render-backend.onrender.com/api`)
+6. Click **Save**.
+7. **Crucial:** Go to the Deployments tab and hit **Redeploy**. Vercel needs to run a new build process so it can physically inject that URL into your React application files.
+
+Once the redeploy finishes, your Sign In page will work beautifully!

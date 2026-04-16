@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Anda telah memblokir"
+   },
+   "ads": {
+      "message": "Iklan"
+   },
+   "dataSavedTitle": {
+      "message": "Data disimpan"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Berlaku untuk semua situs"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Kedalaman"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Pratinjau"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Menyimpan"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Pemilih"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Kekhususan"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Anda telah memilih"
+   },
+   "elementBlocker_title": {
+      "message": "Penghilang Elemen"
+   },
+   "extDesc": {
+      "message": "Blokir iklan dan pop-up di Semua situs web yang Anda jelajahi setiap hari"
+   },
+   "extName": {
+      "message": "SBlock - Pemblokir Iklan Super"
+   },
+   "extNameFirstShort": {
+      "message": "Blok S"
+   },
+   "extNameLastShort": {
+      "message": "Pemblokir Iklan Super"
+   },
+   "filteringModeBasic": {
+      "message": "Dasar"
+   },
+   "filteringModeSuper": {
+      "message": "Blok Super"
+   },
+   "footerMadeLove": {
+      "message": "Dibuat dengan cinta di dalamnya"
+   },
+   "footerShareFriends": {
+      "message": "Bagikan dengan teman Anda"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Memuat lebih cepat"
+   },
+   "loveSblockButton": {
+      "message": "Suka SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Tinggalkan ulasan."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock tidak didukung di halaman ini"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Blokir iklan berbahasa lokal"
+   },
+   "optionBlockManually": {
+      "message": "Blokir secara manual"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Membuka"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Setel ulang semua"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Pemilih"
+   },
+   "optionBlockTracker": {
+      "message": "Pelacak blok"
+   },
+   "optionPopupsCookie": {
+      "message": "Abaikan popup penerimaan cookie"
+   },
+   "optionPopupsSocial": {
+      "message": "Blokir widget sosial"
+   },
+   "reportIssueButton": {
+      "message": "Laporkan masalah"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Beritahu kami lebih lanjut."
+   },
+   "secDuration": {
+      "message": "detik"
+   },
+   "thisPageTitle": {
+      "message": "Halaman ini"
+   },
+   "thisWebsiteTitle": {
+      "message": "Situs web ini"
+   },
+   "timeSavedTitle": {
+      "message": "Waktu dihemat"
+   }
+}

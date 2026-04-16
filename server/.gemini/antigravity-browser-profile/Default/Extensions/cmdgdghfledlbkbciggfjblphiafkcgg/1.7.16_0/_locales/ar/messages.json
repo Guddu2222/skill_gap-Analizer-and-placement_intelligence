@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "لقد حظرت"
+   },
+   "ads": {
+      "message": "إعلانات"
+   },
+   "dataSavedTitle": {
+      "message": "تم حفظ البيانات"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "تنطبق على كل الموقع"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "عمق"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "معاينة"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "يحفظ"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "محدد"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "خصوصية"
+   },
+   "elementBlocker_subtitle": {
+      "message": "لقد حددت"
+   },
+   "elementBlocker_title": {
+      "message": "مزيل العناصر"
+   },
+   "extDesc": {
+      "message": "منع الإعلانات والنوافذ المنبثقة على جميع مواقع الويب التي تتصفحها يوميًا"
+   },
+   "extName": {
+      "message": "SBlock - مانع الإعلانات الفائق"
+   },
+   "extNameFirstShort": {
+      "message": "إس بلوك"
+   },
+   "extNameLastShort": {
+      "message": "سوبر مانع الإعلانات"
+   },
+   "filteringModeBasic": {
+      "message": "أساسي"
+   },
+   "filteringModeSuper": {
+      "message": "سوبر بلوك"
+   },
+   "footerMadeLove": {
+      "message": "صنع بالحب في"
+   },
+   "footerShareFriends": {
+      "message": "شارك مع أصدقائك"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "تحميل أسرع"
+   },
+   "loveSblockButton": {
+      "message": "أحب سبلوك؟"
+   },
+   "loveSblockButtonDesc": {
+      "message": "ترك التعليق."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock غير مدعوم في هذه الصفحة"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "منع الإعلانات باللغة المحلية"
+   },
+   "optionBlockManually": {
+      "message": "الحظر يدويًا"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "يفتح"
+   },
+   "optionBlockManuallyReset": {
+      "message": "إعادة ضبط الكل"
+   },
+   "optionBlockManuallySelector": {
+      "message": "محدد"
+   },
+   "optionBlockTracker": {
+      "message": "كتلة تعقب"
+   },
+   "optionPopupsCookie": {
+      "message": "تجاهل قبول النوافذ المنبثقة لملفات تعريف الارتباط"
+   },
+   "optionPopupsSocial": {
+      "message": "منع الحاجيات الاجتماعية"
+   },
+   "reportIssueButton": {
+      "message": "بلغ عن خطأ"
+   },
+   "reportIssueButtonDesc": {
+      "message": "أخبرنا المزيد."
+   },
+   "secDuration": {
+      "message": "ثانية"
+   },
+   "thisPageTitle": {
+      "message": "هذه الصفحة"
+   },
+   "thisWebsiteTitle": {
+      "message": "هذا الموقع"
+   },
+   "timeSavedTitle": {
+      "message": "تم حفظ الوقت"
+   }
+}

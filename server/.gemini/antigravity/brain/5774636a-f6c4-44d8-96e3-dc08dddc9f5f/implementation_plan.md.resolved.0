@@ -1,0 +1,64 @@
+# Vercel Deployment Configuration
+
+Since both the client and server are deployed on Vercel, the 404 errors are occurring for two distinct reasons:
+1. **Client (Frontend)**: Vercel acts as a static file server and doesn't know how to route paths like `/student` back to React Router.
+2. **Server (Backend)**: Vercel treats backend deployments as Serverless Functions. It requires Express applications to be exported and specifically configured to be built via `@vercel/node`. Currently, your [server/index.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/index.js) does not export the app and lacks a `vercel.json` telling Vercel how to route to it.
+
+## Proposed Changes
+
+### Client Setup
+To fix the React Router 404s on page refresh/direct navigation:
+
+#### [NEW] client/vercel.json
+```json
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+```
+
+### Server Setup
+To configure Express to run as serverless functions on Vercel:
+
+#### [MODIFY] server/index.js
+At the bottom of the file we need to export the Express app for Vercel:
+```javascript
+// Export the Express API
+module.exports = app;
+```
+*(We will keep `app.listen()` for local development, it won't break anything on Vercel).*
+
+#### [NEW] server/vercel.json
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "index.js"
+    }
+  ]
+}
+```
+
+## Verification Plan
+
+### Automated Tests
+- Restart local `npm run dev` servers to ensure these new Vercel configurations do not break local development.
+
+### Manual Verification
+1. I will apply these changes to the codebase.
+2. You can then push the changes to GitHub.
+3. Vercel will trigger a new deployment for both client and server.
+4. Verify that direct navigation on the frontend works (e.g., navigating directly to `/login`) without 404.
+5. Verify that API calls from the deployed client successfully reach the deployed server. Ensure your `client` is using the Vercel deployed backend URL in its API requests (usually managed via an [env](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/.env) variable like `VITE_API_URL`).

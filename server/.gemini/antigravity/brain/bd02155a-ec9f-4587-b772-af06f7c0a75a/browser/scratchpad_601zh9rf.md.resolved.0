@@ -1,0 +1,6 @@
+# Task: Debug Google OAuth `invalid_client` Error
+- [ ] Navigate to Google Cloud Console OAuth Credentials page.
+- [ ] Verify if the user is logged in.
+- [ ] Identify the selected project.
+- [ ] Check for existing OAuth 2.0 Client IDs.
+- [ ] Report findings with a screenshot description.

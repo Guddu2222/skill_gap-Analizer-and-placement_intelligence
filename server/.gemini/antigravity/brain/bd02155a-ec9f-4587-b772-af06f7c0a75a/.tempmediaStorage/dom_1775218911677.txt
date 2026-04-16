@@ -1,0 +1,143 @@
+<current_dom_explanation>
+This is a temporary snapshot of the current page's DOM structure. The DOM will change if you navigate to or interact with another page. Use a tool like browser_get_dom to capture and preserve the DOM in your trajectory if needed for later reference.
+</current_dom_explanation>
+<current_dom>
+Start your free trial with $300 in credit. Don't worry – you won't be charged if you run out of credit.
+[0] (678,35)<a aria-label='Learn more about the free trial programme. external, opens new window' class='cfc-doc-link' href='https://cloud.google.com/free/?hl=en_GB' />
+	[1] (671,36)<span >Learn more />
+	[2] (711,36)<cm-icon aria-label='external, opens new window' class='cm-icon-external-link' role='img' />
+[3] (866,35)<button aria-label='Dismiss full account activation banner' class='mdc-button mat-mdc-button-base gmat-mdc-button mat-mdc-button mat-unthemed cm-button ng-star-inserted'>Dismiss />
+	Dismiss
+[4] (951,35)<button aria-label='Start free' class='mdc-button mat-mdc-button-base gmat-mdc-button mat-primary cm-button mdc-button--unelevated mat-mdc-unelevated-button ng-star-inserted'>Start free />
+	Start free
+Skip to main content
+Keyboard shortcuts
+Accessibility help
+Accessibility feedback
+[5] (27,107)<button aria-label='Navigation menu (.)' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button pcc-platform-bar-button mat-focus-indicator mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' />
+	[6] (27,107)<cm-icon  />
+[7] (115,107)<a aria-label='Google Cloud Platform Home' class='cfc-logo-anchor mat-focus-indicator' href='/?project=skillgap-analizer' />
+[8] (267,107)<button aria-label='You're currently working in skillgap-analizer. Hit enter to switch projects, folders or organisations' class='mdc-button mat-mdc-button-base gmat-mdc-button ng-tns-c1471083725-2 mat-mdc-button cfc-switcher-button new-switcher-button mat-unthemed cm-button' />
+	skillgap-analizer
+[9] (524,107)<div class='pcc-combobox' role='combobox' />
+	[10] (541,107)<input aria-label='Enter query to search for resources, docs, products and more' class='cm-input gmat-mdc-input mat-mdc-input-element pcc-search-input ng-untouched ng-pristine ng-valid cdk-text-field-autofill-monitored' id='mat-input-0' placeholder='Search (/) for resources, docs, products and more' />
+Search
+[11] (824,107)<button aria-label='Open or close Gemini Cloud Assist chat (Alt G)' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button pcc-platform-bar-button mat-focus-indicator mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='pcc-duet-chat-container' />
+	[12] (824,107)<cm-icon  />
+[13] (863,107)<button aria-label='Activate Cloud Shell (G then S)' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button pcc-platform-bar-button mat-focus-indicator mat-unthemed cm-button cfc-tooltip ng-star-inserted cfc-tooltip-disable-user-select-on-touch-device' />
+	[14] (863,107)<cm-icon  />
+[15] (901,107)<button aria-label='1 unread notifications. Open notifications' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button pcc-platform-bar-button mat-focus-indicator mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' />
+	[16] (901,107)<div  />
+		[17] (901,107)<div  />
+			[18] (901,98)<div >1 />
+[19] (939,107)<button aria-label='Settings and utilities' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button pcc-platform-bar-button mat-focus-indicator mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='pcc-utilities-menu-trigger' />
+	[20] (939,107)<cm-icon  />
+[21] (977,107)<button aria-label='Account: Guddu Prasad sah (sahguddu164@gmail.com)' class='cfc-accountchooser-link mat-focus-indicator cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device' />
+[22] (91,163)<a class='cfc-section-title-content-container cfc-section-path mat-focus-indicator cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' href='/auth?project=skillgap-analizer' />
+	[23] (20,163)<shell-nav-icon  />
+		[24] (20,163)<cm-icon  />
+	[25] (102,163)<span  />
+		[26] (102,163)<span >Google Auth Platform />
+/
+[27] (212,163)<a class='mdc-button mat-mdc-button-base gmat-mdc-button cfc-text-button cfc-button-centered cfc-button-small pcc-breadcrumb-link-button mat-mdc-button mat-unthemed cm-button cfc-tooltip' href='/auth/clients?project=skillgap-analizer' />
+	[28] (212,163)<span  />
+		[29] (212,163)<span >Clients />
+/
+[30] (527,163)<a class='mdc-button mat-mdc-button-base gmat-mdc-button cfc-text-button cfc-button-centered cfc-button-small pcc-breadcrumb-link-button mat-mdc-button mat-unthemed cm-button cfc-tooltip' href='/auth/clients/89388167069-4qind7vfk6c7vjei7jlqp76e4icv30vk.apps.googleusercontent.com?project=skillgap-analizer' />
+	[31] (527,163)<span >89388167069-4qind7vfk6c7vjei7jlqp76e4icv30vk.apps.googleusercontent.com />
+		[32] (278,163)<span >Client: />
+		89388167069-4qind7vfk6c7vjei7jlqp76e4icv30vk.apps.googleusercontent.com
+[33] (110,223)<a aria-label='Overview, 1 of 7' class='mdc-button mat-mdc-button-base gmat-mdc-button section-nav-item mat-mdc-button mat-mdc-button-disabled-interactive mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' href='/auth/overview?project=skillgap-analizer' id='cfctest-section-nav-item-oauth_overview' />
+	[34] (110,223)<span  />
+		[35] (20,223)<shell-nav-icon  />
+			[36] (20,223)<cm-icon  />
+		[37] (123,223)<span >Overview />
+[38] (228,223)<button aria-label='More options' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-button-small nav-pin-menu-button unpinned mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='nav-pin-menu-button-oauth_overview' />
+	[39] (228,224)<cm-icon  />
+[40] (110,275)<a aria-label='Branding, 2 of 7' class='mdc-button mat-mdc-button-base gmat-mdc-button section-nav-item mat-mdc-button mat-mdc-button-disabled-interactive mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' href='/auth/branding?project=skillgap-analizer' id='cfctest-section-nav-item-oauth_branding' />
+	[41] (110,275)<span  />
+		[42] (20,275)<shell-nav-icon  />
+			[43] (20,275)<cm-icon  />
+		[44] (123,275)<span >Branding />
+[45] (228,275)<button aria-label='More options' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-button-small nav-pin-menu-button unpinned mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='nav-pin-menu-button-oauth_branding' />
+	[46] (228,277)<cm-icon  />
+[47] (110,328)<a aria-label='Audience, 3 of 7' class='mdc-button mat-mdc-button-base gmat-mdc-button section-nav-item mat-mdc-button mat-mdc-button-disabled-interactive mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' href='/auth/audience?project=skillgap-analizer' id='cfctest-section-nav-item-oauth_audience' />
+	[48] (110,328)<span  />
+		[49] (20,328)<shell-nav-icon  />
+			[50] (20,328)<cm-icon  />
+		[51] (123,328)<span >Audience />
+[52] (228,328)<button aria-label='More options' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-button-small nav-pin-menu-button unpinned mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='nav-pin-menu-button-oauth_audience' />
+	[53] (228,330)<cm-icon  />
+[54] (110,381)<a aria-label='Clients, 4 of 7' class='mdc-button mat-mdc-button-base gmat-mdc-button section-nav-item mat-mdc-button mat-mdc-button-disabled-interactive mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted selected' href='/auth/clients?project=skillgap-analizer' id='cfctest-section-nav-item-oauth_clients' />
+	[55] (110,381)<span  />
+		[56] (20,381)<shell-nav-icon  />
+			[57] (20,381)<cm-icon  />
+		[58] (123,381)<span >Clients />
+[59] (228,381)<button aria-label='More options' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-button-small nav-pin-menu-button unpinned mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='nav-pin-menu-button-oauth_clients' />
+	[60] (228,383)<cm-icon  />
+[61] (110,434)<a aria-label='Data access, 5 of 7' class='mdc-button mat-mdc-button-base gmat-mdc-button section-nav-item mat-mdc-button mat-mdc-button-disabled-interactive mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' href='/auth/scopes?project=skillgap-analizer' id='cfctest-section-nav-item-oauth_scopes' />
+	[62] (110,434)<span  />
+		[63] (20,434)<shell-nav-icon  />
+			[64] (20,434)<cm-icon  />
+		[65] (123,434)<span >Data access />
+[66] (228,434)<button aria-label='More options' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-button-small nav-pin-menu-button unpinned mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='nav-pin-menu-button-oauth_scopes' />
+	[67] (228,436)<cm-icon  />
+[68] (110,487)<a aria-label='Verification centre, 6 of 7' class='mdc-button mat-mdc-button-base gmat-mdc-button section-nav-item mat-mdc-button mat-mdc-button-disabled-interactive mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' href='/auth/verification?project=skillgap-analizer' id='cfctest-section-nav-item-oauth_verification' />
+	[69] (110,487)<span  />
+		[70] (20,487)<shell-nav-icon  />
+			[71] (20,487)<cm-icon  />
+		[72] (123,487)<span >Verification centre />
+[73] (228,487)<button aria-label='More options' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-button-small nav-pin-menu-button unpinned mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='nav-pin-menu-button-oauth_verification' />
+	[74] (228,488)<cm-icon  />
+[75] (110,539)<a aria-label='Settings, 7 of 7' class='mdc-button mat-mdc-button-base gmat-mdc-button section-nav-item mat-mdc-button mat-mdc-button-disabled-interactive mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' href='/auth/settings?project=skillgap-analizer' id='cfctest-section-nav-item-oauth_settings' />
+	[76] (110,539)<span  />
+		[77] (20,539)<shell-nav-icon  />
+			[78] (20,539)<cm-icon  />
+		[79] (123,539)<span >Settings />
+[80] (228,539)<button aria-label='More options' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-button-small nav-pin-menu-button unpinned mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' id='nav-pin-menu-button-oauth_settings' />
+	[81] (228,541)<cm-icon  />
+[82] (16,965)<button aria-label='Toggle Google Auth Platform navigation menu' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button nav-minimize-toggle-button mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device' id='nav-minimize-toggle-button' />
+	[83] (20,965)<shell-nav-icon  />
+		[84] (20,965)<cm-icon  />
+[85] (271,220)<button aria-label='Back to previous page' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-nav-button mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device ng-star-inserted' />
+	[86] (271,220)<cm-icon  />
+Client ID for Web application
+Delete
+[87] (975,220)<button aria-label='Information and summary' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-summary-column-icon-button mat-primary cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device' />
+	[88] (975,221)<cm-icon  />
+[89] (622,628)<cfc-virtual-viewport class='cfc-virtual-scroll-viewport cfc-panel-body cfc-panel-body-scrollable cfc-panel-disable-border-bottom cfc-virtual-scroll-orientation-vertical' role='presentation' scrollable='true' />
+	[90] (321,335)<label class='mdc-floating-label mat-mdc-floating-label mdc-floating-label--float-above ng-star-inserted' id='_1rif_mat-mdc-form-field-label-0' />
+		[91] (317,335)<mat-label >Name />
+		[92] (336,335)<span  />
+	The name of your OAuth 2.0 client. This name is only used to identify the client in the
+      console and will not be shown to end users.
+	The domains of the URIs you add below will be automatically added to your
+	[93] (464,534)<a href='/auth/branding?project=skillgap-analizer'>OAuth consent screen />
+	as
+	[94] (616,533)<a aria-label='authorised domains external, opens new window' class='cfc-doc-link' href='https://support.google.com/cloud/answer/6158849?hl=en_GB#authorized-domains' />
+		[95] (609,534)<span >authorised domains />
+		[96] (675,534)<cm-icon aria-label='external, opens new window' class='cm-icon-external-link' role='img' />
+	.
+	[97] (534,696)<fieldset  />
+		[98] (447,643)<legend  />
+			Authorised JavaScript origins
+			[99] (585,638)<button aria-label='Help with Javascript origins' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-help-button mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device' />
+				[100] (585,638)<cm-icon  />
+		For use with requests from a browser
+		[101] (337,764)<button aria-label='Add URI' class='mdc-button mat-mdc-button-base gmat-mdc-button cfc-form-stack-add-button cfc-button-small mdc-button--outlined mat-mdc-outlined-button mat-primary cm-button ng-star-inserted' />
+			Add URI
+	[102] (424,896)<legend  />
+		Authorised redirect URIs
+		[103] (539,919)<button aria-label='Help with redirect URIs' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-help-button mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device' />
+			[104] (539,919)<cm-icon  />
+	For use with requests from a web server
+Chat with Gemini Cloud Assist
+Chat with an AI-powered collaborator to get answers to topics related to Google Cloud.
+Tip: Use Alt G to open and close the chat.
+[105] (584,388)<button class='mdc-button mat-mdc-button-base gmat-mdc-button cfc-callout-custom-dismiss-message-button mat-mdc-button ng-tns-c967477307-6 mat-unthemed cm-button ng-star-inserted'>Learn more />
+	Learn more
+[106] (823,180)<button aria-label='Close callout' class='mdc-icon-button mat-mdc-icon-button mat-mdc-button-base gmat-mdc-button cfc-callout-close-button cfc-button-small ng-tns-c967477307-6 mat-unthemed cm-button cfc-tooltip cfc-tooltip-disable-user-select-on-touch-device' />
+	[107] (823,181)<cfc-icon  />
+		[108] (823,181)<mat-icon class='mat-icon notranslate mat-icon-no-color ng-star-inserted' role='img' />
+
+</current_dom>

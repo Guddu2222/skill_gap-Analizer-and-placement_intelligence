@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Te-ai blocat"
+   },
+   "ads": {
+      "message": "Reclame"
+   },
+   "dataSavedTitle": {
+      "message": "Datele salvate"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Aplicați pe toate site-urile"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Adâncime"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Previzualizare"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Salva"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Selector"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Specificitate"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Ați selectat"
+   },
+   "elementBlocker_title": {
+      "message": "Eliminator de elemente"
+   },
+   "extDesc": {
+      "message": "Blocați reclamele și ferestrele pop-up pe Toate site-urile web pe care le navigați în fiecare zi"
+   },
+   "extName": {
+      "message": "SBlock - Super Ad Blocker"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super Blocker de anunțuri"
+   },
+   "filteringModeBasic": {
+      "message": "De bază"
+   },
+   "filteringModeSuper": {
+      "message": "Super Block"
+   },
+   "footerMadeLove": {
+      "message": "Făcut cu dragoste în"
+   },
+   "footerShareFriends": {
+      "message": "Distribuie prietenilor tăi"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Încărcați mai repede"
+   },
+   "loveSblockButton": {
+      "message": "Îți place SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Lasă o recenzie."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock nu este acceptat pe această pagină"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Blocați anunțurile în limba locală"
+   },
+   "optionBlockManually": {
+      "message": "Blocați manual"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Deschide"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Resetați toate"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Selector"
+   },
+   "optionBlockTracker": {
+      "message": "Tracker de blocuri"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignorați acceptul ferestrelor pop-up cookie"
+   },
+   "optionPopupsSocial": {
+      "message": "Blocați widget-urile sociale"
+   },
+   "reportIssueButton": {
+      "message": "Raportează o problemă"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Spune-ne mai multe."
+   },
+   "secDuration": {
+      "message": "sec"
+   },
+   "thisPageTitle": {
+      "message": "Această pagină"
+   },
+   "thisWebsiteTitle": {
+      "message": "Acest site web"
+   },
+   "timeSavedTitle": {
+      "message": "Timp salvat"
+   }
+}

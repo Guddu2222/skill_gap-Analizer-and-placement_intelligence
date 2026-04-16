@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Jūs esat bloķējis"
+   },
+   "ads": {
+      "message": "Reklāmas"
+   },
+   "dataSavedTitle": {
+      "message": "Dati saglabāti"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Piesakies visai vietnei"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Dziļums"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Priekšskatījums"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Saglabāt"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Atlasītājs"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Specifiskums"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Jūs esat atlasījis"
+   },
+   "elementBlocker_title": {
+      "message": "Elementu noņemšanas līdzeklis"
+   },
+   "extDesc": {
+      "message": "Bloķējiet reklāmas un uznirstošos logus visās vietnēs, kuras pārlūkojat katru dienu"
+   },
+   "extName": {
+      "message": "SBlock - super reklāmu bloķētājs"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super reklāmu bloķētājs"
+   },
+   "filteringModeBasic": {
+      "message": "Pamata"
+   },
+   "filteringModeSuper": {
+      "message": "Super Block"
+   },
+   "footerMadeLove": {
+      "message": "Izgatavots ar mīlestību iekšā"
+   },
+   "footerShareFriends": {
+      "message": "Dalieties ar saviem draugiem"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Ielādējiet ātrāk"
+   },
+   "loveSblockButton": {
+      "message": "Vai jums patīk SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Atstājiet atsauksmi."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock šajā lapā netiek atbalstīts"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Bloķēt reklāmas vietējā valodā"
+   },
+   "optionBlockManually": {
+      "message": "Bloķēt manuāli"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Atvērt"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Atiestatīt visu"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Atlasītājs"
+   },
+   "optionBlockTracker": {
+      "message": "Bloķēt izsekotāju"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignorēt uznirstošos logus pieņemt sīkfailus"
+   },
+   "optionPopupsSocial": {
+      "message": "Bloķēt sociālos logrīkus"
+   },
+   "reportIssueButton": {
+      "message": "Ziņot par problēmu"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Pastāstiet mums vairāk."
+   },
+   "secDuration": {
+      "message": "sek"
+   },
+   "thisPageTitle": {
+      "message": "Šī lapa"
+   },
+   "thisWebsiteTitle": {
+      "message": "Šī vietne"
+   },
+   "timeSavedTitle": {
+      "message": "Ietaupīts laiks"
+   }
+}

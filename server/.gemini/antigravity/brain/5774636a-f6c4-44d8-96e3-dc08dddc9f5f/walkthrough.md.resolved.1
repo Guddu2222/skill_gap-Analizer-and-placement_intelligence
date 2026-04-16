@@ -1,0 +1,27 @@
+# Mobile Responsiveness Fix Walkthrough: Hero Section
+
+I've successfully updated the Tailwind CSS classes in your [HeroSection.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/components/HeroSection.jsx) to ensure that it looks incredible across all device sizes (mobile phones, tablets, and smart TVs).
+
+## What Changed?
+
+The issue you experienced with horizontal scrolling and clipping on mobile was primarily caused by fixed, absolute `left` and `right` margins pushing the decorative cards outside the bounds of the screen, combined with excessive padding inside the dashboard mockup.
+
+### Responsive Breakpoint Application
+I replaced the static styles with Tailwind's dynamic breakpoint prefixes (`md:`):
+
+1. **Floating Statistic Cards (94.8% Placement & 2,847 Students)**
+   - **Mobile Behavior:** They now pull inward (`-left-2`, `-right-2`) and scale down to 90% (`scale-90`) to fit perfectly inside the phone screen.
+   - **Desktop Behavior:** On medium screens and up (`md:`), they revert back to their dramatic overlapping spread (`-left-6`, `-right-6`, `scale-100`).
+
+2. **Main Dashboard Padding**
+   - **Mobile Behavior:** Padding is reduced to `p-4` so the chart and numbers have room to breathe without getting squished.
+   - **Tablet/Desktop Behavior:** Padding smoothly scales up (`sm:p-6`, `lg:p-8`) as screen real estate increases.
+
+3. **Stats Grid Typography**
+   - The font sizes for the "Institutions" and "Placement Rate" numbers were dynamically adjusted so they don't break onto multiple lines on extremely narrow phone screens (`text-lg md:text-2xl`).
+
+## Next Steps
+
+**Preview Locally:** Since your Vite server is running, you can immediately test this by opening `http://localhost:5173` on your computer, pressing `F12` to open Developer Tools, and toggling the "Device Emulation" button to view it as a mobile phone.
+
+**Push to Vercel:** Simply commit these changes (`git add .`, `git commit -m "fix mobile responsiveness on hero page"`, `git push`) and Vercel will automatically redeploy the perfect mobile-friendly version!

@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "คุณบล็อกแล้ว"
+   },
+   "ads": {
+      "message": "โฆษณา"
+   },
+   "dataSavedTitle": {
+      "message": "บันทึกข้อมูลแล้ว"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "นำไปใช้กับเว็บไซต์ทั้งหมด"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "ความลึก"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "ดูตัวอย่าง"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "บันทึก"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "ตัวเลือก"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "ความจำเพาะ"
+   },
+   "elementBlocker_subtitle": {
+      "message": "คุณได้เลือกแล้ว"
+   },
+   "elementBlocker_title": {
+      "message": "น้ำยาล้างองค์ประกอบ"
+   },
+   "extDesc": {
+      "message": "บล็อกโฆษณาและป๊อปอัปบนเว็บไซต์ทั้งหมดที่คุณเปิดดูทุกวัน"
+   },
+   "extName": {
+      "message": "SBlock - ซุปเปอร์บล็อคโฆษณา"
+   },
+   "extNameFirstShort": {
+      "message": "เอสบล็อค"
+   },
+   "extNameLastShort": {
+      "message": "สุดยอดตัวบล็อกโฆษณา"
+   },
+   "filteringModeBasic": {
+      "message": "ขั้นพื้นฐาน"
+   },
+   "filteringModeSuper": {
+      "message": "ซุปเปอร์บล็อค"
+   },
+   "footerMadeLove": {
+      "message": "ทำด้วยความรักใน"
+   },
+   "footerShareFriends": {
+      "message": "แบ่งปันกับเพื่อนของคุณ"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "โหลดเร็วขึ้น"
+   },
+   "loveSblockButton": {
+      "message": "รัก SBlock ไหม?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "แสดงความคิดเห็น"
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "ไม่รองรับ SBlock ในหน้านี้"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "บล็อกโฆษณาภาษาท้องถิ่น"
+   },
+   "optionBlockManually": {
+      "message": "บล็อกด้วยตนเอง"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "เปิด"
+   },
+   "optionBlockManuallyReset": {
+      "message": "รีเซ็ตทั้งหมด"
+   },
+   "optionBlockManuallySelector": {
+      "message": "ตัวเลือก"
+   },
+   "optionBlockTracker": {
+      "message": "บล็อกติดตาม"
+   },
+   "optionPopupsCookie": {
+      "message": "ละเว้นการยอมรับป๊อปอัปคุกกี้"
+   },
+   "optionPopupsSocial": {
+      "message": "บล็อกวิดเจ็ตโซเชียล"
+   },
+   "reportIssueButton": {
+      "message": "รายงานปัญหา"
+   },
+   "reportIssueButtonDesc": {
+      "message": "บอกเราเพิ่มเติม"
+   },
+   "secDuration": {
+      "message": "วินาที"
+   },
+   "thisPageTitle": {
+      "message": "หน้านี้"
+   },
+   "thisWebsiteTitle": {
+      "message": "เว็บไซต์นี้"
+   },
+   "timeSavedTitle": {
+      "message": "ประหยัดเวลาแล้ว"
+   }
+}

@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Zablokovali jste"
+   },
+   "ads": {
+      "message": "reklamy"
+   },
+   "dataSavedTitle": {
+      "message": "Data uložena"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Použít na všechny stránky"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Hloubka"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Náhled"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Uložit"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Volič"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Specifičnost"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Vybrali jste"
+   },
+   "elementBlocker_title": {
+      "message": "Odstraňovač prvků"
+   },
+   "extDesc": {
+      "message": "Blokujte reklamy a vyskakovací okna na všech webových stránkách, které si každý den prohlížíte"
+   },
+   "extName": {
+      "message": "SBlock - Super Ad Blocker"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super blokovač reklam"
+   },
+   "filteringModeBasic": {
+      "message": "Základní"
+   },
+   "filteringModeSuper": {
+      "message": "Super blok"
+   },
+   "footerMadeLove": {
+      "message": "Vyrobeno s láskou v"
+   },
+   "footerShareFriends": {
+      "message": "Sdílejte se svými přáteli"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Nabíjejte rychleji"
+   },
+   "loveSblockButton": {
+      "message": "Máte rádi SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Zanechte recenzi."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock není na této stránce podporován"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Blokovat reklamy v místním jazyce"
+   },
+   "optionBlockManually": {
+      "message": "Blokovat ručně"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "OTEVŘENO"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Resetovat vše"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Volič"
+   },
+   "optionBlockTracker": {
+      "message": "Blokový sledovač"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignorovat vyskakovací okna pro přijímání souborů cookie"
+   },
+   "optionPopupsSocial": {
+      "message": "Blokovat sociální widgety"
+   },
+   "reportIssueButton": {
+      "message": "Nahlásit problém"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Řekněte nám více."
+   },
+   "secDuration": {
+      "message": "sek"
+   },
+   "thisPageTitle": {
+      "message": "Tato stránka"
+   },
+   "thisWebsiteTitle": {
+      "message": "Tento web"
+   },
+   "timeSavedTitle": {
+      "message": "Ušetřený čas"
+   }
+}

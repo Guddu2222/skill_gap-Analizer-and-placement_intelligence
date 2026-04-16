@@ -25,6 +25,14 @@ const skillLearningPathSchema = new mongoose.Schema(
       enum: ["beginner", "intermediate", "advanced", "expert"],
       required: true,
     },
+    phaseNumber: {
+      type: Number,
+      default: 1,
+    },
+    phaseTitle: {
+      type: String,
+      default: "Core Fundamentals",
+    },
 
     // Learning Resources
     learningResources: [

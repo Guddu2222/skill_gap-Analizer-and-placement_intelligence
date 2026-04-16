@@ -1,0 +1,26 @@
+<current_dom_explanation>
+This is a temporary snapshot of the current page's DOM structure. The DOM will change if you navigate to or interact with another page. Use a tool like browser_get_dom to capture and preserve the DOM in your trajectory if needed for later reference.
+</current_dom_explanation>
+<current_dom>
+[0] (500,851)<div  />
+	Academic Information
+	Tell us about your educational background
+	Step 2 of 6
+	Academic Details
+	[1] (500,382)<label class='block text-sm font-semibold text-gray-700 mb-2'>College / University * />
+	[2] (500,445)<input class='w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300' placeholder='Search your college...' />
+	Can't find your college?
+	[3] (352,502)<a class='text-blue-600 hover:text-blue-700 font-semibold' href='#'>Request to add />
+	[4] (500,567)<label class='block text-sm font-semibold text-gray-700 mb-2'>Roll Number / Registration Number * />
+	[5] (500,631)<input class='w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300' placeholder='e.g., 20CS101' />
+	[6] (500,718)<label class='block text-sm font-semibold text-gray-700 mb-2'>College Internal Roll Number
+Optional />
+		Optional
+	[7] (500,781)<input class='w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent' placeholder='e.g., CS-2023-047 (assigned by your college)' />
+	Different from the university roll number above. This helps your placement officer find you easily.
+	[8] (328,898)<label class='block text-sm font-semibold text-gray-700 mb-2'>Department / Branch * />
+	[9] (328,961)<select class='w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white border-gray-300' />
+	[10] (672,898)<label class='block text-sm font-semibold text-gray-700 mb-2'>Degree * />
+	[11] (672,961)<select class='w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white border-gray-300' />
+
+</current_dom>

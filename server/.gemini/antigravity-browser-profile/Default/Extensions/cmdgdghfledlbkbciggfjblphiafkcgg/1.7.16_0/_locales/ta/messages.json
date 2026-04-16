@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "நீங்கள் தடுத்துள்ளீர்கள்"
+   },
+   "ads": {
+      "message": "விளம்பரங்கள்"
+   },
+   "dataSavedTitle": {
+      "message": "தரவு சேமிக்கப்பட்டது"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "அனைத்து தளத்திற்கும் விண்ணப்பிக்கவும்"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "ஆழம்"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "முன்னோட்டம்"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "சேமிக்கவும்"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "தேர்வாளர்"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "தனித்தன்மை"
+   },
+   "elementBlocker_subtitle": {
+      "message": "நீங்கள் தேர்ந்தெடுத்துள்ளீர்கள்"
+   },
+   "elementBlocker_title": {
+      "message": "உறுப்பு நீக்கி"
+   },
+   "extDesc": {
+      "message": "நீங்கள் ஒவ்வொரு நாளும் உலவும் அனைத்து வலைத்தளங்களிலும் விளம்பரங்கள் மற்றும் பாப்-அப்களைத் தடுக்கவும்"
+   },
+   "extName": {
+      "message": "SBlock - சூப்பர் விளம்பரத் தடுப்பான்"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "சூப்பர் விளம்பரத் தடுப்பான்"
+   },
+   "filteringModeBasic": {
+      "message": "அடிப்படை"
+   },
+   "filteringModeSuper": {
+      "message": "சூப்பர் பிளாக்"
+   },
+   "footerMadeLove": {
+      "message": "அன்புடன் உருவாக்கப்பட்டது"
+   },
+   "footerShareFriends": {
+      "message": "உங்கள் நண்பர்களுடன் பகிர்ந்து கொள்ளுங்கள்"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "வேகமாக ஏற்றவும்"
+   },
+   "loveSblockButton": {
+      "message": "SBlock பிடிக்குமா?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "ஒரு மதிப்பாய்வை விடுங்கள்."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "இந்தப் பக்கத்தில் SBlock ஆதரிக்கப்படவில்லை"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "உள்ளூர் மொழி விளம்பரங்களைத் தடு"
+   },
+   "optionBlockManually": {
+      "message": "கைமுறையாகத் தடு"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "திற"
+   },
+   "optionBlockManuallyReset": {
+      "message": "அனைத்தையும் மீட்டமைக்கவும்"
+   },
+   "optionBlockManuallySelector": {
+      "message": "தேர்வாளர்"
+   },
+   "optionBlockTracker": {
+      "message": "பிளாக் டிராக்கர்"
+   },
+   "optionPopupsCookie": {
+      "message": "குக்கீகள் பாப்அப்களை ஏற்றுக்கொள்வதைப் புறக்கணிக்கவும்"
+   },
+   "optionPopupsSocial": {
+      "message": "சமூக விட்ஜெட்களைத் தடு"
+   },
+   "reportIssueButton": {
+      "message": "சிக்கலைப் புகாரளிக்கவும்"
+   },
+   "reportIssueButtonDesc": {
+      "message": "மேலும் சொல்லுங்கள்."
+   },
+   "secDuration": {
+      "message": "நொடி"
+   },
+   "thisPageTitle": {
+      "message": "இந்தப் பக்கம்"
+   },
+   "thisWebsiteTitle": {
+      "message": "இந்த இணையதளம்"
+   },
+   "timeSavedTitle": {
+      "message": "நேரம் சேமிக்கப்பட்டது"
+   }
+}

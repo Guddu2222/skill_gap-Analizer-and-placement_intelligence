@@ -1,0 +1,6 @@
+# Task List
+
+- [x] Create [Email.config.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/utils/Email.config.js) to initialize Nodemailer.
+- [x] Create [EmailTemplate.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/utils/EmailTemplate.js) for verification and welcome emails.
+- [x] Update [sendEmail.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/utils/sendEmail.js) export [sendVerificationEmail](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/utils/sendEmail.js#4-18) and [sendWelcomeEmail](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/utils/sendEmail.js#19-33).
+- [x] Update [auth.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/routes/auth.js) backend routes to use the new email sending methods correctly.

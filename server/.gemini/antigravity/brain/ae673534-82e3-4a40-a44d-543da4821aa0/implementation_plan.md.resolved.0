@@ -1,0 +1,19 @@
+# Implementation Plan - Debug Registration 500 Error
+
+## Goal
+The goal is to identify the cause of the 500 Internal Server Error during user registration. Currently, the server swallows the error without logging it.
+
+## Proposed Changes
+
+### Server
+
+#### [MODIFY] [authController.js](file:///d:/project/Fittness%20tracking%20website/server/src/controllers/authController.js)
+- Update the [register](file:///d:/project/Fittness%20tracking%20website/server/src/controllers/authController.js#9-22) function to log the error to the console in the `catch` block.
+- Update the [login](file:///d:/project/Fittness%20tracking%20website/server/src/controllers/authController.js#23-35) function to log the error as well, for consistency.
+
+## Verification Plan
+
+### Manual Verification
+1.  After applying the changes, the user (or I) will retry the registration process on the frontend.
+2.  I will check the terminal output (via `read_terminal` if possible, or ask the user) to see the actual error message.
+3.  Based on the error message, I will determine the next steps (e.g., fixing DB connection, schema issues, etc.).

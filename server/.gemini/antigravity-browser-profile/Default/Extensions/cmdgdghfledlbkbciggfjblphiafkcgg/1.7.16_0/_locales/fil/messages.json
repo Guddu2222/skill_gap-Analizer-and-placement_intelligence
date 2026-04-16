@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Naka-block ka"
+   },
+   "ads": {
+      "message": "Mga ad"
+   },
+   "dataSavedTitle": {
+      "message": "Na-save ang data"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Mag-apply sa lahat ng site"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Lalim"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Silipin"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "I-save"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Tagapili"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Pagtitiyak"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Napili mo"
+   },
+   "elementBlocker_title": {
+      "message": "Tagatanggal ng Elemento"
+   },
+   "extDesc": {
+      "message": "I-block ang mga ad at pop-up sa Lahat ng website na bina-browse mo araw-araw"
+   },
+   "extName": {
+      "message": "SBlock - Super Ad Blocker"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super Ad Blocker"
+   },
+   "filteringModeBasic": {
+      "message": "Basic"
+   },
+   "filteringModeSuper": {
+      "message": "Super Block"
+   },
+   "footerMadeLove": {
+      "message": "Ginawa nang may pagmamahal sa"
+   },
+   "footerShareFriends": {
+      "message": "Ibahagi sa iyong mga kaibigan"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Mag-load nang mas mabilis"
+   },
+   "loveSblockButton": {
+      "message": "Mahal ang SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Mag-iwan ng pagsusuri."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "Hindi suportado ang SBlock sa page na ito"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "I-block ang mga ad ng lokal na wika"
+   },
+   "optionBlockManually": {
+      "message": "I-block nang manu-mano"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Bukas"
+   },
+   "optionBlockManuallyReset": {
+      "message": "I-reset lahat"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Tagapili"
+   },
+   "optionBlockTracker": {
+      "message": "I-block ang tracker"
+   },
+   "optionPopupsCookie": {
+      "message": "Huwag pansinin ang pagtanggap ng mga popup ng cookies"
+   },
+   "optionPopupsSocial": {
+      "message": "I-block ang mga social widget"
+   },
+   "reportIssueButton": {
+      "message": "Mag-ulat ng isyu"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Sabihin sa amin ang higit pa."
+   },
+   "secDuration": {
+      "message": "sec"
+   },
+   "thisPageTitle": {
+      "message": "Ang pahinang ito"
+   },
+   "thisWebsiteTitle": {
+      "message": "Ang website na ito"
+   },
+   "timeSavedTitle": {
+      "message": "Nakatipid ng oras"
+   }
+}

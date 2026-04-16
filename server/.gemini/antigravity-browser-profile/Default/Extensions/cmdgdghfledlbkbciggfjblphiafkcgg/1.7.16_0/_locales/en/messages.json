@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "You've blocked"
+   },
+   "ads": {
+      "message": "Ads"
+   },
+   "dataSavedTitle": {
+      "message": "Data saved"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Apply to all site"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Depth"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Preview"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Save"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Selector"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Specificity"
+   },
+   "elementBlocker_subtitle": {
+      "message": "You’ve selected"
+   },
+   "elementBlocker_title": {
+      "message": "Element Remover"
+   },
+   "extDesc": {
+      "message": "Block ads and pop-ups on All the websites you browse every day"
+   },
+   "extName": {
+      "message": "SBlock - Super Ad Blocker"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super Ad Blocker"
+   },
+   "filteringModeBasic": {
+      "message": "Basic"
+   },
+   "filteringModeSuper": {
+      "message": "Super Block"
+   },
+   "footerMadeLove": {
+      "message": "Made with love in"
+   },
+   "footerShareFriends": {
+      "message": "Share with your friends"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Load faster"
+   },
+   "loveSblockButton": {
+      "message": "Love SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Leave a review."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock not supported on this page"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Block local language ads"
+   },
+   "optionBlockManually": {
+      "message": "Block manually"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Open"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Reset all"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Selector"
+   },
+   "optionBlockTracker": {
+      "message": "Block tracker"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignore accept cookies popups"
+   },
+   "optionPopupsSocial": {
+      "message": "Block social widgets"
+   },
+   "reportIssueButton": {
+      "message": "Report an issue"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Tell us more."
+   },
+   "secDuration": {
+      "message": "sec"
+   },
+   "thisPageTitle": {
+      "message": "This page"
+   },
+   "thisWebsiteTitle": {
+      "message": "This website"
+   },
+   "timeSavedTitle": {
+      "message": "Time saved"
+   }
+}

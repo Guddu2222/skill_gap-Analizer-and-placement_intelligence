@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "你已屏蔽"
+   },
+   "ads": {
+      "message": "廣告"
+   },
+   "dataSavedTitle": {
+      "message": "資料已儲存"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "適用於所有網站"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "深度"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "預覽"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "節省"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "選擇器"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "特異性"
+   },
+   "elementBlocker_subtitle": {
+      "message": "您已選擇"
+   },
+   "elementBlocker_title": {
+      "message": "元素去除劑"
+   },
+   "extDesc": {
+      "message": "阻止您每天瀏覽的所有網站上的廣告和彈出窗口"
+   },
+   "extName": {
+      "message": "SBlock - 超級廣告攔截器"
+   },
+   "extNameFirstShort": {
+      "message": "斯布洛克"
+   },
+   "extNameLastShort": {
+      "message": "超廣告攔截器"
+   },
+   "filteringModeBasic": {
+      "message": "基本的"
+   },
+   "filteringModeSuper": {
+      "message": "超級街區"
+   },
+   "footerMadeLove": {
+      "message": "用愛製造"
+   },
+   "footerShareFriends": {
+      "message": "與您的朋友分享"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "載入速度更快"
+   },
+   "loveSblockButton": {
+      "message": "喜歡SBlock嗎？"
+   },
+   "loveSblockButtonDesc": {
+      "message": "留下評論。"
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "此頁面不支援 SBlock"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "封鎖本地語言廣告"
+   },
+   "optionBlockManually": {
+      "message": "手動阻止"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "打開"
+   },
+   "optionBlockManuallyReset": {
+      "message": "全部重置"
+   },
+   "optionBlockManuallySelector": {
+      "message": "選擇器"
+   },
+   "optionBlockTracker": {
+      "message": "區塊追蹤器"
+   },
+   "optionPopupsCookie": {
+      "message": "忽略接受 cookies 彈出窗口"
+   },
+   "optionPopupsSocial": {
+      "message": "阻止社交小部件"
+   },
+   "reportIssueButton": {
+      "message": "報告問題"
+   },
+   "reportIssueButtonDesc": {
+      "message": "告訴我們更多。"
+   },
+   "secDuration": {
+      "message": "秒"
+   },
+   "thisPageTitle": {
+      "message": "本頁"
+   },
+   "thisWebsiteTitle": {
+      "message": "這個網站"
+   },
+   "timeSavedTitle": {
+      "message": "節省時間"
+   }
+}

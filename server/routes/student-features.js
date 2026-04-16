@@ -259,6 +259,8 @@ router.put("/update-profile", auth, async (req, res) => {
       preferredLocations,
       expectedSalaryMin,
       expectedSalaryMax,
+      placementStatus,
+      visibilityPreferences,
       // Address
       addressLine1,
       addressLine2,
@@ -340,6 +342,17 @@ router.put("/update-profile", auth, async (req, res) => {
     if (expectedSalaryMax !== undefined)
       student.expectedSalaryMax =
         expectedSalaryMax !== "" ? parseFloat(expectedSalaryMax) : undefined;
+
+    if (placementStatus !== undefined) student.placementStatus = placementStatus;
+    if (visibilityPreferences !== undefined) {
+      if (!student.visibilityPreferences) student.visibilityPreferences = {};
+      if (visibilityPreferences.showPlacementScore !== undefined)
+        student.visibilityPreferences.showPlacementScore = Boolean(visibilityPreferences.showPlacementScore);
+      if (visibilityPreferences.showLearningPaths !== undefined)
+        student.visibilityPreferences.showLearningPaths = Boolean(visibilityPreferences.showLearningPaths);
+      if (visibilityPreferences.showCgpa !== undefined)
+        student.visibilityPreferences.showCgpa = Boolean(visibilityPreferences.showCgpa);
+    }
 
     // Address
     if (addressLine1 !== undefined)

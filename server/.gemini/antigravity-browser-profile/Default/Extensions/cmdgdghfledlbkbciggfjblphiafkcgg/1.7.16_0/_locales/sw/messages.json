@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Umezuia"
+   },
+   "ads": {
+      "message": "Matangazo"
+   },
+   "dataSavedTitle": {
+      "message": "Data imehifadhiwa"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Omba kwa tovuti zote"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Kina"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Hakiki"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Hifadhi"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Kiteuzi"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Umaalumu"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Umechagua"
+   },
+   "elementBlocker_title": {
+      "message": "Kiondoa Kipengele"
+   },
+   "extDesc": {
+      "message": "Zuia matangazo na madirisha ibukizi kwenye Tovuti zote unazovinjari kila siku"
+   },
+   "extName": {
+      "message": "SBlock - Kizuia Matangazo Bora"
+   },
+   "extNameFirstShort": {
+      "message": "Kuzuia"
+   },
+   "extNameLastShort": {
+      "message": "Super Ad Blocker"
+   },
+   "filteringModeBasic": {
+      "message": "Msingi"
+   },
+   "filteringModeSuper": {
+      "message": "Super Block"
+   },
+   "footerMadeLove": {
+      "message": "Imetengenezwa kwa upendo ndani"
+   },
+   "footerShareFriends": {
+      "message": "Shiriki na marafiki zako"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Pakia haraka"
+   },
+   "loveSblockButton": {
+      "message": "Unapenda SBlock?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Acha ukaguzi."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock haitumiki kwenye ukurasa huu"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Zuia matangazo ya lugha ya ndani"
+   },
+   "optionBlockManually": {
+      "message": "Zuia wewe mwenyewe"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Fungua"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Weka upya zote"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Kiteuzi"
+   },
+   "optionBlockTracker": {
+      "message": "Zuia kifuatiliaji"
+   },
+   "optionPopupsCookie": {
+      "message": "Puuza ukubali ibukizi za vidakuzi"
+   },
+   "optionPopupsSocial": {
+      "message": "Zuia wijeti za kijamii"
+   },
+   "reportIssueButton": {
+      "message": "Ripoti suala"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Tuambie zaidi."
+   },
+   "secDuration": {
+      "message": "sekunde"
+   },
+   "thisPageTitle": {
+      "message": "Ukurasa huu"
+   },
+   "thisWebsiteTitle": {
+      "message": "Tovuti hii"
+   },
+   "timeSavedTitle": {
+      "message": "Muda umehifadhiwa"
+   }
+}

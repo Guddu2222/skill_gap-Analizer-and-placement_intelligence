@@ -1,0 +1,53 @@
+# Fix: College Admin Registration — Auto-Create & Link College
+
+When a college admin signs up, only a `User` document is created. No [College](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/CollegeSignup.jsx#5-295) document is made, and `user.college` is never set. The dashboard reads `req.user.collegeId` from the JWT (which comes from `user.college`) — so it gets `undefined` and returns a 403 error.
+
+## Proposed Changes
+
+### Backend — Auth Route
+
+#### [MODIFY] [auth.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/routes/auth.js)
+
+In the `/register` endpoint, **after saving the User**, add a `college_admin` block that:
+
+1. Destructures `collegeName`, `phone`, `address` from `req.body` (already sent by the frontend)
+2. Extracts the **email domain** from the email (e.g. `admin@piet.edu` → `piet.edu`) to satisfy the `emailDomain` required field on the College model
+3. **Upserts** a [College](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/CollegeSignup.jsx#5-295) document by `emailDomain` (so re-registration doesn't create duplicates):
+   ```js
+   const college = await College.findOneAndUpdate(
+     { emailDomain: emailDomain },
+     { $setOnInsert: { name: collegeName, emailDomain, location: address } },
+     { upsert: true, new: true }
+   );
+   ```
+4. Sets `user.college = college._id` and saves the user again
+5. Adds `collegeId` to the JWT payload so the dashboard middleware can read it
+
+### Backend — College Model
+
+#### [MODIFY] [College.js](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/server/models/College.js)
+
+Make `emailDomain` **not required** (change `required: true` to `required: false`) so colleges with generic email domains (e.g. `gmail.com`) don't fail validation. The domain will still be stored and used for de-duplication.
+
+> [!NOTE]
+> The email domain is auto-extracted so no extra input is needed from the user on the frontend.
+
+---
+
+## Verification Plan
+
+### Manual Testing (Browser)
+
+1. Open [http://localhost:5173/signup/college](http://localhost:5173/signup/college)
+2. Fill in all fields with a new email (e.g. `admin@newcollege.edu`) and submit
+3. Verify you are redirected to the verification page at `/signup/verify-email`
+4. Enter the 6-digit code from your email
+5. After verification, log in at `/login` with your college admin credentials
+6. Verify you are redirected to the college dashboard at `/college`
+7. **The yellow warning box should be GONE** and the dashboard should show stats (0 students initially is fine)
+
+### Database Check (MongoDB)
+
+After step 3 above, you can confirm in MongoDB Atlas / Compass:
+- A new `User` document exists with `role: "college_admin"` and a non-null `college` field
+- A new [College](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/CollegeSignup.jsx#5-295) document exists with the `name` and `emailDomain` you registered with

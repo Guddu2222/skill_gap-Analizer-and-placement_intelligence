@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "ನೀವು ನಿರ್ಬಂಧಿಸಿರುವಿರಿ"
+   },
+   "ads": {
+      "message": "ಜಾಹೀರಾತುಗಳು"
+   },
+   "dataSavedTitle": {
+      "message": "ಡೇಟಾವನ್ನು ಉಳಿಸಲಾಗಿದೆ"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "ಎಲ್ಲಾ ಸೈಟ್‌ಗೆ ಅನ್ವಯಿಸಿ"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "ಆಳ"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "ಪೂರ್ವವೀಕ್ಷಣೆ"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "ಉಳಿಸಿ"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "ಸೆಲೆಕ್ಟರ್"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "ನಿರ್ದಿಷ್ಟತೆ"
+   },
+   "elementBlocker_subtitle": {
+      "message": "ನೀವು ಆಯ್ಕೆ ಮಾಡಿದ್ದೀರಿ"
+   },
+   "elementBlocker_title": {
+      "message": "ಎಲಿಮೆಂಟ್ ಹೋಗಲಾಡಿಸುವವನು"
+   },
+   "extDesc": {
+      "message": "ನೀವು ಪ್ರತಿದಿನ ಬ್ರೌಸ್ ಮಾಡುವ ಎಲ್ಲಾ ವೆಬ್‌ಸೈಟ್‌ಗಳಲ್ಲಿ ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಪಾಪ್-ಅಪ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ"
+   },
+   "extName": {
+      "message": "SBlock - ಸೂಪರ್ ಜಾಹೀರಾತು ಬ್ಲಾಕರ್"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "ಸೂಪರ್ ಜಾಹೀರಾತು ಬ್ಲಾಕರ್"
+   },
+   "filteringModeBasic": {
+      "message": "ಮೂಲಭೂತ"
+   },
+   "filteringModeSuper": {
+      "message": "ಸೂಪರ್ ಬ್ಲಾಕ್"
+   },
+   "footerMadeLove": {
+      "message": "ಪ್ರೀತಿಯಿಂದ ಮಾಡಲ್ಪಟ್ಟಿದೆ"
+   },
+   "footerShareFriends": {
+      "message": "ನಿಮ್ಮ ಸ್ನೇಹಿತರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "ವೇಗವಾಗಿ ಲೋಡ್ ಮಾಡಿ"
+   },
+   "loveSblockButton": {
+      "message": "SBlock ಅನ್ನು ಪ್ರೀತಿಸುತ್ತೀರಾ?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "ವಿಮರ್ಶೆಯನ್ನು ಬಿಡಿ."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "ಈ ಪುಟದಲ್ಲಿ SBlock ಬೆಂಬಲಿಸುವುದಿಲ್ಲ"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "ಸ್ಥಳೀಯ ಭಾಷೆಯ ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ"
+   },
+   "optionBlockManually": {
+      "message": "ಹಸ್ತಚಾಲಿತವಾಗಿ ನಿರ್ಬಂಧಿಸಿ"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "ತೆರೆಯಿರಿ"
+   },
+   "optionBlockManuallyReset": {
+      "message": "ಎಲ್ಲವನ್ನೂ ಮರುಹೊಂದಿಸಿ"
+   },
+   "optionBlockManuallySelector": {
+      "message": "ಸೆಲೆಕ್ಟರ್"
+   },
+   "optionBlockTracker": {
+      "message": "ಬ್ಲಾಕ್ ಟ್ರ್ಯಾಕರ್"
+   },
+   "optionPopupsCookie": {
+      "message": "ಕುಕೀಸ್ ಪಾಪ್ಅಪ್ಗಳನ್ನು ಸ್ವೀಕರಿಸುವುದನ್ನು ನಿರ್ಲಕ್ಷಿಸಿ"
+   },
+   "optionPopupsSocial": {
+      "message": "ಸಾಮಾಜಿಕ ವಿಜೆಟ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ"
+   },
+   "reportIssueButton": {
+      "message": "ಸಮಸ್ಯೆಯನ್ನು ವರದಿ ಮಾಡಿ"
+   },
+   "reportIssueButtonDesc": {
+      "message": "ನಮಗೆ ಇನ್ನಷ್ಟು ಹೇಳಿ."
+   },
+   "secDuration": {
+      "message": "ಸೆಕೆಂಡು"
+   },
+   "thisPageTitle": {
+      "message": "ಈ ಪುಟ"
+   },
+   "thisWebsiteTitle": {
+      "message": "ಈ ವೆಬ್‌ಸೈಟ್"
+   },
+   "timeSavedTitle": {
+      "message": "ಸಮಯವನ್ನು ಉಳಿಸಲಾಗಿದೆ"
+   }
+}

@@ -1,0 +1,32 @@
+# Task: Debug Blank White Page in React App
+
+## Goal
+Diagnose why the React app shows a blank white page after Google OAuth redirect, specifically on the `/oauth-callback` route.
+
+## Plan
+1. [ ] Navigate to `http://localhost:5173/oauth-callback?token=testtoken123&role=student&userId=abc456`
+2. [ ] Wait 2 seconds for initial load.
+3. [ ] Capture full screen screenshot.
+4. [ ] Capture console logs for errors.
+5. [ ] List network requests for failed ones.
+6. [ ] Execute JS to get DOM content for debugging:
+    * `document.body.innerHTML`
+    * `document.getElementById('root').innerHTML`
+7. [ ] Report findings.
+
+## Progress
+- [x] Navigate to `http://localhost:5173/oauth-callback?token=testtoken123&role=student&userId=abc456`
+- [x] Wait 2 seconds for initial load.
+- [x] Capture full screen screenshot. (Saved: blank_page_callback_1775220131916.png)
+- [x] Capture console logs for errors.
+- [x] List network requests for failed ones. (No requests found, likely due to React Router not finding a matching route).
+- [x] Execute JS to get DOM content for debugging: (Browser DOM tool returned empty structure)
+    * `document.body.innerHTML`
+    * `document.getElementById('root').innerHTML`
+- [ ] Report findings.
+
+## Findings
+- **Console Log Warning:** `No routes matched location "/oauth-callback?token=testtoken123&role=student&userId=abc456"`. This is the reason for the blank page. React Router does not have a route defined for `/oauth-callback`.
+- **DOM:** The DOM tree is empty, confirming that nothing is being rendered within the `#root` element because of the missing route.
+- **Screenshot:** Confirmed a blank white page.
+- **Network Tab:** No network requests were recorded, which is consistent with the app failing at the routing stage before making any API calls (like `fetchStudentProfile`).

@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "आपने ब्लॉक कर दिया है"
+   },
+   "ads": {
+      "message": "विज्ञापन"
+   },
+   "dataSavedTitle": {
+      "message": "डेटा सहेजा गया"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "सभी साइट पर लागू करें"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "गहराई"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "पूर्व दर्शन"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "बचाना"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "चयनकर्ता"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "विशेषता"
+   },
+   "elementBlocker_subtitle": {
+      "message": "आपने चयन कर लिया है"
+   },
+   "elementBlocker_title": {
+      "message": "तत्व हटानेवाला"
+   },
+   "extDesc": {
+      "message": "उन सभी वेबसाइटों पर विज्ञापन और पॉप-अप ब्लॉक करें जिन्हें आप प्रतिदिन ब्राउज़ करते हैं"
+   },
+   "extName": {
+      "message": "SBlock - सुपर विज्ञापन अवरोधक"
+   },
+   "extNameFirstShort": {
+      "message": "एसब्लॉक"
+   },
+   "extNameLastShort": {
+      "message": "सुपर विज्ञापन अवरोधक"
+   },
+   "filteringModeBasic": {
+      "message": "बुनियादी"
+   },
+   "filteringModeSuper": {
+      "message": "सुपर ब्लॉक"
+   },
+   "footerMadeLove": {
+      "message": "प्यार से बनाया गया"
+   },
+   "footerShareFriends": {
+      "message": "अपने दोस्तों के साथ साझा करें"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "तेजी से लोड करें"
+   },
+   "loveSblockButton": {
+      "message": "SBlock से प्यार है?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "समीक्षा लिखें।"
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "इस पृष्ठ पर SBlock समर्थित नहीं है"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "स्थानीय भाषा के विज्ञापनों को ब्लॉक करें"
+   },
+   "optionBlockManually": {
+      "message": "मैन्युअल रूप से ब्लॉक करें"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "खुला"
+   },
+   "optionBlockManuallyReset": {
+      "message": "सभी को पुनः तैयार करना"
+   },
+   "optionBlockManuallySelector": {
+      "message": "चयनकर्ता"
+   },
+   "optionBlockTracker": {
+      "message": "ट्रैकर को ब्लॉक करें"
+   },
+   "optionPopupsCookie": {
+      "message": "कुकीज़ स्वीकार करें पॉपअप पर ध्यान न दें"
+   },
+   "optionPopupsSocial": {
+      "message": "सामाजिक विजेट्स को ब्लॉक करें"
+   },
+   "reportIssueButton": {
+      "message": "मामले की रिपोर्ट करें"
+   },
+   "reportIssueButtonDesc": {
+      "message": "हमें और अधिक बताएँ।"
+   },
+   "secDuration": {
+      "message": "सेकंड"
+   },
+   "thisPageTitle": {
+      "message": "यह पृष्ठ"
+   },
+   "thisWebsiteTitle": {
+      "message": "यह वेबसाइट"
+   },
+   "timeSavedTitle": {
+      "message": "समय की बचत हुई"
+   }
+}

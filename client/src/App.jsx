@@ -10,6 +10,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import RecruiterCRM from "./pages/RecruiterCRM";
 import SmartShortlist from "./pages/SmartShortlist";
 import AboutUs from "./pages/AboutUs";
+import OAuthCallbackPage from "./pages/OAuthCallbackPage";
 
 // Signup Pages
 import RoleSelectionPage from "./pages/signup/RoleSelectionPage";
@@ -31,6 +32,9 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+
+        {/* OAuth Callback — receives JWT from server after social login */}
+        <Route path="/oauth-callback" element={<OAuthCallbackPage />} />
 
         {/* Signup Routes */}
         <Route path="/signup" element={<RoleSelectionPage />} />
@@ -84,6 +88,10 @@ const App = () => {
         <Route
           path="/student/interviews"
           element={<StudentDashboard activeRoute="interviews" />}
+        />
+        <Route
+          path="/student/settings"
+          element={<StudentDashboard activeRoute="settings" />}
         />
       </Routes>
     </Router>

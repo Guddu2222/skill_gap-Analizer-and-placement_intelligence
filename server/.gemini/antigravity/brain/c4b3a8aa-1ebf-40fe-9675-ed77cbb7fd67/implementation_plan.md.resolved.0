@@ -1,0 +1,54 @@
+# Authentication & Security Implementation Plan
+
+We will overhaul the authentication system to use the new glassmorphism design and implement senior-level security practices (Email Verification & HTTP-only Cookie Sessions).
+
+## Proposed Changes
+
+### Backend (Node.js/Express)
+
+#### [MODIFY] [User.js](file:///d:/project/Smart%20Expense%20Manager/server/models/User.js)
+- Add `isVerified` (boolean, default false).
+- Add `verificationToken` (string).
+- Add `verificationTokenExpire` (Date).
+
+#### [NEW] [sendEmail.js](file:///d:/project/Smart%20Expense%20Manager/server/utils/sendEmail.js)
+- Create a reusable Nodemailer utility to send emails.
+
+#### [MODIFY] [authController.js](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js)
+- **[registerUser](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#11-44)**: Generate a crypto-random verification token, save it to the user, and send a verification email instead of logging the user in immediately.
+- **`verifyEmail` [NEW]**: Endpoint to validate the token and set `isVerified = true`.
+- **[loginUser](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#45-77)**: 
+  - Check if `user.isVerified` is true before allowing login.
+  - Change token delivery from JSON response to a secure HTTP-Only cookie using `res.cookie()`.
+- **`logoutUser` [NEW]**: Endpoint to clear the HTTP-only cookie.
+- **[getMe](file:///d:/project/Smart%20Expense%20Manager/server/controllers/authController.js#78-89)**: Refactor slightly to ensure it works with cookies.
+
+#### [MODIFY] [authRoutes.js](file:///d:/project/Smart%20Expense%20Manager/server/routes/authRoutes.js)
+- Add routes for `/verify/:token` and `/logout`.
+
+#### [MODIFY] [authMiddleware.js](file:///d:/project/Smart%20Expense%20Manager/server/middleware/authMiddleware.js)
+- Update to extract the JWT from cookies (`req.cookies.token`) instead of the `Authorization` header.
+
+### Frontend (React/Vite)
+
+#### [NEW] [authBg.png](file:///d:/project/Smart%20Expense%20Manager/client/src/assets/authBg.png)
+- Add a high-quality abstract background image for the glassy UI.
+
+#### [MODIFY] [Register.jsx](file:///d:/project/Smart%20Expense%20Manager/client/src/pages/Register.jsx)
+- Implement the provided Glassmorphism design.
+- Update API call to handle the new registration flow (success message directing user to check email).
+
+#### [MODIFY] [Login.jsx](file:///d:/project/Smart%20Expense%20Manager/client/src/pages/Login.jsx)
+- Implement the provided Glassmorphism design.
+- Update UI to show error if the account is not verified.
+
+#### [MODIFY] [AuthContext.jsx](file:///d:/project/Smart%20Expense%20Manager/client/src/context/AuthContext.jsx)
+- Update Axios requests (login, register, check-auth) to include `withCredentials: true` so cookies are stored and sent automatically.
+
+## Verification Plan
+
+### Automated/Manual Verification
+1. **Registration Flow**: Fill out the Register form -> Verify user is created in DB with `isVerified: false` -> Verify email is printed in console/sent (using Mailtrap or ethereal email) -> Click verification link -> Verify DB updates to `isVerified: true`.
+2. **Login & Session Storage**: Attempt to login -> Verify login succeeds and an HTTP-Only cookie `token` is set in the browser's Application tab -> Verify protected routes (Dashboard) load correctly without a visible token in local storage.
+3. **Logout**: Click logout -> Verify cookie is cleared -> Verify redirect to login page.
+4. **UI Checks**: Verify the full-screen background and glass card effects render correctly without breaking mobile responsiveness.

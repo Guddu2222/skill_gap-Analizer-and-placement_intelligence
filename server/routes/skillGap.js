@@ -21,6 +21,22 @@ router.post("/analyze", auth, async (req, res) => {
       return res.status(400).json({ error: "Target domain is required" });
     }
 
+    // Cooldown check (5 minutes)
+    const latestAnalysis = await SkillGapAnalysis.findOne({ student: studentId }).sort({ createdAt: -1 });
+    if (latestAnalysis) {
+      const COOLDOWN_MINUTES = 5;
+      const now = new Date();
+      const diffMs = now - new Date(latestAnalysis.createdAt);
+      const diffMins = diffMs / (1000 * 60);
+
+      if (diffMins < COOLDOWN_MINUTES) {
+        const remainingTime = Math.ceil(COOLDOWN_MINUTES - diffMins);
+        return res.status(429).json({ 
+          error: `Please wait ${remainingTime} minute(s) before generating a new analysis to prevent system limits.` 
+        });
+      }
+    }
+
     const result = await skillGapService.analyzeSkillGap(
       studentId,
       targetDomain,
@@ -38,6 +54,13 @@ router.post("/analyze", auth, async (req, res) => {
       "Skill gap analysis route error details:",
       error.stack || error,
     );
+    
+    if (error.status === 429) {
+      return res.status(429).json({
+        error: error.message,
+      });
+    }
+    
     res.status(500).json({
       error: "Failed to analyze skill gap",
       message: error.message,
@@ -214,14 +237,62 @@ router.patch("/learning-paths/:id/progress", auth, async (req, res) => {
       return res.status(404).json({ error: "Learning path not found" });
     }
 
+    let skillAddedToProfile = false;
+
+    // Helper to auto-add or update skill in Student profile
+    const syncSkillToProfile = async () => {
+      if (!learningPath.skillName) return;
+      const skillNameToMatch = learningPath.skillName.toLowerCase().trim();
+      let skillExists = false;
+
+      if (!student.skills) student.skills = [];
+
+      for (let i = 0; i < student.skills.length; i++) {
+        const s = student.skills[i];
+        if (s.skillName && s.skillName.toLowerCase().trim() === skillNameToMatch) {
+          skillExists = true;
+          // Update proficiency if applicable
+          if (learningPath.targetLevel) {
+            const levels = ["beginner", "intermediate", "advanced", "expert"];
+            const currentIdx = levels.indexOf(s.proficiencyLevel) || 0;
+            const targetIdx = levels.indexOf(learningPath.targetLevel);
+            if (targetIdx > currentIdx) {
+              s.proficiencyLevel = learningPath.targetLevel;
+            }
+          }
+          // Mark as verified
+          s.verified = true;
+          s.verifiedBy = "Skill Gap Analyser (Learning Path)";
+          break;
+        }
+      }
+
+      if (!skillExists) {
+        student.skills.push({
+          skillName: learningPath.skillName,
+          proficiencyLevel: learningPath.targetLevel || "intermediate",
+          verified: true,
+          verifiedBy: "Skill Gap Analyser (Learning Path)",
+        });
+      }
+
+      await student.save();
+      skillAddedToProfile = true;
+    };
+
     // Update progress
     if (progress !== undefined) {
       learningPath.progressPercentage = progress;
 
       if (progress >= 100) {
         learningPath.progressPercentage = 100;
+        const wasCompleted = learningPath.status === "completed";
         learningPath.status = "completed";
         learningPath.completedAt = new Date();
+        
+        if (!wasCompleted) {
+          await syncSkillToProfile();
+        }
       } else if (progress > 0 && learningPath.status === "not_started") {
         learningPath.status = "in_progress";
         learningPath.startedAt = new Date();
@@ -237,6 +308,31 @@ router.patch("/learning-paths/:id/progress", auth, async (req, res) => {
           milestones[milestoneIndex].completedDate = new Date();
         }
         learningPath.milestones = milestones;
+
+        // Auto-calculate progress based on completed milestones
+        const completedCount = milestones.filter(m => m.completed).length;
+        const totalCount = milestones.length;
+        if (totalCount > 0) {
+          const autoProgress = Math.round((completedCount / totalCount) * 100);
+          learningPath.progressPercentage = autoProgress;
+
+          if (autoProgress >= 100) {
+            learningPath.progressPercentage = 100;
+            const wasCompleted = learningPath.status === "completed";
+            learningPath.status = "completed";
+            learningPath.completedAt = new Date();
+            
+            if (!wasCompleted) {
+              await syncSkillToProfile();
+            }
+          } else if (autoProgress > 0 && learningPath.status === "not_started") {
+            learningPath.status = "in_progress";
+            learningPath.startedAt = new Date();
+          } else if (autoProgress > 0 && autoProgress < 100 && learningPath.status === "completed") {
+            learningPath.status = "in_progress";
+            learningPath.completedAt = undefined;
+          }
+        }
       }
     }
 
@@ -245,6 +341,7 @@ router.patch("/learning-paths/:id/progress", auth, async (req, res) => {
     res.json({
       success: true,
       learningPath,
+      skillAddedToProfile,
     });
   } catch (error) {
     console.error("Update progress error:", error);
@@ -275,6 +372,55 @@ router.get("/domains", async (req, res) => {
   } catch (error) {
     console.error("Get domains error:", error);
     res.status(500).json({ error: "Failed to fetch domains" });
+  }
+});
+
+// Reschedule Learning Path Dates
+router.post("/learning-paths/:id/reschedule", auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const student = await Student.findOne({ user: req.user.userId });
+    
+    if (!student) {
+      return res.status(404).json({ error: "Student profile not found" });
+    }
+
+    const learningPath = await SkillLearningPath.findOne({
+      _id: id,
+      student: student._id,
+    });
+
+    if (!learningPath) {
+      return res.status(404).json({ error: "Learning path not found" });
+    }
+
+    // Shift dates starting from today for uncompleted milestones
+    const milestones = [...learningPath.milestones];
+    let offsetWeeks = 1;
+    let modified = false;
+
+    for (let i = 0; i < milestones.length; i++) {
+        if (!milestones[i].completed) {
+            const newDate = new Date();
+            newDate.setDate(newDate.getDate() + offsetWeeks * 7);
+            milestones[i].dueDate = newDate;
+            offsetWeeks++;
+            modified = true;
+        }
+    }
+
+    if (modified) {
+        learningPath.milestones = milestones;
+        await learningPath.save();
+    }
+
+    res.json({
+      success: true,
+      learningPath,
+    });
+  } catch (error) {
+    console.error("Reschedule progress error:", error);
+    res.status(500).json({ error: "Failed to reschedule learning path" });
   }
 });
 

@@ -1,0 +1,5 @@
+# Task List
+
+- [x] Analyze the issue with the "Email not found" error on the email verification step.
+- [ ] Update [EmailVerificationPage.jsx](file:///d:/project/Skill_Gap%20Analyser%20and%20placement%20intelligence/client/src/pages/signup/EmailVerificationPage.jsx) to accept `email` as a prop in addition to reading from `location.state`.
+- [ ] Verify functionality.

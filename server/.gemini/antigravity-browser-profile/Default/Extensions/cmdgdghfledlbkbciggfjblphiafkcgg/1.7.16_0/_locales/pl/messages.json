@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Zablokowałeś"
+   },
+   "ads": {
+      "message": "Reklamy"
+   },
+   "dataSavedTitle": {
+      "message": "Dane zapisane"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Zastosuj do wszystkich witryn"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Głębokość"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Zapowiedź"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Ratować"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Selektor"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Specyficzność"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Wybrałeś"
+   },
+   "elementBlocker_title": {
+      "message": "Element do usuwania"
+   },
+   "extDesc": {
+      "message": "Blokuj reklamy i wyskakujące okienka na wszystkich stronach internetowych, które przeglądasz każdego dnia"
+   },
+   "extName": {
+      "message": "SBlock – super bloker reklam"
+   },
+   "extNameFirstShort": {
+      "message": "SBblok"
+   },
+   "extNameLastShort": {
+      "message": "Super bloker reklam"
+   },
+   "filteringModeBasic": {
+      "message": "Podstawowy"
+   },
+   "filteringModeSuper": {
+      "message": "Super blok"
+   },
+   "footerMadeLove": {
+      "message": "Wykonane z miłością"
+   },
+   "footerShareFriends": {
+      "message": "Podziel się ze znajomymi"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Ładuj szybciej"
+   },
+   "loveSblockButton": {
+      "message": "Lubisz SBlocka?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Zostaw recenzję."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock nie jest obsługiwany na tej stronie"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Blokuj reklamy w języku lokalnym"
+   },
+   "optionBlockManually": {
+      "message": "Zablokuj ręcznie"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Otwarte"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Zresetuj wszystko"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Selektor"
+   },
+   "optionBlockTracker": {
+      "message": "Blokuj moduł śledzący"
+   },
+   "optionPopupsCookie": {
+      "message": "Ignoruj ​​wyskakujące okienka akceptacji plików cookie"
+   },
+   "optionPopupsSocial": {
+      "message": "Blokuj widżety społecznościowe"
+   },
+   "reportIssueButton": {
+      "message": "Zgłoś problem"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Powiedz nam więcej."
+   },
+   "secDuration": {
+      "message": "sek"
+   },
+   "thisPageTitle": {
+      "message": "Ta strona"
+   },
+   "thisWebsiteTitle": {
+      "message": "Ta strona internetowa"
+   },
+   "timeSavedTitle": {
+      "message": "Zaoszczędzony czas"
+   }
+}

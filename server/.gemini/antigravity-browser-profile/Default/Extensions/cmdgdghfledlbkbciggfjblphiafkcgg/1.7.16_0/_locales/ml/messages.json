@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "നിങ്ങൾ തടഞ്ഞു"
+   },
+   "ads": {
+      "message": "പരസ്യങ്ങൾ"
+   },
+   "dataSavedTitle": {
+      "message": "ഡാറ്റ സംരക്ഷിച്ചു"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "എല്ലാ സൈറ്റിലേക്കും പ്രയോഗിക്കുക"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "ആഴം"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "പ്രിവ്യൂ"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "സംരക്ഷിക്കുക"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "സെലക്ടർ"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "പ്രത്യേകത"
+   },
+   "elementBlocker_subtitle": {
+      "message": "നിങ്ങൾ തിരഞ്ഞെടുത്തു"
+   },
+   "elementBlocker_title": {
+      "message": "എലമെൻ്റ് റിമൂവർ"
+   },
+   "extDesc": {
+      "message": "നിങ്ങൾ ദിവസവും ബ്രൗസ് ചെയ്യുന്ന എല്ലാ വെബ്‌സൈറ്റുകളിലും പരസ്യങ്ങളും പോപ്പ്-അപ്പുകളും തടയുക"
+   },
+   "extName": {
+      "message": "എസ്ബ്ലോക്ക് - സൂപ്പർ ആഡ് ബ്ലോക്കർ"
+   },
+   "extNameFirstShort": {
+      "message": "എസ്ബ്ലോക്ക്"
+   },
+   "extNameLastShort": {
+      "message": "സൂപ്പർ പരസ്യ ബ്ലോക്കർ"
+   },
+   "filteringModeBasic": {
+      "message": "അടിസ്ഥാനം"
+   },
+   "filteringModeSuper": {
+      "message": "സൂപ്പർ ബ്ലോക്ക്"
+   },
+   "footerMadeLove": {
+      "message": "സ്നേഹത്തോടെ നിർമ്മിച്ചത്"
+   },
+   "footerShareFriends": {
+      "message": "നിങ്ങളുടെ സുഹൃത്തുക്കളുമായി പങ്കിടുക"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "വേഗത്തിൽ ലോഡ് ചെയ്യുക"
+   },
+   "loveSblockButton": {
+      "message": "SBlock ഇഷ്ടമാണോ?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "ഒരു അവലോകനം വിടുക."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "ഈ പേജിൽ SBlock പിന്തുണയ്ക്കുന്നില്ല"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "പ്രാദേശിക ഭാഷാ പരസ്യങ്ങൾ തടയുക"
+   },
+   "optionBlockManually": {
+      "message": "സ്വമേധയാ തടയുക"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "തുറക്കുക"
+   },
+   "optionBlockManuallyReset": {
+      "message": "എല്ലാം റീസെറ്റ് ചെയ്യുക"
+   },
+   "optionBlockManuallySelector": {
+      "message": "സെലക്ടർ"
+   },
+   "optionBlockTracker": {
+      "message": "ബ്ലോക്ക് ട്രാക്കർ"
+   },
+   "optionPopupsCookie": {
+      "message": "കുക്കികളുടെ പോപ്പ്അപ്പുകൾ സ്വീകരിക്കുന്നത് അവഗണിക്കുക"
+   },
+   "optionPopupsSocial": {
+      "message": "സോഷ്യൽ വിജറ്റുകൾ തടയുക"
+   },
+   "reportIssueButton": {
+      "message": "ഒരു പ്രശ്നം റിപ്പോർട്ട് ചെയ്യുക"
+   },
+   "reportIssueButtonDesc": {
+      "message": "ഞങ്ങളോട് കൂടുതൽ പറയൂ."
+   },
+   "secDuration": {
+      "message": "സെക്കന്റ്"
+   },
+   "thisPageTitle": {
+      "message": "ഈ പേജ്"
+   },
+   "thisWebsiteTitle": {
+      "message": "ഈ വെബ്സൈറ്റ്"
+   },
+   "timeSavedTitle": {
+      "message": "സമയം ലാഭിച്ചു"
+   }
+}

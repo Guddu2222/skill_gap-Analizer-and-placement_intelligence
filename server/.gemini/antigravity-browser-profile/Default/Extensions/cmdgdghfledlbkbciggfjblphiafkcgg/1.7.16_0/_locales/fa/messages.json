@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "شما بلاک کرده اید"
+   },
+   "ads": {
+      "message": "تبلیغات"
+   },
+   "dataSavedTitle": {
+      "message": "داده ها ذخیره شد"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "برای همه سایت ها اعمال شود"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "عمق"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "پیش نمایش"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "ذخیره کنید"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "انتخابگر"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "خاص بودن"
+   },
+   "elementBlocker_subtitle": {
+      "message": "شما انتخاب کرده اید"
+   },
+   "elementBlocker_title": {
+      "message": "حذف کننده عنصر"
+   },
+   "extDesc": {
+      "message": "تبلیغات و پنجره های بازشو را در تمام وب سایت هایی که هر روز مرور می کنید مسدود کنید"
+   },
+   "extName": {
+      "message": "SBlock - Super Ad Blocker"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super Ad Blocker"
+   },
+   "filteringModeBasic": {
+      "message": "پایه ای"
+   },
+   "filteringModeSuper": {
+      "message": "سوپر بلوک"
+   },
+   "footerMadeLove": {
+      "message": "ساخته شده با عشق در"
+   },
+   "footerShareFriends": {
+      "message": "با دوستان خود به اشتراک بگذارید"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "سریعتر بارگیری کنید"
+   },
+   "loveSblockButton": {
+      "message": "SBlock را دوست دارید؟"
+   },
+   "loveSblockButtonDesc": {
+      "message": "نظر بدهید"
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlock در این صفحه پشتیبانی نمی شود"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "تبلیغات زبان محلی را مسدود کنید"
+   },
+   "optionBlockManually": {
+      "message": "مسدود کردن دستی"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "باز کنید"
+   },
+   "optionBlockManuallyReset": {
+      "message": "همه را بازنشانی کنید"
+   },
+   "optionBlockManuallySelector": {
+      "message": "انتخابگر"
+   },
+   "optionBlockTracker": {
+      "message": "ردیاب را مسدود کنید"
+   },
+   "optionPopupsCookie": {
+      "message": "نادیده گرفتن پنجره های بازشوی پذیرش کوکی ها"
+   },
+   "optionPopupsSocial": {
+      "message": "ویجت های اجتماعی را مسدود کنید"
+   },
+   "reportIssueButton": {
+      "message": "گزارش یک مشکل"
+   },
+   "reportIssueButtonDesc": {
+      "message": "بیشتر به ما بگویید."
+   },
+   "secDuration": {
+      "message": "ثانیه"
+   },
+   "thisPageTitle": {
+      "message": "این صفحه"
+   },
+   "thisWebsiteTitle": {
+      "message": "این وب سایت"
+   },
+   "timeSavedTitle": {
+      "message": "زمان صرفه جویی شده است"
+   }
+}

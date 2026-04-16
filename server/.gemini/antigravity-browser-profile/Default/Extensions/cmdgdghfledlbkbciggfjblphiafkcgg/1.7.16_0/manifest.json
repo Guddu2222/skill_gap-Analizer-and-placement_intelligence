@@ -1,0 +1,69 @@
+{
+   "action": {
+      "default_icon": {
+         "128": "presentation/img/128.png",
+         "16": "presentation/img/16.png",
+         "32": "presentation/img/32.png",
+         "64": "presentation/img/64.png"
+      },
+      "default_popup": "presentation/popup.html"
+   },
+   "author": "Jimbo",
+   "background": {
+      "service_worker": "background.js",
+      "type": "module"
+   },
+   "declarative_net_request": {
+      "rule_resources": [ {
+         "enabled": true,
+         "id": "default",
+         "path": "default.json"
+      }, {
+         "enabled": false,
+         "id": "idcac",
+         "path": "idcac.json"
+      }, {
+         "enabled": false,
+         "id": "social",
+         "path": "social.json"
+      }, {
+         "enabled": false,
+         "id": "regions_0",
+         "path": "regions_0.json"
+      }, {
+         "enabled": false,
+         "id": "regions_1",
+         "path": "regions_1.json"
+      }, {
+         "enabled": false,
+         "id": "regions_2",
+         "path": "regions_2.json"
+      }, {
+         "enabled": false,
+         "id": "trackers",
+         "path": "trackers.json"
+      } ]
+   },
+   "default_locale": "en",
+   "description": "__MSG_extDesc__",
+   "host_permissions": [ "\u003Call_urls>" ],
+   "icons": {
+      "128": "presentation/img/128.png",
+      "16": "presentation/img/16.png",
+      "32": "presentation/img/32.png",
+      "64": "presentation/img/64.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg1r1mROnHKE/Y/ZU/pOD4+K+BXWSqVLTrzsjfKFFsuERKOZv3XDAGXAUatsUp9HfyPqxFnPhHHl8oxyy8TffVR0Ll4Eks2DRbopi70jLTvxEL7SOC40po8in9ZxEeuUgQ+k0fuIdqbQx7ICAO8jm+71tfoSoCgaJXF1bdBfGB/JifyCE36LF0tZpQe2DmX2fatvy+4xSDv40Z4z46N+3pAq3Yo376+welcIlfase8r6+3M3T4eYAJn07qVXWWuWMjJFVx04t+e1635BY4xJANHC8jE8v3JmGUvZdE5FOZqTVwdAWLnpwTmDUxAVyDEtNqSLWipNU2CVATpfxOnhXTQIDAQAB",
+   "manifest_version": 3,
+   "minimum_chrome_version": "111",
+   "name": "__MSG_extName__",
+   "permissions": [ "activeTab", "declarativeNetRequest", "scripting", "storage", "unlimitedStorage" ],
+   "short_name": "SBlock",
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.7.16",
+   "web_accessible_resources": [ {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "/web_accessible_resources/1x1-transparent.gif", "/web_accessible_resources/2x2-transparent.png", "/web_accessible_resources/32x32-transparent.png", "/web_accessible_resources/amazon-apstag.js", "/web_accessible_resources/ati-smarttag.js", "/web_accessible_resources/click2load.html", "/web_accessible_resources/didomi-loader.js", "/web_accessible_resources/fingerprintjs2.js", "/web_accessible_resources/fingerprintjs3.js", "/web_accessible_resources/gemius.js", "/web_accessible_resources/google-analytics-ga.js", "/web_accessible_resources/google-analytics.js", "/web_accessible_resources/google-ima3.js", "/web_accessible_resources/googlesyndication-adsbygoogle.js", "/web_accessible_resources/googletagservices-gpt.js", "/web_accessible_resources/metrika-yandex-tag.js", "/web_accessible_resources/metrika-yandex-watch.js", "/web_accessible_resources/noeval.js", "/web_accessible_resources/noopcss.css", "/web_accessible_resources/noopframe.html", "/web_accessible_resources/noopjs.js", "/web_accessible_resources/noopjson.json", "/web_accessible_resources/noopmp3.mp3", "/web_accessible_resources/noopmp4.mp4", "/web_accessible_resources/nooptext.js", "/web_accessible_resources/noopvast02.xml", "/web_accessible_resources/noopvast03.xml", "/web_accessible_resources/noopvast04.xml", "/web_accessible_resources/noopvmap01.xml", "/web_accessible_resources/prebid-ads.js", "/web_accessible_resources/prebid.js", "/web_accessible_resources/prevent-fab-3.2.0.js", "/web_accessible_resources/scorecardresearch-beacon.js", "/presentation/js/config.js", "/presentation/js/dom.js", "/presentation/js/i18n.js", "/presentation/js/icon.js", "/presentation/js/element-blocker.js" ],
+      "use_dynamic_url": true
+   } ]
+}

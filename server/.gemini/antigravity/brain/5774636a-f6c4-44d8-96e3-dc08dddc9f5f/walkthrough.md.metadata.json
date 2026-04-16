@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "A breakdown of how the dashboard navigation was moved into the Sidebar using React Router",
+  "updatedAt": "2026-03-31T14:20:26.668607900Z",
+  "version": "4"
+}

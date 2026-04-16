@@ -1,0 +1,19 @@
+# Task: Verify Kisan Mitra AI Chat Interface
+
+## Plan
+1. [ ] Open http://localhost:5174 in the browser.
+2. [ ] Take a screenshot of the page.
+3. [ ] Capture the DOM to identify elements.
+4. [ ] Verify header text ("Kisan Mitra AI").
+5. [ ] Verify green gradient header and weather badge.
+6. [ ] Verify chat area.
+7. [ ] Verify microphone button at the bottom.
+8. [ ] Summarize findings and report back.
+
+## Findings
+- URL: http://localhost:5174
+- Screenshot: [TBD]
+- Header: [TBD]
+- Weather Badge: [TBD]
+- Chat Area: [TBD]
+- Mic Button: [TBD]

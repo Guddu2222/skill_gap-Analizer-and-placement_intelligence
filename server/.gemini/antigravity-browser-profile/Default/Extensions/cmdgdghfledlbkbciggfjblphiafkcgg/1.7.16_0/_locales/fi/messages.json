@@ -1,0 +1,125 @@
+{
+   "adBlockedHeader": {
+      "message": "Olet estänyt"
+   },
+   "ads": {
+      "message": "Mainokset"
+   },
+   "dataSavedTitle": {
+      "message": "Tiedot tallennettu"
+   },
+   "elementBlocker_applyBtn": {
+      "message": "Käytä kaikille sivustoille"
+   },
+   "elementBlocker_depthSelector": {
+      "message": "Syvyys"
+   },
+   "elementBlocker_previewBtn": {
+      "message": "Esikatselu"
+   },
+   "elementBlocker_saveBtn": {
+      "message": "Tallentaa"
+   },
+   "elementBlocker_selectorBtn": {
+      "message": "Valitsin"
+   },
+   "elementBlocker_specificitySelector": {
+      "message": "Spesifisyys"
+   },
+   "elementBlocker_subtitle": {
+      "message": "Olet valinnut"
+   },
+   "elementBlocker_title": {
+      "message": "Elementtien poistoaine"
+   },
+   "extDesc": {
+      "message": "Estä mainokset ja ponnahdusikkunat kaikilla verkkosivustoilla, joita selaat joka päivä"
+   },
+   "extName": {
+      "message": "SBlock - Super Ad Blocker"
+   },
+   "extNameFirstShort": {
+      "message": "SBlock"
+   },
+   "extNameLastShort": {
+      "message": "Super Ad Blocker"
+   },
+   "filteringModeBasic": {
+      "message": "Perus"
+   },
+   "filteringModeSuper": {
+      "message": "Super Block"
+   },
+   "footerMadeLove": {
+      "message": "Rakkaudella valmistettu"
+   },
+   "footerShareFriends": {
+      "message": "Jaa ystäviesi kanssa"
+   },
+   "hourAbbreviation": {
+      "message": "H"
+   },
+   "loadFasterTitle": {
+      "message": "Lataa nopeammin"
+   },
+   "loveSblockButton": {
+      "message": "Rakastatko SBlockia?"
+   },
+   "loveSblockButtonDesc": {
+      "message": "Jätä arvostelu."
+   },
+   "minutesAbbreviation": {
+      "message": "M"
+   },
+   "notWorking": {
+      "message": "SBlockia ei tueta tällä sivulla"
+   },
+   "offSwitch": {
+      "message": "Off"
+   },
+   "onSwitch": {
+      "message": "On"
+   },
+   "optionBlockLocalRules": {
+      "message": "Estä paikalliskieliset mainokset"
+   },
+   "optionBlockManually": {
+      "message": "Estä manuaalisesti"
+   },
+   "optionBlockManuallyOpenBtn": {
+      "message": "Avata"
+   },
+   "optionBlockManuallyReset": {
+      "message": "Nollaa kaikki"
+   },
+   "optionBlockManuallySelector": {
+      "message": "Valitsin"
+   },
+   "optionBlockTracker": {
+      "message": "Estä seuranta"
+   },
+   "optionPopupsCookie": {
+      "message": "Ohita hyväksy evästeet -ponnahdusikkunat"
+   },
+   "optionPopupsSocial": {
+      "message": "Estä sosiaaliset widgetit"
+   },
+   "reportIssueButton": {
+      "message": "Ilmoita ongelma"
+   },
+   "reportIssueButtonDesc": {
+      "message": "Kerro meille lisää."
+   },
+   "secDuration": {
+      "message": "sek"
+   },
+   "thisPageTitle": {
+      "message": "Tämä sivu"
+   },
+   "thisWebsiteTitle": {
+      "message": "Tämä sivusto"
+   },
+   "timeSavedTitle": {
+      "message": "Säästetty aika"
+   }
+}

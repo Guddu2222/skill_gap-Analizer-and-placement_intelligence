@@ -6,6 +6,8 @@ import { Mail, ArrowRight, Loader } from "lucide-react";
 const EmailVerificationPage = ({ email: propEmail }) => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
@@ -46,11 +48,16 @@ const EmailVerificationPage = ({ email: propEmail }) => {
   };
 
   const handleResend = async () => {
+    setResendLoading(true);
+    setResendSuccess("");
+    setError("");
     try {
       await api.post("/auth/resend-verification", { email });
-      alert("Verification code resent successfully!");
+      setResendSuccess("A new verification code has been sent! Check your inbox (and spam folder).");
     } catch (err) {
-      setError("Failed to resend code");
+      setError("Failed to resend code. Please try again in a moment.");
+    } finally {
+      setResendLoading(false);
     }
   };
 
@@ -95,6 +102,12 @@ const EmailVerificationPage = ({ email: propEmail }) => {
         {error && (
           <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm font-medium">
             {error}
+          </div>
+        )}
+
+        {resendSuccess && (
+          <div className="mb-4 p-3 bg-green-50 text-green-700 rounded-lg text-sm font-medium">
+            ✅ {resendSuccess}
           </div>
         )}
 
@@ -164,9 +177,14 @@ const EmailVerificationPage = ({ email: propEmail }) => {
             Didn't receive the code?{" "}
             <button
               onClick={handleResend}
-              className="text-blue-600 font-semibold hover:text-blue-800 transition-colors"
+              disabled={resendLoading}
+              className={`font-semibold transition-colors ${
+                resendLoading
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "text-blue-600 hover:text-blue-800"
+              }`}
             >
-              Resend it
+              {resendLoading ? "Sending..." : "Resend it"}
             </button>
           </p>
         )}

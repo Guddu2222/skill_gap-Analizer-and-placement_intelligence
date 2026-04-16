@@ -1,0 +1,8 @@
+# Multi-turn Conversation Task Checklist
+
+- [x] [Frontend] Refactor state to use a `messages` array instead of individual `query`/`advice` variables.
+- [x] [Frontend] Update UI to map over and render the `messages` array.
+- [x] [Frontend] Modify the `getAdvisory` payload to map the frontend `messages` into the structure expected by the Gemini API history (`role` and `parts`).
+- [x] [Backend] Update `/api/advise` to accept the `history` array.
+- [x] [Backend] Refactor to use `model.startChat({ history })` and `chat.sendMessage(...)`.
+- [x] [Verification] Test multi-turn conversations and image context retention.
