@@ -1,4 +1,5 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const Groq = require("groq-sdk");
 const Student = require("../models/Student");
 const SkillGapAnalysis = require("../models/SkillGapAnalysis");
 const DomainSkillRequirement = require("../models/DomainSkillRequirement");
@@ -6,7 +7,11 @@ const SkillLearningPath = require("../models/SkillLearningPath");
 
 class SkillGapAnalysisService {
   constructor() {
-    // Initialize AI client using the environment variable
+    // Groq (primary) — fast, free, reliable worldwide
+    this.groq = process.env.GROQ_API_KEY
+      ? new Groq({ apiKey: process.env.GROQ_API_KEY })
+      : null;
+    // Gemini (fallback) — used only if Groq is not configured
     this.gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
   }
 
@@ -43,8 +48,8 @@ class SkillGapAnalysisService {
         externalStats,
       );
 
-      // 4. Get AI analysis
-      const aiAnalysisRaw = await this.analyzeWithGemini(analysisPrompt);
+      // 4. Get AI analysis (Groq → Gemini → Mock)
+      const aiAnalysisRaw = await this.analyzeWithAI(analysisPrompt);
 
       // 5. Parse and structure the analysis
       const structuredAnalysis = this.parseAIResponse(aiAnalysisRaw);
@@ -264,13 +269,64 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
 `;
   }
 
-  // Gemini API Integration
+  // ── Primary AI: Groq ──────────────────────────────────────────────────────
+  async analyzeWithGroq(prompt) {
+    if (!this.groq) {
+      throw new Error("Groq client not initialised — GROQ_API_KEY missing");
+    }
+
+    console.log("🤖 [Groq] Sending analysis request (llama-3.3-70b-versatile)...");
+
+    const chatCompletion = await this.groq.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are an expert career counselor and technical recruiter. " +
+            "Always respond with valid JSON only. Never wrap in markdown code blocks.",
+        },
+        { role: "user", content: prompt },
+      ],
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.7,
+      max_tokens: 4096,
+      response_format: { type: "json_object" },
+    });
+
+    const text = chatCompletion.choices[0]?.message?.content || "{}";
+    console.log("✅ [Groq] Analysis received successfully.");
+    return text;
+  }
+
+  // ── Unified AI call: Groq → Gemini → Mock ────────────────────────────────
+  async analyzeWithAI(prompt) {
+    // 1. Try Groq first (primary)
+    if (this.groq) {
+      try {
+        return await this.analyzeWithGroq(prompt);
+      } catch (err) {
+        console.warn("⚠️  [Groq] Failed, falling back to Gemini:", err.message);
+      }
+    }
+
+    // 2. Try Gemini as fallback
+    if (process.env.GEMINI_API_KEY) {
+      try {
+        return await this.analyzeWithGemini(prompt);
+      } catch (err) {
+        console.warn("⚠️  [Gemini] Failed, falling back to mock:", err.message);
+      }
+    }
+
+    // 3. Final fallback: mock response
+    console.warn("⚠️  [AI] No AI provider available. Returning mock analysis.");
+    return this.getMockGeminiResponse("No AI provider configured or all providers failed.");
+  }
+
+  // ── Fallback AI: Gemini ───────────────────────────────────────────────────
   async analyzeWithGemini(prompt) {
     if (!process.env.GEMINI_API_KEY) {
-      console.warn(
-        "GEMINI_API_KEY is not set. Using mock AI response for development.",
-      );
-      return this.getMockGeminiResponse();
+      throw new Error("GEMINI_API_KEY not set");
     }
 
     try {
@@ -290,15 +346,53 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
       let text = response.text();
       return text;
     } catch (error) {
-      console.error("Gemini API error. Falling back to mock:", error);
-      
       const errorMessage = error.message ? error.message.toLowerCase() : "";
-      if (errorMessage.includes("429") || errorMessage.includes("quota") || errorMessage.includes("exhausted")) {
-        const rateLimitError = new Error("AI analysis limit reached due to high traffic. Please try again in a few minutes.");
-        rateLimitError.status = 429;
-        throw rateLimitError;
+      const statusCode = error.status || (error.httpError && error.httpError.status);
+
+      const isQuotaError =
+        statusCode === 429 ||
+        errorMessage.includes("429") ||
+        errorMessage.includes("quota") ||
+        errorMessage.includes("exhausted") ||
+        errorMessage.includes("too many requests") ||
+        errorMessage.includes("resource_exhausted");
+
+      const isInvalidKeyError =
+        statusCode === 400 ||
+        statusCode === 401 ||
+        statusCode === 403 ||
+        errorMessage.includes("api_key_invalid") ||
+        errorMessage.includes("invalid api key") ||
+        errorMessage.includes("api key not valid") ||
+        errorMessage.includes("permission_denied") ||
+        errorMessage.includes("api key") ||
+        errorMessage.includes("invalid key");
+
+      if (isInvalidKeyError) {
+        console.error(
+          "🔑 [Gemini] INVALID API KEY detected! Your GEMINI_API_KEY in server/.env is wrong.\n" +
+          "   ➡  The key must start with 'AIza...' (e.g. AIzaSy...).\n" +
+          "   ➡  Get a valid key at: https://aistudio.google.com/app/apikey\n" +
+          "   Raw error:", error.message
+        );
+        return this.getMockGeminiResponse(
+          "Invalid Gemini API key. Please go to https://aistudio.google.com/app/apikey, create a new key (it starts with AIza...), and paste it as GEMINI_API_KEY in server/.env"
+        );
       }
 
+      if (isQuotaError) {
+        console.warn(
+          "⚠️  [Gemini] API quota exhausted. Returning mock analysis. " +
+          "To restore real AI: generate a new key at https://aistudio.google.com/app/apikey " +
+          "and update GEMINI_API_KEY in server/.env"
+        );
+        return this.getMockGeminiResponse(
+          "Gemini API quota exhausted. This is a sample analysis — real AI results will resume once the API key quota resets or a new key is configured."
+        );
+      }
+
+      // Other unexpected errors — still fall back to mock, never crash
+      console.error("❌ [Gemini] Unexpected API error. Falling back to mock:", error.message, "\n   Full error:", error);
       return this.getMockGeminiResponse(error.message || "Unknown API Error");
     }
   }

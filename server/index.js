@@ -4,7 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const passport = require("passport");
 
-dotenv.config();
+dotenv.config({ override: true });
 
 // Load OAuth strategies (Google + LinkedIn)
 require("./config/passport");
