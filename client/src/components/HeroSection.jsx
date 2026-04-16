@@ -6,219 +6,148 @@ import {
   Building2,
   Award,
   ArrowRight,
-  Play,
+  PlayIcon,
   CheckCircle2,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const stats = [
-    { icon: Users, value: "50+", label: "Institutions" },
+    { icon: Users, value: "50K+", label: "Students Placed" },
     { icon: Award, value: "94.8%", label: "Placement Rate" },
-    { icon: Building2, value: "100+", label: "Companies" },
-    { icon: TrendingUp, value: "50K+", label: "Students Placed" },
-  ];
-
-  const features = [
-    "AI-powered skill gap analysis",
-    "Real-time placement tracking",
-    "Predictive analytics dashboard",
+    { icon: Building2, value: "500+", label: "Institutions" },
+    { icon: TrendingUp, value: "100+", label: "Companies" },
   ];
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Gradient Orbs */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/30 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl animate-pulse delay-2000"></div>
-
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
+    <div className="relative min-h-screen bg-surface overflow-hidden pt-28">
+      {/* Background Atmosphere */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-[800px] h-[800px] mesh-orb-1 rounded-full blur-[100px] opacity-60 mix-blend-screen animate-pulse"></div>
+        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] mesh-orb-2 rounded-full blur-[90px] opacity-50 mix-blend-screen animate-pulse delay-700"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[700px] h-[700px] mesh-orb-3 rounded-full blur-[120px] opacity-40 mix-blend-screen animate-pulse delay-1000"></div>
+        {/* Subtle Grid Background */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDQwIEwgNDAgNDAgNDAgMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDIpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')]"></div>
       </div>
 
-      {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <div className="text-white space-y-8">
-            {/* Badge */}
-            <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-lg border border-white/20 rounded-full px-4 py-2 animate-fadeIn">
-              <Sparkles className="w-4 h-4 text-blue-300" />
-              <span className="text-sm font-medium text-blue-100">
-                NEW: AI-Powered Skill Gap Analysis
-              </span>
-            </div>
-
-            {/* Main Heading */}
-            <div className="space-y-4">
-              <h1 className="text-5xl lg:text-7xl font-bold leading-tight animate-slideUp">
-                The Intelligence
-                <br />
-                <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                  Engine for Campus
-                </span>
-                <br />
-                <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                  Placements.
-                </span>
-              </h1>
-              <p className="text-xl text-gray-300 max-w-xl animate-slideUp delay-100">
-                Unite students, universities, and recruiters on a single
-                data-driven platform. Optimize hiring outcomes with predictive
-                analytics.
-              </p>
-            </div>
-
-            {/* Feature List */}
-            <div className="space-y-3 animate-slideUp delay-200">
-              {features.map((feature, index) => (
-                <div key={index} className="flex items-center space-x-3">
-                  <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
-                  <span className="text-gray-200">{feature}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap items-center gap-4 animate-slideUp delay-300">
-              <a
-                href="/signup"
-                className="group px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl font-semibold text-white shadow-2xl hover:shadow-blue-500/50 transform hover:scale-105 transition-all duration-300 flex items-center space-x-2"
-              >
-                <span>Get Started for Free</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </a>
-
-              <button className="group px-8 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl font-semibold text-white hover:bg-white/20 transition-all duration-300 flex items-center space-x-2">
-                <Play className="w-5 h-5" />
-                <span>Watch Demo</span>
-              </button>
-            </div>
-
-            {/* Trust Badge */}
-            <div className="pt-8 border-t border-white/10 animate-slideUp delay-400">
-              <p className="text-sm text-gray-400 mb-4">
-                TRUSTED BY 500+ INSTITUTIONS
-              </p>
-              <div className="flex items-center space-x-8 opacity-60">
-                {/* Add university logos here */}
-                <div className="h-8 w-24 bg-white/20 rounded"></div>
-                <div className="h-8 w-24 bg-white/20 rounded"></div>
-                <div className="h-8 w-24 bg-white/20 rounded"></div>
-              </div>
-            </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        {/* Top Text Content - Centered */}
+        <div className="flex flex-col items-center text-center mb-16 space-y-8 animate-slideUp">
+          {/* Badge */}
+          <div className="inline-flex items-center space-x-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-5 py-2 shadow-lg shadow-indigo-500/10">
+            <Sparkles className="w-4 h-4 text-cyan-400" />
+            <span className="text-sm font-semibold tracking-wide text-indigo-200">
+              ⚡ AI-Powered Platform • Now with Gemini AI
+            </span>
           </div>
 
-          {/* Right Content - Dashboard Preview */}
-          <div className="relative animate-slideUp delay-200">
-            {/* Floating Stats Card */}
-            <div className="absolute -top-4 -left-2 md:-top-6 md:-left-6 scale-90 md:scale-100 origin-top-left bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-4 md:p-6 shadow-2xl animate-float z-10">
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-white">94.8%</p>
-                  <p className="text-sm text-gray-300">Placement Rate</p>
-                </div>
+          {/* Huge Main Headline */}
+          <h1 className="text-6xl md:text-[80px] font-black leading-[1.05] tracking-tight text-white max-w-5xl">
+            Bridge the Gap.<br />
+            <span className="text-gradient-neural">Land Your Dream Job.</span>
+          </h1>
+
+          {/* Subheading */}
+          <p className="text-lg md:text-xl text-gray-400 max-w-2xl font-medium leading-relaxed">
+            Connect students, colleges & recruiters on one intelligent platform powered by AI skill analysis. Real-world placements, reimagined for the neural age.
+          </p>
+
+          {/* Mini Checkmarks */}
+          <div className="flex flex-wrap justify-center gap-6 pt-2">
+            {[
+              "AI Skill Gap Analysis",
+              "Real-time Placement Tracking",
+              "Predictive Analytics",
+            ].map((item, index) => (
+              <div key={index} className="flex items-center space-x-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                <span className="text-sm text-gray-300 font-medium">{item}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row items-center gap-5 pt-6">
+            <Link
+              to="/signup"
+              className="group relative px-8 py-4 bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full font-bold text-white shadow-xl glow-shadow-indigo transform transition-all duration-300 hover:scale-105 flex items-center space-x-3 overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+              <span className="relative z-10 text-base">Get Started for Free</span>
+              <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
+            </Link>
+
+            <button className="px-8 py-4 bg-white/5 border border-white/10 rounded-full font-bold text-white hover:bg-white/10 transition-all duration-300 flex items-center space-x-3 backdrop-blur-md hover:border-white/20">
+              <PlayIcon className="w-5 h-5 text-gray-300" />
+              <span>Watch Demo</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Dashboard Mockup Center Floating */}
+        <div className="relative mx-auto mt-16 max-w-5xl animate-float">
+          <div className="relative glass-abyssal rounded-[2.5rem] p-4 sm:p-8 transform perspective-1000 rotate-x-2">
+            {/* Top Bar Fake */}
+            <div className="flex items-center space-x-3 mb-8 px-2">
+              <div className="w-3.5 h-3.5 rounded-full bg-red-400/80"></div>
+              <div className="w-3.5 h-3.5 rounded-full bg-amber-400/80"></div>
+              <div className="w-3.5 h-3.5 rounded-full bg-emerald-400/80"></div>
+              <div className="ml-4 px-3 py-1 bg-white/10 rounded-full text-xs font-semibold text-gray-400 tracker-widest">
+                SKILLBRIDGE ACTIVE INTELLIGENCE
               </div>
             </div>
 
-            {/* Main Dashboard Mockup */}
-            <div className="relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-4 sm:p-6 lg:p-8 shadow-2xl">
-              {/* Dashboard Header */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center space-x-3">
-                  <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-                  <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                  <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                </div>
-                <div className="bg-white/10 rounded-lg px-3 py-1.5">
-                  <span className="text-xs text-gray-300">Live Dashboard</span>
-                </div>
-              </div>
-
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                {stats.slice(0, 2).map((stat, index) => {
-                  const Icon = stat.icon;
-                  return (
-                    <div
-                      key={index}
-                      className="bg-white/5 backdrop-blur-lg rounded-xl p-3 md:p-4 border border-white/10"
-                    >
-                      <Icon className="w-6 h-6 md:w-8 md:h-8 text-blue-400 mb-2" />
-                      <p className="text-lg md:text-2xl font-bold text-white">
-                        {stat.value}
-                      </p>
-                      <p className="text-xs md:text-sm text-gray-400">
-                        {stat.label}
-                      </p>
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Left Column Stats */}
+              <div className="col-span-1 space-y-6">
+                {stats.slice(0,2).map((stat, i) => (
+                  <div key={i} className="glass-panel p-6 rounded-2xl">
+                    <stat.icon className="w-8 h-8 text-indigo-400 mb-4" />
+                    <p className="text-3xl font-bold text-white">{stat.value}</p>
+                    <p className="text-sm font-medium text-gray-400 mt-1">{stat.label}</p>
+                  </div>
+                ))}
+                
+                {/* Floating Avatars Panel */}
+                <div className="glass-panel p-6 rounded-2xl">
+                  <p className="text-sm font-medium text-gray-400 mb-4">Latest Matches</p>
+                  <div className="flex -space-x-4">
+                    <div className="w-12 h-12 rounded-full border-2 border-[#121223] bg-gradient-to-tr from-indigo-500 to-cyan-500 shadow-lg"></div>
+                    <div className="w-12 h-12 rounded-full border-2 border-[#121223] bg-gradient-to-tr from-violet-500 to-pink-500 shadow-lg"></div>
+                    <div className="w-12 h-12 rounded-full border-2 border-[#121223] bg-gradient-to-tr from-emerald-500 to-cyan-500 shadow-lg"></div>
+                    <div className="w-12 h-12 rounded-full border-2 border-[#121223] bg-surface flex items-center justify-center shadow-lg">
+                      <span className="text-xs font-bold text-gray-300">+99</span>
                     </div>
-                  );
-                })}
-              </div>
-
-              {/* Chart Mockup */}
-              <div className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-lg rounded-xl p-6 border border-white/10">
-                <div className="flex items-end justify-between h-32 space-x-2">
-                  {[40, 70, 50, 80, 60, 90, 75].map((height, index) => (
-                    <div
-                      key={index}
-                      className="flex-1 bg-gradient-to-t from-blue-500 to-indigo-500 rounded-t-lg animate-growUp"
-                      style={{
-                        height: `${height}%`,
-                        animationDelay: `${index * 100}ms`,
-                      }}
-                    ></div>
-                  ))}
-                </div>
-                <div className="mt-4 flex items-center justify-between text-xs text-gray-400">
-                  <span>Jan</span>
-                  <span>Feb</span>
-                  <span>Mar</span>
-                  <span>Apr</span>
-                  <span>May</span>
-                  <span>Jun</span>
-                  <span>Jul</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Floating User Card */}
-            <div className="absolute -bottom-4 -right-2 md:-bottom-6 md:-right-6 scale-90 md:scale-100 origin-bottom-right bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-4 md:p-6 shadow-2xl animate-float delay-1000 z-10">
-              <div className="flex items-center space-x-4">
-                <div className="flex -space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full border-2 border-white/20"></div>
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full border-2 border-white/20"></div>
-                  <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-full border-2 border-white/20"></div>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">
-                    2,847 Students
-                  </p>
-                  <p className="text-xs text-gray-300">Active this month</p>
-                </div>
+              {/* Main Chart Area */}
+              <div className="col-span-2 glass-panel rounded-2xl p-6 md:p-8 relative overflow-hidden flex flex-col justify-end">
+                 {/* Decorative gradient behind chart */}
+                 <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-indigo-500/10 to-transparent"></div>
+                 
+                 <div className="absolute top-8 left-8">
+                    <p className="text-2xl font-bold text-white">Skill Growth Vector</p>
+                    <p className="text-sm text-gray-400">Platform-wide progression</p>
+                 </div>
+
+                 {/* Bar Chart Mockup */}
+                 <div className="relative flex items-end justify-between h-48 sm:h-64 mt-16 space-x-2 z-10 w-full px-2">
+                    {[30, 45, 60, 50, 75, 90, 85].map((height, idx) => (
+                      <div key={idx} className="w-1/6 flex flex-col items-center space-y-4 group">
+                        <div 
+                          className="w-full bg-gradient-to-t from-indigo-600/50 to-cyan-400/80 rounded-t-lg transition-all duration-500 group-hover:from-indigo-500 group-hover:to-cyan-300 animate-growUp"
+                          style={{ height: `${height}%`, animationDelay: `${idx * 150}ms` }}
+                        ></div>
+                      </div>
+                    ))}
+                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Bottom Wave */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 120"
-          className="w-full h-auto"
-        >
-          <path
-            fill="#ffffff"
-            fillOpacity="0.1"
-            d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
-          ></path>
-        </svg>
       </div>
     </div>
   );
