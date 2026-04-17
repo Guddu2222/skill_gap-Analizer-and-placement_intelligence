@@ -84,7 +84,8 @@ class InterviewService {
       // Attempt to parse JSON
       let questionsData = [];
       try {
-        questionsData = JSON.parse(text);
+        const cleanedText = text.replace(/```[a-z]*\n?/gi, "").replace(/```\n?/g, "").trim();
+        questionsData = JSON.parse(cleanedText);
       } catch (err) {
         console.error("Failed to parse Gemini response as JSON", text);
         throw new Error("Failed to parse Gemini response as JSON");
@@ -166,7 +167,8 @@ class InterviewService {
         let recommendedSkill = null;
 
         try {
-          const evalResult = JSON.parse(text);
+          const cleanedText = text.replace(/```[a-z]*\n?/gi, "").replace(/```\n?/g, "").trim();
+          const evalResult = JSON.parse(cleanedText);
           score = evalResult.score || 0;
           aiFeedback = evalResult.feedback || aiFeedback;
           idealAnswer = evalResult.idealAnswer || idealAnswer;

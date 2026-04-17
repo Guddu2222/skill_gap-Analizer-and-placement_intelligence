@@ -16,9 +16,10 @@ import {
   ChevronRight,
   Zap,
   GraduationCap,
-  UserCheck,
   Brain,
   TrendingUp,
+  CheckSquare,
+  UserCheck,
 } from "lucide-react";
 
 const Sidebar = ({ role = "college", collapsed: controlledCollapsed, onToggle }) => {
@@ -60,7 +61,7 @@ const Sidebar = ({ role = "college", collapsed: controlledCollapsed, onToggle })
       { icon: BookOpen, label: "My Paths", path: "/student/paths" },
       { icon: Target, label: "Skill Radar", path: "/student/skills" },
       { icon: Award, label: "Courses", path: "/student/courses" },
-      { icon: TrendingUp, label: "Compare", path: "/student/compare" },
+      { icon: CheckSquare, label: "ATS Matcher", path: "/student/ats-check" },
       {
         icon: Briefcase,
         label: "Opportunities",

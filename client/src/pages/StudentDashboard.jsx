@@ -33,6 +33,7 @@ import InterviewSession from "../components/student/interview/InterviewSession";
 import InterviewFeedbackCard from "../components/student/interview/InterviewFeedbackCard";
 import StudentSettings from "../components/student/settings/StudentSettings";
 import AnalyzedSkillsModal from "../components/student/AnalyzedSkillsModal";
+import ATSChecker from "../components/student/ATSChecker";
 
 const SIDEBAR_COLLAPSED_KEY = "sgapi_sidebar_collapsed";
 
@@ -192,6 +193,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
                activeTab === "learning" ? "My Paths" :
                activeTab === "skills" ? "Skill Radar" :
                activeTab === "competitive" ? "Compare" :
+               activeTab === "ats-check" ? "ATS Reality Check" :
                activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
             </span>
           </nav>
@@ -460,6 +462,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
                 <OpportunitiesTab student={student} />
               )}
               {activeTab === "mentorship" && <MentorshipTab />}
+              {activeTab === "ats-check" && <ATSChecker />}
               {activeTab === "interviews" && (
                 <div className="animate-fadeIn">
                   {interviewView === "dashboard" && (

@@ -72,8 +72,8 @@ const App = () => {
           element={<StudentDashboard activeRoute="courses" />}
         />
         <Route
-          path="/student/compare"
-          element={<StudentDashboard activeRoute="competitive" />}
+          path="/student/ats-check"
+          element={<StudentDashboard activeRoute="ats-check" />}
         />
         <Route
           path="/student/opportunities"
