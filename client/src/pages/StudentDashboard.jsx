@@ -35,6 +35,8 @@ import StudentSettings from "../components/student/settings/StudentSettings";
 import AnalyzedSkillsModal from "../components/student/AnalyzedSkillsModal";
 import ATSChecker from "../components/student/ATSChecker";
 
+import OnboardingWizard from "../components/onboarding/OnboardingWizard";
+
 const SIDEBAR_COLLAPSED_KEY = "sgapi_sidebar_collapsed";
 
 const StudentDashboard = ({ activeRoute = "overview" }) => {
@@ -165,6 +167,18 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
           </p>
         </main>
       </div>
+    );
+  }
+
+  // Check if onboarding is needed
+  const needsOnboarding = (student.profileCompletionPercentage < 50) || (!student.targetRole);
+
+  if (needsOnboarding) {
+    return (
+      <OnboardingWizard 
+        user={{ ...student.user, role: 'student' }} 
+        onComplete={fetchDashboardData} 
+      />
     );
   }
 
