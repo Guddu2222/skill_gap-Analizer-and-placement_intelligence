@@ -218,23 +218,27 @@ export default function RoleSelectionPage() {
 
           {/* Logo + badge */}
           <div style={{ marginBottom:16 }}>
-            <div style={{
-              display:"inline-flex", alignItems:"center", justifyContent:"center",
-              width:60, height:60, borderRadius:18, marginBottom:16,
-              background:"linear-gradient(135deg,rgba(99,102,241,0.25),rgba(139,92,246,0.25))",
-              border:"1px solid rgba(99,102,241,0.35)",
-              boxShadow:"0 0 30px rgba(99,102,241,0.2)",
-            }}>
-              <svg width="30" height="30" viewBox="0 0 28 28" fill="none">
-                <path d="M14 2L4 8v12l10 6 10-6V8L14 2z" stroke="url(#g2)" strokeWidth="1.5" fill="rgba(99,102,241,0.2)"/>
-                <path d="M14 8l-5 3v6l5 3 5-3v-6L14 8z" fill="url(#g2)"/>
-                <defs>
-                  <linearGradient id="g2" x1="4" y1="2" x2="24" y2="26" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#6366f1"/><stop offset="1" stopColor="#06b6d4"/>
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
+            <Link to="/" style={{ textDecoration: "none", display: "inline-block", cursor: "pointer", transition: "transform 0.2s ease" }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}>
+              <div style={{
+                display:"inline-flex", alignItems:"center", justifyContent:"center",
+                width:60, height:60, borderRadius:18, marginBottom:16,
+                background:"linear-gradient(135deg,rgba(99,102,241,0.25),rgba(139,92,246,0.25))",
+                border:"1px solid rgba(99,102,241,0.35)",
+                boxShadow:"0 0 30px rgba(99,102,241,0.2)",
+              }}>
+                <svg width="30" height="30" viewBox="0 0 28 28" fill="none">
+                  <path d="M14 2L4 8v12l10 6 10-6V8L14 2z" stroke="url(#g2)" strokeWidth="1.5" fill="rgba(99,102,241,0.2)"/>
+                  <path d="M14 8l-5 3v6l5 3 5-3v-6L14 8z" fill="url(#g2)"/>
+                  <defs>
+                    <linearGradient id="g2" x1="4" y1="2" x2="24" y2="26" gradientUnits="userSpaceOnUse">
+                      <stop stopColor="#6366f1"/><stop offset="1" stopColor="#06b6d4"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+            </Link>
             <div className="header-badge" style={{ display:"inline-flex" }}>
               <div style={{ width:6, height:6, borderRadius:"50%", background:"#22c55e", animation:"pulse 2s ease infinite" }}/>
               Neural Core Active

@@ -199,27 +199,32 @@ const SignInPage = () => {
 
           {/* Header */}
           <div style={{ textAlign:"center", marginBottom:"32px" }}>
-            {/* Logo mark */}
-            <div style={{
-              display:"inline-flex", alignItems:"center", justifyContent:"center",
-              width:"56px", height:"56px", borderRadius:"16px", marginBottom:"16px",
-              background:"linear-gradient(135deg, rgba(99,102,241,0.3), rgba(139,92,246,0.3))",
-              border:"1px solid rgba(99,102,241,0.4)",
-              boxShadow:"0 0 30px rgba(99,102,241,0.2)",
-            }}>
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <path d="M14 2L4 8v12l10 6 10-6V8L14 2z" stroke="url(#g1)" strokeWidth="1.5" fill="rgba(99,102,241,0.2)" />
-                <path d="M14 8l-5 3v6l5 3 5-3v-6L14 8z" fill="url(#g1)" />
-                <defs>
-                  <linearGradient id="g1" x1="4" y1="2" x2="24" y2="26" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#6366f1"/><stop offset="1" stopColor="#06b6d4"/>
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-            <div style={{ fontSize:"0.7rem", letterSpacing:"0.25em", color:"rgba(99,102,241,0.8)", textTransform:"uppercase", fontWeight:600, marginBottom:"8px" }}>
-              SkillBridge Intelligence
-            </div>
+            {/* Logo mark - Clickable to Home */}
+            <Link to="/" style={{ textDecoration: "none", display: "inline-block", cursor: "pointer", transition: "transform 0.2s ease" }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}>
+              <div style={{
+                display:"flex", alignItems:"center", justifyContent:"center",
+                width:"56px", height:"56px", borderRadius:"16px", marginBottom:"16px",
+                margin: "0 auto 16px auto",
+                background:"linear-gradient(135deg, rgba(99,102,241,0.3), rgba(139,92,246,0.3))",
+                border:"1px solid rgba(99,102,241,0.4)",
+                boxShadow:"0 0 30px rgba(99,102,241,0.2)",
+              }}>
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                  <path d="M14 2L4 8v12l10 6 10-6V8L14 2z" stroke="url(#g1)" strokeWidth="1.5" fill="rgba(99,102,241,0.2)" />
+                  <path d="M14 8l-5 3v6l5 3 5-3v-6L14 8z" fill="url(#g1)" />
+                  <defs>
+                    <linearGradient id="g1" x1="4" y1="2" x2="24" y2="26" gradientUnits="userSpaceOnUse">
+                      <stop stopColor="#6366f1"/><stop offset="1" stopColor="#06b6d4"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              <div style={{ fontSize:"0.7rem", letterSpacing:"0.25em", color:"rgba(99,102,241,0.8)", textTransform:"uppercase", fontWeight:600, marginBottom:"8px" }}>
+                SkillBridge Intelligence
+              </div>
+            </Link>
             <h1 style={{ fontSize:"clamp(1.6rem,4vw,2rem)", fontWeight:800, color:"#f1f5f9", margin:"0 0 6px" }}>
               Welcome Back
             </h1>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { User, Mail, Lock, Eye, EyeOff, CheckCircle } from "lucide-react";
+import { User, Mail, Lock, Eye, EyeOff, CheckCircle, ArrowLeft } from "lucide-react";
 import { register } from "../../services/api";
 
 const MinimalAuthForm = ({ role, title, icon: Icon, subtitle, namePlaceholder = "Full Name" }) => {
@@ -62,6 +62,9 @@ const MinimalAuthForm = ({ role, title, icon: Icon, subtitle, namePlaceholder = 
 
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <Link to="/" className="absolute top-6 left-6 md:top-8 md:left-8 text-gray-400 hover:text-white flex items-center gap-2 transition-colors z-50 text-sm font-medium">
+        <ArrowLeft className="w-4 h-4" /> Back to Home
+      </Link>
       {/* Background Atmosphere */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px] mix-blend-screen"></div>
