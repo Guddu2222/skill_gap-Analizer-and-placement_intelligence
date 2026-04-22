@@ -1,23 +1,24 @@
 import React from "react";
 import {
   Sparkles,
-  TrendingUp,
-  Users,
-  Building2,
-  Award,
   ArrowRight,
   PlayIcon,
   CheckCircle2,
+  BrainCircuit,
+  BarChart3,
+  Target,
+  Zap,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
+const FEATURES = [
+  { icon: BrainCircuit, label: "AI Skill Gap Analysis", color: "#6366f1" },
+  { icon: BarChart3,    label: "Placement Intelligence", color: "#06b6d4" },
+  { icon: Target,       label: "Smart Job Matching",     color: "#8b5cf6" },
+  { icon: Zap,          label: "Interview Prep AI",      color: "#f59e0b" },
+];
+
 const HeroSection = () => {
-  const stats = [
-    { icon: Users, value: "50K+", label: "Students Placed" },
-    { icon: Award, value: "94.8%", label: "Placement Rate" },
-    { icon: Building2, value: "500+", label: "Institutions" },
-    { icon: TrendingUp, value: "100+", label: "Companies" },
-  ];
 
   return (
     <div className="relative min-h-screen bg-surface overflow-hidden pt-28">
@@ -84,68 +85,34 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Dashboard Mockup Center Floating */}
-        <div className="relative mx-auto mt-16 max-w-5xl animate-float">
-          <div className="relative glass-abyssal rounded-[2.5rem] p-4 sm:p-8 transform perspective-1000 rotate-x-2">
-            {/* Top Bar Fake */}
-            <div className="flex items-center space-x-3 mb-8 px-2">
-              <div className="w-3.5 h-3.5 rounded-full bg-red-400/80"></div>
-              <div className="w-3.5 h-3.5 rounded-full bg-amber-400/80"></div>
-              <div className="w-3.5 h-3.5 rounded-full bg-emerald-400/80"></div>
-              <div className="ml-4 px-3 py-1 bg-white/10 rounded-full text-xs font-semibold text-gray-400 tracker-widest">
-                SKILLBRIDGE ACTIVE INTELLIGENCE
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {/* Left Column Stats */}
-              <div className="col-span-1 space-y-6">
-                {stats.slice(0,2).map((stat, i) => (
-                  <div key={i} className="glass-panel p-6 rounded-2xl">
-                    <stat.icon className="w-8 h-8 text-indigo-400 mb-4" />
-                    <p className="text-3xl font-bold text-white">{stat.value}</p>
-                    <p className="text-sm font-medium text-gray-400 mt-1">{stat.label}</p>
-                  </div>
-                ))}
-                
-                {/* Floating Avatars Panel */}
-                <div className="glass-panel p-6 rounded-2xl">
-                  <p className="text-sm font-medium text-gray-400 mb-4">Latest Matches</p>
-                  <div className="flex -space-x-4">
-                    <div className="w-12 h-12 rounded-full border-2 border-[#121223] bg-gradient-to-tr from-indigo-500 to-cyan-500 shadow-lg"></div>
-                    <div className="w-12 h-12 rounded-full border-2 border-[#121223] bg-gradient-to-tr from-violet-500 to-pink-500 shadow-lg"></div>
-                    <div className="w-12 h-12 rounded-full border-2 border-[#121223] bg-gradient-to-tr from-emerald-500 to-cyan-500 shadow-lg"></div>
-                    <div className="w-12 h-12 rounded-full border-2 border-[#121223] bg-surface flex items-center justify-center shadow-lg">
-                      <span className="text-xs font-bold text-gray-300">+99</span>
-                    </div>
-                  </div>
+        {/* Feature Cards Grid — honest, no fake numbers */}
+        <div className="relative mx-auto mt-16 max-w-4xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {FEATURES.map(({ icon: Icon, label, color }, i) => (
+              <div
+                key={i}
+                className="glass-abyssal rounded-2xl p-6 flex flex-col items-center text-center gap-4
+                           hover:scale-105 transition-transform duration-300 cursor-default"
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  style={{
+                    background: `${color}22`,
+                    border: `1px solid ${color}44`,
+                    boxShadow: `0 0 18px ${color}22`,
+                  }}
+                >
+                  <Icon className="w-6 h-6" style={{ color }} />
                 </div>
+                <p className="text-sm font-semibold text-gray-300 leading-tight">{label}</p>
               </div>
-
-              {/* Main Chart Area */}
-              <div className="col-span-2 glass-panel rounded-2xl p-6 md:p-8 relative overflow-hidden flex flex-col justify-end">
-                 {/* Decorative gradient behind chart */}
-                 <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-indigo-500/10 to-transparent"></div>
-                 
-                 <div className="absolute top-8 left-8">
-                    <p className="text-2xl font-bold text-white">Skill Growth Vector</p>
-                    <p className="text-sm text-gray-400">Platform-wide progression</p>
-                 </div>
-
-                 {/* Bar Chart Mockup */}
-                 <div className="relative flex items-end justify-between h-48 sm:h-64 mt-16 space-x-2 z-10 w-full px-2">
-                    {[30, 45, 60, 50, 75, 90, 85].map((height, idx) => (
-                      <div key={idx} className="w-1/6 flex flex-col items-center space-y-4 group">
-                        <div 
-                          className="w-full bg-gradient-to-t from-indigo-600/50 to-cyan-400/80 rounded-t-lg transition-all duration-500 group-hover:from-indigo-500 group-hover:to-cyan-300 animate-growUp"
-                          style={{ height: `${height}%`, animationDelay: `${idx * 150}ms` }}
-                        ></div>
-                      </div>
-                    ))}
-                 </div>
-              </div>
-            </div>
+            ))}
           </div>
+
+          {/* Subtle glow beneath cards */}
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-2/3 h-20
+                          bg-indigo-500/10 blur-2xl rounded-full pointer-events-none" />
         </div>
 
       </div>

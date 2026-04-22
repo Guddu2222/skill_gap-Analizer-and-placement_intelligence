@@ -10,24 +10,7 @@ const LandingPage = () => {
       <Navbar />
       <HeroSection />
 
-      {/* Trusted By Section */}
-      <section className="py-12 border-y border-white/5 bg-[#0a0a1a] relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-surface via-transparent to-surface z-10 pointer-events-none"></div>
-        <div className="container mx-auto px-6 text-center relative z-0">
-          <p className="text-xs font-bold text-gray-500 tracking-[0.2em] mb-8 uppercase">
-            Trusted by the Neural Network of Leading Institutions
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-16 opacity-40 grayscale transition-all duration-500 hover:grayscale-0 hover:opacity-100">
-            {/* Logos text representation */}
-            <span className="text-2xl font-black text-white tracking-tighter">Google</span>
-            <span className="text-2xl font-black text-white tracking-tighter">Microsoft</span>
-            <span className="text-2xl font-black text-white tracking-tighter">Amazon</span>
-            <span className="text-2xl font-black text-white tracking-tighter">Wipro</span>
-            <span className="text-2xl font-black text-white tracking-tighter">TCS</span>
-            <span className="text-2xl font-black text-white tracking-tighter">Infosys</span>
-          </div>
-        </div>
-      </section>
+      {/* Removed fake company logos — will add real partnerships when earned */}
 
       {/* Feature Section: 3 Ecosystems */}
       <section id="solutions" className="py-32 relative">

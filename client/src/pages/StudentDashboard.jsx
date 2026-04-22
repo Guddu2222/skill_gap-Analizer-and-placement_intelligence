@@ -172,59 +172,46 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
   const firstName = student.firstName || student.user?.name?.split(" ")[0] || "Student";
   const initials = firstName.charAt(0).toUpperCase() + (student.lastName?.charAt(0) || "").toUpperCase();
 
+  const totalSkillsAnalyzed = skillGapAnalysis
+    ? (skillGapAnalysis.missingSkills?.length || 0) +
+      (skillGapAnalysis.strongSkills?.length || 0) +
+      (skillGapAnalysis.skillsToImprove?.length || 0)
+    : 0;
+
   // ─── Main Render ─────────────────────────────────────────────────────────────
   return (
-    <div className="flex bg-slate-50 min-h-screen font-sans">
+    <div className="flex bg-[#12121d] text-[#e3e0f1] min-h-screen font-sans">
       <Sidebar role="student" collapsed={sidebarCollapsed} onToggle={setSidebarCollapsed} />
 
       {/* ── Main Content Area ── */}
-      <div className={`flex-1 ${sidebarWidth} transition-all duration-300 min-h-screen`}>
+      <div className={`flex-1 ${sidebarWidth} transition-all duration-300 min-h-screen bg-[#12121d]`}>
 
-        {/* ── Sticky Top Bar ── */}
-        <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-slate-100 px-6 py-3 flex items-center justify-between shadow-sm">
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-1.5 text-sm">
-            <span className="text-slate-400">Dashboard</span>
-            <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path d="M9 5l7 7-7 7" />
-            </svg>
-            <span className="font-semibold text-slate-700 capitalize">
-              {activeTab === "overview" ? "Overview" :
-               activeTab === "learning" ? "My Paths" :
-               activeTab === "skills" ? "Skill Radar" :
-               activeTab === "competitive" ? "Compare" :
-               activeTab === "ats-check" ? "ATS Reality Check" :
-               activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
-            </span>
-          </nav>
-
-          {/* Right Controls */}
-          <div className="flex items-center gap-3">
-            {/* Search */}
-            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-xl text-sm text-slate-400 hover:bg-slate-200 transition-colors cursor-pointer w-48">
-              <Search className="w-4 h-4" />
-              Search...
-              <kbd className="ml-auto text-[10px] bg-white rounded px-1.5 py-0.5 font-mono text-slate-400">⌘K</kbd>
+        {/* ── Sticky Top Bar Shell ── */}
+        <header className={`sticky top-0 z-40 bg-[#0F0F1A]/80 backdrop-blur-xl flex justify-between items-center px-8 h-16 font-body text-sm border-b border-white/5`}>
+          <div className="flex items-center gap-4">
+            <span className="text-slate-400">Welcome back,</span>
+            <span className="font-bold text-white">{firstName}</span>
+          </div>
+          <div className="flex items-center gap-6">
+            <div className="relative flex items-center bg-surface-container-lowest px-4 py-2 rounded-full border border-white/5 focus-within:ring-1 ring-[#7C3AED]/50">
+              <span className="material-symbols-outlined text-slate-500 text-sm mr-2">search</span>
+              <input className="bg-transparent border-none focus:ring-0 text-xs w-48 text-on-surface outline-none" placeholder="Search skills, jobs..." type="text"/>
             </div>
-
-            {/* Notification Bell */}
-            <button className="relative p-2 rounded-xl text-slate-500 hover:bg-slate-100 transition-colors">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white" />
-            </button>
-
-            {/* Avatar */}
-            <div
-              className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-md cursor-pointer hover:shadow-lg transition-shadow"
-              title={firstName}
-            >
-              {initials || "S"}
+            <div className="flex items-center gap-4 text-slate-400">
+              <button className="hover:text-white transition-colors">
+                <span className="material-symbols-outlined">notifications</span>
+              </button>
+              <button 
+                onClick={() => setShowEditProfile(true)}
+                className="hover:text-white transition-colors">
+                <span className="material-symbols-outlined">account_circle</span>
+              </button>
             </div>
           </div>
         </header>
 
         {/* ── Page Content ── */}
-        <main className="px-6 py-6 max-w-7xl mx-auto">
+        <main className="px-8 py-8 md:px-12 w-full max-w-7xl mx-auto min-h-screen text-on-surface">
       {activeTab === "settings" ? (
         <StudentSettings student={student} onUpdate={fetchDashboardData} />
       ) : (
@@ -249,133 +236,110 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
              </div>
           )}
 
-          {/* ═══════════════════════════════════════════════
-              PREMIUM HERO BANNER
-          ═══════════════════════════════════════════════ */}
-          <div className="relative rounded-3xl overflow-hidden mb-6 shadow-2xl">
-            {/* Gradient background */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(135deg, #1e1b4b 0%, #312e81 30%, #4c1d95 60%, #1e3a8a 100%)",
-              }}
-            />
-            {/* Animated orb overlays */}
-            <div
-              className="absolute inset-0 opacity-30"
-              style={{
-                backgroundImage:
-                  "radial-gradient(circle at 15% 50%, rgba(139,92,246,0.4) 0%, transparent 50%), radial-gradient(circle at 85% 20%, rgba(59,130,246,0.3) 0%, transparent 45%), radial-gradient(circle at 60% 80%, rgba(99,102,241,0.2) 0%, transparent 40%)",
-              }}
-            />
-            {/* Noise texture overlay */}
-            <div className="absolute inset-0 opacity-[0.03]"
-              style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")" }}
-            />
-
-            <div className="relative z-10 p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-              {/* ── Left: Profile Info ── */}
-              <div className="flex items-center gap-5">
-                {/* Profile Picture */}
-                <div className="relative flex-shrink-0">
+          {/* HERO PROFILE BANNER */}
+          <section className="relative w-full rounded-2xl overflow-hidden mb-8 bg-gradient-to-br from-[#1E1040] via-[#12121d] to-[#0F0F1A] border border-white/5 shadow-2xl">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(124,58,237,0.1),transparent_50%)]"></div>
+            <div className="relative flex flex-col md:flex-row items-center justify-between p-8 gap-8">
+              <div className="flex items-center gap-6">
+                <div className="relative">
                   <ProfilePictureUpload
                     student={student}
                     onUploadSuccess={handleProfilePictureUploadSuccess}
                   />
-                  {/* Online dot */}
-                  <span className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-green-400 rounded-full border-2 border-indigo-800 shadow-sm" />
+                  <div className="absolute bottom-0 right-0 w-5 h-5 bg-green-500 border-2 border-[#1E1040] rounded-full"></div>
                 </div>
-
-                {/* Name & Tags */}
                 <div>
-                  <p className="text-indigo-200/80 text-sm font-medium mb-1">
-                    Welcome back,
-                  </p>
-                  <h1 className="text-white text-2xl md:text-3xl font-bold tracking-tight mb-3">
-                    {firstName}! 👋
-                  </h1>
-                  <div className="flex flex-wrap items-center gap-2">
-                    {student.targetRole && (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white/90 text-xs font-medium border border-white/20">
-                        <Target className="w-3 h-3 text-blue-300" />
-                        {student.targetRole}
-                      </span>
-                    )}
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-400/15 backdrop-blur-sm text-green-200 text-xs font-medium border border-green-400/25">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                      <Briefcase className="w-3 h-3" />
-                      <span className="capitalize">{student.placementStatus || "Active"}</span>
-                    </span>
-                    {student.college?.name && (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/8 backdrop-blur-sm text-white/70 text-xs border border-white/15">
-                        <MapPin className="w-3 h-3" />
-                        {student.college.name}
-                      </span>
-                    )}
+                  <h2 className="text-[28px] font-bold text-white tracking-tight">{student.firstName} {student.lastName}</h2>
+                  <div className="flex items-center gap-3 mt-1">
+                    <span className="px-3 py-0.5 bg-primary-container text-white text-[10px] font-bold uppercase rounded-full tracking-wider">{student.targetRole || "Student"}</span>
+                    {student.college?.name && <span className="text-slate-400 text-xs">{student.college.name}</span>}
                   </div>
                 </div>
               </div>
-
-              {/* ── Right: Readiness Card + Edit Button ── */}
-              <div className="flex flex-col gap-3 w-full md:w-64 relative z-20 shrink-0">
-                <ReadinessScoreWidget
-                  score={student.placementReadinessScore}
-                  components={
-                    student.readinessComponents || {
-                      profile: student.profileCompletionPercentage,
-                      skillGap: skillGapAnalysis?.overallReadinessScore || 0,
-                      resume: student.resumeUrl ? 100 : 0,
-                    }
-                  }
-                />
+              <div className="flex flex-col gap-3 z-20 shrink-0">
+                <div className="flex items-center gap-6 glass-card p-4 rounded-xl border-white/10">
+                  <div className="relative w-24 h-24 flex items-center justify-center">
+                    <svg className="w-full h-full transform -rotate-90">
+                      <circle className="text-surface-container-highest" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" strokeWidth="8"></circle>
+                      <circle className="text-secondary transition-all duration-1000" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" strokeDasharray="251.2" strokeDashoffset={251.2 - (251.2 * (student.placementReadinessScore || 0) / 100)} strokeWidth="8"></circle>
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="text-2xl font-black text-white">{student.placementReadinessScore || 0}</span>
+                      <span className="text-[8px] uppercase tracking-tighter text-slate-400">Score</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Placement Readiness</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-secondary font-bold text-sm">
+                        {(student.placementReadinessScore || 0) < 50 ? "Needs Improvement" : (student.placementReadinessScore || 0) < 80 ? "Good" : "Excellent"}
+                      </span>
+                      <span className="material-symbols-outlined text-secondary text-sm">trending_up</span>
+                    </div>
+                    <p className="text-[10px] text-slate-500 mt-1 max-w-[140px]">Improve skill match by focusing on growth areas.</p>
+                  </div>
+                </div>
                 <div className="flex gap-2">
                   <button
                     onClick={() => setShowEditProfile(true)}
-                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white text-sm font-semibold rounded-xl border border-white/25 hover:border-white/45 transition-all group"
+                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 backdrop-blur-sm text-white text-xs font-semibold rounded-xl border border-white/10 transition-all"
                   >
-                    <Pencil className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />
-                    Edit Profile
+                    <span className="material-symbols-outlined text-xs">edit</span> Edit Profile
                   </button>
                   <button
                     onClick={handleAnalyzeSkills}
                     disabled={analyzing}
-                    title="Refresh Analysis"
-                    className="flex items-center justify-center p-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 rounded-xl text-white transition-all disabled:opacity-50"
+                    className="flex items-center justify-center p-2 px-4 bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl text-white transition-all disabled:opacity-50"
                   >
-                    <RefreshCw className={`w-4 h-4 ${analyzing ? "animate-spin" : ""}`} />
+                    <RefreshCw className={`w-3 h-3 mr-2 ${analyzing ? "animate-spin" : ""}`} /> Refresh
                   </button>
                 </div>
               </div>
             </div>
+          </section>
 
-            {/* Bottom decorative strip */}
-            <div
-              className="h-0.5 w-full"
-              style={{
-                background:
-                  "linear-gradient(90deg, #f59e0b 0%, #8b5cf6 50%, #06b6d4 100%)",
-              }}
-            />
-          </div>
-
-          {/* ═══════════════════════════════════════════════
-              STATS BAR
-          ═══════════════════════════════════════════════ */}
-          <StudentStatsBar
-            student={student}
-            skillGapAnalysis={skillGapAnalysis}
-            learningPaths={learningPaths}
-            onStatClick={(tab) => {
-              if (tab === "skills_modal") {
-                setShowSkillsModal(true);
-              } else {
-                setActiveTab(tab);
-                // Smooth scroll down to the tab content area
-                window.scrollTo({ top: document.body.scrollHeight / 2, behavior: 'smooth' });
-              }
-            }}
-          />
+          {/* STAT CARDS ROW */}
+          <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 cursor-pointer">
+            <div onClick={() => { setActiveTab("skills_modal"); setShowSkillsModal(true); }} className="glass-card p-6 rounded-xl hover:-translate-y-1 transition-all duration-300 group">
+              <div className="flex justify-between items-start mb-4">
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <span className="material-symbols-outlined text-primary">bolt</span>
+                </div>
+                <span className="text-[10px] font-bold text-green-400 flex items-center justify-center">View Map</span>
+              </div>
+              <h4 className="text-slate-400 text-xs font-medium uppercase tracking-wider">Skills Analyzed</h4>
+              <p className="text-3xl font-bold text-white mt-1">{totalSkillsAnalyzed}</p>
+              <div className="w-full h-1 bg-surface-container-highest rounded-full mt-4 overflow-hidden">
+                <div className="h-full bg-primary transition-all duration-500" style={{width: `${Math.min(totalSkillsAnalyzed * 10, 100)}%`}}></div>
+              </div>
+            </div>
+            <div onClick={() => { setActiveTab("learning"); }} className="glass-card p-6 rounded-xl hover:-translate-y-1 transition-all duration-300 group">
+              <div className="flex justify-between items-start mb-4">
+                <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                  <span className="material-symbols-outlined text-secondary">route</span>
+                </div>
+                <span className="text-[10px] font-bold text-slate-400 flex items-center justify-center">Continue</span>
+              </div>
+              <h4 className="text-slate-400 text-xs font-medium uppercase tracking-wider">Active Learning Paths</h4>
+              <p className="text-3xl font-bold text-white mt-1">{learningPaths?.filter(p => !p.isCompleted).length || 0}</p>
+              <div className="w-full h-1 bg-surface-container-highest rounded-full mt-4 overflow-hidden">
+                <div className="h-full bg-secondary transition-all duration-500" style={{width: '60%'}}></div>
+              </div>
+            </div>
+            <div className="glass-card p-6 rounded-xl hover:-translate-y-1 transition-all duration-300 group">
+              <div className="flex justify-between items-start mb-4">
+                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+                  <span className="material-symbols-outlined text-green-400">check</span>
+                </div>
+                <span className="material-symbols-outlined text-green-400 text-sm">verified</span>
+              </div>
+              <h4 className="text-slate-400 text-xs font-medium uppercase tracking-wider">Profile Complete</h4>
+              <p className="text-3xl font-bold text-white mt-1">{student.profileCompletionPercentage || 0}%</p>
+              <div className="w-full h-1 bg-surface-container-highest rounded-full mt-4 overflow-hidden">
+                <div className="h-full bg-green-400 transition-all duration-500" style={{width: `${student.profileCompletionPercentage || 0}%`}}></div>
+              </div>
+            </div>
+          </section>
 
           {/* ═══════════════════════════════════════════════
               RESUME UPLOAD PROMPT (if missing)
