@@ -4,7 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const passport = require("passport");
 
-dotenv.config();
+dotenv.config({ override: true });
 
 // Load OAuth strategies (Google + LinkedIn)
 require("./config/passport");
@@ -26,6 +26,7 @@ app.use("/api/college-features", require("./routes/college-features"));
 app.use("/api/recruiter-features", require("./routes/recruiter-features"));
 app.use("/api/skill-gap", require("./routes/skillGap"));
 app.use("/api/interviews", require("./routes/interviews"));
+app.use("/api/ats", require("./routes/ats"));
 
 app.get("/", (req, res) => {
   res.send("SkillBridge API is running");

@@ -233,6 +233,12 @@ export const fetchLatestSkillGapAnalysis = async () => {
   return data;
 };
 
+// ==================== ATS API ====================
+export const analyzeATS = async (jobDescription) => {
+  const { data } = await api.post("/ats/analyze", { jobDescription });
+  return data;
+};
+
 export const fetchLearningPaths = async () => {
   const { data } = await api.get("/skill-gap/learning-paths");
   return data;

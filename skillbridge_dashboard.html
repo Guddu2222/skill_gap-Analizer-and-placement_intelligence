@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SkillBridge | Student Career Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#e3e0f1",
+                        "on-tertiary-container": "#ffe0cd",
+                        "surface-variant": "#343440",
+                        "on-surface": "#e3e0f1",
+                        "on-secondary": "#472a00",
+                        "on-secondary-fixed": "#2a1700",
+                        "primary-container": "#7c3aed",
+                        "surface-container-low": "#1b1a26",
+                        "error-container": "#93000a",
+                        "surface-container": "#1f1e2a",
+                        "surface": "#12121d",
+                        "on-secondary-container": "#5b3800",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "secondary-container": "#ee9800",
+                        "primary": "#d2bbff",
+                        "on-primary-container": "#ede0ff",
+                        "inverse-primary": "#732ee4",
+                        "outline-variant": "#4a4455",
+                        "on-primary": "#3f008e",
+                        "primary-fixed": "#eaddff",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "surface-container-highest": "#343440",
+                        "on-tertiary-fixed": "#301400",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#ccc3d8",
+                        "error": "#ffb4ab",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed": "#25005a",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "surface-container-high": "#292935",
+                        "secondary-fixed": "#ffddb8",
+                        "tertiary-container": "#a15100",
+                        "background": "#12121d",
+                        "secondary": "#ffb95f",
+                        "tertiary": "#ffb784",
+                        "outline": "#958da1",
+                        "surface-dim": "#12121d",
+                        "surface-container-lowest": "#0d0d18"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #12121d; color: #e3e0f1; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .ambient-glow-violet {
+            box-shadow: 0 0 40px -10px rgba(124, 58, 237, 0.15);
+        }
+        .plasma-bar {
+            background: linear-gradient(90deg, #7C3AED, #D2BBFF);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+<!-- Side Navigation Shell -->
+<aside class="fixed left-0 top-0 h-full w-[180px] z-50 bg-[#12121d] border-r border-white/5 shadow-[4px_0_24px_rgba(124,58,237,0.04)] flex flex-col py-8 gap-2 font-['Inter'] tracking-tight text-sm font-medium">
+<div class="px-6 mb-8">
+<h1 class="text-xl font-black tracking-tighter text-white uppercase">SkillBridge</h1>
+<p class="text-[10px] text-primary tracking-widest font-bold">STUDENT PORTAL</p>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-[#7C3AED] border-l-4 border-[#7C3AED] bg-gradient-to-r from-[#7C3AED]/10 to-transparent" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Overview
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+                My Paths
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">radar</span>
+                Skill Radar
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">school</span>
+                Courses
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">description</span>
+                ATS Matcher
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">work</span>
+                Opportunities
+            </a>
+</nav>
+<div class="px-2 mt-auto border-t border-white/5 pt-4">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Top AppBar Shell -->
+<header class="fixed top-0 right-0 w-[calc(100%-180px)] z-40 bg-[#0F0F1A]/80 backdrop-blur-xl flex justify-between items-center px-8 h-16 font-['Inter'] text-sm">
+<div class="flex items-center gap-4">
+<span class="text-slate-400">Welcome back,</span>
+<span class="font-bold text-white">Guddu</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center bg-surface-container-lowest px-4 py-2 rounded-full focus-within:ring-1 ring-[#7C3AED]/50">
+<span class="material-symbols-outlined text-slate-500 text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs w-48 text-on-surface" placeholder="Search skills, jobs..." type="text"/>
+</div>
+<div class="flex items-center gap-4 text-slate-400">
+<button class="hover:text-white transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="hover:text-white transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[180px] pt-24 px-8 pb-12 min-h-screen">
+<!-- HERO PROFILE BANNER -->
+<section class="relative w-full rounded-2xl overflow-hidden mb-8 bg-gradient-to-br from-[#1E1040] via-[#12121d] to-[#0F0F1A] border border-white/5 shadow-2xl">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(124,58,237,0.1),transparent_50%)]"></div>
+<div class="relative flex flex-col md:flex-row items-center justify-between p-8 gap-8">
+<div class="flex items-center gap-6">
+<div class="relative">
+<img alt="Student Profile" class="w-20 h-20 rounded-full object-cover border-2 border-primary ring-4 ring-primary/20" data-alt="Professional studio portrait of a young male student with a confident smile, warm cinematic lighting, dark textured background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGWjynUIuMnL7oBg9cNGteYhvHuzu70JHiInJBJxo9qWrsGqSU6Gu5T-oTZTS0rRVvFxl6r4mDLPGaUgXgBUJHFDimigfcDWiZRKKdasK0VS2Na-qF5IfxveLBVEag3VbNDwn63mnOHYQgPjD7v8Doev6eNe_UP4xjKbQOdJJ0Ny0e8sKhx61j_ZwW7OGrRpeB6fc7BkzjHwmXchcwyNJEkejIKDohtog1KMxo7E62LLmVucROaTq6d3nk0tWZJ-R9oHdZVVoXYGUy"/>
+<div class="absolute bottom-0 right-0 w-5 h-5 bg-green-500 border-2 border-[#1E1040] rounded-full"></div>
+</div>
+<div>
+<h2 class="text-[28px] font-bold text-white tracking-tight">Guddu Sah</h2>
+<div class="flex items-center gap-3 mt-1">
+<span class="px-3 py-0.5 bg-primary-container text-white text-[10px] font-bold uppercase rounded-full tracking-wider">Full Stack Developer · MERN Stack</span>
+<span class="text-slate-400 text-xs">National Institute of Technology</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6 glass-card p-4 rounded-xl border-white/10">
+<div class="relative w-24 h-24 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-highest" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-secondary" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="80.4" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-black text-white">68</span>
+<span class="text-[8px] uppercase tracking-tighter text-slate-400">Score</span>
+</div>
+</div>
+<div>
+<p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Placement Readiness</p>
+<div class="flex items-center gap-2">
+<span class="text-secondary font-bold text-sm">Needs Improvement</span>
+<span class="material-symbols-outlined text-secondary text-sm">trending_up</span>
+</div>
+<p class="text-[10px] text-slate-500 mt-1 max-w-[140px]">Improve skill match by 15% to reach 'Good' status.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- STAT CARDS ROW -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="glass-card p-6 rounded-xl hover:-translate-y-1 transition-all duration-300 group">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">bolt</span>
+</div>
+<span class="text-[10px] font-bold text-green-400">+2 this week</span>
+</div>
+<h4 class="text-slate-400 text-xs font-medium uppercase tracking-wider">Skills Analyzed</h4>
+<p class="text-3xl font-bold text-white mt-1">9</p>
+<div class="w-full h-1 bg-surface-container-highest rounded-full mt-4 overflow-hidden">
+<div class="h-full bg-primary w-[70%] group-hover:w-[75%] transition-all duration-500"></div>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl hover:-translate-y-1 transition-all duration-300 group">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">route</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400">Next: Backend Mastery</span>
+</div>
+<h4 class="text-slate-400 text-xs font-medium uppercase tracking-wider">Active Learning Paths</h4>
+<p class="text-3xl font-bold text-white mt-1">2</p>
+<div class="w-full h-1 bg-surface-container-highest rounded-full mt-4 overflow-hidden">
+<div class="h-full bg-secondary w-[40%] group-hover:w-[45%] transition-all duration-500"></div>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl hover:-translate-y-1 transition-all duration-300 group">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-green-400">check</span>
+</div>
+<span class="material-symbols-outlined text-green-400 text-sm">verified</span>
+</div>
+<h4 class="text-slate-400 text-xs font-medium uppercase tracking-wider">Profile Complete</h4>
+<p class="text-3xl font-bold text-white mt-1">97%</p>
+<div class="w-full h-1 bg-surface-container-highest rounded-full mt-4 overflow-hidden">
+<div class="h-full bg-green-400 w-[97%] group-hover:w-full transition-all duration-500"></div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
+<!-- AI SKILL MATCH SCORE -->
+<div class="lg:col-span-7 glass-card p-8 rounded-2xl flex flex-col md:flex-row gap-8 items-center border-l-4 border-error/50">
+<div class="flex-shrink-0 relative">
+<div class="w-40 h-40 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-highest" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-error" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-dasharray="439.6" stroke-dashoffset="342.9" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-3xl font-black text-white">22%</span>
+<span class="text-[8px] uppercase tracking-wider text-slate-400 max-w-[60px] text-center">Confidence Score</span>
+</div>
+</div>
+</div>
+<div class="flex-1 w-full">
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-3 py-1 bg-error-container/20 text-error border border-error/20 text-[10px] font-bold rounded-full uppercase">Critical Action Required</span>
+<span class="px-3 py-1 bg-primary-container/20 text-primary border border-primary/20 text-[10px] font-bold rounded-full uppercase">Full Stack Developer MERN</span>
+</div>
+<div class="space-y-4">
+<div class="space-y-1.5">
+<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-slate-400">
+<span>Skills Score</span>
+<span class="text-error">22%</span>
+</div>
+<div class="h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-[22%]"></div>
+</div>
+</div>
+<div class="space-y-1.5">
+<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-slate-400">
+<span>Profile Score</span>
+<span class="text-green-400">97%</span>
+</div>
+<div class="h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-green-400 w-[97%]"></div>
+</div>
+</div>
+<div class="space-y-1.5">
+<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-slate-400">
+<span>Resume Score</span>
+<span class="text-green-400">100%</span>
+</div>
+<div class="h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-green-400 w-full"></div>
+</div>
+</div>
+</div>
+<p class="text-[10px] text-slate-500 mt-6 pt-4 border-t border-white/5 italic">
+                        Weighted Breakdown: 40% Skills · 40% Profile · 20% Resume
+                    </p>
+</div>
+</div>
+<!-- CRITICAL GAPS & CORE STRENGTHS -->
+<div class="lg:col-span-5 grid grid-cols-1 gap-6">
+<!-- Critical Gaps -->
+<div class="glass-card p-6 rounded-2xl">
+<h3 class="text-sm font-bold text-white mb-4 uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-lg">warning</span>
+                        Critical Gaps
+                    </h3>
+<div class="space-y-3">
+<div class="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
+<span class="text-xs font-medium text-on-surface">Algorithms</span>
+<span class="px-2 py-0.5 bg-error/20 text-error text-[9px] font-black uppercase rounded">Critical</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
+<span class="text-xs font-medium text-on-surface">System Design</span>
+<span class="px-2 py-0.5 bg-secondary/20 text-secondary text-[9px] font-black uppercase rounded">High</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
+<span class="text-xs font-medium text-on-surface">Testing &amp; Debugging</span>
+<span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-[9px] font-black uppercase rounded">Medium</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+<!-- CORE STRENGTHS -->
+<div class="glass-card p-8 rounded-2xl">
+<h3 class="text-sm font-bold text-white mb-6 uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-lg">verified</span>
+                    Core Strengths
+                </h3>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div class="p-4 bg-white/5 rounded-2xl border border-white/10 hover:border-secondary/30 transition-colors text-center">
+<p class="text-xs font-bold text-white mb-2">JavaScript</p>
+<div class="flex justify-center gap-0.5">
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<div class="p-4 bg-white/5 rounded-2xl border border-white/10 hover:border-secondary/30 transition-colors text-center">
+<p class="text-xs font-bold text-white mb-2">Java</p>
+<div class="flex justify-center gap-0.5">
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<div class="p-4 bg-white/5 rounded-2xl border border-white/10 hover:border-secondary/30 transition-colors text-center">
+<p class="text-xs font-bold text-white mb-2">React</p>
+<div class="flex justify-center gap-0.5">
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+</div>
+<!-- GROWTH AREAS -->
+<div class="glass-card p-8 rounded-2xl">
+<h3 class="text-sm font-bold text-white mb-6 uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">trending_up</span>
+                    Growth Areas
+                </h3>
+<div class="space-y-6">
+<div class="relative">
+<div class="flex justify-between items-end mb-2">
+<div>
+<p class="text-xs font-bold text-white">C++ Expansion</p>
+<p class="text-[10px] text-slate-500">Mastering STL and memory management</p>
+</div>
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[9px] font-bold rounded">+45% to target</span>
+</div>
+<div class="h-2 bg-surface-container-highest rounded-full relative">
+<div class="absolute h-full bg-blue-500 rounded-full w-[50%] z-10"></div>
+<div class="absolute inset-0 border-r-2 border-white/40 border-dashed w-[95%] z-20 pointer-events-none"></div>
+</div>
+</div>
+<div class="relative">
+<div class="flex justify-between items-end mb-2">
+<div>
+<p class="text-xs font-bold text-white">Python Scripting</p>
+<p class="text-[10px] text-slate-500">Automation and data parsing</p>
+</div>
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[9px] font-bold rounded">+30% to target</span>
+</div>
+<div class="h-2 bg-surface-container-highest rounded-full relative">
+<div class="absolute h-full bg-blue-500 rounded-full w-[65%] z-10"></div>
+<div class="absolute inset-0 border-r-2 border-white/40 border-dashed w-[95%] z-20 pointer-events-none"></div>
+</div>
+</div>
+<div class="relative">
+<div class="flex justify-between items-end mb-2">
+<div>
+<p class="text-xs font-bold text-white">SQL Optimization</p>
+<p class="text-[10px] text-slate-500">Complex joins and indexing</p>
+</div>
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[9px] font-bold rounded">+15% to target</span>
+</div>
+<div class="h-2 bg-surface-container-highest rounded-full relative">
+<div class="absolute h-full bg-blue-500 rounded-full w-[80%] z-10"></div>
+<div class="absolute inset-0 border-r-2 border-white/40 border-dashed w-[95%] z-20 pointer-events-none"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- STRATEGIC ROADMAP -->
+<section class="glass-card p-8 rounded-2xl mb-8">
+<h3 class="text-sm font-bold text-white mb-10 uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">timeline</span>
+                Strategic Roadmap
+            </h3>
+<div class="relative ml-4 md:ml-12 border-l-2 border-white/5 space-y-12 pb-4">
+<!-- Node 1 -->
+<div class="relative pl-8">
+<div class="absolute -left-[9px] top-0 w-4 h-4 bg-primary rounded-full shadow-[0_0_15px_rgba(124,58,237,0.5)]"></div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h4 class="text-lg font-bold text-white">Phase 1: Master Algorithms &amp; Data Structures</h4>
+<span class="px-2 py-0.5 bg-primary/20 text-primary text-[9px] font-bold uppercase rounded border border-primary/20">Active</span>
+</div>
+<p class="text-xs text-slate-400 max-w-xl">Deep dive into time complexity, advanced sorting, and graph algorithms to ace technical rounds.</p>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container rounded-lg border border-white/5">
+<span class="material-symbols-outlined text-xs text-slate-400">schedule</span>
+<span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">~6 Weeks</span>
+</div>
+</div>
+</div>
+<!-- Node 2 -->
+<div class="relative pl-8">
+<div class="absolute -left-[9px] top-0 w-4 h-4 bg-surface-container-highest border-2 border-white/20 rounded-full"></div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h4 class="text-lg font-bold text-white/60">Phase 2: SQL &amp; Database Management</h4>
+<span class="px-2 py-0.5 bg-white/5 text-slate-500 text-[9px] font-bold uppercase rounded border border-white/10">Upcoming</span>
+</div>
+<p class="text-xs text-slate-500 max-w-xl">Focusing on advanced query optimization, schema normalization, and NoSQL integration strategies.</p>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container/50 rounded-lg border border-white/5">
+<span class="material-symbols-outlined text-xs text-slate-500">schedule</span>
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">~4 Weeks</span>
+</div>
+</div>
+</div>
+<!-- Node 3 -->
+<div class="relative pl-8">
+<div class="absolute -left-[9px] top-0 w-4 h-4 bg-surface-container-highest border-2 border-white/20 rounded-full"></div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h4 class="text-lg font-bold text-white/60">Phase 3: C++ &amp; Python Expansion</h4>
+<span class="px-2 py-0.5 bg-white/5 text-slate-500 text-[9px] font-bold uppercase rounded border border-white/10">Future</span>
+</div>
+<p class="text-xs text-slate-500 max-w-xl">Broadening language proficiency for competitive programming and backend automation workflows.</p>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container/50 rounded-lg border border-white/5">
+<span class="material-symbols-outlined text-xs text-slate-500">schedule</span>
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">~8 Weeks</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- EXECUTIVE CAREER ADVICE -->
+<section class="rounded-2xl overflow-hidden bg-gradient-to-br from-[#1E1040] to-[#2D1B69] border border-white/10 shadow-2xl relative">
+<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 pointer-events-none"></div>
+<div class="relative p-10">
+<div class="flex justify-between items-start mb-8">
+<div>
+<span class="px-3 py-1 bg-secondary text-on-secondary text-[10px] font-black rounded uppercase tracking-[0.2em] mb-4 inline-block">Expert Guidance</span>
+<h3 class="text-2xl font-bold text-white tracking-tight">Executive Career Strategy</h3>
+</div>
+<div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-2xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+<div class="flex gap-4 items-start group">
+<span class="text-2xl font-black text-secondary/30 group-hover:text-secondary transition-colors">01</span>
+<div>
+<h4 class="text-sm font-bold text-white mb-1">Focus on End-to-End Projects</h4>
+<p class="text-xs text-on-primary-container/70 leading-relaxed">Stop building small tutorials. Ship a production-grade MERN app that solves a real problem and host it publicly.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start group">
+<span class="text-2xl font-black text-secondary/30 group-hover:text-secondary transition-colors">02</span>
+<div>
+<h4 class="text-sm font-bold text-white mb-1">Active Technical Networking</h4>
+<p class="text-xs text-on-primary-container/70 leading-relaxed">Connect with lead engineers on LinkedIn. Don't ask for referrals; ask for feedback on your GitHub architecture.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start group">
+<span class="text-2xl font-black text-secondary/30 group-hover:text-secondary transition-colors">03</span>
+<div>
+<h4 class="text-sm font-bold text-white mb-1">Solve Level 3+ LeetCode Daily</h4>
+<p class="text-xs text-on-primary-container/70 leading-relaxed">Your skill match is low because of Data Structures. Focus on Hard-level problems to break the 80th percentile barrier.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start group">
+<span class="text-2xl font-black text-secondary/30 group-hover:text-secondary transition-colors">04</span>
+<div>
+<h4 class="text-sm font-bold text-white mb-1">System Design Fundamentals</h4>
+<p class="text-xs text-on-primary-container/70 leading-relaxed">Understand how Discord or Netflix scale. Interviewers at top firms value high-level architecture over basic syntax.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start group">
+<span class="text-2xl font-black text-secondary/30 group-hover:text-secondary transition-colors">05</span>
+<div>
+<h4 class="text-sm font-bold text-white mb-1">Stay Curious, Stay Coding</h4>
+<p class="text-xs text-on-primary-container/70 leading-relaxed">Contribute to one open-source project per month. It proves you can read and improve others' production code.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

@@ -234,6 +234,17 @@ const ProfileEditModal = ({ student, open, onClose, onProfileUpdate }) => {
     setSaving(true);
     try {
       const payload = { ...form, skills, preferredLocations };
+      
+      // Sanitize empty values for numbers and enums to prevent Mongoose cast errors
+      const fieldsToSanitize = ['cgpa', 'graduationYear', 'admissionYear', 'currentSemester', 'activeBacklogs', 'clearedBacklogs', 'expectedSalaryMin', 'expectedSalaryMax', 'gender'];
+      fieldsToSanitize.forEach(field => {
+        if (payload[field] === "") {
+          delete payload[field];
+        } else if (field !== 'gender' && payload[field] != null) {
+          payload[field] = Number(payload[field]);
+        }
+      });
+
       const res = await updateStudentProfile(payload);
       setToast({ type: "success", msg: "Profile updated successfully!" });
       if (onProfileUpdate) onProfileUpdate(res.student);
