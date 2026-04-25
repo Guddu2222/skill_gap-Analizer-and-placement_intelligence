@@ -170,8 +170,8 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
     );
   }
 
-  // Check if onboarding is needed
-  const needsOnboarding = (student.profileCompletionPercentage < 50) || (!student.targetRole);
+  // Check if onboarding is needed (targetRole is set during the wizard)
+  const needsOnboarding = !student.targetRole || student.department === "General";
 
   if (needsOnboarding) {
     return (

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Building2, Briefcase, GraduationCap, Target, MapPin, Phone, Upload, CheckCircle, ChevronRight, ArrowLeft } from 'lucide-react';
+import { User, Building2, Briefcase, GraduationCap, Target, MapPin, Phone, Upload, CheckCircle, ChevronRight, ArrowLeft, X } from 'lucide-react';
 import { updateStudentProfile } from '../../services/api';
 
 const OnboardingWizard = ({ user, onComplete }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  // Skill Input State
+  const [skillInput, setSkillInput] = useState('');
 
   // Student Form State
   const [studentData, setStudentData] = useState({
@@ -16,8 +19,20 @@ const OnboardingWizard = ({ user, onComplete }) => {
     rollNumber: '',
     targetRole: '',
     dreamCompanies: '',
-    skills: '' // comma separated
+    skills: [] // Array of strings
   });
+
+  const handleAddSkill = (skill) => {
+    if (!skill.trim()) return;
+    if (!studentData.skills.includes(skill.trim())) {
+      setStudentData({ ...studentData, skills: [...studentData.skills, skill.trim()] });
+    }
+    setSkillInput('');
+  };
+
+  const handleRemoveSkill = (skill) => {
+    setStudentData({ ...studentData, skills: studentData.skills.filter(s => s !== skill) });
+  };
 
   // College Form State
   const [collegeData, setCollegeData] = useState({
@@ -53,7 +68,6 @@ const OnboardingWizard = ({ user, onComplete }) => {
     setError(null);
     try {
       if (role === 'student') {
-        const skillsArray = studentData.skills.split(',').map(s => s.trim()).filter(s => s);
         const dreamArray = studentData.dreamCompanies.split(',').map(s => s.trim()).filter(s => s);
         
         await updateStudentProfile({
@@ -63,7 +77,7 @@ const OnboardingWizard = ({ user, onComplete }) => {
           rollNumber: studentData.rollNumber,
           targetRole: studentData.targetRole,
           dreamCompanies: dreamArray,
-          skills: skillsArray.map(skillName => ({ skillName, proficiencyLevel: 'beginner' }))
+          skills: studentData.skills.map(skillName => ({ skillName, proficiencyLevel: 'beginner' }))
         });
       } else if (role === 'college_admin') {
         // Mocking college update - requires endpoint in backend
@@ -137,10 +151,59 @@ const OnboardingWizard = ({ user, onComplete }) => {
             <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <CheckCircle className="text-[#ba9eff] w-6 h-6" /> Skills & Assets
             </h3>
+            
+            {/* Interactive Skill Selector */}
             <div>
-              <label className="block text-sm font-medium text-[#acaab3] mb-1.5 uppercase tracking-wider text-[10px]">Current Skills (Comma separated)</label>
-              <textarea rows={3} value={studentData.skills} onChange={e => setStudentData({...studentData, skills: e.target.value})} className="w-full bg-[#1f1f27] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ba9eff] transition-colors resize-none" placeholder="React, Node.js, Python, Machine Learning" />
+              <label className="block text-sm font-medium text-[#acaab3] mb-1.5 uppercase tracking-wider text-[10px]">Add Your Skills</label>
+              <div className="flex gap-2 mb-3">
+                <input 
+                  type="text" 
+                  value={skillInput} 
+                  onChange={e => setSkillInput(e.target.value)} 
+                  onKeyDown={e => e.key === 'Enter' && handleAddSkill(skillInput)}
+                  className="flex-1 bg-[#1f1f27] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ba9eff] transition-colors text-sm" 
+                  placeholder="e.g. React, Python, UI Design" 
+                />
+                <button 
+                  onClick={() => handleAddSkill(skillInput)}
+                  className="px-4 py-3 bg-[#ba9eff]/10 text-[#ba9eff] hover:bg-[#ba9eff]/20 rounded-xl font-medium transition-colors text-sm"
+                >
+                  Add
+                </button>
+              </div>
+
+              {/* Selected Skills Chips */}
+              <div className="flex flex-wrap gap-2 mb-4 min-h-[40px] p-2 bg-[#13131a]/50 rounded-xl border border-white/5">
+                {studentData.skills.length === 0 && <span className="text-[#acaab3] text-sm p-1">No skills added yet</span>}
+                {studentData.skills.map((skill, idx) => (
+                  <span key={idx} className="flex items-center gap-1.5 bg-[#ba9eff]/10 text-[#ba9eff] text-xs font-medium px-3 py-1.5 rounded-full border border-[#ba9eff]/20">
+                    {skill}
+                    <button onClick={() => handleRemoveSkill(skill)} className="hover:text-white transition-colors">
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+
+              {/* Recommended Skills */}
+              <div>
+                <label className="block text-[#acaab3] mb-2 uppercase tracking-wider text-[10px]">Suggested for you</label>
+                <div className="flex flex-wrap gap-2">
+                  {['JavaScript', 'React', 'Node.js', 'Python', 'Java', 'C++', 'SQL', 'MongoDB', 'AWS', 'Docker'].map(suggestion => (
+                    !studentData.skills.includes(suggestion) && (
+                      <button
+                        key={suggestion}
+                        onClick={() => handleAddSkill(suggestion)}
+                        className="text-xs text-[#acaab3] hover:text-[#ba9eff] bg-[#1f1f27] hover:bg-[#ba9eff]/10 px-3 py-1.5 rounded-full border border-white/5 transition-all"
+                      >
+                        + {suggestion}
+                      </button>
+                    )
+                  ))}
+                </div>
+              </div>
             </div>
+
             <div className="mt-4 p-4 rounded-xl border border-dashed border-[#48474f] bg-[#13131a] flex flex-col items-center justify-center text-center">
               <Upload className="w-8 h-8 text-[#acaab3] mb-2" />
               <p className="text-sm font-medium text-white">Resume Upload</p>
