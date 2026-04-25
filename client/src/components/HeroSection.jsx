@@ -13,9 +13,9 @@ import { Link } from "react-router-dom";
 
 const FEATURES = [
   { icon: BrainCircuit, label: "AI Skill Gap Analysis", color: "#6366f1" },
-  { icon: BarChart3,    label: "Placement Intelligence", color: "#06b6d4" },
-  { icon: Target,       label: "Smart Job Matching",     color: "#8b5cf6" },
-  { icon: Zap,          label: "Interview Prep AI",      color: "#f59e0b" },
+  { icon: BarChart3, label: "Placement Intelligence", color: "#06b6d4" },
+  { icon: Target, label: "Smart Job Matching", color: "#8b5cf6" },
+  { icon: Zap, label: "Interview Prep AI", color: "#f59e0b" },
 ];
 
 const HeroSection = () => {
