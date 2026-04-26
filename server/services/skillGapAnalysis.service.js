@@ -765,6 +765,80 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
     return milestones;
   }
 
+  // ── Milestone Quiz Generation ───────────────────────────────────────────────
+  async generateMilestoneQuiz(skillName, milestoneTitle, targetRole) {
+    const prompt = `
+You are an expert technical interviewer hiring for a ${targetRole || "Software Engineering"} role.
+Your task is to generate a short, highly-relevant multiple-choice quiz (MCQ) for a candidate who is studying "${skillName}".
+They are currently completing a learning milestone focused on: "${milestoneTitle}".
+
+Create 10 real-world interview-style multiple-choice questions that test their practical understanding of this specific milestone topic.
+
+Output Format (Strict JSON):
+{
+  "questions": [
+    {
+      "question": "The question text here?",
+      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "correctAnswerIndex": 1,
+      "explanation": "Brief explanation of why this answer is correct."
+    }
+  ]
+}
+Ensure the output is ONLY valid JSON.
+`;
+
+    // Try Groq First
+    if (this.groq) {
+      try {
+        const response = await this.groq.chat.completions.create({
+          messages: [{ role: "user", content: prompt }],
+          model: "llama-3.3-70b-versatile",
+          temperature: 0.3,
+          max_tokens: 1024,
+          response_format: { type: "json_object" },
+        });
+
+        const jsonStr = response.choices[0]?.message?.content;
+        const parsed = JSON.parse(jsonStr);
+        if (parsed.questions && Array.isArray(parsed.questions)) {
+            return parsed.questions;
+        }
+      } catch (err) {
+        console.warn("⚠️ [Groq Quiz] Failed:", err.message);
+      }
+    }
+
+    // Try Gemini Fallback
+    if (this.genAI) {
+      try {
+        const model = this.genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const result = await model.generateContent(prompt);
+        let text = result.response.text();
+        // Remove markdown formatting if present
+        if (text.startsWith("\`\`\`json")) text = text.replace(/^\`\`\`json/, "");
+        if (text.endsWith("\`\`\`")) text = text.replace(/\`\`\`$/, "");
+        
+        const parsed = JSON.parse(text);
+        if (parsed.questions && Array.isArray(parsed.questions)) {
+            return parsed.questions;
+        }
+      } catch (err) {
+        console.warn("⚠️ [Gemini Quiz] Failed:", err.message);
+      }
+    }
+
+    // Fallback Mock
+    return [
+      {
+        question: `What is a key concept related to ${milestoneTitle} in ${skillName}?`,
+        options: ["Concept A", "Concept B", "Concept C", "Concept D"],
+        correctAnswerIndex: 0,
+        explanation: "This is a fallback generated question due to AI service limits."
+      }
+    ];
+  }
+
   getMockGeminiResponse(errorMessage = null, student = null) {
     const summaryMsg = errorMessage
       ? `This is a mock AI response because the Gemini API call failed. Error details: ${errorMessage}.`

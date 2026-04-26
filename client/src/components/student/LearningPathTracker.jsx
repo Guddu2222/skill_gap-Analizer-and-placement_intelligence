@@ -11,8 +11,10 @@ import {
   List,
   Lock,
   ArrowLeft,
+  BrainCircuit,
 } from "lucide-react";
 import api from "../../services/api"; // Use our api utility instance configured with intercepts
+import MilestoneQuizModal from "./MilestoneQuizModal";
 
 const LearningPathTracker = ({ learningPaths, student, onUpdate, onTabChange }) => {
   const [selectedPath, setSelectedPath] = useState(null);
@@ -531,6 +533,50 @@ const LearningPathDetailModal = ({
     onUpdateProgress(path._id, localProgress);
   };
 
+  const [activeQuizMilestoneIndex, setActiveQuizMilestoneIndex] = useState(null);
+  const [generatingQuiz, setGeneratingQuiz] = useState(false);
+  const [quizMilestoneData, setQuizMilestoneData] = useState(null);
+
+  const handleTakeQuiz = async (index) => {
+    setGeneratingQuiz(true);
+    try {
+      // Create a temporary toast to show it's generating
+      const response = await api.post(`/skill-gap/learning-paths/${path._id}/milestones/${index}/quiz/generate`);
+      if (response.data.success) {
+        setQuizMilestoneData({
+          title: path.milestones[index].title,
+          quiz: response.data.quiz
+        });
+        setActiveQuizMilestoneIndex(index);
+      }
+    } catch (err) {
+      console.error("Failed to generate quiz", err);
+      alert("Failed to generate quiz due to API limits. Please try again later.");
+    } finally {
+      setGeneratingQuiz(false);
+    }
+  };
+
+  const handleQuizSubmit = async (score, passed) => {
+    try {
+      const response = await api.post(`/skill-gap/learning-paths/${path._id}/milestones/${activeQuizMilestoneIndex}/quiz/submit`, {
+        score,
+        passed
+      });
+      if (response.data.success) {
+        // We simulate a toggleMilestone if they passed so the UI updates
+        if (passed && !path.milestones[activeQuizMilestoneIndex].completed) {
+          onToggleMilestone(path._id, activeQuizMilestoneIndex, true);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to submit quiz", err);
+    } finally {
+      setActiveQuizMilestoneIndex(null);
+      setQuizMilestoneData(null);
+    }
+  };
+
   return createPortal(
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fadeIn">
       <div className="glass-abyssal rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.8)] flex flex-col border border-white/10">
@@ -727,6 +773,18 @@ const LearningPathDetailModal = ({
                             </span>
                           )}
                         </div>
+                        {!milestone.completed && (
+                          <div className="mt-4 flex">
+                            <button
+                              onClick={() => handleTakeQuiz(index)}
+                              disabled={generatingQuiz}
+                              className="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-gradient-to-r from-indigo-500 to-violet-600 text-white flex items-center gap-2 hover:shadow-[0_0_15px_rgba(99,102,241,0.4)] transition-all disabled:opacity-50"
+                            >
+                              <BrainCircuit className="w-3.5 h-3.5" />
+                              {generatingQuiz && activeQuizMilestoneIndex === index ? "Generating..." : "Take Quiz to Complete"}
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -783,6 +841,14 @@ const LearningPathDetailModal = ({
           </>
         </div>
       </div>
+      {activeQuizMilestoneIndex !== null && quizMilestoneData && (
+        <MilestoneQuizModal
+          isOpen={true}
+          onClose={() => setActiveQuizMilestoneIndex(null)}
+          milestone={quizMilestoneData}
+          onQuizSubmit={handleQuizSubmit}
+        />
+      )}
     </div>,
     document.body
    );

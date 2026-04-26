@@ -424,4 +424,101 @@ router.post("/learning-paths/:id/reschedule", auth, async (req, res) => {
   }
 });
 
+// Generate Quiz for Milestone
+router.post("/learning-paths/:id/milestones/:index/quiz/generate", auth, async (req, res) => {
+  try {
+    const { id, index } = req.params;
+    const student = await Student.findOne({ user: req.user.userId });
+    
+    if (!student) {
+      return res.status(404).json({ error: "Student profile not found" });
+    }
+
+    const learningPath = await SkillLearningPath.findOne({ _id: id, student: student._id });
+    if (!learningPath) {
+      return res.status(404).json({ error: "Learning path not found" });
+    }
+
+    const milestoneIndex = parseInt(index, 10);
+    const milestone = learningPath.milestones[milestoneIndex];
+    
+    if (!milestone) {
+      return res.status(404).json({ error: "Milestone not found" });
+    }
+
+    // Generate questions using AI
+    const questions = await skillGapService.generateMilestoneQuiz(
+      learningPath.skillName,
+      milestone.title,
+      student.targetRole || "Software Engineer"
+    );
+
+    // Save to DB
+    if (!milestone.quiz) milestone.quiz = {};
+    milestone.quiz.generated = true;
+    milestone.quiz.questions = questions;
+    
+    learningPath.markModified('milestones');
+    await learningPath.save();
+
+    res.json({ success: true, quiz: milestone.quiz });
+  } catch (error) {
+    console.error("Quiz generation error:", error);
+    res.status(500).json({ error: "Failed to generate quiz" });
+  }
+});
+
+// Submit Quiz for Milestone
+router.post("/learning-paths/:id/milestones/:index/quiz/submit", auth, async (req, res) => {
+  try {
+    const { id, index } = req.params;
+    const { score, passed } = req.body;
+    
+    const student = await Student.findOne({ user: req.user.userId });
+    if (!student) return res.status(404).json({ error: "Student profile not found" });
+
+    const learningPath = await SkillLearningPath.findOne({ _id: id, student: student._id });
+    if (!learningPath) return res.status(404).json({ error: "Learning path not found" });
+
+    const milestoneIndex = parseInt(index, 10);
+    const milestone = learningPath.milestones[milestoneIndex];
+    if (!milestone) return res.status(404).json({ error: "Milestone not found" });
+
+    if (!milestone.quiz) milestone.quiz = {};
+    milestone.quiz.score = score;
+    milestone.quiz.passed = passed;
+
+    // If passed, auto-complete the milestone
+    if (passed && !milestone.completed) {
+      milestone.completed = true;
+      milestone.completedDate = new Date();
+      
+      // Auto-calculate progress based on completed milestones
+      const completedCount = learningPath.milestones.filter(m => m.completed).length;
+      const totalCount = learningPath.milestones.length;
+      if (totalCount > 0) {
+        const autoProgress = Math.round((completedCount / totalCount) * 100);
+        learningPath.progressPercentage = autoProgress;
+
+        if (autoProgress >= 100) {
+          learningPath.progressPercentage = 100;
+          learningPath.status = "completed";
+          learningPath.completedAt = new Date();
+        } else if (autoProgress > 0 && learningPath.status === "not_started") {
+          learningPath.status = "in_progress";
+          learningPath.startedAt = new Date();
+        }
+      }
+    }
+
+    learningPath.markModified('milestones');
+    await learningPath.save();
+
+    res.json({ success: true, milestone, progressPercentage: learningPath.progressPercentage });
+  } catch (error) {
+    console.error("Quiz submission error:", error);
+    res.status(500).json({ error: "Failed to submit quiz" });
+  }
+});
+
 module.exports = router;

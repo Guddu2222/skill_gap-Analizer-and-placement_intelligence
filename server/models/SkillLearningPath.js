@@ -50,6 +50,19 @@ const skillLearningPathSchema = new mongoose.Schema(
         completed: { type: Boolean, default: false },
         dueDate: Date,
         completedDate: Date,
+        quiz: {
+          generated: { type: Boolean, default: false },
+          score: { type: Number, default: 0 },
+          passed: { type: Boolean, default: false },
+          questions: [
+            {
+              question: String,
+              options: [String],
+              correctAnswerIndex: Number,
+              explanation: String
+            }
+          ]
+        }
       },
     ],
 
