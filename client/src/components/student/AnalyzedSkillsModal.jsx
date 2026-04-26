@@ -104,51 +104,56 @@ const AnalyzedSkillsModal = ({ isOpen, onClose, analysis }) => {
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
-      {/* Click outside to close (Optional, easy added layer) */}
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fadeIn">
       <div className="absolute inset-0" onClick={onClose} />
       
-      <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden relative z-10 transform scale-100 animate-slideUpFade">
+      <div className="glass-abyssal rounded-3xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden relative z-10 border border-white/10 transform scale-100 animate-slideUpFade">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 md:p-6 border-b border-slate-100 bg-white shadow-sm z-10">
-          <div className="flex items-center gap-3 md:gap-4">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-200">
-              <span className="text-xl md:text-2xl">⚡</span>
+        <div className="flex items-center justify-between p-6 border-b border-white/5 bg-gradient-to-r from-indigo-950/40 to-transparent shrink-0">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-indigo-600/20 flex items-center justify-center border border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+              <span className="text-2xl text-indigo-400">⚡</span>
             </div>
             <div>
-              <h2 className="text-lg md:text-xl font-bold text-slate-800 leading-tight">Analyzed Skills Inventory</h2>
-              <p className="text-xs md:text-sm text-slate-500 font-medium">Breakdown of your current technical alignment</p>
+              <h2 className="text-xl font-bold text-white tracking-tight">Analyzed Skills Inventory</h2>
+              <p className="text-xs text-indigo-300 font-bold uppercase tracking-widest mt-0.5">Skill Breakdown Insight</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors active:scale-95"
+            className="p-2 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl transition-all border border-white/0 hover:border-white/10 active:scale-95"
             aria-label="Close modal"
           >
-            <X className="w-5 h-5 md:w-6 md:h-6" />
+            <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Tabs Layer */}
-        <div className="flex items-center justify-between px-2 pt-2 bg-slate-50/50 border-b border-slate-100 shrink-0 overflow-x-auto hide-scrollbar">
-          <div className="flex items-center gap-1 md:gap-2">
+        <div className="flex items-center justify-between px-4 pt-2 bg-black/20 border-b border-white/5 shrink-0 overflow-x-auto hide-scrollbar">
+          <div className="flex items-center gap-2">
             {tabs.map(tab => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
               
+              const tabStyles = {
+                strong: "border-emerald-500 text-emerald-400 bg-emerald-500/5",
+                improve: "border-amber-500 text-amber-400 bg-amber-500/5",
+                missing: "border-rose-500 text-rose-400 bg-rose-500/5"
+              };
+
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-1.5 md:gap-2 px-3 py-3 rounded-t-xl transition-all border-b-2 font-medium text-[13px] md:text-sm whitespace-nowrap
+                  className={`flex items-center gap-2.5 px-4 py-4 rounded-t-xl transition-all border-b-2 font-black text-xs uppercase tracking-widest whitespace-nowrap
                     ${isActive 
-                      ? `${tab.borderColor} ${tab.color} ${tab.bgClass}` 
-                      : 'border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/50'
+                      ? tabStyles[tab.id]
+                      : 'border-transparent text-slate-500 hover:text-slate-300 hover:bg-white/5'
                     }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? tab.color : 'text-slate-400'}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? '' : 'text-slate-600'}`} />
                   {tab.label}
-                  <span className={`px-2 py-0.5 rounded-full text-[10px] md:text-xs font-bold ${isActive ? `${tab.pillBg} ${tab.pillText}` : 'bg-slate-200/70 text-slate-500'}`}>
+                  <span className={`px-2 py-0.5 rounded-lg text-[10px] font-black ${isActive ? 'bg-white/10' : 'bg-black/40'}`}>
                     {tab.counts}
                   </span>
                 </button>
@@ -158,8 +163,46 @@ const AnalyzedSkillsModal = ({ isOpen, onClose, analysis }) => {
         </div>
 
         {/* Dynamic Content Area */}
-        <div className="p-4 md:p-6 pb-8 overflow-y-auto flex-1 bg-slate-50/50">
-          {renderContent()}
+        <div className="p-6 pb-10 overflow-y-auto flex-1 bg-black/10">
+          {skills.length === 0 ? (
+            <div className="flex flex-col items-center justify-center p-20 text-slate-500">
+               <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
+                  <AlertCircle className="w-8 h-8 opacity-20" />
+               </div>
+               <p className="text-xs font-bold uppercase tracking-widest">No skills in this category</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-3">
+              {skills.map((skill, index) => {
+                const name = typeof skill === 'string' ? skill : skill.name || skill.skill || "Skill";
+                const reason = typeof skill !== 'string' ? skill.reason || skill.reasoning || skill.description : null;
+                const level = typeof skill !== 'string' ? skill.currentLevel || skill.strengthLevel : null;
+
+                return (
+                  <div key={index} className="flex items-start bg-white/2 border border-white/5 rounded-2xl p-5 hover:bg-white/5 hover:border-indigo-500/30 transition-all group">
+                    <div className={`mt-1.5 mr-4 w-2 h-2 rounded-full flex-shrink-0 shadow-[0_0_8px_currentColor] ${
+                      activeTab === 'strong' ? 'text-emerald-500 bg-emerald-500' : 
+                      activeTab === 'improve' ? 'text-amber-500 bg-amber-500' : 
+                      'text-rose-500 bg-rose-500'
+                    }`} />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <h4 className="font-bold text-white text-[15px] tracking-tight">{name}</h4>
+                        {level && (
+                          <span className="text-[10px] font-black uppercase tracking-tighter px-2 py-0.5 rounded bg-white/5 text-indigo-300 border border-white/5">
+                            {level}
+                          </span>
+                        )}
+                      </div>
+                      {reason && (
+                        <p className="text-xs text-slate-400 leading-relaxed max-w-xl group-hover:text-slate-300 transition-colors">{reason}</p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </div>,

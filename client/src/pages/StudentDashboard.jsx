@@ -171,7 +171,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
   }
 
   // Check if onboarding is needed (targetRole is set during the wizard)
-  const needsOnboarding = !student.targetRole || student.department === "General";
+  const needsOnboarding = !student.targetRole || student.department === "General" || !student.college;
 
   if (needsOnboarding) {
     return (

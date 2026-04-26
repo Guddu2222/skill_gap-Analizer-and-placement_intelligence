@@ -130,8 +130,8 @@ const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
               Critical Gaps
             </h3>
             <div className="space-y-3 flex-1 overflow-y-auto max-h-[300px] custom-scrollbar-dark pr-2">
-              {analysis.missingSkills?.length > 0 ? (
-                analysis.missingSkills.map((gap, idx) => (
+              {(Array.isArray(analysis.missingSkills) ? analysis.missingSkills : []).length > 0 ? (
+                (Array.isArray(analysis.missingSkills) ? analysis.missingSkills : []).map((gap, idx) => (
                   <div key={idx} className="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
                     <span className="text-xs font-medium text-on-surface">{gap.skill}</span>
                     <span className={`px-2 py-0.5 text-[9px] font-black uppercase rounded ${gap.priority?.toUpperCase() === 'CRITICAL' ? 'bg-error/20 text-error' : gap.priority?.toUpperCase() === 'HIGH' ? 'bg-secondary/20 text-secondary' : 'bg-blue-500/20 text-blue-400'}`}>
@@ -155,7 +155,7 @@ const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
             Core Strengths
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 flex-1">
-            {analysis.strongSkills?.slice(0, 6).map((strength, idx) => (
+            {(Array.isArray(analysis.strongSkills) ? analysis.strongSkills : []).slice(0, 6).map((strength, idx) => (
               <div key={idx} className="p-4 bg-white/5 rounded-2xl border border-white/10 hover:border-secondary/30 transition-colors text-center flex flex-col justify-center">
                 <p className="text-xs font-bold text-white mb-2 line-clamp-1" title={strength.skill}>{strength.skill}</p>
                 <div className="flex justify-center gap-0.5">
@@ -165,7 +165,7 @@ const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
                 </div>
               </div>
             ))}
-            {(!analysis.strongSkills || analysis.strongSkills.length === 0) && (
+            {(!Array.isArray(analysis.strongSkills) || analysis.strongSkills.length === 0) && (
               <div className="col-span-3 text-center text-slate-500 text-xs">Building core strengths...</div>
             )}
           </div>
@@ -178,7 +178,7 @@ const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
             Growth Areas
           </h3>
           <div className="space-y-6 flex-1 overflow-y-auto max-h-[300px] custom-scrollbar-dark pr-2">
-            {analysis.skillsToImprove?.map((area, idx) => {
+            {(Array.isArray(analysis.skillsToImprove) ? analysis.skillsToImprove : []).map((area, idx) => {
               const difficultyLevelMap = { beginner: 25, intermediate: 50, advanced: 85 };
               const currentLevelText = (area.currentLevel || "").toLowerCase();
               const currentLevelStr = Object.keys(difficultyLevelMap).find(k => currentLevelText.includes(k)) || "intermediate";
@@ -213,7 +213,7 @@ const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
           Strategic Roadmap
         </h3>
         <div className="relative ml-4 md:ml-12 border-l-2 border-white/5 space-y-12 pb-4">
-          {analysis.priorityLearningPath?.map((stepString, index) => {
+          {(Array.isArray(analysis.priorityLearningPath) ? analysis.priorityLearningPath : []).map((stepString, index) => {
              const isCurrent = index === 0;
              const isUpcoming = index === 1;
              

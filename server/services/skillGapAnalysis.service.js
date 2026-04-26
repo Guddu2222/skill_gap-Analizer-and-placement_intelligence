@@ -77,14 +77,31 @@ class SkillGapAnalysisService {
         targetDomain: targetDomain,
         targetRole: targetRole,
         currentSkills: (student.skills || []).map((s) => ({
-          skill: s.skillName || s, // Handle string or object structure
-          proficiency: s.proficiency || "beginner",
-          years: s.years || 0,
+          skill: s.skillName || (typeof s === 'string' ? s : "Skill"),
+          proficiency: s.proficiencyLevel || "intermediate",
+          years: s.yearsOfExperience || 0,
         })),
         overallReadinessScore: readinessScore,
-        missingSkills: structuredAnalysis.missing_skills,
-        skillsToImprove: structuredAnalysis.skills_to_improve,
-        strongSkills: structuredAnalysis.strong_skills,
+        missingSkills: (structuredAnalysis.missing_skills || []).map(s => ({
+          skill: s.skill,
+          priority: s.priority,
+          reasoning: s.reasoning,
+          difficulty: s.difficulty,
+          estimatedLearningTime: s.estimated_learning_time
+        })),
+        skillsToImprove: (structuredAnalysis.skills_to_improve || []).map(s => ({
+          skill: s.skill,
+          currentLevel: s.current_level,
+          requiredLevel: s.required_level,
+          improvementPriority: s.improvement_priority,
+          reasoning: s.reasoning
+        })),
+        strongSkills: (structuredAnalysis.strong_skills || []).map(s => ({
+          skill: s.skill,
+          strengthLevel: s.strength_level,
+          marketDemand: s.market_demand,
+          leverageAdvice: s.leverage_advice
+        })),
         aiAnalysisRaw: aiAnalysisRaw,
         analysisSummary: structuredAnalysis.summary,
         priorityLearningPath: structuredAnalysis.priority_learning_path,
@@ -211,9 +228,13 @@ Nice-to-have: ${(domainRequirements.niceToHaveSkills || []).map((s) => s.skill).
 **Task:**
 Analyze this student's readiness for a ${targetRole || "entry-level"} role in ${targetDomain} and provide:
 
-1. **Skill Gap Analysis**: Identify missing critical skills and chronologically order them  into sequential learning phases (1 to 5). Combine heavily overlapping skills into a single topic to avoid redundancy (e.g., merge "Object-Oriented Programming" and "Object-Oriented Design").
-2. **Skills to Improve**: From their Current Skills, list the skills that strictly need advancement.
-3. **Strong Skills**: From their Current Skills, list the skills where the student excels.
+1. **Skill Gap Analysis**: Identify missing critical skills for the ${targetRole || "entry-level"} role and chronologically order them into sequential learning phases (1 to 5). Combine heavily overlapping skills into a single topic.
+2. **Skills to Improve**: From their Current Skills, list the skills that need advancement. 
+   - NOTE: If a skill is "intermediate", categorize it as "To Improve" ONLY if the target role strictly requires "advanced" or "expert" level mastery for that specific skill (e.g., React for a MERN role). Otherwise, consider it a "Strong Skill".
+   - If a skill is "beginner", always categorize it as "To Improve".
+3. **Strong Skills**: From their Current Skills, list the skills where the student meets or exceeds the market requirements for an entry-level role.
+   - If a skill is "advanced" or "expert", it is always a "Strong Skill".
+   - If a skill is "intermediate", categorize it as "Strong Skill" if it's a supporting skill (like Git, HTML/CSS for a backend role) or if it's sufficient for an entry-level position.
 IMPORTANT: You MUST categorize EVERY SINGLE skill from their "Current Skills" list into either "strong_skills" or "skills_to_improve". Do not leave any current skill unaccounted for.
 4. **Market Readiness Score**: 0-100 score of job readiness based on their profile data
 5. **Priority Recommendations**: Top 3-5 skills to focus on immediately
@@ -321,7 +342,7 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
 
     // 3. Final fallback: mock response
     console.warn("⚠️  [AI] No AI provider available. Returning mock analysis.");
-    return this.getMockGeminiResponse("No AI provider configured or all providers failed.");
+    return this.getMockGeminiResponse("No AI provider configured or all providers failed.", student);
   }
 
   // ── Fallback AI: Gemini ───────────────────────────────────────────────────
@@ -377,7 +398,8 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
           "   Raw error:", error.message
         );
         return this.getMockGeminiResponse(
-          "Invalid Gemini API key. Please go to https://aistudio.google.com/app/apikey, create a new key (it starts with AIza...), and paste it as GEMINI_API_KEY in server/.env"
+          "Invalid Gemini API key. Please go to https://aistudio.google.com/app/apikey, create a new key (it starts with AIza...), and paste it as GEMINI_API_KEY in server/.env",
+          student
         );
       }
 
@@ -388,13 +410,14 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
           "and update GEMINI_API_KEY in server/.env"
         );
         return this.getMockGeminiResponse(
-          "Gemini API quota exhausted. This is a sample analysis — real AI results will resume once the API key quota resets or a new key is configured."
+          "Gemini API quota exhausted. This is a sample analysis — real AI results will resume once the API key quota resets or a new key is configured.",
+          student
         );
       }
 
       // Other unexpected errors — still fall back to mock, never crash
       console.error("❌ [Gemini] Unexpected API error. Falling back to mock:", error.message, "\n   Full error:", error);
-      return this.getMockGeminiResponse(error.message || "Unknown API Error");
+      return this.getMockGeminiResponse(error.message || "Unknown API Error", student);
     }
   }
 
@@ -487,20 +510,40 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
       domainRequirements.coreSkills &&
       domainRequirements.coreSkills.length > 0
     ) {
+      const proficiencyMap = {
+        'beginner': 0.4,
+        'intermediate': 0.7,
+        'advanced': 0.9,
+        'expert': 1.0
+      };
+
       domainRequirements.coreSkills.forEach((reqSkill) => {
         totalWeight += reqSkill.weight || 10;
 
-        const hasSkill = studentSkillsFlat.includes(
-          reqSkill.skill.toLowerCase(),
+        // Find the student's matching skill
+        const studentSkill = studentSkills.find(s => 
+          (s.skillName || (typeof s === 'string' ? s : "")).toLowerCase() === reqSkill.skill.toLowerCase()
         );
 
-        if (hasSkill) {
-          score += reqSkill.weight || 10; // Simplified scoring since proficiency is harder to normalize without strict enums
+        if (studentSkill) {
+          const profLevel = (studentSkill.proficiencyLevel || "intermediate").toLowerCase();
+          const multiplier = proficiencyMap[profLevel] || 0.7;
+          score += (reqSkill.weight || 10) * multiplier;
         }
       });
     }
 
-    return totalWeight > 0 ? Math.round((score / totalWeight) * 100) : 50; // default to 50 if no specific requirements available
+    // Add a baseline score for preferred skills (up to 20 points bonus)
+    if (domainRequirements.preferredSkills) {
+        domainRequirements.preferredSkills.forEach(ps => {
+            const hasSkill = studentSkills.some(s => 
+                (s.skillName || (typeof s === 'string' ? s : "")).toLowerCase() === ps.skill.toLowerCase()
+            );
+            if (hasSkill) score += 2;
+        });
+    }
+
+    return totalWeight > 0 ? Math.min(100, Math.round((score / totalWeight) * 100)) : 50;
   }
 
   // Get Domain Requirements
@@ -722,26 +765,49 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
     return milestones;
   }
 
-  getMockGeminiResponse(errorMessage = null) {
+  getMockGeminiResponse(errorMessage = null, student = null) {
     const summaryMsg = errorMessage
-      ? `This is a mock AI response because the Gemini API call failed. Error details: ${errorMessage}. Please check your GEMINI_API_KEY validity, quota, or network connectivity.`
-      : `This is a mock AI response since the GEMINI_API_KEY was not configured in the .env file. Add the key to see real results.`;
+      ? `This is a mock AI response because the Gemini API call failed. Error details: ${errorMessage}.`
+      : `This is a mock AI response since the GEMINI_API_KEY was not configured.`;
 
-    return `{
-        "summary": "${summaryMsg}",
-        "readiness_score": 60,
-        "market_score": 65,
-        "missing_skills": [
-          { "skill": "React", "phase_number": 1, "phase_title": "Frontend Frameworks", "priority": "high", "reasoning": "Standard for frontend", "difficulty": "medium", "estimated_learning_time": "4 weeks" },
-          { "skill": "Node.js", "phase_number": 2, "phase_title": "Backend Engineering", "priority": "high", "reasoning": "Standard for backend", "difficulty": "medium", "estimated_learning_time": "4 weeks" }
+    // Try to categorize student skills if available
+    const strongSkills = [];
+    const skillsToImprove = [];
+    
+    if (student && student.skills) {
+        student.skills.forEach(s => {
+            const skillName = s.skillName || s;
+            const prof = (s.proficiencyLevel || "intermediate").toLowerCase();
+            
+            if (prof === 'advanced' || prof === 'expert') {
+                strongSkills.push({ skill: skillName, strength_level: prof, market_demand: "high", leverage_advice: "Highlight this in your projects." });
+            } else if (prof === 'beginner') {
+                skillsToImprove.push({ skill: skillName, current_level: prof, required_level: "intermediate", improvement_priority: "high", reasoning: "Essential for core workflow." });
+            } else {
+                // Intermediate split
+                if (['HTML', 'CSS', 'Git'].some(k => skillName.includes(k))) {
+                    strongSkills.push({ skill: skillName, strength_level: prof, market_demand: "medium", leverage_advice: "Solid baseline." });
+                } else {
+                    skillsToImprove.push({ skill: skillName, current_level: prof, required_level: "advanced", improvement_priority: "medium", reasoning: "Further mastery recommended." });
+                }
+            }
+        });
+    }
+
+    return JSON.stringify({
+        summary: summaryMsg,
+        readiness_score: 60,
+        market_score: 65,
+        missing_skills: [
+          { skill: "System Design", phase_number: 1, phase_title: "Architecture", priority: "high", reasoning: "Critical for modern apps", difficulty: "hard", estimated_learning_time: "4 weeks" }
         ],
-        "skills_to_improve": [],
-        "strong_skills": [],
-        "priority_learning_path": ["Step 1: Learn React - Standard for frontend", "Step 2: Learn Node.js - Standard for backend"],
-        "estimated_weeks": 8,
-        "career_advice": ["Configure the GEMINI_API_KEY in the backend .env or verify its validity."],
-        "red_flags": []
-      }`;
+        skills_to_improve: skillsToImprove.length > 0 ? skillsToImprove : [{ skill: "React", current_level: "intermediate", required_level: "advanced", improvement_priority: "high", reasoning: "Core stack mastery required." }],
+        strong_skills: strongSkills.length > 0 ? strongSkills : [{ skill: "HTML/CSS", strength_level: "advanced", market_demand: "high", leverage_advice: "Great foundation." }],
+        priority_learning_path: ["Step 1: Master System Design basics", "Step 2: Deep dive into Performance Tuning"],
+        estimated_weeks: 8,
+        career_advice: ["Verify your API keys in server/.env to get real AI-driven insights."],
+        red_flags: []
+    });
   }
 }
 

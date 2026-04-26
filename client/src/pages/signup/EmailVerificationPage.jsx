@@ -84,38 +84,43 @@ const EmailVerificationPage = ({ email: propEmail }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
-        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-          <Mail className="w-8 h-8 text-blue-600" />
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[#0a0a0f] relative overflow-hidden">
+      {/* Premium dark aesthetic background elements */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#191921] via-[#0e0e14] to-[#000000]"></div>
+      <div className="absolute top-[20%] left-[20%] w-[40vw] h-[40vw] bg-[#6e3bd7]/20 rounded-full blur-[120px] mix-blend-screen opacity-50"></div>
+      <div className="absolute bottom-[20%] right-[20%] w-[30vw] h-[30vw] bg-[#c48ef9]/10 rounded-full blur-[100px] mix-blend-screen opacity-50"></div>
+
+      <div className="relative z-10 max-w-md w-full bg-[#1f1f27]/80 backdrop-blur-[20px] rounded-2xl shadow-[0_20px_40px_rgba(186,158,255,0.08)] border border-white/10 p-8 text-center">
+        <div className="w-16 h-16 bg-[#ba9eff]/20 border border-[#ba9eff]/30 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_20px_rgba(186,158,255,0.2)]">
+          <Mail className="w-8 h-8 text-[#ae8dff]" />
         </div>
 
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-2xl font-bold text-white tracking-tight mb-2">
           Verify Your Email
         </h2>
-        <p className="text-gray-600 mb-8">
+        <p className="text-[#acaab3] mb-8 text-sm">
           We've sent a 6-digit verification code to
           <br />
-          <span className="font-semibold text-gray-900">{email}</span>
+          <span className="font-semibold text-[#ba9eff] mt-1 block">{email}</span>
         </p>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm font-medium">
+          <div className="mb-4 p-3 bg-[#a70138]/20 border border-[#a70138] text-[#ffb2b9] rounded-xl text-sm font-medium">
             {error}
           </div>
         )}
 
         {resendSuccess && (
-          <div className="mb-4 p-3 bg-green-50 text-green-700 rounded-lg text-sm font-medium">
+          <div className="mb-4 p-3 bg-emerald-500/20 border border-emerald-500/50 text-emerald-400 rounded-xl text-sm font-medium">
             ✅ {resendSuccess}
           </div>
         )}
 
         {success ? (
-          <div className="p-4 bg-green-50 text-green-700 rounded-lg flex flex-col items-center">
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-2">
+          <div className="p-6 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl flex flex-col items-center">
+            <div className="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center mb-3">
               <svg
-                className="w-6 h-6 text-green-600"
+                className="w-6 h-6 text-emerald-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -128,8 +133,8 @@ const EmailVerificationPage = ({ email: propEmail }) => {
                 />
               </svg>
             </div>
-            <p className="font-semibold">Email verified successfully!</p>
-            <p className="text-sm mt-1 text-green-600">
+            <p className="font-semibold text-white">Email verified successfully!</p>
+            <p className="text-sm mt-1 text-emerald-400/80">
               Redirecting to login...
             </p>
           </div>
@@ -145,7 +150,7 @@ const EmailVerificationPage = ({ email: propEmail }) => {
                   value={digit}
                   onChange={(e) => handleChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
-                  className="w-12 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                  className="w-12 h-14 text-center text-2xl font-bold text-white bg-black/40 border border-white/10 rounded-xl focus:border-[#ba9eff] focus:ring-1 focus:ring-[#ba9eff] outline-none transition-all placeholder:text-white/20"
                   required
                 />
               ))}
@@ -154,10 +159,10 @@ const EmailVerificationPage = ({ email: propEmail }) => {
             <button
               type="submit"
               disabled={loading || code.join("").length !== 6}
-              className={`w-full py-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg ${
+              className={`w-full py-4 rounded-full font-bold flex items-center justify-center gap-2 transition-all ${
                 loading || code.join("").length !== 6
-                  ? "bg-blue-400 cursor-not-allowed"
-                  : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl"
+                  ? "bg-[#25252e] text-[#acaab3] cursor-not-allowed border border-white/5"
+                  : "bg-gradient-to-br from-[#ba9eff] to-[#8455ef] text-[#39008c] shadow-[0_0_15px_rgba(186,158,255,0.4)] hover:shadow-[0_0_25px_rgba(186,158,255,0.6)] border border-[#ba9eff]/50"
               }`}
             >
               {loading ? (
@@ -173,15 +178,15 @@ const EmailVerificationPage = ({ email: propEmail }) => {
         )}
 
         {!success && (
-          <p className="mt-6 text-sm text-gray-600">
+          <p className="mt-8 text-sm text-[#acaab3]">
             Didn't receive the code?{" "}
             <button
               onClick={handleResend}
               disabled={resendLoading}
               className={`font-semibold transition-colors ${
                 resendLoading
-                  ? "text-gray-400 cursor-not-allowed"
-                  : "text-blue-600 hover:text-blue-800"
+                  ? "text-slate-500 cursor-not-allowed"
+                  : "text-[#ae8dff] hover:text-white"
               }`}
             >
               {resendLoading ? "Sending..." : "Resend it"}

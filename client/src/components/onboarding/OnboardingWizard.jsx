@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Building2, Briefcase, GraduationCap, Target, MapPin, Phone, Upload, CheckCircle, ChevronRight, ArrowLeft, X } from 'lucide-react';
+import { User, Building2, Briefcase, GraduationCap, Target, MapPin, Phone, Upload, CheckCircle, ChevronRight, ArrowLeft, X, AlertCircle } from 'lucide-react';
 import { updateStudentProfile } from '../../services/api';
 
 const OnboardingWizard = ({ user, onComplete }) => {
@@ -22,6 +22,24 @@ const OnboardingWizard = ({ user, onComplete }) => {
     skills: [] // Array of strings
   });
 
+  // College Form State
+  const [collegeData, setCollegeData] = useState({
+    collegeName: '',
+    address: '',
+    contactPerson: '',
+    designation: '',
+    phone: ''
+  });
+
+  // Recruiter Form State
+  const [recruiterData, setRecruiterData] = useState({
+    companyName: '',
+    industry: '',
+    website: '',
+    targetDomains: '',
+    expectedHiringVolume: ''
+  });
+
   const handleAddSkill = (skill) => {
     if (!skill.trim()) return;
     if (!studentData.skills.includes(skill.trim())) {
@@ -33,24 +51,6 @@ const OnboardingWizard = ({ user, onComplete }) => {
   const handleRemoveSkill = (skill) => {
     setStudentData({ ...studentData, skills: studentData.skills.filter(s => s !== skill) });
   };
-
-  // College Form State
-  const [collegeData, setCollegeData] = useState({
-    collegeName: user?.name || '',
-    address: '',
-    phone: '',
-    contactPerson: '',
-    designation: ''
-  });
-
-  // Recruiter Form State
-  const [recruiterData, setRecruiterData] = useState({
-    companyName: user?.name || '',
-    industry: '',
-    website: '',
-    targetDomains: '',
-    expectedHiringVolume: ''
-  });
 
   const role = user?.role || 'student';
   const totalSteps = role === 'student' ? 3 : 2;
@@ -79,14 +79,6 @@ const OnboardingWizard = ({ user, onComplete }) => {
           dreamCompanies: dreamArray,
           skills: studentData.skills.map(skillName => ({ skillName, proficiencyLevel: 'beginner' }))
         });
-      } else if (role === 'college_admin') {
-        // Mocking college update - requires endpoint in backend
-        console.log("College update payload:", collegeData);
-        // await api.put('/college-features/update', collegeData);
-      } else if (role === 'recruiter') {
-        // Mocking recruiter update - requires endpoint in backend
-        console.log("Recruiter update payload:", recruiterData);
-        // await api.put('/recruiter-features/update', recruiterData);
       }
       
       onComplete(); // Triggers re-fetch and hides wizard
@@ -104,110 +96,148 @@ const OnboardingWizard = ({ user, onComplete }) => {
     switch (currentStep) {
       case 1:
         return (
-          <div className="space-y-5 animate-fadeIn">
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-              <GraduationCap className="text-[#ba9eff] w-6 h-6" /> Academic Profile
-            </h3>
-            <div>
-              <label className="block text-sm font-medium text-[#acaab3] mb-1.5 uppercase tracking-wider text-[10px]">College / University Name</label>
-              <input type="text" value={studentData.collegeName} onChange={e => setStudentData({...studentData, collegeName: e.target.value})} className="w-full bg-[#1f1f27] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ba9eff] transition-colors" placeholder="E.g. Stanford University" />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-[#acaab3] mb-1.5 uppercase tracking-wider text-[10px]">Department</label>
-                <input type="text" value={studentData.department} onChange={e => setStudentData({...studentData, department: e.target.value})} className="w-full bg-[#1f1f27] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ba9eff] transition-colors" placeholder="Computer Science" />
+          <div className="space-y-6 animate-fadeIn">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30">
+                <GraduationCap className="text-indigo-400 w-6 h-6" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#acaab3] mb-1.5 uppercase tracking-wider text-[10px]">Graduation Year</label>
-                <input type="number" value={studentData.year} onChange={e => setStudentData({...studentData, year: e.target.value})} className="w-full bg-[#1f1f27] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ba9eff] transition-colors" />
+                <h3 className="text-xl font-bold text-white tracking-tight">Academic Profile</h3>
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Institutional Details</p>
               </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-[#acaab3] mb-1.5 uppercase tracking-wider text-[10px]">Roll Number</label>
-              <input type="text" value={studentData.rollNumber} onChange={e => setStudentData({...studentData, rollNumber: e.target.value})} className="w-full bg-[#1f1f27] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ba9eff] transition-colors" placeholder="Enter your university roll number" />
+
+            <div className="space-y-5">
+              <div>
+                <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">College / University Name</label>
+                <input 
+                  type="text" 
+                  value={studentData.collegeName} 
+                  onChange={e => setStudentData({...studentData, collegeName: e.target.value})} 
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all placeholder:text-slate-600" 
+                  placeholder="E.g. Stanford University" 
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">Department</label>
+                  <input 
+                    type="text" 
+                    value={studentData.department} 
+                    onChange={e => setStudentData({...studentData, department: e.target.value})} 
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all placeholder:text-slate-600" 
+                    placeholder="Computer Science" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">Graduation Year</label>
+                  <input 
+                    type="number" 
+                    value={studentData.year} 
+                    onChange={e => setStudentData({...studentData, year: e.target.value})} 
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all" 
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">Roll Number</label>
+                <input 
+                  type="text" 
+                  value={studentData.rollNumber} 
+                  onChange={e => setStudentData({...studentData, rollNumber: e.target.value})} 
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all placeholder:text-slate-600" 
+                  placeholder="Enter your university roll number" 
+                />
+              </div>
             </div>
           </div>
         );
       case 2:
         return (
-          <div className="space-y-5 animate-fadeIn">
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-              <Target className="text-[#ba9eff] w-6 h-6" /> Career Goals
-            </h3>
-            <div>
-              <label className="block text-sm font-medium text-[#acaab3] mb-1.5 uppercase tracking-wider text-[10px]">Target Role</label>
-              <input type="text" value={studentData.targetRole} onChange={e => setStudentData({...studentData, targetRole: e.target.value})} className="w-full bg-[#1f1f27] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ba9eff] transition-colors" placeholder="E.g. Full Stack Developer, Data Scientist" />
-              <p className="text-[#acaab3] text-xs mt-2">This helps our AI tailor your skill gap analysis.</p>
+          <div className="space-y-6 animate-fadeIn">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 rounded-2xl bg-cyan-500/20 flex items-center justify-center border border-cyan-500/30">
+                <Target className="text-cyan-400 w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-white tracking-tight">Career Goals</h3>
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Future Aspirations</p>
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-[#acaab3] mb-1.5 uppercase tracking-wider text-[10px]">Dream Companies (Comma separated)</label>
-              <input type="text" value={studentData.dreamCompanies} onChange={e => setStudentData({...studentData, dreamCompanies: e.target.value})} className="w-full bg-[#1f1f27] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ba9eff] transition-colors" placeholder="Google, Microsoft, Stripe" />
+
+            <div className="space-y-5">
+              <div>
+                <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">Target Role</label>
+                <input 
+                  type="text" 
+                  value={studentData.targetRole} 
+                  onChange={e => setStudentData({...studentData, targetRole: e.target.value})} 
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all placeholder:text-slate-600" 
+                  placeholder="E.g. Full Stack Developer, Data Scientist" 
+                />
+                <div className="mt-3 p-3 rounded-xl bg-indigo-500/5 border border-indigo-500/10 flex gap-2">
+                  <AlertCircle className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <p className="text-slate-400 text-[10px] font-medium leading-relaxed uppercase tracking-wider">This helps our AI tailor your skill gap analysis and learning paths.</p>
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">Dream Companies</label>
+                <input 
+                  type="text" 
+                  value={studentData.dreamCompanies} 
+                  onChange={e => setStudentData({...studentData, dreamCompanies: e.target.value})} 
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all placeholder:text-slate-600" 
+                  placeholder="Google, Microsoft, Stripe (Comma separated)" 
+                />
+              </div>
             </div>
           </div>
         );
       case 3:
         return (
-          <div className="space-y-5 animate-fadeIn">
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-              <CheckCircle className="text-[#ba9eff] w-6 h-6" /> Skills & Assets
-            </h3>
-            
-            {/* Interactive Skill Selector */}
-            <div>
-              <label className="block text-sm font-medium text-[#acaab3] mb-1.5 uppercase tracking-wider text-[10px]">Add Your Skills</label>
-              <div className="flex gap-2 mb-3">
-                <input 
-                  type="text" 
-                  value={skillInput} 
-                  onChange={e => setSkillInput(e.target.value)} 
-                  onKeyDown={e => e.key === 'Enter' && handleAddSkill(skillInput)}
-                  className="flex-1 bg-[#1f1f27] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ba9eff] transition-colors text-sm" 
-                  placeholder="e.g. React, Python, UI Design" 
-                />
-                <button 
-                  onClick={() => handleAddSkill(skillInput)}
-                  className="px-4 py-3 bg-[#ba9eff]/10 text-[#ba9eff] hover:bg-[#ba9eff]/20 rounded-xl font-medium transition-colors text-sm"
-                >
-                  Add
-                </button>
+          <div className="space-y-6 animate-fadeIn">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30">
+                <CheckCircle className="text-emerald-400 w-6 h-6" />
               </div>
-
-              {/* Selected Skills Chips */}
-              <div className="flex flex-wrap gap-2 mb-4 min-h-[40px] p-2 bg-[#13131a]/50 rounded-xl border border-white/5">
-                {studentData.skills.length === 0 && <span className="text-[#acaab3] text-sm p-1">No skills added yet</span>}
-                {studentData.skills.map((skill, idx) => (
-                  <span key={idx} className="flex items-center gap-1.5 bg-[#ba9eff]/10 text-[#ba9eff] text-xs font-medium px-3 py-1.5 rounded-full border border-[#ba9eff]/20">
-                    {skill}
-                    <button onClick={() => handleRemoveSkill(skill)} className="hover:text-white transition-colors">
-                      <X className="w-3 h-3" />
-                    </button>
-                  </span>
-                ))}
-              </div>
-
-              {/* Recommended Skills */}
               <div>
-                <label className="block text-[#acaab3] mb-2 uppercase tracking-wider text-[10px]">Suggested for you</label>
-                <div className="flex flex-wrap gap-2">
-                  {['JavaScript', 'React', 'Node.js', 'Python', 'Java', 'C++', 'SQL', 'MongoDB', 'AWS', 'Docker'].map(suggestion => (
-                    !studentData.skills.includes(suggestion) && (
-                      <button
-                        key={suggestion}
-                        onClick={() => handleAddSkill(suggestion)}
-                        className="text-xs text-[#acaab3] hover:text-[#ba9eff] bg-[#1f1f27] hover:bg-[#ba9eff]/10 px-3 py-1.5 rounded-full border border-white/5 transition-all"
-                      >
-                        + {suggestion}
+                <h3 className="text-xl font-bold text-white tracking-tight">Skills & Assets</h3>
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Current Competencies</p>
+              </div>
+            </div>
+            
+            <div className="space-y-5">
+              <div>
+                <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">Add Your Skills</label>
+                <div className="flex gap-2 mb-3">
+                  <input 
+                    type="text" 
+                    value={skillInput} 
+                    onChange={e => setSkillInput(e.target.value)} 
+                    onKeyDown={e => e.key === 'Enter' && handleAddSkill(skillInput)}
+                    className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all placeholder:text-slate-600" 
+                    placeholder="e.g. React, Python, UI Design" 
+                  />
+                  <button 
+                    onClick={() => handleAddSkill(skillInput)}
+                    className="px-6 py-4 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all border border-indigo-500/20"
+                  >
+                    Add
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap gap-2 mb-4 min-h-[50px] p-4 bg-black/40 rounded-2xl border border-white/5 shadow-inner">
+                  {studentData.skills.length === 0 && <span className="text-slate-600 text-[10px] font-bold uppercase tracking-widest mt-2">No skills added yet</span>}
+                  {studentData.skills.map((skill, idx) => (
+                    <span key={idx} className="flex items-center gap-2 bg-indigo-500/10 text-indigo-300 text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl border border-indigo-500/20 shadow-lg shadow-indigo-500/5 animate-scaleIn">
+                      {skill}
+                      <button onClick={() => handleRemoveSkill(skill)} className="hover:text-white transition-colors">
+                        <X className="w-3 h-3" />
                       </button>
-                    )
+                    </span>
                   ))}
                 </div>
               </div>
-            </div>
-
-            <div className="mt-4 p-4 rounded-xl border border-dashed border-[#48474f] bg-[#13131a] flex flex-col items-center justify-center text-center">
-              <Upload className="w-8 h-8 text-[#acaab3] mb-2" />
-              <p className="text-sm font-medium text-white">Resume Upload</p>
-              <p className="text-xs text-[#acaab3] mt-1 mb-3">You can upload your resume later from the dashboard to auto-fill your profile.</p>
             </div>
           </div>
         );

@@ -285,7 +285,7 @@ router.put("/update-profile", auth, async (req, res) => {
 
     // College Handling
     if (college !== undefined) {
-      if (typeof college === "string" && college.trim().length >= 3) {
+      if (typeof college === "string" && college.trim().length >= 2) {
         const cleanCollegeName = college.trim();
         let collegeDoc = await College.findOne({
           name: new RegExp(
