@@ -767,12 +767,15 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
 
   // ── Milestone Quiz Generation ───────────────────────────────────────────────
   async generateMilestoneQuiz(skillName, milestoneTitle, targetRole) {
+    const randomSeed = Math.floor(Math.random() * 1000000);
     const prompt = `
 You are an expert technical interviewer hiring for a ${targetRole || "Software Engineering"} role.
 Your task is to generate a short, highly-relevant multiple-choice quiz (MCQ) for a candidate who is studying "${skillName}".
 They are currently completing a learning milestone focused on: "${milestoneTitle}".
 
 Create 10 real-world interview-style multiple-choice questions that test their practical understanding of this specific milestone topic.
+CRITICAL INSTRUCTION: Ensure maximum variety. Do not repeat standard generic questions. Generate unique scenarios every time.
+Randomization Seed: ${randomSeed}
 
 Output Format (Strict JSON):
 {
@@ -794,8 +797,8 @@ Ensure the output is ONLY valid JSON.
         const response = await this.groq.chat.completions.create({
           messages: [{ role: "user", content: prompt }],
           model: "llama-3.3-70b-versatile",
-          temperature: 0.3,
-          max_tokens: 1024,
+          temperature: 0.8,
+          max_tokens: 1500,
           response_format: { type: "json_object" },
         });
 
@@ -812,7 +815,10 @@ Ensure the output is ONLY valid JSON.
     // Try Gemini Fallback
     if (this.genAI) {
       try {
-        const model = this.genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const model = this.genAI.getGenerativeModel({ 
+          model: "gemini-2.0-flash",
+          generationConfig: { temperature: 0.8 }
+        });
         const result = await model.generateContent(prompt);
         let text = result.response.text();
         // Remove markdown formatting if present
