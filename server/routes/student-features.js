@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Student = require("../models/Student");
+const College = require("../models/College");
 const Job = require("../models/Job");
 const Alumni = require("../models/Alumni");
 const InterviewExperience = require("../models/InterviewExperience");
@@ -235,6 +236,9 @@ router.put("/update-profile", auth, async (req, res) => {
       dateOfBirth,
       gender,
       // Academic Info
+      college, // Added
+      rollNumber, // Added
+      collegeRollNumber, // Added
       department,
       degree,
       specialization,
@@ -255,6 +259,7 @@ router.put("/update-profile", auth, async (req, res) => {
       portfolioUrl,
       // Career Preferences
       targetRole,
+      dreamCompanies, // Added
       willingToRelocate,
       preferredLocations,
       expectedSalaryMin,
@@ -278,7 +283,41 @@ router.put("/update-profile", auth, async (req, res) => {
       student.dateOfBirth = dateOfBirth ? new Date(dateOfBirth) : undefined;
     if (gender !== undefined) student.gender = gender;
 
+    // College Handling
+    if (college !== undefined) {
+      if (typeof college === "string" && college.trim().length >= 3) {
+        const cleanCollegeName = college.trim();
+        let collegeDoc = await College.findOne({
+          name: new RegExp(
+            "^" + cleanCollegeName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "$",
+            "i",
+          ),
+        });
+
+        if (!collegeDoc) {
+          try {
+            collegeDoc = new College({
+              name: cleanCollegeName,
+              isVerified: false,
+            });
+            await collegeDoc.save();
+          } catch (err) {
+            console.error("Error auto-creating college", err);
+          }
+        }
+
+        if (collegeDoc) {
+          student.college = collegeDoc._id;
+        }
+      } else if (college === null || college === "") {
+        student.college = undefined;
+      }
+    }
+
     // Academic Info
+    if (rollNumber !== undefined) student.rollNumber = String(rollNumber).trim();
+    if (collegeRollNumber !== undefined)
+      student.collegeRollNumber = String(collegeRollNumber).trim();
     if (department !== undefined)
       student.department = String(department).trim();
     if (degree !== undefined) student.degree = String(degree).trim();
@@ -332,6 +371,7 @@ router.put("/update-profile", auth, async (req, res) => {
     // Career
     if (targetRole !== undefined)
       student.targetRole = String(targetRole).trim();
+    if (Array.isArray(dreamCompanies)) student.dreamCompanies = dreamCompanies;
     if (willingToRelocate !== undefined)
       student.willingToRelocate = Boolean(willingToRelocate);
     if (Array.isArray(preferredLocations))

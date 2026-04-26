@@ -116,6 +116,7 @@ const ProfileEditModal = ({ student, open, onClose, onProfileUpdate }) => {
       phone: student.phone || "",
       dateOfBirth: toDateInput(student.dateOfBirth),
       gender: student.gender || "",
+      college: student.college?.name || "",
       department: student.department || "",
       degree: student.degree || "",
       specialization: student.specialization || "",
@@ -309,6 +310,13 @@ const ProfileEditModal = ({ student, open, onClose, onProfileUpdate }) => {
 
   const renderAcademic = () => (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <Field label="College / University" className="sm:col-span-2">
+        <Input
+          value={form.college}
+          onChange={set("college")}
+          placeholder="E.g. Stanford University"
+        />
+      </Field>
       <Field label="Department" required>
         <Input
           value={form.department}

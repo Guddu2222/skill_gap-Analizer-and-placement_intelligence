@@ -10,10 +10,11 @@ import {
   Map as MapIcon,
   List,
   Lock,
+  ArrowLeft,
 } from "lucide-react";
 import api from "../../services/api"; // Use our api utility instance configured with intercepts
 
-const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
+const LearningPathTracker = ({ learningPaths, student, onUpdate, onTabChange }) => {
   const [selectedPath, setSelectedPath] = useState(null);
   const [updatingProgress, setUpdatingProgress] = useState(false);
   const [viewMode, setViewMode] = useState("roadmap");
@@ -26,10 +27,10 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
 
   const getStatusColor = (status) => {
     const colors = {
-      not_started: "bg-gray-100 text-gray-700",
-      in_progress: "bg-blue-100 text-blue-700",
-      completed: "bg-green-100 text-green-700",
-      abandoned: "bg-red-100 text-red-700",
+      not_started: "bg-slate-800 text-slate-400 border border-slate-700",
+      in_progress: "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30",
+      completed: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+      abandoned: "bg-rose-500/20 text-rose-400 border border-rose-500/30",
     };
     return colors[status] || colors.not_started;
   };
@@ -100,16 +101,16 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
 
   const LearningPathCard = ({ path, isLocked }) => (
     <div
-      className={`bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 cursor-pointer relative ${
-        isLocked ? "opacity-70 grayscale-[30%] pointer-events-none" : ""
+      className={`glass-card rounded-xl p-6 hover:-translate-y-1 hover:border-indigo-500/30 transition-all duration-300 relative ${
+        isLocked ? "opacity-50 grayscale-[50%] pointer-events-none" : "cursor-pointer"
       }`}
       onClick={() => {
         if (!isLocked) setSelectedPath(path);
       }}
     >
       {isLocked && (
-        <div className="absolute inset-0 bg-white/40 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-xl">
-          <div className="bg-white p-2 rounded-full shadow-md text-gray-400">
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] z-10 flex items-center justify-center rounded-xl">
+          <div className="bg-slate-800 p-2 rounded-full shadow-xl text-slate-500 border border-slate-700">
             <Lock className="w-5 h-5" />
           </div>
         </div>
@@ -121,28 +122,28 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
           <div
             className={`w-12 h-12 rounded-xl flex items-center justify-center ${
               path.status === "completed"
-                ? "bg-green-100"
+                ? "bg-emerald-500/10"
                 : path.status === "in_progress"
-                ? "bg-blue-100"
-                : "bg-indigo-50"
+                ? "bg-indigo-500/10"
+                : "bg-slate-800"
             }`}
           >
             <BookOpen
               className={`w-6 h-6 ${
                 path.status === "completed"
-                  ? "text-green-600"
+                  ? "text-emerald-400"
                   : path.status === "in_progress"
-                  ? "text-blue-600"
-                  : "text-indigo-600"
+                  ? "text-indigo-400"
+                  : "text-slate-400"
               }`}
             />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-gray-900 leading-tight">
+            <h3 className="text-lg font-bold text-white leading-tight">
               {path.skillName}
             </h3>
-            <p className="text-xs text-gray-500 mt-1">
-              Level: {path.currentLevel || "none"} → {path.targetLevel}
+            <p className="text-xs text-slate-400 mt-1">
+              Level: <span className="text-indigo-300 capitalize">{path.currentLevel || "none"}</span> → <span className="text-emerald-300 capitalize">{path.targetLevel}</span>
             </p>
           </div>
         </div>
@@ -160,21 +161,21 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
       {/* Progress Bar */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
             Progress
           </span>
-          <span className="text-sm font-bold text-gray-900">
+          <span className="text-sm font-black text-white">
             {path.progressPercentage}%
           </span>
         </div>
-        <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+        <div className="h-2 bg-slate-800 rounded-full overflow-hidden border border-white/5">
           <div
-            className={`h-full rounded-full transition-all duration-500 ${
+            className={`h-full rounded-full transition-all duration-1000 ease-out ${
               path.status === "completed"
-                ? "bg-green-500"
+                ? "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)]"
                 : path.status === "in_progress"
-                ? "bg-blue-500"
-                : "bg-indigo-400"
+                ? "bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.4)]"
+                : "bg-slate-600"
             }`}
             style={{ width: `${path.progressPercentage}%` }}
           ></div>
@@ -186,16 +187,16 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
         {path.milestones?.slice(0, 4).map((milestone, index) => (
           <div
             key={index}
-            className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            className={`w-8 h-8 rounded-full flex items-center justify-center border ${
               milestone.completed
-                ? "bg-green-500 text-white"
-                : "bg-gray-100 text-gray-500"
+                ? "bg-emerald-500 border-emerald-400 text-white shadow-[0_0_10px_rgba(16,185,129,0.3)]"
+                : "bg-slate-800 border-slate-700 text-slate-400"
             }`}
           >
             {milestone.completed ? (
               <CheckCircle className="w-5 h-5" />
             ) : (
-              <span className="text-xs font-semibold">{index + 1}</span>
+              <span className="text-xs font-bold">{index + 1}</span>
             )}
           </div>
         ))}
@@ -207,13 +208,13 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
       </div>
 
       {/* Resources Count */}
-      <div className="flex items-center justify-between pt-4 border-t border-gray-50">
-        <span className="text-xs font-medium text-gray-500 bg-gray-50 px-2 py-1 rounded-md">
+      <div className="flex items-center justify-between pt-4 border-t border-white/5">
+        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest bg-white/5 px-2 py-1 rounded">
           {path.learningResources?.length || 0} resources
         </span>
         {path.estimatedCompletionDate && (
-          <span className="text-xs text-gray-500 flex items-center bg-gray-50 px-2 py-1 rounded-md">
-            <Clock className="w-3.5 h-3.5 mr-1.5" />
+          <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest flex items-center bg-white/5 px-2 py-1 rounded">
+            <Clock className="w-3 h-3 mr-1.5" />
             {new Date(path.estimatedCompletionDate).toLocaleDateString()}
           </span>
         )}
@@ -281,14 +282,14 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
 
   if (!learningPaths || learningPaths.length === 0) {
     return (
-      <div className="bg-white rounded-2xl p-12 text-center shadow-lg border border-gray-100">
-        <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6">
-          <BookOpen className="w-10 h-10 text-indigo-300" />
+      <div className="glass-card rounded-2xl p-16 text-center border-dashed border-white/10">
+        <div className="w-20 h-20 bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+          <BookOpen className="w-10 h-10 text-indigo-400" />
         </div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+        <h3 className="text-2xl font-bold text-white mb-2">
           No Learning Paths Yet
         </h3>
-        <p className="text-gray-500 max-w-md mx-auto">
+        <p className="text-slate-400 max-w-md mx-auto text-sm">
           Complete a skill gap analysis to get your personalized role-based learning roadmap.
         </p>
       </div>
@@ -305,34 +306,44 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
       {/* Header & Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-        <div>
-          <h2 className="text-xl font-bold text-slate-800">Your Learning Journey</h2>
-          <p className="text-sm text-slate-500">
-            Target Role: <span className="font-semibold text-indigo-600">{targetRole}</span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-card p-6 rounded-2xl">
+        <div className="flex-1">
+          <h2 className="text-xl font-bold text-white tracking-tight">Your Learning Journey</h2>
+          <p className="text-xs text-slate-400 mt-1 uppercase tracking-[0.2em]">
+            Target Role: <span className="font-black text-indigo-400">{targetRole}</span>
           </p>
         </div>
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
+        
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => onTabChange && onTabChange("overview")}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-white hover:bg-white/5 transition-all border border-white/5"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Back to Overview
+          </button>
+          
+          <div className="flex items-center gap-1 bg-black/20 p-1 rounded-xl border border-white/5">
           <button
             onClick={() => setViewMode("roadmap")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${
               viewMode === "roadmap"
-                ? "bg-white text-indigo-600 shadow-sm"
-                : "text-slate-500 hover:text-slate-700"
+                ? "bg-indigo-600 text-white shadow-lg"
+                : "text-slate-400 hover:text-white"
             }`}
           >
-            <MapIcon className="w-4 h-4" />
+            <MapIcon className="w-3.5 h-3.5" />
             Roadmap
           </button>
           <button
             onClick={() => setViewMode("library")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${
               viewMode === "library"
-                ? "bg-white text-indigo-600 shadow-sm"
-                : "text-slate-500 hover:text-slate-700"
+                ? "bg-indigo-600 text-white shadow-lg"
+                : "text-slate-400 hover:text-white"
             }`}
           >
-            <List className="w-4 h-4" />
+            <List className="w-3.5 h-3.5" />
             All Skills
           </button>
         </div>
@@ -355,7 +366,7 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
         /* ROADMAP TIMELINE UI */
         <div className="relative pt-4 pb-12">
           {/* Vertical connecting line */}
-          <div className="absolute left-8 top-10 bottom-10 w-1 bg-indigo-100 rounded-full" />
+          <div className="absolute left-8 top-10 bottom-10 w-0.5 bg-gradient-to-b from-indigo-500/50 via-emerald-500/50 to-indigo-500/50 rounded-full opacity-30" />
 
           <div className="space-y-12">
             {groupedByPhase.map((phase, index) => {
@@ -367,23 +378,23 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
                 <div key={phase.id} className="relative z-10 pl-24">
                   {/* Phase Node Indicator */}
                   <div
-                    className={`absolute left-0 top-6 w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-xl shadow-lg transition-all ${
+                    className={`absolute left-0 top-6 w-16 h-16 rounded-2xl flex items-center justify-center font-black text-xl shadow-2xl transition-all border ${
                       isCompleted
-                        ? "bg-green-500 text-white shadow-green-500/30"
+                        ? "bg-emerald-500 border-emerald-400 text-white shadow-emerald-500/20"
                         : isActive
-                        ? "bg-indigo-600 text-white shadow-indigo-600/40 ring-4 ring-indigo-100"
-                        : "bg-white text-slate-400 border-2 border-slate-200"
+                        ? "bg-indigo-600 border-indigo-400 text-white shadow-indigo-600/30 ring-4 ring-indigo-500/10"
+                        : "bg-slate-800 border-slate-700 text-slate-500"
                     }`}
                   >
                     {isCompleted ? <CheckCircle className="w-8 h-8" /> : phase.number}
                   </div>
 
                   {/* Phase Header */}
-                  <div className={`mb-6 ${isLocked ? "opacity-60" : ""}`}>
-                    <h3 className="text-2xl font-bold text-slate-800">
-                      Phase {phase.number}: {phase.title}
+                  <div className={`mb-8 ${isLocked ? "opacity-40" : ""}`}>
+                    <h3 className="text-2xl font-bold text-white tracking-tight">
+                      Phase {phase.number}: <span className={isActive ? "text-indigo-400" : ""}>{phase.title}</span>
                     </h3>
-                    <p className="text-slate-500 mt-1 max-w-2xl">
+                    <p className="text-slate-400 mt-2 max-w-2xl text-sm leading-relaxed">
                       {phase.description}
                     </p>
                   </div>
@@ -427,8 +438,8 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
 
           {groupedList.in_progress.length > 0 && (
             <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <Play className="w-5 h-5 mr-2 text-blue-600" />
+              <h2 className="text-sm font-black text-white mb-6 flex items-center uppercase tracking-[0.2em]">
+                <Play className="w-4 h-4 mr-2 text-indigo-400 fill-indigo-400/20" />
                 In Progress ({groupedList.in_progress.length})
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -441,8 +452,8 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
 
           {groupedList.not_started.length > 0 && (
             <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <Target className="w-5 h-5 mr-2 text-indigo-500" />
+              <h2 className="text-sm font-black text-white mb-6 flex items-center uppercase tracking-[0.2em] mt-12">
+                <Target className="w-4 h-4 mr-2 text-slate-400" />
                 Not Started ({groupedList.not_started.length})
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -455,8 +466,8 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate }) => {
 
           {groupedList.completed.length > 0 && (
             <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <CheckCircle className="w-5 h-5 mr-2 text-green-600" />
+              <h2 className="text-sm font-black text-white mb-6 flex items-center uppercase tracking-[0.2em] mt-12">
+                <CheckCircle className="w-4 h-4 mr-2 text-emerald-400" />
                 Completed ({groupedList.completed.length})
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -520,24 +531,24 @@ const LearningPathDetailModal = ({
   };
 
   return createPortal(
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
-      <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fadeIn">
+      <div className="glass-abyssal rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.8)] flex flex-col border border-white/10">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white shrink-0">
+        <div className="bg-gradient-to-br from-indigo-900 via-indigo-950 to-black p-8 text-white shrink-0 border-b border-white/10">
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="text-2xl font-bold mb-2">{path.skillName}</h2>
-              <p className="text-blue-100">
+              <h2 className="text-3xl font-black mb-2 tracking-tight">{path.skillName}</h2>
+              <p className="text-xs uppercase tracking-[0.3em] text-indigo-300 font-bold">
                 Current: {path.currentLevel || "none"} → Target:{" "}
                 {path.targetLevel}
               </p>
             </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+              className="p-2 hover:bg-white/10 rounded-xl transition-all border border-white/5 hover:border-white/20"
             >
               <svg
-                className="w-6 h-6"
+                className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -553,12 +564,12 @@ const LearningPathDetailModal = ({
           </div>
 
           {/* Progress Control */}
-          <div className="mt-8 bg-black/10 rounded-xl p-5 border border-white/10">
+          <div className="mt-8 bg-black/40 rounded-2xl p-6 border border-white/5">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-sm font-semibold uppercase tracking-wider text-blue-100">
-                Update Progress
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400">
+                Update Mastery
               </span>
-              <span className="text-3xl font-bold bg-white text-transparent bg-clip-text drop-shadow-sm">
+              <span className="text-4xl font-black text-white">
                 {localProgress}%
               </span>
             </div>
@@ -588,15 +599,15 @@ const LearningPathDetailModal = ({
                   border: none;
                 }
               `}} />
-              <input
+                <input
                 type="range"
                 min="0"
                 max="100"
                 value={localProgress}
                 onChange={handleProgressChange}
-                className="custom-progress-slider w-full h-2.5 rounded-full appearance-none cursor-pointer outline-none focus:ring-2 focus:ring-white/50"
+                className="custom-progress-slider w-full h-1.5 rounded-full appearance-none cursor-pointer outline-none bg-slate-800"
                 style={{
-                  background: `linear-gradient(to right, rgba(255,255,255,0.95) ${localProgress}%, rgba(255,255,255,0.2) ${localProgress}%)`,
+                  background: `linear-gradient(to right, #6366f1 ${localProgress}%, #1e1b4b ${localProgress}%)`,
                 }}
               />
             </div>
@@ -606,22 +617,22 @@ const LearningPathDetailModal = ({
                 onClick={() =>
                   setLocalProgress(Math.max(0, localProgress - 10))
                 }
-                className="flex-1 py-2.5 bg-white/10 rounded-lg text-sm font-medium hover:bg-white/20 transition-all active:scale-95 border border-white/5"
+                className="flex-1 py-3 bg-white/5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all border border-white/5"
               >
                 -10%
               </button>
               <button
                 onClick={handleSaveProgress}
                 disabled={updating || localProgress === path.progressPercentage}
-                className="flex-[2] py-2.5 bg-white text-indigo-600 rounded-lg font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-50 disabled:scale-100 disabled:cursor-not-allowed"
+                className="flex-[2] py-3 bg-indigo-600 text-white rounded-xl font-black uppercase tracking-widest shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] hover:scale-[1.02] transition-all disabled:opacity-50 disabled:scale-100 disabled:cursor-not-allowed"
               >
-                {updating ? "Saving..." : "Save Progress"}
+                {updating ? "Syncing..." : "Update Progress"}
               </button>
               <button
                 onClick={() =>
                   setLocalProgress(Math.min(100, localProgress + 10))
                 }
-                className="flex-1 py-2.5 bg-white/10 rounded-lg text-sm font-medium hover:bg-white/20 transition-all active:scale-95 border border-white/5"
+                className="flex-1 py-3 bg-white/5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all border border-white/5"
               >
                 +10%
               </button>
@@ -632,28 +643,27 @@ const LearningPathDetailModal = ({
         {/* Content */}
         <div className="p-6 overflow-y-auto flex-1">
           {/* Milestones */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-gray-900">
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-8">
+              <h3 className="text-sm font-black text-white uppercase tracking-[0.2em]">
                 Learning Milestones
               </h3>
               <button 
                 onClick={() => onReschedulePath(path._id)}
-                className="flex items-center text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors"
+                className="flex items-center text-[10px] font-black uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-4 py-2 rounded-xl hover:bg-indigo-500/20 transition-all border border-indigo-500/20"
                 title="Shift all incomplete milestones to start from today"
               >
-                <svg className="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                Reschedule Deadlines
+                <Clock className="w-3.5 h-3.5 mr-2" />
+                Reschedule Plan
               </button>
             </div>
             <div className="space-y-3">
-              {path.milestones?.map((milestone, index) => (
                 <div
                   key={index}
-                  className={`border-2 rounded-xl p-4 transition-all ${
+                  className={`border rounded-2xl p-5 transition-all mb-4 ${
                     milestone.completed
-                      ? "border-green-300 bg-green-50"
-                      : "border-gray-200 hover:border-blue-300"
+                      ? "border-emerald-500/30 bg-emerald-500/5 shadow-[0_0_20px_rgba(16,185,129,0.05)]"
+                      : "border-white/5 bg-white/2 hover:border-indigo-500/30"
                   }`}
                 >
                   <div className="flex items-start space-x-3">
@@ -661,10 +671,10 @@ const LearningPathDetailModal = ({
                       onClick={() =>
                         onToggleMilestone(path._id, index, !milestone.completed)
                       }
-                      className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${
+                      className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center flex-shrink-0 transition-all ${
                         milestone.completed
-                          ? "bg-green-500 border-green-500"
-                          : "border-gray-300 hover:border-blue-500"
+                          ? "bg-emerald-500 border-emerald-500"
+                          : "border-white/20 hover:border-indigo-500"
                       }`}
                     >
                       {milestone.completed && (
@@ -673,40 +683,40 @@ const LearningPathDetailModal = ({
                     </button>
                     <div className="flex-1">
                       <h4
-                        className={`font-semibold ${
+                        className={`font-bold ${
                           milestone.completed
-                            ? "text-green-900"
-                            : "text-gray-900"
+                            ? "text-emerald-400"
+                            : "text-white"
                         }`}
                       >
                         {milestone.title}
                       </h4>
                       <p
-                        className={`text-sm mt-1 ${
+                        className={`text-xs mt-1.5 leading-relaxed ${
                           milestone.completed
-                            ? "text-green-700"
-                            : "text-gray-600"
+                            ? "text-emerald-400/60"
+                            : "text-slate-400"
                         }`}
                       >
                         {milestone.description}
                       </p>
-                      <div className="flex items-center space-x-4 mt-2 text-xs">
+                      <div className="flex items-center space-x-4 mt-3 text-[10px] font-bold uppercase tracking-widest">
                         {milestone.dueDate && (
                           <span
                             className={
                               milestone.completed
-                                ? "text-green-600"
-                                : "text-gray-500"
+                                ? "text-emerald-500/60"
+                                : "text-slate-500"
                             }
                           >
-                            <Clock className="w-3 h-3 inline mr-1" />
+                            <Clock className="w-3 h-3 inline mr-1.5" />
                             Due:{" "}
                             {new Date(milestone.dueDate).toLocaleDateString()}
                           </span>
                         )}
                         {milestone.completed && milestone.completedDate && (
-                          <span className="text-green-600">
-                            <CheckCircle className="w-3 h-3 inline mr-1" />
+                          <span className="text-emerald-500">
+                            <CheckCircle className="w-3 h-3 inline mr-1.5" />
                             Completed:{" "}
                             {new Date(
                               milestone.completedDate,
@@ -723,8 +733,8 @@ const LearningPathDetailModal = ({
 
           {/* Learning Resources */}
           <div>
-            <h3 className="text-lg font-bold text-gray-900 mb-4">
-              Learning Resources
+            <h3 className="text-sm font-black text-white uppercase tracking-[0.2em] mb-8">
+              Curated Resources
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {path.learningResources?.map((resource, index) => (
@@ -733,16 +743,16 @@ const LearningPathDetailModal = ({
                   href={resource.url || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border border-gray-200 rounded-xl p-4 hover:shadow-lg hover:border-blue-300 transition-all group"
+                  className="glass-card rounded-2xl p-5 hover:border-indigo-500/40 hover:bg-white/5 transition-all group border border-white/5"
                 >
-                  <div className="flex items-start justify-between mb-2">
-                    <h4 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                  <div className="flex items-start justify-between mb-3">
+                    <h4 className="text-sm font-bold text-white group-hover:text-indigo-400 transition-colors leading-tight">
                       {resource.title}
                     </h4>
-                    <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-blue-600 flex-shrink-0" />
+                    <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-indigo-400 flex-shrink-0" />
                   </div>
-                  <div className="flex items-center space-x-2 text-xs text-gray-600">
-                    <span className="px-2 py-1 bg-gray-100 rounded">
+                  <div className="flex items-center space-x-3 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                    <span className="px-2 py-1 bg-white/5 rounded text-indigo-300">
                       {resource.platform}
                     </span>
                     {resource.duration && (
@@ -755,8 +765,8 @@ const LearningPathDetailModal = ({
                       <span
                         className={`px-2 py-1 rounded ${
                           resource.price.toLowerCase() === "free"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-blue-100 text-blue-700"
+                            ? "bg-emerald-500/20 text-emerald-400"
+                            : "bg-indigo-500/20 text-indigo-400"
                         }`}
                       >
                         {resource.price}

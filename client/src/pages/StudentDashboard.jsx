@@ -314,7 +314,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
 
           {/* STAT CARDS ROW */}
           <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 cursor-pointer">
-            <div onClick={() => { setActiveTab("skills_modal"); setShowSkillsModal(true); }} className="glass-card p-6 rounded-xl hover:-translate-y-1 transition-all duration-300 group">
+            <div onClick={() => { setShowSkillsModal(true); }} className="glass-card p-6 rounded-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
               <div className="flex justify-between items-start mb-4">
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <span className="material-symbols-outlined text-primary">bolt</span>
@@ -327,7 +327,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
                 <div className="h-full bg-primary transition-all duration-500" style={{width: `${Math.min(totalSkillsAnalyzed * 10, 100)}%`}}></div>
               </div>
             </div>
-            <div onClick={() => { setActiveTab("learning"); }} className="glass-card p-6 rounded-xl hover:-translate-y-1 transition-all duration-300 group">
+            <div onClick={() => setActiveTab(activeTab === "learning" ? "overview" : "learning")} className="glass-card p-6 rounded-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
               <div className="flex justify-between items-start mb-4">
                 <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
                   <span className="material-symbols-outlined text-secondary">route</span>
@@ -419,6 +419,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
                   learningPaths={learningPaths}
                   student={student}
                   onUpdate={fetchDashboardData}
+                  onTabChange={setActiveTab}
                 />
               )}
               {activeTab === "skills" && (
