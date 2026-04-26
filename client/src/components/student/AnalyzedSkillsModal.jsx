@@ -64,44 +64,10 @@ const AnalyzedSkillsModal = ({ isOpen, onClose, analysis }) => {
     },
   ];
 
-  const renderContent = () => {
-    let skills = [];
-    if (activeTab === "strong") skills = analysis.strongSkills || [];
-    else if (activeTab === "improve") skills = analysis.skillsToImprove || [];
-    else if (activeTab === "missing") skills = analysis.missingSkills || [];
-
-    if (skills.length === 0) {
-      return (
-        <div className="flex flex-col items-center justify-center p-12 text-slate-400">
-          <p className="text-sm">No skills found in this category.</p>
-        </div>
-      );
-    }
-
-    return (
-      <div className="space-y-3 mt-4">
-        {skills.map((skill, index) => {
-          // Normalize string vs object formats
-          const name = typeof skill === 'string' ? skill : skill.name || skill.skill || "Skill";
-          const reason = typeof skill !== 'string' ? skill.reason || skill.description : null;
-
-          return (
-            <div key={index} className="flex items-start bg-white border border-slate-100 rounded-xl p-4 hover:shadow-md transition-all group">
-              <div className={`mt-1 mr-3 w-2 h-2 rounded-full flex-shrink-0 opacity-70 group-hover:opacity-100 transition-opacity ${
-                activeTab === 'strong' ? 'bg-green-500' : activeTab === 'improve' ? 'bg-amber-500' : 'bg-red-500'
-              }`} />
-              <div>
-                <h4 className="font-semibold text-slate-800 text-[15px] mb-1">{name}</h4>
-                {reason && (
-                  <p className="text-xs text-slate-500 leading-relaxed max-w-xl">{reason}</p>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
+  let skills = [];
+  if (activeTab === "strong") skills = Array.isArray(analysis.strongSkills) ? analysis.strongSkills : [];
+  else if (activeTab === "improve") skills = Array.isArray(analysis.skillsToImprove) ? analysis.skillsToImprove : [];
+  else if (activeTab === "missing") skills = Array.isArray(analysis.missingSkills) ? analysis.missingSkills : [];
 
   return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fadeIn">
