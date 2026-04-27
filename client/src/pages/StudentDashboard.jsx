@@ -356,13 +356,14 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
           </section>
 
           {/* ═══════════════════════════════════════════════
-              RESUME UPLOAD PROMPT (if missing)
+              RESUME UPLOAD / REPLACE WIDGET (always visible)
           ═══════════════════════════════════════════════ */}
-          {!student.resumeUrl && (
-            <div className="mb-8">
-              <ResumeUploadWidget onUploadSuccess={handleResumeUploadSuccess} />
-            </div>
-          )}
+          <div className="mb-8">
+            <ResumeUploadWidget
+              currentResumeUrl={student.resumeUrl || null}
+              onUploadSuccess={handleResumeUploadSuccess}
+            />
+          </div>
 
           {/* ═══════════════════════════════════════════════
               NO-ANALYSIS CTA BANNER
@@ -492,11 +493,12 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
           const newSkills = JSON.stringify(updatedStudent?.skills || []);
           const skillsChanged = oldSkills !== newSkills;
 
-          setStudent(updatedStudent);
           setShowEditProfile(false);
 
           if (roleChanged || domainChanged || skillsChanged) {
             await handleAnalyzeSkills(updatedStudent);
+          } else {
+            await fetchDashboardData();
           }
         }}
       />

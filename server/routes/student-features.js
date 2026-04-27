@@ -42,6 +42,38 @@ router.post(
   },
 );
 
+// ── Resume View ────────────────────────────────────────────────────────────────
+// Retrieves the authenticated student's resume URL from DB and redirects the
+// browser directly to the Cloudinary CDN URL. This avoids unreliable server-side
+// streaming and lets the browser handle the PDF natively.
+router.get("/resume-view", auth, async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.user.userId });
+    if (!student || !student.resumeUrl) {
+      return res.status(404).json({ error: "No resume found for this account." });
+    }
+
+    let url = student.resumeUrl;
+
+    // Cloudinary raw uploads are served at /raw/upload/. If the old record
+    // used /image/upload/ (uploaded before the resource_type fix), try /raw/ first.
+    if (url.includes("/image/upload/")) {
+      url = url.replace("/image/upload/", "/raw/upload/");
+    }
+
+    console.log(`[Resume View] Redirecting to: ${url}`);
+
+    // 302 redirect — the browser opens the Cloudinary PDF URL directly.
+    // No server-side streaming needed; Cloudinary handles delivery.
+    return res.redirect(302, url);
+  } catch (err) {
+    console.error("[Resume View] Error:", err.message);
+    if (!res.headersSent) {
+      res.status(500).json({ error: "Server error retrieving resume." });
+    }
+  }
+});
+
 // Upload Profile Picture
 router.post(
   "/upload-profile-picture",

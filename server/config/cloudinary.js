@@ -15,7 +15,7 @@ const storage = new CloudinaryStorage({
   params: {
     folder: "resumes",
     allowed_formats: ["pdf", "doc", "docx"],
-    resource_type: "auto",
+    resource_type: "raw",   // must be "raw" so PDFs get a direct-access URL
   },
 });
 

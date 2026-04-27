@@ -56,7 +56,7 @@ const getAIResponse = async (prompt) => {
 exports.analyzeATS = async (req, res) => {
   try {
     const { jobDescription } = req.body;
-    const userId = req.user.id;
+    const userId = req.user.userId;
 
     if (!jobDescription) {
       return res.status(400).json({ success: false, message: "Job description is required" });
