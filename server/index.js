@@ -1,5 +1,6 @@
 const dns = require("dns");
 dns.setServers(["8.8.8.8"]); // Force Google DNS to bypass local ISP blocks for MongoDB SRV
+dns.setDefaultResultOrder('ipv4first'); // Force IPv4 to prevent IPv6 routing issues which break OAuth
 
 const express = require("express");
 const mongoose = require("mongoose");
