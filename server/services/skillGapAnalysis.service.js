@@ -681,10 +681,8 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
 
   // Create Learning Paths
   async createLearningPaths(studentId, gapAnalysisId, missingSkills) {
-    const learningPaths = [];
-
-    for (const skillObj of missingSkills) {
-      if (!skillObj.skill) continue; // Skip malformed
+    const pathPromises = missingSkills.map(async (skillObj) => {
+      if (!skillObj.skill) return null; // Skip malformed
 
       const resources = await this.getRecommendedResources([
         { skill: skillObj.skill },
@@ -704,9 +702,11 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
         // Update the gapAnalysis reference and save
         existingPath.gapAnalysis = gapAnalysisId;
         await existingPath.save();
-        learningPaths.push(existingPath);
-        continue;
+        return existingPath;
       }
+
+      // Generate milestones WITH AI to get curated resources per week
+      const milestones = await this.generateMilestonesWithAI(skillObj.skill, estimatedWeeks);
 
       const learningPath = await SkillLearningPath.create({
         student: studentId,
@@ -720,16 +720,93 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
           type: "course",
           ...r,
         })),
-        milestones: this.generateMilestones(skillObj.skill, estimatedWeeks),
+        milestones: milestones,
         progressPercentage: 0,
         status: "not_started",
         estimatedCompletionDate: estimatedDate,
       });
 
-      learningPaths.push(learningPath);
-    }
+      return learningPath;
+    });
 
-    return learningPaths;
+    const results = await Promise.all(pathPromises);
+    return results.filter(Boolean);
+  }
+
+  async generateMilestonesWithAI(skill, weeks) {
+    const totalMilestones = Math.min(Math.max(1, weeks), 8); // 1-8 milestones
+    const prompt = `
+You are an expert technical instructor creating a weekly learning curriculum.
+Generate a ${totalMilestones}-week curriculum for mastering "${skill}".
+For EACH week, provide a title, a short description, and exactly 2-3 highly curated learning resources (mix of videos, articles, or practice sites like YouTube, MDN, LeetCode, official docs).
+
+Return ONLY a valid JSON object matching this schema:
+{
+  "milestones": [
+    {
+      "title": "Week 1: Theme",
+      "description": "What to learn this week...",
+      "resources": [
+        {
+          "type": "video", // "video", "article", "practice", or "project"
+          "title": "Resource Name",
+          "url": "https://...",
+          "platform": "YouTube/MDN/etc",
+          "duration": "1h 30m",
+          "difficulty": "beginner", // "beginner", "intermediate", or "advanced"
+          "isFree": true
+        }
+      ]
+    }
+  ]
+}
+Ensure the output is ONLY valid JSON.
+`;
+
+    try {
+      let aiResponseRaw;
+      if (this.groq) {
+        const response = await this.groq.chat.completions.create({
+          messages: [
+            { role: "system", content: "You output strict JSON only." },
+            { role: "user", content: prompt }
+          ],
+          model: "llama-3.3-70b-versatile",
+          temperature: 0.7,
+          response_format: { type: "json_object" }
+        });
+        aiResponseRaw = response.choices[0]?.message?.content || "{}";
+      } else if (process.env.GEMINI_API_KEY) {
+        const model = this.gemini.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const result = await model.generateContent({
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.7, responseMimeType: "application/json" }
+        });
+        aiResponseRaw = result.response.text();
+      } else {
+        return this.generateMilestones(skill, weeks); // Fallback
+      }
+
+      const parsed = this.parseAIResponse(aiResponseRaw);
+      if (parsed.milestones && Array.isArray(parsed.milestones)) {
+        return parsed.milestones.map((m, i) => {
+          const dueDate = new Date();
+          dueDate.setDate(dueDate.getDate() + (i + 1) * 7);
+          return {
+            title: m.title || `Week ${i + 1}: Foundations`,
+            description: m.description || `Learning ${skill}`,
+            completed: false,
+            dueDate: dueDate,
+            resources: m.resources || []
+          };
+        });
+      }
+    } catch (error) {
+      console.error("AI Milestone generation failed:", error);
+    }
+    
+    // Fallback to static generation if AI fails
+    return this.generateMilestones(skill, weeks);
   }
 
   generateMilestones(skill, weeks) {
@@ -748,6 +825,37 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
       "Mastery & Interview Preparation"
     ];
 
+    // Some generic sample resources to test the UI
+    const sampleResources = [
+      {
+        type: "video",
+        title: `${skill} Crash Course for Beginners`,
+        url: `https://www.youtube.com/results?search_query=${encodeURIComponent(skill)}+crash+course`,
+        platform: "YouTube",
+        duration: "1h 30m",
+        difficulty: "beginner",
+        isFree: true
+      },
+      {
+        type: "article",
+        title: `Getting Started with ${skill}`,
+        url: `https://developer.mozilla.org/en-US/search?q=${encodeURIComponent(skill)}`,
+        platform: "MDN Web Docs",
+        duration: "30m",
+        difficulty: "beginner",
+        isFree: true
+      },
+      {
+        type: "practice",
+        title: `${skill} Practice Problems`,
+        url: `https://leetcode.com/problemset/all/?search=${encodeURIComponent(skill)}`,
+        platform: "LeetCode",
+        duration: "2h",
+        difficulty: "intermediate",
+        isFree: true
+      }
+    ];
+
     for (let i = 1; i <= totalMilestones; i++) {
       const dueDate = new Date();
       dueDate.setDate(dueDate.getDate() + i * 7);
@@ -759,6 +867,7 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
         description: `Complete required readings, tutorials, and practical exercises for ${skill} focusing on ${theme.toLowerCase()}.`,
         completed: false,
         dueDate: dueDate,
+        resources: i <= 3 ? sampleResources : [sampleResources[0]] // Add resources to first few weeks
       });
     }
 

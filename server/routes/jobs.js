@@ -20,8 +20,19 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Get jobs posted by the current user
+router.get("/me", auth, async (req, res) => {
+  try {
+    const jobs = await Job.find({ postedBy: req.user.userId }).sort({ createdAt: -1 });
+    res.json(jobs);
+  } catch (err) {
+    console.error("Jobs error:", err.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
 // Post a job (Recruiter/Admin only - simplified to just check exists for now)
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
     const {
       company,
@@ -42,7 +53,7 @@ router.post("/", async (req, res) => {
       jobType,
       requirements,
       deadline,
-      // postedBy: req.user.id // Add auth middleware later
+      postedBy: req.user.userId
     });
     const job = await newJob.save();
     res.json(job);

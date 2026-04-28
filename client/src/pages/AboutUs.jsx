@@ -26,7 +26,6 @@ const AboutUs = () => {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 mb-6 leading-tight">
             Bridging the gap between <span className="text-blue-600">talent</span> and <span className="text-indigo-600">opportunity</span>
           </h1>
-          <h1>My name is guddu</h1>
           <p className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed max-w-3xl mx-auto">
             SkillBridge is the premier platform connecting students, colleges, and recruiters in a seamless ecosystem designed to revolutionize the way early-career talent is discovered and hired.
           </p>

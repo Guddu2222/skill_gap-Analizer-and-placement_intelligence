@@ -11,7 +11,7 @@ const MilestoneQuizModal = ({ isOpen, onClose, milestone, onQuizSubmit }) => {
   const [userAnswers, setUserAnswers] = useState([]);
   const [quizFinished, setQuizFinished] = useState(false);
   const [reviewMode, setReviewMode] = useState(false);
-  const [globalTimeLeft, setGlobalTimeLeft] = useState(0);
+  const [globalTimeLeft, setGlobalTimeLeft] = useState(null);
   const [timeUp, setTimeUp] = useState(false);
 
   // Prevent background scrolling and initialize state
@@ -40,7 +40,7 @@ const MilestoneQuizModal = ({ isOpen, onClose, milestone, onQuizSubmit }) => {
 
   // Global Timer
   useEffect(() => {
-    if (!isOpen || quizFinished) return;
+    if (!isOpen || quizFinished || globalTimeLeft === null) return;
 
     if (globalTimeLeft <= 0) {
       setTimeUp(true);
@@ -82,6 +82,7 @@ const MilestoneQuizModal = ({ isOpen, onClose, milestone, onQuizSubmit }) => {
   };
 
   const formatTime = (seconds) => {
+    if (seconds === null) return "--:--";
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
     return `${m}:${s.toString().padStart(2, '0')}`;

@@ -4,6 +4,8 @@ const Student = require("../models/Student");
 const College = require("../models/College");
 const Job = require("../models/Job");
 const User = require("../models/User");
+const DriveRequest = require("../models/DriveRequest");
+const CampusDrive = require("../models/CampusDrive");
 const auth = require("../middleware/auth");
 const { roleCheck } = require("../middleware/auth");
 
@@ -128,7 +130,12 @@ router.get(
 
       const departmentStats = {};
       students.forEach((student) => {
-        const dept = student.department || "Other";
+        let dept = student.department || "Other";
+        dept = dept.trim().toLowerCase();
+        
+        // Capitalize the first letter of each word for display
+        dept = dept.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
         if (!departmentStats[dept])
           departmentStats[dept] = { total: 0, placed: 0, students: [] };
         departmentStats[dept].total++;
@@ -597,8 +604,63 @@ router.get("/recruiter-crm", auth, async (req, res) => {
     ];
     res.json(crmData);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+    console.error("College profile error:", err);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+// ==================== INCOMING DRIVE REQUESTS ====================
+
+// Get all incoming drive requests for the college
+router.get("/drive-requests", auth, roleCheck(["college_admin"]), async (req, res) => {
+  try {
+    const collegeId = req.user.collegeId;
+    if (!collegeId) return res.status(400).json({ error: "College ID missing" });
+
+    const requests = await DriveRequest.find({ college: collegeId })
+      .populate("recruiter", "name company avatar")
+      .populate("job", "title company location salary jobType requirements deadline")
+      .sort({ createdAt: -1 });
+
+    res.json(requests);
+  } catch (error) {
+    console.error("Error fetching drive requests:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Accept a drive request
+router.put("/drive-requests/:id/accept", auth, roleCheck(["college_admin"]), async (req, res) => {
+  try {
+    const collegeId = req.user.collegeId;
+    const request = await DriveRequest.findOne({ _id: req.params.id, college: collegeId })
+      .populate("job");
+
+    if (!request) return res.status(404).json({ error: "Request not found" });
+    if (request.status !== "pending") return res.status(400).json({ error: "Request is already processed" });
+
+    // Update request status
+    request.status = "accepted";
+    request.updatedAt = Date.now();
+    await request.save();
+
+    // Automatically create the CampusDrive
+    const newDrive = new CampusDrive({
+      college: collegeId,
+      recruiter: request.recruiter,
+      jobId: request.job._id,
+      company: request.job.company,
+      title: request.job.title,
+      description: request.job.description,
+      eligibility: { minCGPA: 0 } // Default to 0, TPO can edit later if needed
+    });
+    
+    await newDrive.save();
+
+    res.json({ success: true, message: "Request accepted and drive created automatically", request, drive: newDrive });
+  } catch (error) {
+    console.error("Error accepting drive request:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

@@ -307,7 +307,7 @@ const HeroSection = () => {
           <div className="inline-flex items-center space-x-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-5 py-2 shadow-lg shadow-indigo-500/10">
             <Sparkles className="w-4 h-4 text-cyan-400" />
             <span className="text-sm font-semibold tracking-wide text-indigo-200">
-              ⚡ AI-Powered Platform • Now with Gemini AI
+              ⚡ AI-Powered Platform 
             </span>
           </div>
 

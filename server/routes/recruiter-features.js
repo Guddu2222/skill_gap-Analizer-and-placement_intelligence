@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const Student = require("../models/Student");
 const College = require("../models/College");
 const SavedCandidate = require("../models/SavedCandidate");
+const CampusDrive = require("../models/CampusDrive");
+const DriveApplication = require("../models/DriveApplication");
+const DriveRequest = require("../models/DriveRequest");
 const auth = require("../middleware/auth");
 const { roleCheck } = require("../middleware/auth");
 
@@ -630,6 +633,108 @@ router.get("/campus-roi", auth, async (req, res) => {
     );
     res.json(roiData);
   } catch (err) {
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+// ==================== ASSIGNED DRIVES ====================
+
+router.get("/drives", auth, roleCheck(["recruiter"]), async (req, res) => {
+  try {
+    const drives = await CampusDrive.find({ recruiter: req.user.userId })
+      .populate("college", "name location logoUrl")
+      .sort({ createdAt: -1 });
+    res.json(drives);
+  } catch (err) {
+    console.error("Error fetching recruiter drives:", err);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+router.get("/drives/:id/applications", auth, roleCheck(["recruiter"]), async (req, res) => {
+  try {
+    // Only show applications that have progressed past Aptitude Test
+    const validStatuses = ["Technical Interview", "HR Round", "Offered", "Rejected"];
+    const applications = await DriveApplication.find({ 
+      drive: req.params.id,
+      status: { $in: validStatuses }
+    })
+      .populate("student", "firstName lastName email rollNumber department cgpa skills")
+      .sort({ updatedAt: -1 });
+
+    const grouped = applications.reduce(
+      (acc, app) => {
+        if (!acc[app.status]) {
+          acc[app.status] = [];
+        }
+        acc[app.status].push(app);
+        return acc;
+      },
+      {
+        "Technical Interview": [],
+        "HR Round": [],
+        "Offered": [],
+        "Rejected": [],
+      }
+    );
+
+    res.json(grouped);
+  } catch (error) {
+    console.error("Error fetching drive applications:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.put("/drives/:id/applications/:appId/status", auth, roleCheck(["recruiter"]), async (req, res) => {
+  try {
+    const { status } = req.body;
+    
+    // Ensure the drive is assigned to this recruiter
+    const drive = await CampusDrive.findOne({ _id: req.params.id, recruiter: req.user.userId });
+    if (!drive) return res.status(403).json({ error: "Not authorized to modify this drive" });
+
+    const application = await DriveApplication.findOneAndUpdate(
+      { _id: req.params.appId, drive: req.params.id },
+      { status, updatedAt: Date.now() },
+      { new: true }
+    ).populate("student", "firstName lastName email rollNumber department cgpa skills");
+    
+    if (!application) return res.status(404).json({ error: "Application not found" });
+    
+    res.json(application);
+  } catch (error) {
+    console.error("Error updating application status:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// ==================== DRIVE REQUESTS ====================
+
+router.post("/drive-requests", auth, roleCheck(["recruiter"]), async (req, res) => {
+  try {
+    const { jobId, collegeId } = req.body;
+    
+    // Check if a request already exists
+    const existing = await DriveRequest.findOne({
+      job: jobId,
+      college: collegeId
+    });
+    
+    if (existing) {
+      return res.status(400).json({ error: "A request has already been sent to this college for this job." });
+    }
+    
+    const request = new DriveRequest({
+      job: jobId,
+      recruiter: req.user.userId,
+      college: collegeId,
+      status: "pending"
+    });
+    
+    await request.save();
+    res.status(201).json({ success: true, request });
+  } catch (err) {
+    console.error("Error sending drive request:", err);
     res.status(500).json({ error: "Server Error" });
   }
 });

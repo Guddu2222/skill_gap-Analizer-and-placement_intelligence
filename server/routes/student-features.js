@@ -5,6 +5,8 @@ const College = require("../models/College");
 const Job = require("../models/Job");
 const Alumni = require("../models/Alumni");
 const InterviewExperience = require("../models/InterviewExperience");
+const CampusDrive = require("../models/CampusDrive");
+const DriveApplication = require("../models/DriveApplication");
 const auth = require("../middleware/auth");
 const { upload, uploadImage } = require("../config/cloudinary");
 
@@ -450,6 +452,91 @@ router.put("/update-profile", auth, async (req, res) => {
       const messages = Object.values(err.errors).map((v) => v.message);
       return res.status(400).json({ msg: messages.join(" | ") });
     }
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+// ── Campus Drives (Student side) ─────────────────────────────────────────────
+
+// Get all active/upcoming drives for the student's college
+router.get("/drives", auth, async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.user.userId });
+    if (!student || !student.college) {
+      return res.status(404).json({ msg: "Student or associated college not found" });
+    }
+
+    const drives = await CampusDrive.find({
+      college: student.college,
+      status: { $in: ["active", "upcoming"] },
+    }).sort({ createdAt: -1 });
+
+    res.json(drives);
+  } catch (err) {
+    console.error("Error fetching campus drives:", err.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+// Get all applications for the student
+router.get("/drives/applications", auth, async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.user.userId });
+    if (!student) {
+      return res.status(404).json({ msg: "Student not found" });
+    }
+
+    const applications = await DriveApplication.find({ student: student._id })
+      .populate("drive", "company title date status eligibility rounds")
+      .sort({ appliedAt: -1 });
+
+    res.json(applications);
+  } catch (err) {
+    console.error("Error fetching student applications:", err.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+// Apply to a specific drive
+router.post("/drives/:id/apply", auth, async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.user.userId });
+    if (!student) return res.status(404).json({ msg: "Student not found" });
+
+    const drive = await CampusDrive.findById(req.params.id);
+    if (!drive) return res.status(404).json({ msg: "Drive not found" });
+
+    // Validate college
+    if (drive.college.toString() !== student.college.toString()) {
+      return res.status(403).json({ msg: "You can only apply to drives from your college" });
+    }
+
+    // Validate CGPA eligibility
+    const requiredCgpa = drive.eligibility?.minCGPA || 0;
+    const studentCgpa = student.cgpa || 0;
+    if (studentCgpa < requiredCgpa) {
+      return res.status(400).json({ msg: `You need a minimum CGPA of ${requiredCgpa} to apply.` });
+    }
+
+    // Check for existing application
+    const existingApp = await DriveApplication.findOne({
+      drive: drive._id,
+      student: student._id,
+    });
+    if (existingApp) {
+      return res.status(400).json({ msg: "You have already applied to this drive" });
+    }
+
+    const newApp = new DriveApplication({
+      drive: drive._id,
+      student: student._id,
+      status: "Applied",
+    });
+
+    await newApp.save();
+    res.status(201).json(newApp);
+  } catch (err) {
+    console.error("Error applying to drive:", err.message);
     res.status(500).json({ error: "Server Error" });
   }
 });
