@@ -50,6 +50,17 @@ const skillLearningPathSchema = new mongoose.Schema(
         completed: { type: Boolean, default: false },
         dueDate: Date,
         completedDate: Date,
+        resources: [
+          {
+            type: { type: String }, // video, article, practice, project
+            title: String,
+            url: String,
+            platform: String,
+            duration: String,
+            difficulty: { type: String, enum: ["beginner", "intermediate", "advanced"] },
+            isFree: { type: Boolean, default: true }
+          }
+        ],
         quiz: {
           generated: { type: Boolean, default: false },
           score: { type: Number, default: 0 },

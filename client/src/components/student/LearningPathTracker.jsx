@@ -785,6 +785,53 @@ const LearningPathDetailModal = ({
                             </button>
                           </div>
                         )}
+
+                        {/* Weekly Resources */}
+                        {milestone.resources && milestone.resources.length > 0 && (
+                          <div className="mt-6 pt-5 border-t border-white/5">
+                            <h5 className="text-[10px] font-black uppercase tracking-widest text-indigo-400 mb-3">
+                              Recommended for this week
+                            </h5>
+                            <div className="grid grid-cols-1 gap-3">
+                              {milestone.resources.map((res, rIdx) => (
+                                <a
+                                  key={rIdx}
+                                  href={res.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-indigo-500/30 transition-all group"
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                                      {res.type === 'video' ? <Play className="w-4 h-4" /> : <BookOpen className="w-4 h-4" />}
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">
+                                        {res.title}
+                                      </p>
+                                      <div className="flex items-center gap-2 mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                                        <span>{res.platform}</span>
+                                        {res.duration && (
+                                          <>
+                                            <span className="w-1 h-1 rounded-full bg-slate-600"></span>
+                                            <span>{res.duration}</span>
+                                          </>
+                                        )}
+                                        {res.difficulty && (
+                                          <>
+                                            <span className="w-1 h-1 rounded-full bg-slate-600"></span>
+                                            <span className={res.difficulty === 'beginner' ? 'text-emerald-400' : res.difficulty === 'intermediate' ? 'text-yellow-400' : 'text-rose-400'}>{res.difficulty}</span>
+                                          </>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <ExternalLink className="w-4 h-4 text-slate-500 group-hover:text-white transition-colors" />
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
