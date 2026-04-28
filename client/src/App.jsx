@@ -4,6 +4,7 @@ import LandingPage from "./pages/LandingPage";
 import CollegeDashboard from "./pages/CollegeDashboard";
 import RecruiterDashboard from "./pages/RecruiterDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
+import StudentDrives from "./pages/StudentDrives";
 import SignInPage from "./pages/SignInPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
@@ -94,6 +95,10 @@ const App = () => {
         <Route
           path="/student/settings"
           element={<StudentDashboard activeRoute="settings" />}
+        />
+        <Route
+          path="/student/drives"
+          element={<StudentDrives />}
         />
       </Routes>
     </Router>

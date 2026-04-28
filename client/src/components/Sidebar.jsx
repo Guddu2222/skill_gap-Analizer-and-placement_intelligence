@@ -68,6 +68,7 @@ const Sidebar = ({ role = "college", collapsed: controlledCollapsed, onToggle })
         label: "Opportunities",
         path: "/student/opportunities",
       },
+      { icon: Building, label: "Campus Drives", path: "/student/drives" },
       { icon: Users, label: "Mentorship", path: "/student/mentorship" },
       {
         icon: MessageSquare,
