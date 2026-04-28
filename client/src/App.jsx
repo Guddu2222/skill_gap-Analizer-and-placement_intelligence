@@ -3,7 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import CollegeDashboard from "./pages/CollegeDashboard";
 import RecruiterDashboard from "./pages/RecruiterDashboard";
+import RecruiterDrives from "./pages/RecruiterDrives";
+import RecruiterJobs from "./pages/RecruiterJobs";
 import StudentDashboard from "./pages/StudentDashboard";
+import StudentDrives from "./pages/StudentDrives";
 import SignInPage from "./pages/SignInPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
@@ -11,6 +14,7 @@ import RecruiterCRM from "./pages/RecruiterCRM";
 import SmartShortlist from "./pages/SmartShortlist";
 import AboutUs from "./pages/AboutUs";
 import OAuthCallbackPage from "./pages/OAuthCallbackPage";
+import CampusDrives from "./pages/CampusDrives";
 
 // Signup Pages
 import RoleSelectionPage from "./pages/signup/RoleSelectionPage";
@@ -48,8 +52,11 @@ const App = () => {
 
         {/* Dashboard Routes */}
         <Route path="/college" element={<CollegeDashboard />} />
+        <Route path="/college/drives" element={<CampusDrives />} />
         <Route path="/college/recruiters" element={<RecruiterCRM />} />
         <Route path="/recruiter" element={<RecruiterDashboard />} />
+        <Route path="/recruiter/drives" element={<RecruiterDrives />} />
+        <Route path="/recruiter/jobs" element={<RecruiterJobs />} />
         <Route path="/recruiter/smart-shortlist" element={<SmartShortlist />} />
 
         {/* Student Dashboard Routes */}
@@ -92,6 +99,10 @@ const App = () => {
         <Route
           path="/student/settings"
           element={<StudentDashboard activeRoute="settings" />}
+        />
+        <Route
+          path="/student/drives"
+          element={<StudentDrives />}
         />
       </Routes>
     </Router>

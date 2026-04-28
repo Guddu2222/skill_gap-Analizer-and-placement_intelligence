@@ -31,6 +31,7 @@ app.use("/api/recruiter-features", require("./routes/recruiter-features"));
 app.use("/api/skill-gap", require("./routes/skillGap"));
 app.use("/api/interviews", require("./routes/interviews"));
 app.use("/api/ats", require("./routes/ats"));
+app.use("/api/campus-drives", require("./routes/campus-drives"));
 
 app.get("/", (req, res) => {
   res.send("SkillBridge API is running");
