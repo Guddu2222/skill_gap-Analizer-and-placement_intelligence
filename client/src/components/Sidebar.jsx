@@ -55,6 +55,7 @@ const Sidebar = ({ role = "college", collapsed: controlledCollapsed, onToggle })
         path: "/recruiter/smart-shortlist",
       },
       { icon: Users, label: "Candidates", path: "/recruiter/candidates" },
+      { icon: Building, label: "Assigned Drives", path: "/recruiter/drives" },
       { icon: BarChart2, label: "Analytics", path: "/recruiter/analytics" },
     ],
     student: [

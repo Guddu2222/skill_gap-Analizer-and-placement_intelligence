@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import CollegeDashboard from "./pages/CollegeDashboard";
 import RecruiterDashboard from "./pages/RecruiterDashboard";
+import RecruiterDrives from "./pages/RecruiterDrives";
+import RecruiterJobs from "./pages/RecruiterJobs";
 import StudentDashboard from "./pages/StudentDashboard";
 import StudentDrives from "./pages/StudentDrives";
 import SignInPage from "./pages/SignInPage";
@@ -53,6 +55,8 @@ const App = () => {
         <Route path="/college/drives" element={<CampusDrives />} />
         <Route path="/college/recruiters" element={<RecruiterCRM />} />
         <Route path="/recruiter" element={<RecruiterDashboard />} />
+        <Route path="/recruiter/drives" element={<RecruiterDrives />} />
+        <Route path="/recruiter/jobs" element={<RecruiterJobs />} />
         <Route path="/recruiter/smart-shortlist" element={<SmartShortlist />} />
 
         {/* Student Dashboard Routes */}

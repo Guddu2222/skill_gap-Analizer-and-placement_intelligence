@@ -17,12 +17,50 @@ const CampusDrives = () => {
   const [applications, setApplications] = useState({});
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [recruiters, setRecruiters] = useState([]);
+  const [incomingRequests, setIncomingRequests] = useState([]);
+  const [acceptingId, setAcceptingId] = useState(null);
 
   const rounds = ["Applied", "Aptitude Test", "Technical Interview", "HR Round", "Offered", "Rejected"];
 
   useEffect(() => {
     fetchDrives();
+    fetchRecruiters();
+    fetchIncomingRequests();
   }, []);
+
+  const fetchIncomingRequests = async () => {
+    try {
+      const res = await apiCall("get", "/college-features/drive-requests");
+      setIncomingRequests(res.data);
+    } catch (err) {
+      console.error("Error fetching incoming requests:", err);
+    }
+  };
+
+  const handleAcceptRequest = async (requestId) => {
+    setAcceptingId(requestId);
+    try {
+      const res = await apiCall("put", `/college-features/drive-requests/${requestId}/accept`);
+      // Drive is created automatically, fetch drives again
+      fetchDrives();
+      fetchIncomingRequests();
+    } catch (err) {
+      console.error("Error accepting request:", err);
+      alert("Failed to accept request.");
+    } finally {
+      setAcceptingId(null);
+    }
+  };
+
+  const fetchRecruiters = async () => {
+    try {
+      const res = await apiCall("get", "/college-features/recruiters");
+      setRecruiters(res.data);
+    } catch (err) {
+      console.error("Error fetching recruiters:", err);
+    }
+  };
 
   const fetchDrives = async () => {
     try {
@@ -118,7 +156,8 @@ const CampusDrives = () => {
     company: "",
     title: "",
     description: "",
-    minCGPA: 0
+    minCGPA: 0,
+    recruiter: ""
   });
   const [submitting, setSubmitting] = useState(false);
 
@@ -132,6 +171,9 @@ const CampusDrives = () => {
         description: newDriveData.description,
         eligibility: { minCGPA: Number(newDriveData.minCGPA) }
       };
+      if (newDriveData.recruiter) {
+        payload.recruiter = newDriveData.recruiter;
+      }
       const res = await apiCall("post", "/campus-drives", payload);
       setDrives([res.data, ...drives]);
       if (!activeDrive) {
@@ -139,7 +181,7 @@ const CampusDrives = () => {
         fetchApplications(res.data._id);
       }
       setShowCreateModal(false);
-      setNewDriveData({ company: "", title: "", description: "", minCGPA: 0 });
+      setNewDriveData({ company: "", title: "", description: "", minCGPA: 0, recruiter: "" });
     } catch (err) {
       console.error("Error creating drive:", err);
       // Could set an error state to show in UI here
@@ -185,7 +227,45 @@ const CampusDrives = () => {
           </button>
         </header>
 
-        <div className="flex gap-6 flex-1 overflow-hidden">
+        {/* Incoming Requests Section */}
+        {incomingRequests.length > 0 && (
+          <div className="mb-6 space-y-4">
+            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+              Incoming Drive Requests
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {incomingRequests.map(req => (
+                <div key={req._id} className="bg-gradient-to-br from-indigo-900/40 to-violet-900/40 border border-indigo-500/30 rounded-2xl p-5 backdrop-blur-md relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-violet-500"></div>
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h3 className="text-lg font-bold text-white">{req.job?.title}</h3>
+                      <p className="text-sm text-indigo-300">{req.job?.company}</p>
+                    </div>
+                    <span className="bg-indigo-500/20 text-indigo-300 text-xs px-2 py-1 rounded border border-indigo-500/30">
+                      Invite
+                    </span>
+                  </div>
+                  <div className="text-xs text-[#aba9bf] mb-4 space-y-1">
+                    <p><strong>Recruiter:</strong> {req.recruiter?.name}</p>
+                    <p><strong>Location:</strong> {req.job?.location}</p>
+                    <p><strong>Type:</strong> {req.job?.jobType}</p>
+                  </div>
+                  <button 
+                    onClick={() => handleAcceptRequest(req._id)}
+                    disabled={acceptingId === req._id}
+                    className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold text-sm transition-colors disabled:opacity-50"
+                  >
+                    {acceptingId === req._id ? "Accepting..." : "Accept & Create Drive"}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="flex flex-1 gap-6 min-h-0 overflow-hidden">
           {/* Drives List Sidebar */}
           <div className="w-80 flex flex-col gap-4 shrink-0 overflow-y-auto custom-scrollbar-dark pr-2">
             {drives.map(drive => (
@@ -378,6 +458,20 @@ const CampusDrives = () => {
                   onChange={(e) => setNewDriveData({...newDriveData, minCGPA: e.target.value})}
                   className="w-full bg-[#121223] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-[#aba9bf] mb-1">Assign Recruiter (Optional)</label>
+                <select
+                  value={newDriveData.recruiter}
+                  onChange={(e) => setNewDriveData({...newDriveData, recruiter: e.target.value})}
+                  className="w-full bg-[#121223] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors appearance-none"
+                >
+                  <option value="">-- Select Recruiter --</option>
+                  {recruiters.map(r => (
+                    <option key={r._id} value={r._id}>{r.name} ({r.company || "No Company"})</option>
+                  ))}
+                </select>
               </div>
 
               <div className="flex justify-end gap-3 pt-4">
