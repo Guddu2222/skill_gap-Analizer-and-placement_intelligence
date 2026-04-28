@@ -11,6 +11,7 @@ import RecruiterCRM from "./pages/RecruiterCRM";
 import SmartShortlist from "./pages/SmartShortlist";
 import AboutUs from "./pages/AboutUs";
 import OAuthCallbackPage from "./pages/OAuthCallbackPage";
+import CampusDrives from "./pages/CampusDrives";
 
 // Signup Pages
 import RoleSelectionPage from "./pages/signup/RoleSelectionPage";
@@ -48,6 +49,7 @@ const App = () => {
 
         {/* Dashboard Routes */}
         <Route path="/college" element={<CollegeDashboard />} />
+        <Route path="/college/drives" element={<CampusDrives />} />
         <Route path="/college/recruiters" element={<RecruiterCRM />} />
         <Route path="/recruiter" element={<RecruiterDashboard />} />
         <Route path="/recruiter/smart-shortlist" element={<SmartShortlist />} />

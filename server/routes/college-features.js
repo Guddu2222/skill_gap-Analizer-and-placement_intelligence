@@ -128,7 +128,12 @@ router.get(
 
       const departmentStats = {};
       students.forEach((student) => {
-        const dept = student.department || "Other";
+        let dept = student.department || "Other";
+        dept = dept.trim().toLowerCase();
+        
+        // Capitalize the first letter of each word for display
+        dept = dept.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
         if (!departmentStats[dept])
           departmentStats[dept] = { total: 0, placed: 0, students: [] };
         departmentStats[dept].total++;
