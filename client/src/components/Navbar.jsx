@@ -29,17 +29,18 @@ const NAV_ITEMS = [
   {
     name: "Company",
     items: [
-      { label: "About Us", to: "/" },
-      { label: "Contact",  to: "/" },
+      { label: "About Us", to: "/about" },
+      { label: "ankitanand3902@gmail.com", to: "mailto:ankitanand3902@gmail.com" },
+      { label: "7488657956", to: "tel:7488657956" },
     ],
   },
 ];
 
-const DropdownItem = ({ label, to, onClick }) => (
-  <Link
-    to={to}
-    onClick={onClick}
-    style={{
+const DropdownItem = ({ label, to, onClick }) => {
+  const isExternal = to.startsWith('mailto:') || to.startsWith('tel:');
+  const commonProps = {
+    onClick,
+    style: {
       display: "block",
       padding: "10px 16px",
       fontSize: "0.875rem",
@@ -48,19 +49,27 @@ const DropdownItem = ({ label, to, onClick }) => (
       borderRadius: 10,
       transition: "all 0.15s",
       textDecoration: "none",
-    }}
-    onMouseEnter={(e) => {
+    },
+    onMouseEnter: (e) => {
       e.currentTarget.style.background = "rgba(99,102,241,0.18)";
       e.currentTarget.style.color = "#ffffff";
-    }}
-    onMouseLeave={(e) => {
+    },
+    onMouseLeave: (e) => {
       e.currentTarget.style.background = "transparent";
       e.currentTarget.style.color = "#e2e8f0";
-    }}
-  >
-    {label}
-  </Link>
-);
+    }
+  };
+
+  return isExternal ? (
+    <a href={to} {...commonProps}>
+      {label}
+    </a>
+  ) : (
+    <Link to={to} {...commonProps}>
+      {label}
+    </Link>
+  );
+};
 
 const NavDropdown = ({ item }) => {
   const [open, setOpen] = useState(false);

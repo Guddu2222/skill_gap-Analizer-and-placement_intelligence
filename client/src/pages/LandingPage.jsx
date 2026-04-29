@@ -233,7 +233,11 @@ const LandingPage = () => {
               <ul className="space-y-4 text-sm">
                 <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
                 <li><Link to="#" className="hover:text-white transition-colors">Careers</Link></li>
-                <li><Link to="#" className="hover:text-white transition-colors">Contact</Link></li>
+                <li className="flex flex-col gap-1">
+                  <span className="text-gray-400 mb-1">Contact:</span>
+                  <a href="mailto:ankitanand3902@gmail.com" className="hover:text-white transition-colors">ankitanand3902@gmail.com</a>
+                  <a href="tel:7488657956" className="hover:text-white transition-colors">+91 7488657956</a>
+                </li>
               </ul>
             </div>
 
