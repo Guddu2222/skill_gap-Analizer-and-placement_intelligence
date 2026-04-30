@@ -534,13 +534,17 @@ const LearningPathDetailModal = ({
   };
 
   const [activeQuizMilestoneIndex, setActiveQuizMilestoneIndex] = useState(null);
-  const [generatingQuiz, setGeneratingQuiz] = useState(false);
+  // Track which specific milestone index is currently generating its quiz (null = none)
+  const [generatingQuizIndex, setGeneratingQuizIndex] = useState(null);
   const [quizMilestoneData, setQuizMilestoneData] = useState(null);
 
-  const handleTakeQuiz = async (index) => {
-    setGeneratingQuiz(true);
+  const handleTakeQuiz = async (e, index) => {
+    // Prevent the click from bubbling up to the milestone container
+    e.stopPropagation();
+    // Avoid duplicate requests
+    if (generatingQuizIndex !== null) return;
+    setGeneratingQuizIndex(index);
     try {
-      // Create a temporary toast to show it's generating
       const response = await api.post(`/skill-gap/learning-paths/${path._id}/milestones/${index}/quiz/generate`);
       if (response.data.success) {
         setQuizMilestoneData({
@@ -553,7 +557,7 @@ const LearningPathDetailModal = ({
       console.error("Failed to generate quiz", err);
       alert("Failed to generate quiz due to API limits. Please try again later.");
     } finally {
-      setGeneratingQuiz(false);
+      setGeneratingQuizIndex(null);
     }
   };
 
@@ -580,109 +584,73 @@ const LearningPathDetailModal = ({
   return createPortal(
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fadeIn">
       <div className="glass-abyssal rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.8)] flex flex-col border border-white/10">
-        {/* Header */}
-        <div className="bg-gradient-to-br from-indigo-900 via-indigo-950 to-black p-8 text-white shrink-0 border-b border-white/10">
-          <div className="flex items-start justify-between">
+        {/* Header — compact */}
+        <div className="bg-gradient-to-br from-indigo-900 via-indigo-950 to-black px-6 py-4 text-white shrink-0 border-b border-white/10">
+          <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-3xl font-black mb-2 tracking-tight">{path.skillName}</h2>
-              <p className="text-xs uppercase tracking-[0.3em] text-indigo-300 font-bold">
-                Current: {path.currentLevel || "none"} → Target:{" "}
-                {path.targetLevel}
+              <h2 className="text-xl font-black tracking-tight">{path.skillName}</h2>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-indigo-300 font-bold mt-0.5">
+                Current: {path.currentLevel || "none"} → Target: {path.targetLevel}
               </p>
             </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-white/10 rounded-xl transition-all border border-white/5 hover:border-white/20"
+              className="p-2 hover:bg-white/10 rounded-xl transition-all border border-white/5 hover:border-white/20 ml-4"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
-          {/* Progress Control */}
-          <div className="mt-8 bg-black/40 rounded-2xl p-6 border border-white/5">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400">
-                Update Mastery
-              </span>
-              <span className="text-4xl font-black text-white">
-                {localProgress}%
-              </span>
+          {/* Progress Control — compact */}
+          <div className="mt-3 bg-black/40 rounded-xl px-4 py-3 border border-white/5">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400">Update Mastery</span>
+              <span className="text-2xl font-black text-white">{localProgress}%</span>
             </div>
 
-            <div className="relative flex items-center mb-6 py-2">
+            <div className="relative flex items-center mb-3 py-1">
               <style dangerouslySetInnerHTML={{__html: `
                 .custom-progress-slider::-webkit-slider-thumb {
                   -webkit-appearance: none;
                   appearance: none;
-                  width: 22px;
-                  height: 22px;
+                  width: 18px;
+                  height: 18px;
                   border-radius: 50%;
                   background: white;
-                  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+                  box-shadow: 0 0 8px rgba(0,0,0,0.25);
                   cursor: pointer;
                   transition: transform 0.1s;
                 }
-                .custom-progress-slider::-webkit-slider-thumb:hover {
-                  transform: scale(1.15);
-                }
+                .custom-progress-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
                 .custom-progress-slider::-moz-range-thumb {
-                  width: 22px;
-                  height: 22px;
-                  border-radius: 50%;
-                  background: white;
-                  cursor: pointer;
-                  border: none;
+                  width: 18px; height: 18px; border-radius: 50%;
+                  background: white; cursor: pointer; border: none;
                 }
               `}} />
-                <input
-                type="range"
-                min="0"
-                max="100"
-                value={localProgress}
+              <input
+                type="range" min="0" max="100" value={localProgress}
                 onChange={handleProgressChange}
-                className="custom-progress-slider w-full h-1.5 rounded-full appearance-none cursor-pointer outline-none bg-slate-800"
-                style={{
-                  background: `linear-gradient(to right, #6366f1 ${localProgress}%, #1e1b4b ${localProgress}%)`,
-                }}
+                className="custom-progress-slider w-full h-1.5 rounded-full appearance-none cursor-pointer outline-none"
+                style={{ background: `linear-gradient(to right, #6366f1 ${localProgress}%, #1e1b4b ${localProgress}%)` }}
               />
             </div>
 
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-3">
               <button
-                onClick={() =>
-                  setLocalProgress(Math.max(0, localProgress - 10))
-                }
-                className="flex-1 py-3 bg-white/5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all border border-white/5"
-              >
-                -10%
-              </button>
+                onClick={() => setLocalProgress(Math.max(0, localProgress - 10))}
+                className="flex-1 py-2 bg-white/5 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all border border-white/5"
+              >-10%</button>
               <button
                 onClick={handleSaveProgress}
                 disabled={updating || localProgress === path.progressPercentage}
-                className="flex-[2] py-3 bg-indigo-600 text-white rounded-xl font-black uppercase tracking-widest shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] hover:scale-[1.02] transition-all disabled:opacity-50 disabled:scale-100 disabled:cursor-not-allowed"
-              >
-                {updating ? "Syncing..." : "Update Progress"}
-              </button>
+                className="flex-[2] py-2 bg-indigo-600 text-white rounded-lg font-black uppercase tracking-widest shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] hover:scale-[1.02] transition-all disabled:opacity-50 disabled:scale-100 disabled:cursor-not-allowed text-xs"
+              >{updating ? "Syncing..." : "Update Progress"}</button>
               <button
-                onClick={() =>
-                  setLocalProgress(Math.min(100, localProgress + 10))
-                }
-                className="flex-1 py-3 bg-white/5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all border border-white/5"
-              >
-                +10%
-              </button>
+                onClick={() => setLocalProgress(Math.min(100, localProgress + 10))}
+                className="flex-1 py-2 bg-white/5 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all border border-white/5"
+              >+10%</button>
             </div>
           </div>
         </div>
@@ -776,12 +744,12 @@ const LearningPathDetailModal = ({
                         {!milestone.completed && (
                           <div className="mt-4 flex">
                             <button
-                              onClick={() => handleTakeQuiz(index)}
-                              disabled={generatingQuiz}
-                              className="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-gradient-to-r from-indigo-500 to-violet-600 text-white flex items-center gap-2 hover:shadow-[0_0_15px_rgba(99,102,241,0.4)] transition-all disabled:opacity-50"
+                              onClick={(e) => handleTakeQuiz(e, index)}
+                              disabled={generatingQuizIndex === index}
+                              className="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-gradient-to-r from-indigo-500 to-violet-600 text-white flex items-center gap-2 hover:shadow-[0_0_15px_rgba(99,102,241,0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               <BrainCircuit className="w-3.5 h-3.5" />
-                              {generatingQuiz && activeQuizMilestoneIndex === index ? "Generating..." : "Take Quiz to Complete"}
+                              {generatingQuizIndex === index ? "Generating..." : "Take Quiz to Complete"}
                             </button>
                           </div>
                         )}
