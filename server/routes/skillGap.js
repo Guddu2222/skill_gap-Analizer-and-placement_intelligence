@@ -446,11 +446,12 @@ router.post("/learning-paths/:id/milestones/:index/quiz/generate", auth, async (
       return res.status(404).json({ error: "Milestone not found" });
     }
 
-    // Generate questions using AI
+    // Generate questions using AI — pass description too for full topic context
     const questions = await skillGapService.generateMilestoneQuiz(
       learningPath.skillName,
       milestone.title,
-      student.targetRole || "Software Engineer"
+      student.targetRole || "Software Engineer",
+      milestone.description || ""
     );
 
     // Save to DB
