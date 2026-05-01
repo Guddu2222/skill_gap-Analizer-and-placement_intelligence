@@ -12,6 +12,7 @@ import {
   Lock,
   ArrowLeft,
   BrainCircuit,
+  RefreshCw,
 } from "lucide-react";
 import api from "../../services/api"; // Use our api utility instance configured with intercepts
 import MilestoneQuizModal from "./MilestoneQuizModal";
@@ -98,6 +99,24 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate, onTabChange }) 
       if (onUpdate) onUpdate();
     } catch (error) {
       console.error("Error rescheduling path:", error);
+    }
+  };
+
+  const handleRefreshResources = async (pathId) => {
+    try {
+      const response = await api.post(
+        `/skill-gap/learning-paths/${pathId}/refresh-resources`
+      );
+      if (
+        selectedPath &&
+        selectedPath._id === pathId &&
+        response.data.learningPath
+      ) {
+        setSelectedPath(response.data.learningPath);
+      }
+      if (onUpdate) onUpdate();
+    } catch (error) {
+      console.error("Error refreshing resources:", error);
     }
   };
 
@@ -491,6 +510,7 @@ const LearningPathTracker = ({ learningPaths, student, onUpdate, onTabChange }) 
           onUpdateProgress={updateProgress}
           onToggleMilestone={toggleMilestone}
           onReschedulePath={handleReschedulePath}
+          onRefreshResources={handleRefreshResources}
           updating={updatingProgress}
         />
       )}
@@ -506,6 +526,7 @@ const LearningPathDetailModal = ({
   onUpdateProgress,
   onToggleMilestone,
   onReschedulePath,
+  onRefreshResources,
   updating,
 }) => {
   const [localProgress, setLocalProgress] = useState(path.progressPercentage);
@@ -537,6 +558,13 @@ const LearningPathDetailModal = ({
   // Track which specific milestone index is currently generating its quiz (null = none)
   const [generatingQuizIndex, setGeneratingQuizIndex] = useState(null);
   const [quizMilestoneData, setQuizMilestoneData] = useState(null);
+  const [isRefreshingResources, setIsRefreshingResources] = useState(false);
+
+  const handleRefreshClick = async () => {
+    setIsRefreshingResources(true);
+    await onRefreshResources(path._id);
+    setIsRefreshingResources(false);
+  };
 
   const handleTakeQuiz = async (e, index) => {
     // Prevent the click from bubbling up to the milestone container
@@ -664,14 +692,27 @@ const LearningPathDetailModal = ({
                 <h3 className="text-sm font-black text-white uppercase tracking-[0.2em]">
                   Learning Milestones
                 </h3>
-                <button 
-                  onClick={() => onReschedulePath(path._id)}
-                  className="flex items-center text-[10px] font-black uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-4 py-2 rounded-xl hover:bg-indigo-500/20 transition-all border border-indigo-500/20"
-                  title="Shift all incomplete milestones to start from today"
-                >
-                  <Clock className="w-3.5 h-3.5 mr-2" />
-                  Reschedule Plan
-                </button>
+                <div className="flex items-center gap-3">
+                  {path.milestones?.some(m => !m.resources || m.resources.length === 0) && (
+                    <button 
+                      onClick={handleRefreshClick}
+                      disabled={isRefreshingResources}
+                      className="flex items-center text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-4 py-2 rounded-xl hover:bg-emerald-500/20 transition-all border border-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                      title="Generate weekly reading materials & video tutorials"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 mr-2 ${isRefreshingResources ? 'animate-spin' : ''}`} />
+                      {isRefreshingResources ? 'Refreshing...' : 'Get Resources'}
+                    </button>
+                  )}
+                  <button 
+                    onClick={() => onReschedulePath(path._id)}
+                    className="flex items-center text-[10px] font-black uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-4 py-2 rounded-xl hover:bg-indigo-500/20 transition-all border border-indigo-500/20"
+                    title="Shift all incomplete milestones to start from today"
+                  >
+                    <Clock className="w-3.5 h-3.5 mr-2" />
+                    Reschedule Plan
+                  </button>
+                </div>
               </div>
               <div className="space-y-3">
                 {path.milestones?.map((milestone, index) => (

@@ -699,8 +699,32 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
       });
 
       if (existingPath) {
-        // Update the gapAnalysis reference and save
+        // Update the gapAnalysis reference
         existingPath.gapAnalysis = gapAnalysisId;
+
+        // Backfill milestone resources if this is an old path with empty resources
+        const needsResourceBackfill = existingPath.milestones &&
+          existingPath.milestones.length > 0 &&
+          existingPath.milestones.every(m => !m.resources || m.resources.length === 0);
+
+        if (needsResourceBackfill) {
+          console.log(`🔄 Backfilling resources for existing path: ${existingPath.skillName}`);
+          try {
+            const freshMilestones = await this.generateMilestonesWithAI(
+              existingPath.skillName,
+              existingPath.milestones.length
+            );
+            // Merge: keep existing completed/dueDate state, just inject new resources
+            existingPath.milestones = existingPath.milestones.map((m, i) => ({
+              ...m.toObject(),
+              resources: (freshMilestones[i] && freshMilestones[i].resources) || m.resources || []
+            }));
+            existingPath.markModified('milestones');
+          } catch (err) {
+            console.warn('⚠️ Resource backfill failed, skipping:', err.message);
+          }
+        }
+
         await existingPath.save();
         return existingPath;
       }
