@@ -115,44 +115,56 @@ const ResumeUploadWidget = ({ currentResumeUrl, onUploadSuccess }) => {
           </div>
         </div>
 
-        {/* File card */}
-        <div className="flex items-center gap-4 p-4 bg-[#1f1f2e] border border-white/5 rounded-xl mb-4">
-          <div className="w-10 h-10 rounded-lg bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center flex-shrink-0">
-            <FileText className="w-5 h-5 text-indigo-400" />
+        {/* File card with integrated actions */}
+        <div className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 bg-white/[0.02] hover:bg-white/[0.04] border border-white/5 hover:border-indigo-500/20 rounded-2xl transition-all mb-2 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500/50" />
+          
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
+              <FileText className="w-6 h-6 text-indigo-400" />
+            </div>
+            <div className="flex-1 min-w-0 pr-4">
+              <p className="text-sm font-bold text-white truncate" title={displayUrl(activeUrl)}>
+                {displayUrl(activeUrl)}
+              </p>
+              <div className="flex items-center gap-2 mt-1.5">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Active • Recruiter Ready</p>
+              </div>
+            </div>
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-white truncate">{displayUrl(activeUrl)}</p>
-            <p className="text-xs text-slate-500 mt-0.5 truncate">{activeUrl}</p>
-          </div>
-          {/* View button — uses backend proxy so PDF opens correctly */}
-          {activeUrl && (
-            <a
-              href={`${PROXY_URL}?t=${Date.now()}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => {
-                // Attach auth token via query param for the proxy
-                const token = localStorage.getItem("token");
-                e.preventDefault();
-                const url = `${PROXY_URL}${token ? `?token=${encodeURIComponent(token)}` : ""}`;
-                window.open(url, "_blank");
-              }}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 rounded-lg hover:bg-indigo-500/20 hover:text-indigo-200 transition-all flex-shrink-0"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              Open
-            </a>
-          )}
-        </div>
 
-        {/* Replace button */}
-        <button
-          onClick={() => setView("upload")}
-          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-slate-300 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-indigo-500/30 hover:text-white transition-all"
-        >
-          <RefreshCw className="w-4 h-4" />
-          Replace Resume
-        </button>
+          <div className="flex items-center gap-3 w-full sm:w-auto mt-2 sm:mt-0">
+            <button
+              onClick={() => setView("upload")}
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-slate-300 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:text-white transition-all group/btn"
+            >
+              <RefreshCw className="w-3.5 h-3.5 group-hover/btn:rotate-180 transition-transform duration-500" />
+              Replace
+            </button>
+            
+            {activeUrl && (
+              <a
+                href={`${PROXY_URL}?t=${Date.now()}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => {
+                  const token = localStorage.getItem("token");
+                  e.preventDefault();
+                  const url = `${PROXY_URL}${token ? `?token=${encodeURIComponent(token)}` : ""}`;
+                  window.open(url, "_blank");
+                }}
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 rounded-xl hover:bg-indigo-500/20 hover:text-indigo-200 hover:shadow-[0_0_15px_rgba(99,102,241,0.3)] transition-all"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                Open
+              </a>
+            )}
+          </div>
+        </div>
       </div>
     );
   }
