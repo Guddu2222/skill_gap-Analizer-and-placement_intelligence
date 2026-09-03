@@ -250,65 +250,100 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
              </div>
           )}
 
-          {/* HERO PROFILE BANNER */}
-          <section className="relative w-full rounded-2xl overflow-hidden mb-8 bg-gradient-to-br from-[#1E1040] via-[#12121d] to-[#0F0F1A] border border-white/5 shadow-2xl">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(124,58,237,0.1),transparent_50%)]"></div>
-            <div className="relative flex flex-col md:flex-row items-center justify-between p-8 gap-8">
-              <div className="flex items-center gap-6">
-                <div className="relative">
-                  <ProfilePictureUpload
-                    student={student}
-                    onUploadSuccess={handleProfilePictureUploadSuccess}
-                  />
-                  <div className="absolute bottom-0 right-0 w-5 h-5 bg-green-500 border-2 border-[#1E1040] rounded-full"></div>
+          {activeTab === "overview" && (
+            <>
+              {/* PREMIUM HERO BANNER (Abyssal Space Aesthetic) */}
+              <section className="relative w-full rounded-[2rem] overflow-hidden mb-12 bg-[#0e0e14] border border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.5),_0_0_15px_rgba(186,158,255,0.05)] isolate">
+            {/* Background Mesh/Glow */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(186,158,255,0.15),transparent_50%)] -z-10" />
+            <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-[radial-gradient(circle,rgba(139,92,246,0.1)_0%,transparent_60%)] transform translate-x-1/3 -translate-y-1/3 -z-10 blur-3xl" />
+            <div className="absolute bottom-0 left-1/4 w-[30rem] h-[30rem] bg-[radial-gradient(circle,rgba(6,182,212,0.05)_0%,transparent_60%)] transform -translate-x-1/2 translate-y-1/3 -z-10 blur-3xl" />
+
+            <div className="relative flex flex-col lg:flex-row items-center justify-between p-10 lg:p-12 gap-10">
+              
+              {/* Left Profile Area */}
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 w-full lg:w-auto">
+                <div className="relative group shrink-0">
+                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500 to-cyan-400 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-700"></div>
+                  <div className="relative z-10 p-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl">
+                    <ProfilePictureUpload
+                      student={student}
+                      onUploadSuccess={handleProfilePictureUploadSuccess}
+                    />
+                  </div>
+                  <div className="absolute bottom-2 right-2 w-4 h-4 bg-emerald-400 border-2 border-[#0e0e14] rounded-full z-20 shadow-[0_0_10px_rgba(52,211,153,0.5)]"></div>
                 </div>
-                <div>
-                  <h2 className="text-[28px] font-bold text-white tracking-tight">{student.firstName} {student.lastName}</h2>
-                  <div className="flex items-center gap-3 mt-1">
-                    <span className="px-3 py-0.5 bg-primary-container text-white text-[10px] font-bold uppercase rounded-full tracking-wider">{student.targetRole || "Student"}</span>
-                    {student.college?.name && <span className="text-slate-400 text-xs">{student.college.name}</span>}
+
+                <div className="flex flex-col items-center sm:items-start text-center sm:text-left mt-2">
+                  <h2 className="text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+                    {student.firstName} <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-300 to-indigo-300">{student.lastName}</span>
+                  </h2>
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 mt-4">
+                    <div className="px-4 py-1.5 bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs font-bold uppercase tracking-widest rounded-full backdrop-blur-md shadow-inner shadow-violet-500/10">
+                      {student.targetRole || "Student"}
+                    </div>
+                    {student.college?.name && (
+                      <div className="flex items-center gap-1.5 text-slate-400 text-sm font-medium">
+                        <MapPin className="w-4 h-4 text-slate-500" />
+                        {student.college.name}
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-6 flex gap-3">
+                    <button
+                      onClick={() => setShowEditProfile(true)}
+                      className="flex items-center gap-2 px-5 py-2.5 bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-white text-xs font-bold rounded-xl border border-white/[0.05] hover:border-violet-500/30 transition-all duration-300 shadow-sm"
+                    >
+                      <Pencil className="w-3.5 h-3.5" /> Edit Profile
+                    </button>
+                    <button
+                      onClick={handleAnalyzeSkills}
+                      disabled={analyzing}
+                      className="flex items-center gap-2 px-5 py-2.5 bg-violet-500/10 hover:bg-violet-500/20 text-violet-300 hover:text-violet-200 text-xs font-bold rounded-xl border border-violet-500/20 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-300 disabled:opacity-50"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 ${analyzing ? "animate-spin" : ""}`} /> Refresh Analysis
+                    </button>
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col gap-3 z-20 shrink-0">
-                <div className="flex items-center gap-6 glass-card p-4 rounded-xl border-white/10">
-                  <div className="relative w-24 h-24 flex items-center justify-center">
-                    <svg className="w-full h-full transform -rotate-90">
-                      <circle className="text-surface-container-highest" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" strokeWidth="8"></circle>
-                      <circle className="text-secondary transition-all duration-1000" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" strokeDasharray="251.2" strokeDashoffset={251.2 - (251.2 * (student.placementReadinessScore || 0) / 100)} strokeWidth="8"></circle>
-                    </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-2xl font-black text-white">{student.placementReadinessScore || 0}</span>
-                      <span className="text-[8px] uppercase tracking-tighter text-slate-400">Score</span>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Placement Readiness</p>
-                    <div className="flex items-center gap-2">
-                      <span className="text-secondary font-bold text-sm">
-                        {(student.placementReadinessScore || 0) < 50 ? "Needs Improvement" : (student.placementReadinessScore || 0) < 80 ? "Good" : "Excellent"}
-                      </span>
-                      <span className="material-symbols-outlined text-secondary text-sm">trending_up</span>
-                    </div>
-                    <p className="text-[10px] text-slate-500 mt-1 max-w-[140px]">Improve skill match by focusing on growth areas.</p>
+
+              {/* Right Data Vis Area */}
+              <div className="flex flex-col sm:flex-row items-center gap-6 z-20 shrink-0 bg-[#13131a]/80 backdrop-blur-2xl p-6 lg:p-8 rounded-[1.5rem] border border-white/5 shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+                <div className="relative w-28 h-28 lg:w-32 lg:h-32 flex items-center justify-center shrink-0">
+                  {/* Glowing background ring */}
+                  <div className="absolute inset-0 bg-violet-500/10 rounded-full blur-2xl"></div>
+                  <svg className="w-full h-full transform -rotate-90 relative z-10 drop-shadow-[0_0_8px_rgba(186,158,255,0.4)]">
+                    <circle className="text-white/[0.03]" cx="50%" cy="50%" fill="transparent" r="45%" stroke="currentColor" strokeWidth="10"></circle>
+                    <circle 
+                      className="text-[#ba9eff] transition-all duration-1500 ease-out" 
+                      cx="50%" cy="50%" fill="transparent" r="45%" 
+                      stroke="currentColor" 
+                      strokeDasharray="283" 
+                      strokeDashoffset={283 - (283 * (student.placementReadinessScore || 0) / 100)} 
+                      strokeWidth="10"
+                      strokeLinecap="round"
+                    ></circle>
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
+                    <span className="text-3xl lg:text-4xl font-black text-white tracking-tighter drop-shadow-md">{student.placementReadinessScore || 0}</span>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#ba9eff]/70 mt-0.5">Score</span>
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setShowEditProfile(true)}
-                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 backdrop-blur-sm text-white text-xs font-semibold rounded-xl border border-white/10 transition-all"
-                  >
-                    <span className="material-symbols-outlined text-xs">edit</span> Edit Profile
-                  </button>
-                  <button
-                    onClick={handleAnalyzeSkills}
-                    disabled={analyzing}
-                    className="flex items-center justify-center p-2 px-4 bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl text-white transition-all disabled:opacity-50"
-                  >
-                    <RefreshCw className={`w-3 h-3 mr-2 ${analyzing ? "animate-spin" : ""}`} /> Refresh
-                  </button>
+                
+                <div className="flex flex-col max-w-[180px] text-center sm:text-left">
+                  <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
+                    <div className="w-2 h-2 rounded-full bg-[#c48ef9] shadow-[0_0_8px_rgba(196,142,249,0.8)] animate-pulse"></div>
+                    <p className="text-[10px] font-bold uppercase text-slate-400 tracking-[0.15em]">Readiness</p>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">
+                    {(student.placementReadinessScore || 0) < 50 ? "Needs Work" : (student.placementReadinessScore || 0) < 80 ? "On Track" : "Market Ready"}
+                  </h3>
+                  <p className="text-xs text-slate-400 leading-relaxed font-medium">
+                    Your market readiness is building. Keep tackling learning milestones to boost this score.
+                  </p>
                 </div>
               </div>
+
             </div>
           </section>
 
@@ -400,6 +435,9 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
                 </div>
               </div>
             </div>
+          )}
+
+            </>
           )}
 
           {/* ═══════════════════════════════════════════════
