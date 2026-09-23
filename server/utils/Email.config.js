@@ -22,7 +22,7 @@ transporter.verify((error, success) => {
       "\n   → Enable 2FA on Gmail first, then generate an App Password at: https://myaccount.google.com/apppasswords"
     );
   } else {
-    console.log("✅ [Email] SMTP server is ready — emails will be delivered.");
+    console.log("✅ Email SMTP server is ready");
   }
 });
 

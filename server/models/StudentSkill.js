@@ -11,6 +11,19 @@ const studentSkillSchema = new mongoose.Schema(
     yearsOfExperience: { type: Number },
     verified: { type: Boolean, default: false },
     verifiedBy: { type: String }, // certification, test, project, etc.
+    domain: {
+      type: String,
+      default: "Web Development",
+      enum: [
+        "Web Development",
+        "Data Science & AI",
+        "Cloud & DevOps",
+        "Cybersecurity",
+        "Mobile Development",
+        "Software Engineering & DSA",
+        "General / Soft Skills",
+      ],
+    },
     skillCategory: {
       type: String,
       enum: [

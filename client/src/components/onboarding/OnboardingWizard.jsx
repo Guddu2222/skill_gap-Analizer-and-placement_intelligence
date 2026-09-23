@@ -90,6 +90,61 @@ const OnboardingWizard = ({ user, onComplete }) => {
     }
   };
 
+  // ─── YearSelect Component for Onboarding ───────────────────────────────────
+  const YearSelect = ({ value, onChange, minYear = 2015, maxYear = 2035 }) => {
+    const currentYear = new Date().getFullYear();
+    const numValue = Number(value) || currentYear;
+
+    const years = [];
+    for (let y = minYear; y <= maxYear; y++) {
+      years.push(y);
+    }
+
+    const handleDec = (e) => {
+      e.preventDefault();
+      if (numValue > minYear) onChange(numValue - 1);
+    };
+
+    const handleInc = (e) => {
+      e.preventDefault();
+      if (numValue < maxYear) onChange(numValue + 1);
+    };
+
+    return (
+      <div className="flex items-center gap-1.5 w-full bg-white/5 border border-white/10 rounded-2xl p-1.5 transition-all focus-within:border-indigo-500">
+        <button
+          type="button"
+          onClick={handleDec}
+          disabled={numValue <= minYear}
+          className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-white font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center text-base"
+          title="Decrease 1 year"
+        >
+          -
+        </button>
+        <select
+          value={numValue}
+          onChange={(e) => onChange(Number(e.target.value))}
+          className="flex-1 bg-transparent text-white font-bold text-center focus:outline-none cursor-pointer text-sm py-2 [&>option]:bg-[#191921] [&>option]:text-white"
+        >
+          {years.map((y) => (
+            <option key={y} value={y}>
+              {y}
+            </option>
+          ))}
+        </select>
+        <button
+          type="button"
+          onClick={handleInc}
+          disabled={numValue >= maxYear}
+          className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-white font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center text-base"
+          title="Increase 1 year"
+        >
+          +
+        </button>
+      </div>
+    );
+  };
+
   // --- RENDERERS FOR DIFFERENT STEPS ---
 
   const renderStudentSteps = () => {
@@ -131,11 +186,11 @@ const OnboardingWizard = ({ user, onComplete }) => {
                 </div>
                 <div>
                   <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">Graduation Year</label>
-                  <input 
-                    type="number" 
-                    value={studentData.year} 
-                    onChange={e => setStudentData({...studentData, year: e.target.value})} 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all" 
+                  <YearSelect
+                    value={studentData.year}
+                    onChange={(val) => setStudentData({...studentData, year: val})}
+                    minYear={2015}
+                    maxYear={2035}
                   />
                 </div>
               </div>

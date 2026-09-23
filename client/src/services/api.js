@@ -258,14 +258,25 @@ export const uploadProfilePicture = async (formData) => {
 };
 
 // ==================== MOCK INTERVIEW API ====================
-export const generateMockInterview = async (targetRole) => {
-  const { data } = await api.post("/interviews/generate", { targetRole });
+export const generateMockInterview = async (optionsOrRole) => {
+  const payload = typeof optionsOrRole === "string" ? { targetRole: optionsOrRole } : optionsOrRole;
+  const { data } = await api.post("/interviews/generate", payload);
   return data;
 };
 
-export const evaluateInterviewAnswers = async (interviewId, answers) => {
+export const evaluateInterviewAnswers = async (interviewId, answers, visionMetrics = {}) => {
   const { data } = await api.post(`/interviews/${interviewId}/evaluate`, {
     answers,
+    visionMetrics,
+  });
+  return data;
+};
+
+export const compileCode = async (language, code, input = "") => {
+  const { data } = await api.post("/interviews/compile", {
+    language,
+    code,
+    input,
   });
   return data;
 };

@@ -88,9 +88,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_ID !== "your_googl
       }
     )
   );
-  console.log("[Passport] ✅ Google OAuth strategy registered");
-} else {
-  console.warn("[Passport] ⚠️  Google OAuth disabled — GOOGLE_CLIENT_ID not set in .env");
+  console.log("✅ Google OAuth strategy registered");
 }
 
 // ─── LINKEDIN STRATEGY ───────────────────────────────────────────────────────
@@ -126,9 +124,7 @@ if (process.env.LINKEDIN_CLIENT_ID && process.env.LINKEDIN_CLIENT_ID !== "your_l
       }
     )
   );
-  console.log("[Passport] ✅ LinkedIn OAuth strategy registered");
-} else {
-  console.warn("[Passport] ⚠️  LinkedIn OAuth disabled — LINKEDIN_CLIENT_ID not set in .env");
+  console.log("✅ LinkedIn OAuth strategy registered");
 }
 
 // Minimal serialization (required by passport even without sessions)

@@ -9,11 +9,30 @@ class InterviewService {
     this.gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
   }
 
-  async generateMockInterview(studentId, targetRole) {
+  async generateMockInterview(studentId, optionsOrRole) {
     try {
       if (!process.env.GEMINI_API_KEY) {
         throw new Error("Gemini API key is missing.");
       }
+
+      // Handle both string targetRole or config options object
+      let options = {};
+      if (typeof optionsOrRole === "string") {
+        options = { targetRole: optionsOrRole };
+      } else if (typeof optionsOrRole === "object") {
+        options = optionsOrRole;
+      }
+
+      const {
+        mode = "PROFILE",
+        domain = "Web Development",
+        targetRole = "Software Engineer",
+        targetTopic = "",
+        roundType = "Technical",
+        companyStyle = "General",
+        difficulty = "Medium",
+        questionCount = 5,
+      } = options;
 
       // Fetch student data and latest skill gap analysis for context
       const student = await Student.findById(studentId);
@@ -29,46 +48,70 @@ class InterviewService {
           .join(", ");
       }
 
-      // Format Experiences
-      const experiences =
-        (student.experiences || [])
-          .map((e) => `${e.role} at ${e.companyName} (${e.type})`)
-          .join(", ") || "No professional experience listed";
+      // Domain Personas Matrix
+      const domainPersonas = {
+        "Web Development": "Principal Web & Full Stack Architect",
+        "Data Science & AI": "Lead Machine Learning Engineer & Data Scientist",
+        "Cloud & DevOps": "Senior Cloud Infrastructure & DevOps Specialist",
+        Cybersecurity: "Chief Information Security Officer (CISO)",
+        "Mobile Development": "Senior Mobile App Lead (iOS/Android)",
+        "Software Engineering & DSA": "Senior Technical Architect & Algorithm Lead",
+        "General / Soft Skills": "Senior HR & People Lead",
+      };
 
-      // Format Projects
-      const projects =
-        (student.projects || [])
-          .map((p) => `${p.title} - ${p.description}`)
-          .join(", ") || "No specific projects listed";
+      const persona = domainPersonas[domain] || "Senior Technical Interviewer";
+      let prompt = "";
 
-      // Prepare prompt
-      const prompt = `
-        Act as a senior technical interviewer for the role of ${targetRole}.
-        The candidate has a background described by these weak skills they need to improve on: ${weakSkills || "General skills"}.
-        
-        The candidate's profile context:
-        - Experience: ${experiences}
-        - Projects: ${projects}
-        
-        Generate exactly 5 interview questions for this candidate. 
-        - Include a mix of technical and behavioral questions.
-        - AT LEAST ONE question MUST be specifically formulated around ONE of their past "Projects" or "Experience" listed above (e.g. asking them about a challenge they faced building a specific project).
-        
-        Return ONLY a JSON array of objects, with no markdown formatting and no extra text.
-        Each object must have the following properties:
-        - "questionText": The text of the question.
-        - "category": Either "Technical" or "Behavioral".
-        - "difficulty": "Easy", "Medium", or "Hard".
-        
-        Ensure the JSON is perfectly valid. Example format:
-        [
-          {
-            "questionText": "Can you explain closures in JavaScript?",
-            "category": "Technical",
-            "difficulty": "Medium"
-          }
-        ]
-      `;
+      if (mode === "TOPIC_DRILL") {
+        prompt = `
+          Act as a ${persona}.
+          Conduct a specialized topic drill interview for the domain "${domain}".
+          Focus Topic: "${targetTopic || domain}"
+          Round Type: "${roundType}"
+          Target Company Style: "${companyStyle}"
+          Difficulty Level: "${difficulty}"
+
+          Generate exactly ${questionCount} interview questions strictly focused on ${targetTopic || domain}.
+          - Include a mix of conceptual depth, practical problem solving, and edge cases.
+          - If roundType is "Coding", ensure at least 2 questions are algorithmic or code implementation challenges.
+
+          Return ONLY a JSON array of objects, with no markdown formatting and no extra text.
+          Each object must have the following properties:
+          - "questionText": The text of the question.
+          - "category": "${roundType}",
+          - "difficulty": "${difficulty}"
+        `;
+      } else {
+        // Format Experiences & Projects for Profile mode
+        const experiences =
+          (student?.experiences || [])
+            .map((e) => `${e.role} at ${e.companyName} (${e.type})`)
+            .join(", ") || "No professional experience listed";
+
+        const projects =
+          (student?.projects || [])
+            .map((p) => `${p.title} - ${p.description}`)
+            .join(", ") || "No specific projects listed";
+
+        prompt = `
+          Act as a ${persona} for the role of ${targetRole} within the ${domain} domain.
+          The candidate has weak skills needing improvement: ${weakSkills || "General Domain Skills"}.
+          
+          Candidate Context:
+          - Experience: ${experiences}
+          - Projects: ${projects}
+          
+          Generate exactly ${questionCount} interview questions for this candidate. 
+          - Include a mix of technical and behavioral questions.
+          - AT LEAST ONE question MUST be specifically formulated around ONE of their past "Projects" or "Experience" listed above.
+          
+          Return ONLY a JSON array of objects, with no markdown formatting and no extra text.
+          Each object must have the following properties:
+          - "questionText": The text of the question.
+          - "category": Either "Technical" or "Behavioral".
+          - "difficulty": "${difficulty}"
+        `;
+      }
 
       const model = this.gemini.getGenerativeModel({
         model: "gemini-2.5-flash",
@@ -81,10 +124,13 @@ class InterviewService {
       });
       const text = result.response.text();
 
-      // Attempt to parse JSON
+      // Parse JSON
       let questionsData = [];
       try {
-        const cleanedText = text.replace(/```[a-z]*\n?/gi, "").replace(/```\n?/g, "").trim();
+        const cleanedText = text
+          .replace(/```[a-z]*\n?/gi, "")
+          .replace(/```\n?/g, "")
+          .trim();
         questionsData = JSON.parse(cleanedText);
       } catch (err) {
         console.error("Failed to parse Gemini response as JSON", text);
@@ -95,6 +141,12 @@ class InterviewService {
       const mockInterview = new MockInterview({
         student: studentId,
         targetRole: targetRole,
+        mode: mode,
+        domain: domain,
+        targetTopic: targetTopic,
+        roundType: roundType,
+        companyStyle: companyStyle,
+        difficulty: difficulty,
         status: "In Progress",
         questions: questionsData,
       });
@@ -107,7 +159,7 @@ class InterviewService {
     }
   }
 
-  async evaluateInterviewAnswers(interviewId, studentAnswers) {
+  async evaluateInterviewAnswers(interviewId, studentAnswers, visionMetrics = {}) {
     try {
       if (!process.env.GEMINI_API_KEY) {
         throw new Error("Gemini API key is missing.");
@@ -125,31 +177,32 @@ class InterviewService {
         model: "gemini-2.5-flash",
       });
 
-      // Iterate through answers and get evaluations
       for (const answerData of studentAnswers) {
-        const { questionId, studentAnswer } = answerData;
+        const { questionId, studentAnswer, codeSubmitted } = answerData;
         const questionObj = interview.questions.id(questionId);
 
         if (!questionObj) continue;
 
         const prompt = `
-          Act as a senior technical interviewer.
+          Act as a ${interview.domain || "Senior"} Technical Interviewer.
+          Domain: "${interview.domain || "General Tech"}"
           Question asked: "${questionObj.questionText}"
-          Candidate's Answer: "${studentAnswer}"
+          Candidate Spoken/Text Answer: "${studentAnswer || "No verbal answer provided"}"
+          ${codeSubmitted ? `Candidate Code Submitted:\n\`\`\`\n${codeSubmitted}\n\`\`\`` : ""}
 
           Evaluate the candidate's answer. Give a score out of 10.
           
           Provide constructive feedback and an example of an ideal answer. 
-          CRITICAL INSTRUCTION: The "feedback" and "idealAnswer" values MUST be clean, professional, plain text paragraphs. DO NOT use any markdown formatting, bullet points, code blocks (\`\`\`), bolding, or JSON structure inside these text strings. They should look like normal human-written paragraphs.
+          CRITICAL INSTRUCTION: The "feedback" and "idealAnswer" values MUST be clean, professional, plain text paragraphs with NO markdown backticks.
           
-          If the score is 6 or less, identify the ONE specific foundational skill or technology they need to study (e.g., "React Hooks", "JavaScript Closures", "SQL Joins"). If the score is 7 or higher, return null for recommendedSkill.
+          If the score is 6 or less, identify the ONE specific foundational skill (e.g., "React Hooks", "Docker Containers", "SQL Indexing"). If score >= 7, return null for recommendedSkill.
 
-          Return ONLY a JSON object with this exact structure:
+          Return ONLY a JSON object:
           {
             "score": <number between 0 and 10>,
-            "feedback": "<clean plain text paragraph of constructive feedback here>",
-            "idealAnswer": "<clean plain text paragraph of a great example answer here>",
-            "recommendedSkill": "<specific skill name or null>"
+            "feedback": "<plain text paragraph>",
+            "idealAnswer": "<plain text paragraph>",
+            "recommendedSkill": "<skill string or null>"
           }
         `;
 
@@ -167,23 +220,24 @@ class InterviewService {
         let recommendedSkill = null;
 
         try {
-          const cleanedText = text.replace(/```[a-z]*\n?/gi, "").replace(/```\n?/g, "").trim();
+          const cleanedText = text
+            .replace(/```[a-z]*\n?/gi, "")
+            .replace(/```\n?/g, "")
+            .trim();
           const evalResult = JSON.parse(cleanedText);
           score = evalResult.score || 0;
           aiFeedback = evalResult.feedback || aiFeedback;
           idealAnswer = evalResult.idealAnswer || idealAnswer;
           recommendedSkill = evalResult.recommendedSkill || null;
         } catch (err) {
-          console.error(
-            "Failed to parse Gemini evaluation response as JSON",
-            text,
-          );
+          console.error("Failed to parse evaluation JSON", text);
         }
 
         totalScore += score;
         evaluations.push({
           questionId: questionId,
           studentAnswer: studentAnswer,
+          codeSubmitted: codeSubmitted || "",
           aiFeedback: aiFeedback,
           score: score,
           idealAnswer: idealAnswer,
@@ -191,53 +245,66 @@ class InterviewService {
         });
       }
 
-      const overallScore = Math.round(
+      const technicalCode = Math.round(
         (totalScore / (interview.questions.length * 10)) * 100,
       );
+      const postureAlignment = Math.min(
+        100,
+        Math.max(40, visionMetrics.postureScore || 92),
+      );
+      const eyeContactGaze = Math.min(
+        100,
+        Math.max(40, visionMetrics.eyeContactScore || 88),
+      );
+      const voiceCommunication = Math.round(
+        (technicalCode + postureAlignment) / 2,
+      );
 
-      // Extract recommended skills to create learning paths
-      const recommendedSkills = evaluations
-        .map((e) => e.recommendedSkill)
-        .filter((skill) => skill !== null && skill !== "");
+      // Weighted Multi-Axis Score
+      const overallScore = Math.round(
+        technicalCode * 0.45 +
+          voiceCommunication * 0.25 +
+          postureAlignment * 0.15 +
+          eyeContactGaze * 0.15,
+      );
 
-      // Update the interview
+      // Save Scores
       interview.responses = evaluations;
+      interview.scores = {
+        technicalCode,
+        voiceCommunication,
+        postureAlignment,
+        eyeContactGaze,
+      };
       interview.overallScore = overallScore;
       interview.status = "Completed";
       await interview.save();
 
-      // "Magic" Integration: Auto-generate Learning Paths for failed interview questions
+      // Auto-generate Learning Paths for failed interview skills
+      const recommendedSkills = evaluations
+        .map((e) => e.recommendedSkill)
+        .filter((skill) => skill !== null && skill !== "");
+
       if (recommendedSkills.length > 0) {
-        // Find latest analysis to attach these paths to, or create dummy ones if none exist
         const latestAnalysis = await SkillGapAnalysis.findOne({
           student: interview.student,
           isActive: true,
         }).sort({ createdAt: -1 });
 
         const gapAnalysisId = latestAnalysis ? latestAnalysis._id : null;
-
-        // Format them as expected by the SkillGapAnalysisService
         const missingSkillObjects = recommendedSkills.map((skill) => ({
           skill: skill,
-          estimated_learning_time: "2 weeks", // default short burst learning for interview failures
+          estimated_learning_time: "2 weeks",
         }));
 
         try {
-          console.log(
-            `Auto-generating learning paths for failed interview skills:`,
-            recommendedSkills,
-          );
           await SkillGapAnalysisService.createLearningPaths(
             interview.student,
             gapAnalysisId,
             missingSkillObjects,
           );
         } catch (pathError) {
-          console.error(
-            "Failed to auto-generate learning paths from interview:",
-            pathError,
-          );
-          // We don't fail the whole evaluation just because the path generation failed
+          console.error("Failed to auto-generate learning paths:", pathError);
         }
       }
 

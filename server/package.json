@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
+    "dev": "nodemon --quiet index.js",
     "seed": "node seed/seedData.js"
   },
   "dependencies": {

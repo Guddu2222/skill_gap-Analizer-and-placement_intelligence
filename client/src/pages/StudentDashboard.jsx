@@ -56,6 +56,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
   // Interview view state
   const [interviewView, setInterviewView] = useState("dashboard");
   const [activeInterviewId, setActiveInterviewId] = useState(null);
+  const [interviewLaunchOptions, setInterviewLaunchOptions] = useState(null);
 
   // Sync sidebar collapsed state to localStorage and listen for Sidebar's internal toggle
   useEffect(() => {
@@ -486,7 +487,10 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
                   {interviewView === "dashboard" && (
                     <InterviewDashboard
                       student={student}
-                      onStartInterview={() => setInterviewView("session")}
+                      onStartInterview={(options) => {
+                        setInterviewLaunchOptions(options);
+                        setInterviewView("session");
+                      }}
                       onViewFeedback={(id) => {
                         setActiveInterviewId(id);
                         setInterviewView("feedback");
@@ -496,6 +500,7 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
                   {interviewView === "session" && (
                     <InterviewSession
                       student={student}
+                      launchOptions={interviewLaunchOptions}
                       onComplete={(id) => {
                         setActiveInterviewId(id);
                         setInterviewView("feedback");
