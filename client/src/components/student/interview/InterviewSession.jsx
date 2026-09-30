@@ -201,6 +201,7 @@ const InterviewSession = ({ student, launchOptions, onComplete }) => {
       const res = await evaluateInterviewAnswers(interviewId, finalAnswers, {
         postureScore: visionMetrics.postureScore,
         eyeContactScore: visionMetrics.eyeContactScore,
+        multiplePersonsDetected: visionMetrics.multiplePersonsDetected,
       });
 
       if (res.success) {
@@ -481,11 +482,14 @@ const InterviewSession = ({ student, launchOptions, onComplete }) => {
 
           {/* Vision HUD Component */}
           <InterviewHUD
+            hasCandidate={visionMetrics.hasCandidate}
+            multiplePersonsDetected={visionMetrics.multiplePersonsDetected}
             postureScore={visionMetrics.postureScore}
             eyeContactScore={visionMetrics.eyeContactScore}
             isSlouching={visionMetrics.isSlouching}
             gazeDeviated={visionMetrics.gazeDeviated}
             warningMsg={visionMetrics.warningMsg}
+            isReady={visionMetrics.isReady}
           />
         </div>
       </div>
