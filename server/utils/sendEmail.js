@@ -3,6 +3,7 @@ const {
   Verification_Email_Template,
   Welcome_Email_Template,
   Password_Reset_Email_Template,
+  Drive_Status_Email_Template,
 } = require("./EmailTemplate.js");
 
 const COMPANY_NAME = process.env.COMPANY_NAME || "SkillBridge";
@@ -58,8 +59,30 @@ const sendPasswordResetEmail = async (email, resetLink) => {
   }
 };
 
+const sendDriveStatusEmail = async (email, studentName, driveTitle, companyName, newStatus) => {
+  try {
+    const html = Drive_Status_Email_Template
+      .replace("{studentName}", studentName || "Student")
+      .replace("{driveTitle}", driveTitle || "Campus Placement Drive")
+      .replace("{companyName}", companyName || "Partner Recruiter")
+      .replace("{newStatus}", newStatus);
+
+    const response = await transporter.sendMail({
+      from: `"${COMPANY_NAME}" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: `Drive Status Update: ${newStatus} - ${companyName || COMPANY_NAME}`,
+      text: `Hello ${studentName}, your status for ${driveTitle} has been updated to: ${newStatus}.`,
+      html,
+    });
+    console.log("✅ Drive status notification email sent successfully to:", email);
+  } catch (error) {
+    console.error("❌ Drive status notification email error:", error.message);
+  }
+};
+
 module.exports = {
   sendVerificationEmail,
   sendWelcomeEmail,
   sendPasswordResetEmail,
+  sendDriveStatusEmail,
 };
