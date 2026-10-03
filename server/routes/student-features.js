@@ -4,6 +4,7 @@ const Student = require("../models/Student");
 const College = require("../models/College");
 const Job = require("../models/Job");
 const Alumni = require("../models/Alumni");
+const MentorshipBooking = require("../models/MentorshipBooking");
 const InterviewExperience = require("../models/InterviewExperience");
 const CampusDrive = require("../models/CampusDrive");
 const DriveApplication = require("../models/DriveApplication");
@@ -203,31 +204,82 @@ router.get("/skill-gap", auth, async (req, res) => {
   }
 });
 
-// Get Recommended Alumni
+// Get Recommended & Filterable Alumni Mentors
 router.get("/alumni", auth, async (req, res) => {
   try {
-    const student = await Student.findOne({ user: req.user.userId });
-    // Find alumni in dream companies or same department
-    const query = {};
-    if (
-      student &&
-      student.dreamCompanies &&
-      student.dreamCompanies.length > 0
-    ) {
-      query.company = { $in: student.dreamCompanies };
+    const { company, skill, search } = req.query;
+    const query = { isMentor: true };
+
+    if (company && company !== "All") {
+      query.company = new RegExp(company, "i");
+    }
+    if (skill) {
+      query.skills = { $in: [new RegExp(skill, "i")] };
+    }
+    if (search) {
+      query.$or = [
+        { name: new RegExp(search, "i") },
+        { company: new RegExp(search, "i") },
+        { role: new RegExp(search, "i") },
+      ];
     }
 
-    const alumni = await Alumni.find(query).limit(10);
-    res.json(alumni);
+    const alumni = await Alumni.find(query).sort({ batch: -1 }).lean();
+    res.json({ success: true, alumni });
   } catch (err) {
-    console.error("Student features error:", err.message);
-    res
-      .status(500)
-      .json({
-        error: "Server Error",
-        details:
-          process.env.NODE_ENV === "development" ? err.message : undefined,
-      });
+    console.error("Student features alumni error:", err.message);
+    res.status(500).json({ error: "Server Error", details: err.message });
+  }
+});
+
+// Request Mentorship Session with Alumni
+router.post("/alumni/:id/request", auth, async (req, res) => {
+  try {
+    const alumniId = req.params.id;
+    const { requestType, topic, message, preferredDate } = req.body;
+
+    const student = await Student.findOne({ user: req.user.userId });
+    if (!student) return res.status(404).json({ error: "Student profile not found" });
+
+    const alumni = await Alumni.findById(alumniId);
+    if (!alumni) return res.status(404).json({ error: "Alumni mentor not found" });
+
+    const booking = new MentorshipBooking({
+      student: student._id,
+      alumni: alumniId,
+      requestType: requestType || "Mock Interview",
+      topic,
+      message,
+      preferredDate: preferredDate || null,
+      status: "pending",
+    });
+
+    await booking.save();
+    res.status(201).json({
+      success: true,
+      booking,
+      msg: `Mentorship request sent successfully to ${alumni.name}!`,
+    });
+  } catch (err) {
+    console.error("Mentorship request error:", err);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+// Get Student's Mentorship Requests History
+router.get("/mentorship/my-requests", auth, async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.user.userId });
+    if (!student) return res.status(404).json({ error: "Student profile not found" });
+
+    const requests = await MentorshipBooking.find({ student: student._id })
+      .populate("alumni", "name company role email linkedInProfile department batch")
+      .sort({ createdAt: -1 });
+
+    res.json({ success: true, requests });
+  } catch (err) {
+    console.error("Fetch mentorship requests error:", err);
+    res.status(500).json({ error: "Server Error" });
   }
 });
 
