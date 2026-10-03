@@ -133,17 +133,39 @@ const InterviewFeedbackCard = ({ interviewId, onBack }) => {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 px-6 py-4 rounded-2xl border border-indigo-100 flex items-center gap-4">
-            <div
-              className={`text-4xl font-black ${interview.overallScore >= 80 ? "text-green-600" : interview.overallScore >= 60 ? "text-yellow-600" : "text-red-500"}`}
-            >
-              {interview.overallScore}%
+          <div className="flex flex-col gap-3">
+            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 px-6 py-4 rounded-2xl border border-indigo-100 flex items-center gap-4">
+              <div
+                className={`text-4xl font-black ${interview.overallScore >= 80 ? "text-green-600" : interview.overallScore >= 60 ? "text-yellow-600" : "text-red-500"}`}
+              >
+                {interview.overallScore}%
+              </div>
+              <div className="text-sm font-medium text-slate-600">
+                Overall<br />Placement Score
+              </div>
             </div>
-            <div className="text-sm font-medium text-slate-600">
-              Overall
-              <br />
-              Score
-            </div>
+
+            {/* 4-Axis Scores Grid */}
+            {interview.scores && (
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="p-2 bg-slate-50 border border-slate-200 rounded-lg">
+                  <span className="text-slate-500 block">Technical Code</span>
+                  <span className="font-bold text-slate-800">{interview.scores.technicalCode || 0}%</span>
+                </div>
+                <div className="p-2 bg-slate-50 border border-slate-200 rounded-lg">
+                  <span className="text-slate-500 block">Voice Speech</span>
+                  <span className="font-bold text-slate-800">{interview.scores.voiceCommunication || 0}%</span>
+                </div>
+                <div className="p-2 bg-slate-50 border border-slate-200 rounded-lg">
+                  <span className="text-slate-500 block">Posture Alignment</span>
+                  <span className="font-bold text-slate-800">{interview.scores.postureAlignment || 100}%</span>
+                </div>
+                <div className="p-2 bg-slate-50 border border-slate-200 rounded-lg">
+                  <span className="text-slate-500 block">Eye Gaze Contact</span>
+                  <span className="font-bold text-slate-800">{interview.scores.eyeContactGaze || 100}%</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

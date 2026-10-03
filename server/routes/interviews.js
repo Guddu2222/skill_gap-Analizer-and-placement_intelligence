@@ -5,7 +5,7 @@ const interviewService = require("../services/interview.service");
 const MockInterview = require("../models/MockInterview");
 const Student = require("../models/Student");
 
-// Generate Mock Interview
+// Generate Mock Interview (Supports Profile Mode & Topic Drill Mode)
 router.post("/generate", auth, async (req, res) => {
   try {
     const student = await Student.findOne({ user: req.user.userId });
@@ -13,12 +13,20 @@ router.post("/generate", auth, async (req, res) => {
       return res.status(404).json({ error: "Student profile not found" });
     }
 
-    const targetRole =
-      req.body.targetRole || student.targetRole || "Software Engineer";
+    const payload = {
+      targetRole: req.body.targetRole || student.targetRole || "Software Engineer",
+      mode: req.body.mode || "PROFILE",
+      domain: req.body.domain || "Web Development",
+      targetTopic: req.body.targetTopic || "",
+      roundType: req.body.roundType || "Technical",
+      companyStyle: req.body.companyStyle || "General",
+      difficulty: req.body.difficulty || "Medium",
+      questionCount: req.body.questionCount || 5,
+    };
 
     const interview = await interviewService.generateMockInterview(
       student._id,
-      targetRole,
+      payload,
     );
 
     res.json({
@@ -35,11 +43,11 @@ router.post("/generate", auth, async (req, res) => {
   }
 });
 
-// Evaluate Interview Answers
+// Evaluate Interview Answers & Multi-Axis Vision Metrics
 router.post("/:id/evaluate", auth, async (req, res) => {
   try {
     const { id } = req.params;
-    const { answers } = req.body; // Array of { questionId, studentAnswer }
+    const { answers, visionMetrics } = req.body;
 
     if (!answers || !Array.isArray(answers)) {
       return res.status(400).json({ error: "Answers must be an array" });
@@ -48,6 +56,7 @@ router.post("/:id/evaluate", auth, async (req, res) => {
     const evaluatedInterview = await interviewService.evaluateInterviewAnswers(
       id,
       answers,
+      visionMetrics || {},
     );
 
     res.json({
@@ -61,6 +70,19 @@ router.post("/:id/evaluate", auth, async (req, res) => {
       error: "Failed to evaluate interview answers",
       message: error.message,
     });
+  }
+});
+
+// Code Sandbox Compilation Execution Route
+router.post("/compile", auth, async (req, res) => {
+  try {
+    const compilerService = require("../services/compiler.service");
+    const { language, code, input } = req.body;
+
+    const result = await compilerService.executeCode({ language, code, input });
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, output: `Compilation server error: ${error.message}` });
   }
 });
 

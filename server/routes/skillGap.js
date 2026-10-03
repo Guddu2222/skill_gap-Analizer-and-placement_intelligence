@@ -424,6 +424,52 @@ router.post("/learning-paths/:id/reschedule", auth, async (req, res) => {
   }
 });
 
+// Refresh Milestone Resources (backfill AI resources for old learning paths)
+router.post("/learning-paths/:id/refresh-resources", auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const student = await Student.findOne({ user: req.user.userId });
+
+    if (!student) {
+      return res.status(404).json({ error: "Student profile not found" });
+    }
+
+    const learningPath = await SkillLearningPath.findOne({
+      _id: id,
+      student: student._id,
+    });
+
+    if (!learningPath) {
+      return res.status(404).json({ error: "Learning path not found" });
+    }
+
+    // Generate fresh AI milestones to get curated per-week resources
+    const freshMilestones = await skillGapService.generateMilestonesWithAI(
+      learningPath.skillName,
+      learningPath.milestones.length || 4
+    );
+
+    // Merge: keep existing progress/completion state, only replace the resources
+    learningPath.milestones = learningPath.milestones.map((m, i) => {
+      const fresh = freshMilestones[i] || {};
+      return {
+        ...m.toObject(),
+        resources: (fresh.resources && fresh.resources.length > 0)
+          ? fresh.resources
+          : m.resources || [],
+      };
+    });
+
+    learningPath.markModified("milestones");
+    await learningPath.save();
+
+    res.json({ success: true, learningPath });
+  } catch (error) {
+    console.error("Refresh resources error:", error);
+    res.status(500).json({ error: "Failed to refresh resources" });
+  }
+});
+
 // Generate Quiz for Milestone
 router.post("/learning-paths/:id/milestones/:index/quiz/generate", auth, async (req, res) => {
   try {
@@ -446,11 +492,12 @@ router.post("/learning-paths/:id/milestones/:index/quiz/generate", auth, async (
       return res.status(404).json({ error: "Milestone not found" });
     }
 
-    // Generate questions using AI
+    // Generate questions using AI — pass description too for full topic context
     const questions = await skillGapService.generateMilestoneQuiz(
       learningPath.skillName,
       milestone.title,
-      student.targetRole || "Software Engineer"
+      student.targetRole || "Software Engineer",
+      milestone.description || ""
     );
 
     // Save to DB

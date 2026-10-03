@@ -90,6 +90,61 @@ const Select = ({ options, className = "", ...props }) => (
   </select>
 );
 
+// ─── YearSelect Component ───────────────────────────────────────────────────
+const YearSelect = ({ value, onChange, minYear = 2015, maxYear = 2035 }) => {
+  const currentYear = new Date().getFullYear();
+  const numValue = Number(value) || currentYear;
+
+  const years = [];
+  for (let y = minYear; y <= maxYear; y++) {
+    years.push(y);
+  }
+
+  const handleDec = (e) => {
+    e.preventDefault();
+    if (numValue > minYear) onChange(numValue - 1);
+  };
+
+  const handleInc = (e) => {
+    e.preventDefault();
+    if (numValue < maxYear) onChange(numValue + 1);
+  };
+
+  return (
+    <div className="flex items-center gap-1.5 w-full px-2 py-1.5 rounded-xl border border-slate-200 bg-white text-slate-800 focus-within:ring-2 focus-within:ring-indigo-500 transition-all">
+      <button
+        type="button"
+        onClick={handleDec}
+        disabled={numValue <= minYear}
+        className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center text-sm"
+        title="Decrease 1 year"
+      >
+        -
+      </button>
+      <select
+        value={numValue}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="flex-1 bg-transparent text-slate-800 font-semibold text-center focus:outline-none cursor-pointer text-sm py-1"
+      >
+        {years.map((y) => (
+          <option key={y} value={y}>
+            {y}
+          </option>
+        ))}
+      </select>
+      <button
+        type="button"
+        onClick={handleInc}
+        disabled={numValue >= maxYear}
+        className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center text-sm"
+        title="Increase 1 year"
+      >
+        +
+      </button>
+    </div>
+  );
+};
+
 // ─── main component ──────────────────────────────────────────────────────────
 const ProfileEditModal = ({ student, open, onClose, onProfileUpdate }) => {
   const [activeTab, setActiveTab] = useState("basic");
@@ -350,19 +405,19 @@ const ProfileEditModal = ({ student, open, onClose, onProfileUpdate }) => {
         />
       </Field>
       <Field label="Graduation Year" error={errors.graduationYear}>
-        <Input
+        <YearSelect
           value={form.graduationYear}
-          onChange={set("graduationYear")}
-          type="number"
-          placeholder="2026"
+          onChange={(val) => setForm((prev) => ({ ...prev, graduationYear: val }))}
+          minYear={2015}
+          maxYear={2035}
         />
       </Field>
       <Field label="Admission Year">
-        <Input
+        <YearSelect
           value={form.admissionYear}
-          onChange={set("admissionYear")}
-          type="number"
-          placeholder="2022"
+          onChange={(val) => setForm((prev) => ({ ...prev, admissionYear: val }))}
+          minYear={2015}
+          maxYear={2035}
         />
       </Field>
       <Field label="Current Semester">

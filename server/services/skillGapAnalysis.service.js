@@ -342,7 +342,7 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
 
     // 3. Final fallback: mock response
     console.warn("⚠️  [AI] No AI provider available. Returning mock analysis.");
-    return this.getMockGeminiResponse("No AI provider configured or all providers failed.", student);
+    return this.getMockGeminiResponse("No AI provider configured or all providers failed.", null);
   }
 
   // ── Fallback AI: Gemini ───────────────────────────────────────────────────
@@ -399,7 +399,7 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
         );
         return this.getMockGeminiResponse(
           "Invalid Gemini API key. Please go to https://aistudio.google.com/app/apikey, create a new key (it starts with AIza...), and paste it as GEMINI_API_KEY in server/.env",
-          student
+          null
         );
       }
 
@@ -411,13 +411,13 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
         );
         return this.getMockGeminiResponse(
           "Gemini API quota exhausted. This is a sample analysis — real AI results will resume once the API key quota resets or a new key is configured.",
-          student
+          null
         );
       }
 
       // Other unexpected errors — still fall back to mock, never crash
       console.error("❌ [Gemini] Unexpected API error. Falling back to mock:", error.message, "\n   Full error:", error);
-      return this.getMockGeminiResponse(error.message || "Unknown API Error", student);
+      return this.getMockGeminiResponse(error.message || "Unknown API Error", null);
     }
   }
 
@@ -699,8 +699,32 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
       });
 
       if (existingPath) {
-        // Update the gapAnalysis reference and save
+        // Update the gapAnalysis reference
         existingPath.gapAnalysis = gapAnalysisId;
+
+        // Backfill milestone resources if this is an old path with empty resources
+        const needsResourceBackfill = existingPath.milestones &&
+          existingPath.milestones.length > 0 &&
+          existingPath.milestones.every(m => !m.resources || m.resources.length === 0);
+
+        if (needsResourceBackfill) {
+          console.log(`🔄 Backfilling resources for existing path: ${existingPath.skillName}`);
+          try {
+            const freshMilestones = await this.generateMilestonesWithAI(
+              existingPath.skillName,
+              existingPath.milestones.length
+            );
+            // Merge: keep existing completed/dueDate state, just inject new resources
+            existingPath.milestones = existingPath.milestones.map((m, i) => ({
+              ...m.toObject(),
+              resources: (freshMilestones[i] && freshMilestones[i].resources) || m.resources || []
+            }));
+            existingPath.markModified('milestones');
+          } catch (err) {
+            console.warn('⚠️ Resource backfill failed, skipping:', err.message);
+          }
+        }
+
         await existingPath.save();
         return existingPath;
       }
@@ -875,84 +899,105 @@ Ensure the output is ONLY valid JSON.
   }
 
   // ── Milestone Quiz Generation ───────────────────────────────────────────────
-  async generateMilestoneQuiz(skillName, milestoneTitle, targetRole) {
+  async generateMilestoneQuiz(skillName, milestoneTitle, targetRole, milestoneDescription = '') {
     const randomSeed = Math.floor(Math.random() * 1000000);
+
+    // Extra context from the milestone description when available
+    const descriptionContext = milestoneDescription
+      ? `\nThis week's learning objectives: "${milestoneDescription}"`
+      : '';
+
     const prompt = `
-You are an expert technical interviewer hiring for a ${targetRole || "Software Engineering"} role.
-Your task is to generate a short, highly-relevant multiple-choice quiz (MCQ) for a candidate who is studying "${skillName}".
-They are currently completing a learning milestone focused on: "${milestoneTitle}".
+You are an expert technical interviewer specialising EXCLUSIVELY in "${skillName}".
 
-Create 10 real-world interview-style multiple-choice questions that test their practical understanding of this specific milestone topic.
-CRITICAL INSTRUCTION: Ensure maximum variety. Do not repeat standard generic questions. Generate unique scenarios every time.
-Randomization Seed: ${randomSeed}
+Context:
+- Skill being tested: "${skillName}"
+- Week milestone: "${milestoneTitle}"${descriptionContext}
+- Target role of the student: ${targetRole || 'Software Engineer'}
 
-Output Format (Strict JSON):
+Your task: Generate exactly 10 multiple-choice questions (MCQ) that test the student's knowledge of "${skillName}" as described by the milestone above.
+
+STRICT RULES — follow every rule (violations are unacceptable):
+1. EVERY question MUST be about "${skillName}" ONLY. No exceptions.
+2. If "${skillName}" contains "Data Structures" or "Algorithms", questions MUST cover DSA topics: arrays, linked lists, stacks, queues, trees, graphs, sorting (quicksort / mergesort / heapsort), searching (binary search / BFS / DFS), Big-O time & space complexity, recursion, dynamic programming, hashing, heaps. NOT JavaScript.
+3. Do NOT generate questions about JavaScript syntax, Python syntax, or any programming-language-specific feature UNLESS the skill itself is explicitly that language.
+4. Do NOT ask about web development, React, Node.js, CSS, HTML, databases, or any domain unrelated to "${skillName}".
+5. Questions must test genuine conceptual understanding of "${skillName}".
+6. Mix difficulty: include beginner, intermediate, and advanced questions.
+7. Randomization Seed: ${randomSeed} — use this to produce unique questions every call.
+
+Output ONLY strict JSON (no markdown, no code fences):
 {
   "questions": [
     {
-      "question": "The question text here?",
-      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "question": "Question text?",
+      "options": ["A", "B", "C", "D"],
       "correctAnswerIndex": 1,
-      "explanation": "Brief explanation of why this answer is correct."
+      "explanation": "Why this answer is correct, with ${skillName} context."
     }
   ]
 }
-Ensure the output is ONLY valid JSON.
 `;
 
     // Try Groq First
     if (this.groq) {
       try {
         const response = await this.groq.chat.completions.create({
-          messages: [{ role: "user", content: prompt }],
-          model: "llama-3.3-70b-versatile",
-          temperature: 0.8,
-          max_tokens: 1500,
-          response_format: { type: "json_object" },
+          messages: [
+            {
+              role: 'system',
+              content: `You are a quiz generator that ONLY generates questions about "${skillName}". Never ask about JavaScript, Python, or topics unrelated to "${skillName}". Output strict JSON only.`
+            },
+            { role: 'user', content: prompt }
+          ],
+          model: 'llama-3.3-70b-versatile',
+          temperature: 0.7,
+          max_tokens: 2000,
+          response_format: { type: 'json_object' },
         });
 
         const jsonStr = response.choices[0]?.message?.content;
         const parsed = JSON.parse(jsonStr);
         if (parsed.questions && Array.isArray(parsed.questions)) {
-            return parsed.questions;
+          return parsed.questions;
         }
       } catch (err) {
-        console.warn("⚠️ [Groq Quiz] Failed:", err.message);
+        console.warn('⚠️ [Groq Quiz] Failed:', err.message);
       }
     }
 
     // Try Gemini Fallback
     if (this.genAI) {
       try {
-        const model = this.genAI.getGenerativeModel({ 
-          model: "gemini-2.0-flash",
-          generationConfig: { temperature: 0.8 }
+        const model = this.genAI.getGenerativeModel({
+          model: 'gemini-2.0-flash',
+          generationConfig: { temperature: 0.7 }
         });
         const result = await model.generateContent(prompt);
         let text = result.response.text();
-        // Remove markdown formatting if present
-        if (text.startsWith("\`\`\`json")) text = text.replace(/^\`\`\`json/, "");
-        if (text.endsWith("\`\`\`")) text = text.replace(/\`\`\`$/, "");
-        
+        if (text.startsWith('```json')) text = text.replace(/^```json/, '');
+        if (text.endsWith('```')) text = text.replace(/```$/, '');
+
         const parsed = JSON.parse(text);
         if (parsed.questions && Array.isArray(parsed.questions)) {
-            return parsed.questions;
+          return parsed.questions;
         }
       } catch (err) {
-        console.warn("⚠️ [Gemini Quiz] Failed:", err.message);
+        console.warn('⚠️ [Gemini Quiz] Failed:', err.message);
       }
     }
 
     // Fallback Mock
     return [
       {
-        question: `What is a key concept related to ${milestoneTitle} in ${skillName}?`,
-        options: ["Concept A", "Concept B", "Concept C", "Concept D"],
+        question: `What is a key concept related to "${milestoneTitle}" in ${skillName}?`,
+        options: ['Concept A', 'Concept B', 'Concept C', 'Concept D'],
         correctAnswerIndex: 0,
-        explanation: "This is a fallback generated question due to AI service limits."
+        explanation: 'This is a fallback generated question due to AI service limits.'
       }
     ];
   }
+
 
   getMockGeminiResponse(errorMessage = null, student = null) {
     const summaryMsg = errorMessage
