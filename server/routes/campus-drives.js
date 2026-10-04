@@ -99,6 +99,8 @@ router.post("/:id/apply", auth, roleCheck(["college_admin"]), async (req, res) =
   }
 });
 
+const { sendDriveStatusEmail } = require("../utils/sendEmail");
+
 // PUT update application status (drag and drop)
 router.put("/:id/applications/:appId/status", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
@@ -110,6 +112,19 @@ router.put("/:id/applications/:appId/status", auth, roleCheck(["college_admin"])
     ).populate("student", "firstName lastName email rollNumber department cgpa skills");
 
     if (!app) return res.status(404).json({ error: "Application not found" });
+
+    // Send status update email notification asynchronously
+    const drive = await CampusDrive.findById(req.params.id);
+    if (app.student && app.student.email) {
+      const studentName = `${app.student.firstName || ""} ${app.student.lastName || ""}`.trim();
+      sendDriveStatusEmail(
+        app.student.email,
+        studentName,
+        drive?.title || "Campus Placement Drive",
+        drive?.companyName || "Recruiting Partner",
+        status
+      );
+    }
 
     res.json(app);
   } catch (error) {

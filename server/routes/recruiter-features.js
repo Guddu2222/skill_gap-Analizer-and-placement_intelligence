@@ -685,6 +685,8 @@ router.get("/drives/:id/applications", auth, roleCheck(["recruiter"]), async (re
   }
 });
 
+const { sendDriveStatusEmail } = require("../utils/sendEmail");
+
 router.put("/drives/:id/applications/:appId/status", auth, roleCheck(["recruiter"]), async (req, res) => {
   try {
     const { status } = req.body;
@@ -701,6 +703,18 @@ router.put("/drives/:id/applications/:appId/status", auth, roleCheck(["recruiter
     
     if (!application) return res.status(404).json({ error: "Application not found" });
     
+    // Send status update email notification asynchronously
+    if (application.student && application.student.email) {
+      const studentName = `${application.student.firstName || ""} ${application.student.lastName || ""}`.trim();
+      sendDriveStatusEmail(
+        application.student.email,
+        studentName,
+        drive?.title || "Campus Placement Drive",
+        drive?.companyName || "Recruiting Partner",
+        status
+      );
+    }
+
     res.json(application);
   } catch (error) {
     console.error("Error updating application status:", error);

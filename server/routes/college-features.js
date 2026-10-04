@@ -4,8 +4,8 @@ const Student = require("../models/Student");
 const College = require("../models/College");
 const Job = require("../models/Job");
 const User = require("../models/User");
-const DriveRequest = require("../models/DriveRequest");
 const CampusDrive = require("../models/CampusDrive");
+const Alumni = require("../models/Alumni");
 const auth = require("../middleware/auth");
 const { roleCheck } = require("../middleware/auth");
 
@@ -661,6 +661,31 @@ router.put("/drive-requests/:id/accept", auth, roleCheck(["college_admin"]), asy
   } catch (error) {
     console.error("Error accepting drive request:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// POST /api/college-features/alumni — Add Alumni Mentor
+router.post("/alumni", auth, roleCheck(["college_admin"]), async (req, res) => {
+  try {
+    const { name, company, role, batch, department, email, linkedInProfile, skills, isMentor } = req.body;
+
+    const newAlumni = new Alumni({
+      name,
+      company,
+      role,
+      batch: parseInt(batch) || new Date().getFullYear(),
+      department,
+      email,
+      linkedInProfile,
+      skills: Array.isArray(skills) ? skills : (skills || "").split(",").map((s) => s.trim()).filter(Boolean),
+      isMentor: isMentor !== undefined ? isMentor : true,
+    });
+
+    const saved = await newAlumni.save();
+    res.status(201).json({ success: true, alumni: saved, message: "Alumni added successfully" });
+  } catch (err) {
+    console.error("Error adding alumni:", err);
+    res.status(500).json({ error: "Failed to add alumni" });
   }
 });
 

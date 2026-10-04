@@ -291,4 +291,21 @@ export const getInterviewDetails = async (interviewId) => {
   return data;
 };
 
+// ==================== ALUMNI & MENTORSHIP API ====================
+export const getAlumniMentors = async (params = {}) => {
+  const query = new URLSearchParams(params).toString();
+  const { data } = await api.get(`/student-features/alumni?${query}`);
+  return data;
+};
+
+export const requestMentorshipSession = async (alumniId, requestData) => {
+  const { data } = await api.post(`/student-features/alumni/${alumniId}/request`, requestData);
+  return data;
+};
+
+export const getMyMentorshipRequests = async () => {
+  const { data } = await api.get("/student-features/mentorship/my-requests");
+  return data;
+};
+
 export default api;
