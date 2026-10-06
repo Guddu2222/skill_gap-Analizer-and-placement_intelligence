@@ -24,19 +24,19 @@ import {
 import api from "../../services/api";
 
 const COMPANY_PORTALS = {
-  meesho: "https://www.meesho.io/careers",
-  zoho: "https://www.zoho.com/careers",
-  infosys: "https://www.infosys.com/careers",
+  meesho: "https://www.meesho.io/jobs",
+  zoho: "https://www.zoho.com/careers/",
+  infosys: "https://career.infosys.com",
   tcs: "https://www.tcs.com/careers",
   "tcs digital": "https://www.tcs.com/careers",
   flipkart: "https://www.flipkartcareers.com",
-  razorpay: "https://razorpay.com/jobs",
+  razorpay: "https://razorpay.com/jobs/",
   swiggy: "https://careers.swiggy.com",
-  wipro: "https://careers.wipro.com",
+  wipro: "https://careers.wipro.com/careers-home/",
   zomato: "https://www.zomato.com/careers",
   paytm: "https://paytm.com/careers",
   cred: "https://careers.cred.club",
-  phonepe: "https://www.phonepe.com/careers",
+  phonepe: "https://www.phonepe.com/careers/",
   ola: "https://www.olacabs.com/careers",
   "hdfc bank": "https://www.hdfcbank.com/personal/about-us/careers",
   "hdfc bank tech": "https://www.hdfcbank.com/personal/about-us/careers",
@@ -49,20 +49,21 @@ const COMPANY_PORTALS = {
 };
 
 const getCompanyPortalUrl = (job) => {
-  if (
-    job?.applyUrl &&
-    !job.applyUrl.includes("careers.company.com") &&
-    !job.applyUrl.includes("example.com")
-  ) {
-    return job.applyUrl;
-  }
   const key = (job?.company || "").toLowerCase().trim();
   if (COMPANY_PORTALS[key]) return COMPANY_PORTALS[key];
   for (const [name, url] of Object.entries(COMPANY_PORTALS)) {
     if (key.includes(name) || name.includes(key)) return url;
   }
+  if (
+    job?.applyUrl &&
+    !job.applyUrl.includes("careers.company.com") &&
+    !job.applyUrl.includes("example.com") &&
+    !job.applyUrl.endsWith("/careers")
+  ) {
+    return job.applyUrl;
+  }
   return `https://www.google.com/search?q=${encodeURIComponent(
-    (job?.company || "") + " official careers portal jobs"
+    (job?.company || "") + " official careers jobs"
   )}`;
 };
 
