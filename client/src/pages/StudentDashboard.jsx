@@ -72,21 +72,11 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
   }, [activeRoute]);
 
   const handleResumeUploadSuccess = (resumeUrl, newProfileCompletionPercentage) => {
-    setStudent((prev) => ({
-      ...prev,
-      resumeUrl,
-      profileCompletionPercentage:
-        newProfileCompletionPercentage || prev.profileCompletionPercentage,
-    }));
+    fetchDashboardData();
   };
 
   const handleProfilePictureUploadSuccess = (profilePictureUrl, newProfileCompletionPercentage) => {
-    setStudent((prev) => ({
-      ...prev,
-      profilePicture: profilePictureUrl,
-      profileCompletionPercentage:
-        newProfileCompletionPercentage || prev.profileCompletionPercentage,
-    }));
+    fetchDashboardData();
   };
 
   const fetchDashboardData = async () => {
@@ -126,12 +116,12 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
       const domain = currentStudent?.targetDomain || "Software Engineer";
       const role = currentStudent?.targetRole || "Full Stack Developer";
       await triggerSkillGapAnalysis(domain, role);
-      await fetchDashboardData();
     } catch (err) {
       console.error(err);
       setAnalysisError(err.message || "Failed to analyze skills");
     } finally {
       setAnalyzing(false);
+      await fetchDashboardData();
     }
   };
 

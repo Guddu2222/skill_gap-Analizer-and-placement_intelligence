@@ -3,10 +3,19 @@ import { Zap } from "lucide-react";
 
 const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
   const [animatedScore, setAnimatedScore] = useState(0);
+  const skillsScore = analysis?.overallReadinessScore || 0;
+  const profilePerc = student?.profileCompletionPercentage || 0;
+  const resumePerc = (student?.resumeUrl || student?.resume) ? 100 : 0;
+  
+  const targetConfidenceScore = student?.placementReadinessScore !== undefined
+    ? student.placementReadinessScore
+    : Math.round(skillsScore * 0.4 + profilePerc * 0.4 + resumePerc * 0.2);
+
+  const score = targetConfidenceScore;
 
   useEffect(() => {
     if (!analysis) return;
-    const maxScore = analysis.overallReadinessScore || 0;
+    const maxScore = targetConfidenceScore;
     
     setAnimatedScore(0);
     const timer = setTimeout(() => {
@@ -22,7 +31,7 @@ const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
       return () => clearInterval(interval);
     }, 300);
     return () => clearTimeout(timer);
-  }, [analysis?.overallReadinessScore]);
+  }, [targetConfidenceScore, analysis]);
 
   if (!analysis) {
     return (
@@ -47,13 +56,6 @@ const SkillGapOverview = ({ analysis, student, onReanalyze, isAnalyzing }) => {
       </div>
     );
   }
-
-  const score = analysis.overallReadinessScore || 0;
-  const percentage = Math.min(Math.max((score / 100) * 100, 0), 100);
-  const profilePerc = student?.profileCompletionPercentage || 0;
-  const resumePerc = student?.resumeUrl ? 100 : 0;
-  const skillsScore = analysis.overallReadinessScore || 0; 
-  // Let's assume skillsScore is equivalent to overall readiness score, or derived. Let's use overallReadinessScore.
 
   return (
     <div className="animate-fadeIn w-full">

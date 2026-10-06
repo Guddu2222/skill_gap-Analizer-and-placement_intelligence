@@ -8,46 +8,58 @@ const getAIResponse = async (prompt) => {
   const geminiApiKey = process.env.GEMINI_API_KEY;
 
   if (groqApiKey) {
-    try {
-      const groq = new Groq({ apiKey: groqApiKey });
-      const chatCompletion = await groq.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: "You are an expert HR ATS software. Respond strictly in JSON format. Do not use markdown wrappers.",
-          },
-          { role: "user", content: prompt },
-        ],
-        model: "llama-3.3-70b-versatile",
-        temperature: 0.3,
-        max_tokens: 2048,
-        response_format: { type: "json_object" },
-      });
-      return JSON.parse(chatCompletion.choices[0]?.message?.content || "{}");
-    } catch (err) {
-      console.warn("Groq failed in ATS, falling back to Gemini:", err.message);
+    const groqModels = [
+      "qwen/qwen3.8-27b",
+      "openai/gpt-oss-120b",
+      "openai/gpt-oss-20b",
+      "llama-3.3-70b-versatile",
+      "llama-3.1-70b-versatile",
+    ];
+    const groq = new Groq({ apiKey: groqApiKey });
+    for (const modelName of groqModels) {
+      try {
+        const chatCompletion = await groq.chat.completions.create({
+          messages: [
+            {
+              role: "system",
+              content: "You are an expert HR ATS software. Respond strictly in JSON format. Do not use markdown wrappers.",
+            },
+            { role: "user", content: prompt },
+          ],
+          model: modelName,
+          temperature: 0.3,
+          max_tokens: 2048,
+          response_format: { type: "json_object" },
+        });
+        return JSON.parse(chatCompletion.choices[0]?.message?.content || "{}");
+      } catch (err) {
+        console.warn(`Groq ATS model ${modelName} failed:`, err.message);
+      }
     }
   }
 
   if (geminiApiKey) {
-    try {
-      const gemini = new GoogleGenerativeAI(geminiApiKey);
-      const model = gemini.getGenerativeModel({ model: "gemini-2.0-flash" });
-      const result = await model.generateContent({
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.3,
-          responseMimeType: "application/json",
-        },
-      });
-      let text = result.response.text();
-      if (text.startsWith("```json")) text = text.replace(/^```json/, "").replace(/```$/, "").trim();
-      else if (text.startsWith("```")) text = text.replace(/^```/, "").replace(/```$/, "").trim();
-      return JSON.parse(text);
-    } catch (err) {
-      console.error("Gemini ATS Error:", err.message);
-      throw new Error("AI services unavailable");
+    const geminiModels = ["gemini-2.5-flash", "gemini-flash-latest", "gemini-2.5-flash-lite"];
+    const gemini = new GoogleGenerativeAI(geminiApiKey);
+    for (const modelName of geminiModels) {
+      try {
+        const model = gemini.getGenerativeModel({ model: modelName });
+        const result = await model.generateContent({
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.3,
+            responseMimeType: "application/json",
+          },
+        });
+        let text = result.response.text();
+        if (text.startsWith("```json")) text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+        else if (text.startsWith("```")) text = text.replace(/^```/, "").replace(/```$/, "").trim();
+        return JSON.parse(text);
+      } catch (err) {
+        console.warn(`Gemini ATS model ${modelName} failed:`, err.message);
+      }
     }
+    throw new Error("All Gemini ATS models failed");
   }
 
   throw new Error("No AI providers configured in .env");
