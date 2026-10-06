@@ -297,27 +297,43 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
       throw new Error("Groq client not initialised — GROQ_API_KEY missing");
     }
 
-    console.log("🤖 [Groq] Sending analysis request (llama-3.3-70b-versatile)...");
+    const modelsToTry = [
+      "llama-3.3-70b-versatile",
+      "llama-3.1-70b-versatile",
+      "llama-3.1-8b-instant",
+      "llama3-70b-8192",
+      "mixtral-8x7b-32768",
+    ];
 
-    const chatCompletion = await this.groq.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are an expert career counselor and technical recruiter. " +
-            "Always respond with valid JSON only. Never wrap in markdown code blocks.",
-        },
-        { role: "user", content: prompt },
-      ],
-      model: "llama-3.3-70b-versatile",
-      temperature: 0.7,
-      max_tokens: 4096,
-      response_format: { type: "json_object" },
-    });
+    let lastError = null;
+    for (const modelName of modelsToTry) {
+      try {
+        console.log(`🤖 [Groq] Sending analysis request (${modelName})...`);
+        const chatCompletion = await this.groq.chat.completions.create({
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are an expert career counselor and technical recruiter. " +
+                "Always respond with valid JSON only. Never wrap in markdown code blocks.",
+            },
+            { role: "user", content: prompt },
+          ],
+          model: modelName,
+          temperature: 0.7,
+          max_tokens: 4096,
+          response_format: { type: "json_object" },
+        });
 
-    const text = chatCompletion.choices[0]?.message?.content || "{}";
-    console.log("✅ [Groq] Analysis received successfully.");
-    return text;
+        const text = chatCompletion.choices[0]?.message?.content || "{}";
+        console.log(`✅ [Groq] Analysis received successfully (${modelName}).`);
+        return text;
+      } catch (err) {
+        console.warn(`⚠️ [Groq] Model ${modelName} failed:`, err.message);
+        lastError = err;
+      }
+    }
+    throw lastError || new Error("All Groq models failed");
   }
 
   // ── Unified AI call: Groq → Gemini → Mock ────────────────────────────────
@@ -351,74 +367,90 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
       throw new Error("GEMINI_API_KEY not set");
     }
 
-    try {
-      const model = this.gemini.getGenerativeModel({
-        model: "gemini-2.0-flash",
-      }); // gemini-2.0-flash: fast, cost-efficient, supports JSON response mode
+    const modelsToTry = [
+      "gemini-2.5-flash",
+      "gemini-flash-latest",
+      "gemini-2.5-flash-lite",
+      "gemini-1.5-flash",
+    ];
 
-      const result = await model.generateContent({
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.7,
-          responseMimeType: "application/json",
-        },
-      });
+    let lastError = null;
+    for (const modelName of modelsToTry) {
+      try {
+        console.log(`🤖 [Gemini] Sending analysis request (${modelName})...`);
+        const model = this.gemini.getGenerativeModel({
+          model: modelName,
+        });
 
-      const response = result.response;
-      let text = response.text();
-      return text;
-    } catch (error) {
-      const errorMessage = error.message ? error.message.toLowerCase() : "";
-      const statusCode = error.status || (error.httpError && error.httpError.status);
+        const result = await model.generateContent({
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.7,
+            responseMimeType: "application/json",
+          },
+        });
 
-      const isQuotaError =
-        statusCode === 429 ||
-        errorMessage.includes("429") ||
-        errorMessage.includes("quota") ||
-        errorMessage.includes("exhausted") ||
-        errorMessage.includes("too many requests") ||
-        errorMessage.includes("resource_exhausted");
-
-      const isInvalidKeyError =
-        statusCode === 400 ||
-        statusCode === 401 ||
-        statusCode === 403 ||
-        errorMessage.includes("api_key_invalid") ||
-        errorMessage.includes("invalid api key") ||
-        errorMessage.includes("api key not valid") ||
-        errorMessage.includes("permission_denied") ||
-        errorMessage.includes("api key") ||
-        errorMessage.includes("invalid key");
-
-      if (isInvalidKeyError) {
-        console.error(
-          "🔑 [Gemini] INVALID API KEY detected! Your GEMINI_API_KEY in server/.env is wrong.\n" +
-          "   ➡  The key must start with 'AIza...' (e.g. AIzaSy...).\n" +
-          "   ➡  Get a valid key at: https://aistudio.google.com/app/apikey\n" +
-          "   Raw error:", error.message
-        );
-        return this.getMockGeminiResponse(
-          "Invalid Gemini API key. Please go to https://aistudio.google.com/app/apikey, create a new key (it starts with AIza...), and paste it as GEMINI_API_KEY in server/.env",
-          null
-        );
+        const response = result.response;
+        let text = response.text();
+        console.log(`✅ [Gemini] Analysis received successfully (${modelName}).`);
+        return text;
+      } catch (error) {
+        console.warn(`⚠️ [Gemini] Model ${modelName} failed:`, error.message);
+        lastError = error;
       }
-
-      if (isQuotaError) {
-        console.warn(
-          "⚠️  [Gemini] API quota exhausted. Returning mock analysis. " +
-          "To restore real AI: generate a new key at https://aistudio.google.com/app/apikey " +
-          "and update GEMINI_API_KEY in server/.env"
-        );
-        return this.getMockGeminiResponse(
-          "Gemini API quota exhausted. This is a sample analysis — real AI results will resume once the API key quota resets or a new key is configured.",
-          null
-        );
-      }
-
-      // Other unexpected errors — still fall back to mock, never crash
-      console.error("❌ [Gemini] Unexpected API error. Falling back to mock:", error.message, "\n   Full error:", error);
-      return this.getMockGeminiResponse(error.message || "Unknown API Error", null);
     }
+
+    const error = lastError || new Error("All Gemini models failed");
+    const errorMessage = error.message ? error.message.toLowerCase() : "";
+    const statusCode = error.status || (error.httpError && error.httpError.status);
+
+    const isQuotaError =
+      statusCode === 429 ||
+      errorMessage.includes("429") ||
+      errorMessage.includes("quota") ||
+      errorMessage.includes("exhausted") ||
+      errorMessage.includes("too many requests") ||
+      errorMessage.includes("resource_exhausted");
+
+    const isInvalidKeyError =
+      statusCode === 400 ||
+      statusCode === 401 ||
+      statusCode === 403 ||
+      errorMessage.includes("api_key_invalid") ||
+      errorMessage.includes("invalid api key") ||
+      errorMessage.includes("api key not valid") ||
+      errorMessage.includes("permission_denied") ||
+      errorMessage.includes("api key") ||
+      errorMessage.includes("invalid key");
+
+    if (isInvalidKeyError) {
+      console.error(
+        "🔑 [Gemini] INVALID API KEY detected! Your GEMINI_API_KEY in server/.env is wrong.\n" +
+        "   ➡  The key must start with 'AIza...' (e.g. AIzaSy...).\n" +
+        "   ➡  Get a valid key at: https://aistudio.google.com/app/apikey\n" +
+        "   Raw error:", error.message
+      );
+      return this.getMockGeminiResponse(
+        "Invalid Gemini API key. Please go to https://aistudio.google.com/app/apikey, create a new key (it starts with AIza...), and paste it as GEMINI_API_KEY in server/.env",
+        null
+      );
+    }
+
+    if (isQuotaError) {
+      console.warn(
+        "⚠️  [Gemini] API quota exhausted. Returning mock analysis. " +
+        "To restore real AI: generate a new key at https://aistudio.google.com/app/apikey " +
+        "and update GEMINI_API_KEY in server/.env"
+      );
+      return this.getMockGeminiResponse(
+        "Gemini API quota exhausted. This is a sample analysis — real AI results will resume once the API key quota resets or a new key is configured.",
+        null
+      );
+    }
+
+    // Other unexpected errors — still fall back to mock, never crash
+    console.error("❌ [Gemini] Unexpected API error. Falling back to mock:", error.message, "\n   Full error:", error);
+    return this.getMockGeminiResponse(error.message || "Unknown API Error", null);
   }
 
   // Parse AI Response
@@ -801,7 +833,7 @@ Ensure the output is ONLY valid JSON.
         });
         aiResponseRaw = response.choices[0]?.message?.content || "{}";
       } else if (process.env.GEMINI_API_KEY) {
-        const model = this.gemini.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const model = this.gemini.getGenerativeModel({ model: "gemini-2.5-flash" });
         const result = await model.generateContent({
           contents: [{ role: "user", parts: [{ text: prompt }] }],
           generationConfig: { temperature: 0.7, responseMimeType: "application/json" }
@@ -970,7 +1002,7 @@ Output ONLY strict JSON (no markdown, no code fences):
     if (this.genAI) {
       try {
         const model = this.genAI.getGenerativeModel({
-          model: 'gemini-2.0-flash',
+          model: 'gemini-2.5-flash',
           generationConfig: { temperature: 0.7 }
         });
         const result = await model.generateContent(prompt);

@@ -129,9 +129,9 @@ router.get("/me", auth, async (req, res) => {
 
     let placementReadinessScore = 0;
     let components = {
-      profile: student.profileCompletionPercentage,
+      profile: student.profileCompletionPercentage || 0,
       skillGap: 0,
-      resume: student.resumeUrl ? 100 : 0,
+      resume: (student.resumeUrl || student.resume) ? 100 : 0,
     };
 
     if (latestAnalysis) {
@@ -344,6 +344,7 @@ router.put("/update-profile", auth, async (req, res) => {
       leetcodeUsername,
       portfolioUrl,
       // Career Preferences
+      targetDomain,
       targetRole,
       dreamCompanies, // Added
       willingToRelocate,
@@ -455,6 +456,8 @@ router.put("/update-profile", auth, async (req, res) => {
       student.portfolioUrl = String(portfolioUrl).trim();
 
     // Career
+    if (targetDomain !== undefined)
+      student.targetDomain = String(targetDomain).trim();
     if (targetRole !== undefined)
       student.targetRole = String(targetRole).trim();
     if (Array.isArray(dreamCompanies)) student.dreamCompanies = dreamCompanies;
@@ -497,7 +500,27 @@ router.put("/update-profile", auth, async (req, res) => {
       .populate("user", "-password")
       .populate("college", "name location tier");
 
-    res.json({ msg: "Profile updated successfully", student: updated });
+    const SkillGapAnalysis = require("../models/SkillGapAnalysis");
+    const latestAnalysis = await SkillGapAnalysis.findOne({
+      student: updated._id,
+      isActive: true,
+    }).sort({ createdAt: -1 });
+
+    const components = {
+      profile: updated.profileCompletionPercentage || 0,
+      skillGap: latestAnalysis ? (latestAnalysis.overallReadinessScore || 0) : 0,
+      resume: (updated.resumeUrl || updated.resume) ? 100 : 0,
+    };
+
+    const placementReadinessScore = latestAnalysis
+      ? Math.round(components.skillGap * 0.4 + components.profile * 0.4 + components.resume * 0.2)
+      : Math.round(components.profile * 0.7 + components.resume * 0.3);
+
+    const updatedData = updated.toObject();
+    updatedData.placementReadinessScore = placementReadinessScore;
+    updatedData.readinessComponents = components;
+
+    res.json({ msg: "Profile updated successfully", student: updatedData });
   } catch (err) {
     console.error("Update profile error:", err);
     if (err.name === "ValidationError") {

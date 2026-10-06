@@ -104,6 +104,7 @@ const studentSchema = new mongoose.Schema(
     portfolioUrl: { type: String },
 
     // Target & Preferences
+    targetDomain: { type: String, default: "Software Engineer" },
     targetRole: { type: String },
     dreamCompanies: { type: [String] },
     addressLine1: { type: String },
@@ -149,50 +150,50 @@ const studentSchema = new mongoose.Schema(
 studentSchema.pre("save", function (next) {
   const student = this;
 
-  const requiredFields = [
-    "firstName",
-    "lastName",
-    "email",
-    "phone",
-    "rollNumber",
-    "department",
-    "degree",
-    "graduationYear",
-    "cgpa",
-    "resumeUrl",
+  // Core required fields (70% weight total)
+  const coreChecks = [
+    Boolean(student.firstName && String(student.firstName).trim()),
+    Boolean(student.lastName && String(student.lastName).trim()),
+    Boolean(student.email && String(student.email).trim()),
+    Boolean(student.phone && String(student.phone).trim()),
+    Boolean(student.rollNumber && String(student.rollNumber).trim()),
+    Boolean(student.department && String(student.department).trim()),
+    Boolean(student.degree && String(student.degree).trim()),
+    student.graduationYear != null && Number(student.graduationYear) > 0,
+    student.cgpa != null && !isNaN(Number(student.cgpa)) && Number(student.cgpa) >= 0,
+    Boolean((student.resumeUrl || student.resume) && String(student.resumeUrl || student.resume).trim()),
+    Array.isArray(student.skills) && student.skills.length > 0,
+    Boolean(student.targetRole && String(student.targetRole).trim()),
   ];
 
-  const optionalFields = [
-    "dateOfBirth",
-    "gender",
-    "profilePicture",
-    "linkedinUrl",
-    "githubUrl",
-    "portfolioUrl",
-    "education10th",
-    "education12th",
-    "city",
-    "state",
+  // Optional supplementary fields (30% weight total)
+  const optionalChecks = [
+    Boolean(student.dateOfBirth),
+    Boolean(student.gender && student.gender !== "prefer_not_to_say"),
+    Boolean(student.profilePicture && String(student.profilePicture).trim()),
+    Boolean(student.college),
+    Boolean(student.education10th && (student.education10th.institutionName || student.education10th.percentage)),
+    Boolean(student.education12th && (student.education12th.institutionName || student.education12th.percentage)),
+    Boolean((student.linkedinUrl || student.linkedin) && String(student.linkedinUrl || student.linkedin).trim()),
+    Boolean((student.githubUrl || student.githubUsername) && String(student.githubUrl || student.githubUsername).trim()),
+    Boolean((student.leetcodeUrl || student.leetcodeUsername) && String(student.leetcodeUrl || student.leetcodeUsername).trim()),
+    Boolean(student.portfolioUrl && String(student.portfolioUrl).trim()),
+    Boolean(student.addressLine1 && String(student.addressLine1).trim()),
+    Boolean(student.city && String(student.city).trim()),
+    Boolean(student.state && String(student.state).trim()),
+    Array.isArray(student.dreamCompanies) && student.dreamCompanies.length > 0,
+    Array.isArray(student.preferredLocations) && student.preferredLocations.length > 0,
+    Array.isArray(student.experiences) && student.experiences.length > 0,
+    Array.isArray(student.projects) && student.projects.length > 0,
   ];
 
-  let completedRequired = 0;
-  requiredFields.forEach((field) => {
-    if (student[field]) completedRequired++;
-  });
+  const corePassed = coreChecks.filter(Boolean).length;
+  const optionalPassed = optionalChecks.filter(Boolean).length;
 
-  let completedOptional = 0;
-  optionalFields.forEach((field) => {
-    if (student[field]) completedOptional++;
-  });
+  const coreScore = (corePassed / coreChecks.length) * 70;
+  const optionalScore = (optionalPassed / optionalChecks.length) * 30;
 
-  const requiredWeight = 70;
-  const optionalWeight = 30;
-
-  const completion =
-    (completedRequired / requiredFields.length) * requiredWeight +
-    (completedOptional / optionalFields.length) * optionalWeight;
-
-  student.profileCompletionPercentage = Math.round(completion);
+  student.profileCompletionPercentage = Math.min(100, Math.round(coreScore + optionalScore));
   next();
 });
 

@@ -187,6 +187,7 @@ const ProfileEditModal = ({ student, open, onClose, onProfileUpdate }) => {
       leetcodeUrl: student.leetcodeUrl || "",
       leetcodeUsername: student.leetcodeUsername || "",
       portfolioUrl: student.portfolioUrl || "",
+      targetDomain: student.targetDomain || "Software Engineer",
       targetRole: student.targetRole || "",
       willingToRelocate: student.willingToRelocate !== false,
       expectedSalaryMin:
@@ -588,13 +589,22 @@ const ProfileEditModal = ({ student, open, onClose, onProfileUpdate }) => {
 
   const renderCareer = () => (
     <div className="space-y-5">
-      <Field label="Target Role">
-        <Input
-          value={form.targetRole}
-          onChange={set("targetRole")}
-          placeholder="e.g. Full Stack Developer, Data Scientist"
-        />
-      </Field>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <Field label="Target Domain">
+          <Input
+            value={form.targetDomain}
+            onChange={set("targetDomain")}
+            placeholder="e.g. Software Engineer, Data Science & AI, Cloud & DevOps"
+          />
+        </Field>
+        <Field label="Target Role">
+          <Input
+            value={form.targetRole}
+            onChange={set("targetRole")}
+            placeholder="e.g. Full Stack Developer, Data Scientist"
+          />
+        </Field>
+      </div>
 
       <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
         <input
