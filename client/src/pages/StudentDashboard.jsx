@@ -444,9 +444,8 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
           {/* ═══════════════════════════════════════════════
               TAB CONTENT
           ═══════════════════════════════════════════════ */}
-          {skillGapAnalysis && (
-            <div className="pb-12 animate-fadeIn">
-              {activeTab === "overview" && (
+          <div className="pb-12 animate-fadeIn">
+            {activeTab === "overview" && skillGapAnalysis && (
                 <SkillGapOverview
                   analysis={skillGapAnalysis}
                   student={student}
@@ -519,7 +518,6 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
                 </div>
               )}
             </div>
-          )}
         </>
       )}
         </main>

@@ -124,9 +124,9 @@ const getAIResponse = async (prompt, candidateText, jobDescription) => {
     }
   }
 
-  // 2. Try Gemini with modern supported models (gemini-2.5-flash / gemini-3.8-flash)
+  // 2. Try Gemini with modern supported models (gemini-2.5-flash / gemini-1.5-flash)
   if (geminiApiKey) {
-    const geminiModels = ["gemini-2.5-flash", "gemini-3.8-flash"];
+    const geminiModels = ["gemini-2.5-flash", "gemini-1.5-flash"];
     const gemini = new GoogleGenerativeAI(geminiApiKey);
     for (const modelName of geminiModels) {
       try {

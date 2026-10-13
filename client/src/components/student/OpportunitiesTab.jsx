@@ -168,7 +168,13 @@ const OpportunitiesTab = ({ student }) => {
                   ? `Closes ${new Date(job.deadline).toLocaleDateString()}`
                   : "Open immediately"}
               </span>
-              <button className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white font-semibold text-sm rounded-xl hover:bg-indigo-600 transition-colors">
+              <button
+                onClick={() => {
+                  const targetUrl = job.applyUrl || `https://www.google.com/search?q=${encodeURIComponent(`${job.company} ${job.title} careers apply`)}`;
+                  window.open(targetUrl, "_blank", "noopener,noreferrer");
+                }}
+                className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white font-semibold text-sm rounded-xl hover:bg-indigo-600 transition-colors"
+              >
                 Apply Now <ExternalLink className="w-4 h-4" />
               </button>
             </div>

@@ -134,34 +134,72 @@ class SkillGapAnalysisService {
   async fetchExternalStats(student) {
     let stats = "";
 
+    // 1. LeetCode Stats (Direct official GraphQL endpoint)
     if (student.leetcodeUsername) {
       try {
-        // Use global fetch
-        const resp = await fetch(
-          `https://leetcode-stats-api.herokuapp.com/${student.leetcodeUsername}`,
-        );
+        const query = `
+          query getUserProfile($username: String!) {
+            matchedUser(username: $username) {
+              submitStatsGlobal {
+                acSubmissionNum {
+                  difficulty
+                  count
+                }
+              }
+            }
+          }
+        `;
+        const resp = await fetch("https://leetcode.com/graphql", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Referer: "https://leetcode.com",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SkillBridge/1.0",
+          },
+          body: JSON.stringify({
+            query,
+            variables: { username: student.leetcodeUsername.trim() },
+          }),
+        });
+
         if (resp.ok) {
           const data = await resp.json();
-          if (data.status === "success") {
-            stats += `- LeetCode: ${data.totalSolved} problems solved (${data.easySolved} Easy, ${data.mediumSolved} Medium, ${data.hardSolved} Hard)\n`;
+          const subs = data?.data?.matchedUser?.submitStatsGlobal?.acSubmissionNum || [];
+          const all = subs.find((s) => s.difficulty === "All")?.count || 0;
+          const easy = subs.find((s) => s.difficulty === "Easy")?.count || 0;
+          const med = subs.find((s) => s.difficulty === "Medium")?.count || 0;
+          const hard = subs.find((s) => s.difficulty === "Hard")?.count || 0;
+
+          if (all > 0) {
+            stats += `- LeetCode: ${all} problems solved (${easy} Easy, ${med} Medium, ${hard} Hard)\n`;
           }
         }
       } catch (e) {
-        console.error("LeetCode fetch error:", e.message);
+        console.warn("LeetCode direct query error:", e.message);
       }
     }
 
+    // 2. GitHub Stats (Supports optional GITHUB_TOKEN for 5,000 req/hr rate limit)
     if (student.githubUsername) {
       try {
+        const headers = {
+          "User-Agent": "SkillBridge-Platform",
+          Accept: "application/vnd.github.v3+json",
+        };
+        if (process.env.GITHUB_TOKEN) {
+          headers.Authorization = `token ${process.env.GITHUB_TOKEN}`;
+        }
+
         const resp = await fetch(
-          `https://api.github.com/users/${student.githubUsername}`,
+          `https://api.github.com/users/${student.githubUsername.trim()}`,
+          { headers }
         );
         if (resp.ok) {
           const data = await resp.json();
-          stats += `- GitHub: ${data.public_repos} public repositories, ${data.followers} followers\n`;
+          stats += `- GitHub: ${data.public_repos || 0} public repositories, ${data.followers || 0} followers\n`;
         }
       } catch (e) {
-        console.error("GitHub fetch error:", e.message);
+        console.warn("GitHub fetch error:", e.message);
       }
     }
 
