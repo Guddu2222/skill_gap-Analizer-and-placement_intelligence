@@ -20,24 +20,16 @@ const OpportunitiesTab = ({ student }) => {
     const fetchOpportunities = async () => {
       try {
         setLoading(true);
-        // We'll use the native fetch or api client. Assuming standard setup.
-        const token = localStorage.getItem("token");
-        const res = await fetch(
-          "http://localhost:5000/api/jobs/opportunities",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-
-        if (!res.ok) throw new Error("Failed to fetch opportunities");
-
-        const data = await res.json();
+        setError(null);
+        const { data } = await api.get("/jobs/opportunities");
         setOpportunities(data.opportunities || []);
       } catch (err) {
         console.error("Match error:", err);
-        setError("Could not load your opportunities at this time.");
+        setError(
+          err.response?.data?.error ||
+          err.response?.data?.msg ||
+          "Could not load your opportunities at this time."
+        );
       } finally {
         setLoading(false);
       }

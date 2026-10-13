@@ -239,6 +239,11 @@ export const analyzeATS = async (jobDescription) => {
   return data;
 };
 
+export const getJobOpportunities = async () => {
+  const { data } = await api.get("/jobs/opportunities");
+  return data;
+};
+
 export const fetchLearningPaths = async () => {
   const { data } = await api.get("/skill-gap/learning-paths");
   return data;

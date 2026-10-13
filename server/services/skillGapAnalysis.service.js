@@ -297,7 +297,7 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
       throw new Error("Groq client not initialised — GROQ_API_KEY missing");
     }
 
-    console.log("🤖 [Groq] Sending analysis request (llama-3.3-70b-versatile)...");
+    console.log("🤖 [Groq] Sending analysis request (openai/gpt-oss-120b)...");
 
     const chatCompletion = await this.groq.chat.completions.create({
       messages: [
@@ -309,7 +309,7 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
         },
         { role: "user", content: prompt },
       ],
-      model: "llama-3.3-70b-versatile",
+      model: "openai/gpt-oss-120b",
       temperature: 0.7,
       max_tokens: 4096,
       response_format: { type: "json_object" },
@@ -353,8 +353,8 @@ Respond ONLY with valid JSON. Do not wrap in markdown tags like \`\`\`json. Be s
 
     try {
       const model = this.gemini.getGenerativeModel({
-        model: "gemini-2.0-flash",
-      }); // gemini-2.0-flash: fast, cost-efficient, supports JSON response mode
+        model: "gemini-2.5-flash",
+      }); // gemini-2.5-flash: fast, cost-efficient, supports JSON response mode
 
       const result = await model.generateContent({
         contents: [{ role: "user", parts: [{ text: prompt }] }],
@@ -795,13 +795,13 @@ Ensure the output is ONLY valid JSON.
             { role: "system", content: "You output strict JSON only." },
             { role: "user", content: prompt }
           ],
-          model: "llama-3.3-70b-versatile",
+          model: "openai/gpt-oss-120b",
           temperature: 0.7,
           response_format: { type: "json_object" }
         });
         aiResponseRaw = response.choices[0]?.message?.content || "{}";
       } else if (process.env.GEMINI_API_KEY) {
-        const model = this.gemini.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const model = this.gemini.getGenerativeModel({ model: "gemini-2.5-flash" });
         const result = await model.generateContent({
           contents: [{ role: "user", parts: [{ text: prompt }] }],
           generationConfig: { temperature: 0.7, responseMimeType: "application/json" }
@@ -950,7 +950,7 @@ Output ONLY strict JSON (no markdown, no code fences):
             },
             { role: 'user', content: prompt }
           ],
-          model: 'llama-3.3-70b-versatile',
+          model: 'openai/gpt-oss-120b',
           temperature: 0.7,
           max_tokens: 2000,
           response_format: { type: 'json_object' },
@@ -970,7 +970,7 @@ Output ONLY strict JSON (no markdown, no code fences):
     if (this.genAI) {
       try {
         const model = this.genAI.getGenerativeModel({
-          model: 'gemini-2.0-flash',
+          model: 'gemini-2.5-flash',
           generationConfig: { temperature: 0.7 }
         });
         const result = await model.generateContent(prompt);

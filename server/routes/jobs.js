@@ -72,18 +72,20 @@ router.post("/", auth, async (req, res) => {
 // Get smart job opportunities matching student profile
 router.get("/opportunities", auth, async (req, res) => {
   try {
-    const student = await Student.findOne({ user: req.user.userId });
-    if (!student) {
-      return res.status(404).json({ error: "Student not found" });
+    const userId = req.user?.userId || req.user?.id || req.user?._id;
+    let student = await Student.findOne({ user: userId });
+    if (!student && userId) {
+      student = await Student.findById(userId);
     }
 
-    const studentSkills = (student.skills || [])
+    const studentSkills = (student?.skills || [])
       .map((s) =>
         (typeof s === "string" ? s : s.skillName || "").toLowerCase().trim(),
       )
       .filter(Boolean);
 
-    const matchThreshold = 20; // Only return jobs where they have at least a 20% match to prevent spam
+    // If student has skills, filter by realistic threshold; if student has no skills yet, show all jobs
+    const matchThreshold = studentSkills.length > 0 ? 15 : 0;
     const jobs = await Job.find().sort({ createdAt: -1 });
 
     const opportunities = jobs

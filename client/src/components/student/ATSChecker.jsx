@@ -26,7 +26,7 @@ export default function ATSChecker() {
         setError("Failed to parse ATS data.");
       }
     } catch (err) {
-      setError(err.message || "An error occurred checking ATS compatibility.");
+      setError(err.response?.data?.message || err.message || "An error occurred checking ATS compatibility.");
     } finally {
       setAnalyzing(false);
     }
