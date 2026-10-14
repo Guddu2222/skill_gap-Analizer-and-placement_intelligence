@@ -11,7 +11,10 @@ import SignInPage from "./pages/SignInPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import RecruiterCRM from "./pages/RecruiterCRM";
+import RecruiterCandidates from "./pages/RecruiterCandidates";
 import SmartShortlist from "./pages/SmartShortlist";
+import CollegeStudents from "./pages/CollegeStudents";
+import CollegeAnalytics from "./pages/CollegeAnalytics";
 import AboutUs from "./pages/AboutUs";
 import OAuthCallbackPage from "./pages/OAuthCallbackPage";
 import CampusDrives from "./pages/CampusDrives";
@@ -53,10 +56,13 @@ const App = () => {
         {/* Dashboard Routes */}
         <Route path="/college" element={<CollegeDashboard />} />
         <Route path="/college/drives" element={<CampusDrives />} />
+        <Route path="/college/students" element={<CollegeStudents />} />
+        <Route path="/college/analytics" element={<CollegeAnalytics />} />
         <Route path="/college/recruiters" element={<RecruiterCRM />} />
         <Route path="/recruiter" element={<RecruiterDashboard />} />
         <Route path="/recruiter/drives" element={<RecruiterDrives />} />
         <Route path="/recruiter/jobs" element={<RecruiterJobs />} />
+        <Route path="/recruiter/candidates" element={<RecruiterCandidates />} />
         <Route path="/recruiter/smart-shortlist" element={<SmartShortlist />} />
 
         {/* Student Dashboard Routes */}

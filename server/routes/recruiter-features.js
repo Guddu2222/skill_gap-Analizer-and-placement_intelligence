@@ -10,7 +10,53 @@ const DriveRequest = require("../models/DriveRequest");
 const auth = require("../middleware/auth");
 const { roleCheck } = require("../middleware/auth");
 
-// ==================== DASHBOARD STATS ====================
+// ==================== CANDIDATE POOL ====================
+// GET /api/recruiter-features/candidates
+// Browse & filter student profiles as a recruiter
+router.get("/candidates", auth, roleCheck(["recruiter"]), async (req, res) => {
+  try {
+    const {
+      search, minCGPA, department, skill,
+      page = 1, limit = 30, sortBy = "cgpa", order = "desc",
+    } = req.query;
+
+    const query = {};
+    if (minCGPA) query.cgpa = { $gte: parseFloat(minCGPA) };
+    if (department) query.department = new RegExp(department, "i");
+    if (search) {
+      query.$or = [
+        { firstName: new RegExp(search, "i") },
+        { lastName:  new RegExp(search, "i") },
+        { email:     new RegExp(search, "i") },
+        { "skills.skillName": new RegExp(search, "i") },
+      ];
+    }
+    if (skill) {
+      query["skills.skillName"] = new RegExp(skill, "i");
+    }
+
+    const skip = (Math.max(1, parseInt(page)) - 1) * Math.min(50, parseInt(limit));
+    const lim  = Math.min(50, parseInt(limit));
+    const sort = { [sortBy]: order === "asc" ? 1 : -1 };
+
+    const [total, candidates] = await Promise.all([
+      Student.countDocuments(query),
+      Student.find(query)
+        .select("firstName lastName email department graduationYear cgpa skills placementStatus resumeUrl linkedinUrl githubUsername")
+        .sort(sort).skip(skip).limit(lim).lean(),
+    ]);
+
+    res.json({
+      candidates,
+      pagination: { total, page: parseInt(page), pages: Math.ceil(total / lim), limit: lim },
+    });
+  } catch (err) {
+    console.error("Candidates error:", err.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+
 
 router.get(
   "/dashboard/stats",

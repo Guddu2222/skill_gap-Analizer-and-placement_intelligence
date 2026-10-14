@@ -5,9 +5,25 @@ const College = require("../models/College");
 const Job = require("../models/Job");
 const User = require("../models/User");
 const CampusDrive = require("../models/CampusDrive");
+const DriveRequest = require("../models/DriveRequest");
 const Alumni = require("../models/Alumni");
+const DriveApplication = require("../models/DriveApplication");
 const auth = require("../middleware/auth");
 const { roleCheck } = require("../middleware/auth");
+
+// GET /api/college-features/recruiters — list all recruiter users (real DB data)
+router.get("/recruiters", auth, roleCheck(["college_admin"]), async (req, res) => {
+  try {
+    const recruiters = await User.find({ role: "recruiter" })
+      .select("name email company avatar createdAt")
+      .sort({ createdAt: -1 })
+      .lean();
+    res.json(recruiters);
+  } catch (err) {
+    console.error("Recruiters fetch error:", err.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
 
 const getSkillName = (s) =>
   (typeof s === "string" ? s : s && s.skillName) || "";
@@ -551,60 +567,58 @@ router.post("/shortlist", auth, async (req, res) => {
   }
 });
 
-// 4. Recruiter CRM
-router.get("/recruiter-crm", auth, async (req, res) => {
+// 4. Recruiter CRM — real aggregated data from DB
+router.get("/recruiter-crm", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
-    // Mock analytics for Recruiter Relationship Management
-    const crmData = [
+    const collegeId = req.user.collegeId;
+
+    // Aggregate drive stats per company from CampusDrive model
+    const driveStats = await CampusDrive.aggregate([
+      ...(collegeId ? [{ $match: { college: collegeId } }] : []),
       {
-        id: 1,
-        company: "Google",
-        tier: "Tier 1",
-        visits: 5,
-        hires: 12,
-        avgPackage: "28 LPA",
-        status: "Active",
+        $group: {
+          _id: "$company",
+          totalDrives: { $sum: 1 },
+          lastVisit: { $max: "$createdAt" },
+        },
       },
+    ]);
+
+    // Aggregate placement stats (hires, avg package) from DriveApplication
+    const placementStats = await DriveApplication.aggregate([
+      { $match: { status: "offered" } },
       {
-        id: 2,
-        company: "Amazon",
-        tier: "Tier 1",
-        visits: 4,
-        hires: 25,
-        avgPackage: "24 LPA",
-        status: "Active",
+        $lookup: {
+          from: "campusdrives",
+          localField: "drive",
+          foreignField: "_id",
+          as: "driveInfo",
+        },
       },
+      { $unwind: "$driveInfo" },
+      ...(collegeId ? [{ $match: { "driveInfo.college": collegeId } }] : []),
       {
-        id: 3,
-        company: "Infosys",
-        tier: "Mass",
-        visits: 10,
-        hires: 150,
-        avgPackage: "5 LPA",
-        status: "Active",
+        $group: {
+          _id: "$driveInfo.company",
+          hires: { $sum: 1 },
+        },
       },
-      {
-        id: 4,
-        company: "StartUp Inc",
-        tier: "Tier 2",
-        visits: 1,
-        hires: 2,
-        avgPackage: "12 LPA",
-        status: "Dormant",
-      },
-      {
-        id: 5,
-        company: "TechCorp",
-        tier: "Tier 2",
-        visits: 0,
-        hires: 0,
-        avgPackage: "0 LPA",
-        status: "New Lead",
-      },
-    ];
+    ]);
+
+    const placementMap = {};
+    placementStats.forEach((p) => { placementMap[p._id] = p.hires; });
+
+    const crmData = driveStats.map((d) => ({
+      company: d._id,
+      visits: d.totalDrives,
+      hires: placementMap[d._id] || 0,
+      lastVisit: d.lastVisit,
+      status: d.totalDrives > 0 ? "Active" : "Dormant",
+    })).sort((a, b) => b.visits - a.visits);
+
     res.json(crmData);
   } catch (err) {
-    console.error("College profile error:", err);
+    console.error("Recruiter CRM error:", err);
     res.status(500).json({ error: "Server Error" });
   }
 });
