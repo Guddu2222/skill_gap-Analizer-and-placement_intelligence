@@ -8,6 +8,7 @@ import {
 import {
   fetchCollegeDashboard, fetchCollegeStudents, exportCollegeStudents,
 } from '../services/api';
+import MarkPlacedModal from '../components/college/MarkPlacedModal';
 
 const cgpaBadge = (cgpa) => {
   const v = parseFloat(cgpa);
@@ -34,7 +35,7 @@ const initials = (s) =>
 
 const LIMIT = 15;
 
-const ProfileDrawer = ({ student, onClose }) => {
+const ProfileDrawer = ({ student, onClose, onMarkPlaced }) => {
   if (!student) return null;
   const skills = student.skills || [];
   const name = [student.first_name, student.last_name].filter(Boolean).join(' ') || 'Student';
@@ -72,6 +73,19 @@ const ProfileDrawer = ({ student, onClose }) => {
               </div>
             ))}
           </div>
+
+          {/* Quick Mark as Placed CTA in Drawer */}
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              onMarkPlaced(student);
+            }}
+            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-95"
+          >
+            <Award className="w-4 h-4" />
+            <span>{student.is_placed ? 'Update Placement Offer' : 'Mark Student as Placed'}</span>
+          </button>
 
           {student.is_placed && (
             <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4">
@@ -162,22 +176,14 @@ const CollegeStudents = () => {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [placedTargetStudent, setPlacedTargetStudent] = useState(null);
   const [search, setSearch] = useState('');
   const [dept, setDept] = useState('');
   const [year, setYear] = useState('');
   const [status, setStatus] = useState('');
   const [departments, setDepts] = useState([]);
 
-  useEffect(() => {
-    fetchCollegeDashboard()
-      .then((d) => {
-        setStats(d.statistics);
-        if (d.departmentStats) setDepts(Object.keys(d.departmentStats));
-      })
-      .catch(() => {});
-  }, []);
-
-  useEffect(() => {
+  const loadData = useCallback(() => {
     setLoading(true);
     const params = { page, limit: LIMIT, search, department: dept, graduationYear: year, placementStatus: status, sortBy: 'cgpa' };
     fetchCollegeStudents(params)
@@ -187,7 +193,18 @@ const CollegeStudents = () => {
       })
       .catch(() => setStudents([]))
       .finally(() => setLoading(false));
+
+    fetchCollegeDashboard()
+      .then((d) => {
+        setStats(d.statistics);
+        if (d.departmentStats) setDepts(Object.keys(d.departmentStats));
+      })
+      .catch(() => {});
   }, [page, search, dept, year, status]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const handleExport = async () => {
     try {
@@ -420,15 +437,29 @@ const CollegeStudents = () => {
                           </span>
                         </td>
                         <td className="px-5 py-4 text-right">
-                          <button
-                            className="px-3 py-1.5 text-xs font-semibold text-violet-300 bg-violet-500/10 border border-violet-500/20 rounded-lg hover:bg-violet-500/20 transition-colors opacity-0 group-hover:opacity-100"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelected(s);
-                            }}
-                          >
-                            View
-                          </button>
+                          <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button
+                              type="button"
+                              className="px-2.5 py-1 text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/25 rounded-lg hover:bg-emerald-500/20 transition-all hover:scale-105"
+                              title="Mark or update placement status"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setPlacedTargetStudent(s);
+                              }}
+                            >
+                              {s.is_placed ? 'Offer' : 'Place'}
+                            </button>
+                            <button
+                              type="button"
+                              className="px-3 py-1 text-xs font-semibold text-violet-300 bg-violet-500/10 border border-violet-500/20 rounded-lg hover:bg-violet-500/20 transition-colors"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelected(s);
+                              }}
+                            >
+                              View
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))
@@ -478,7 +509,22 @@ const CollegeStudents = () => {
           </div>
         </div>
       </main>
-      <ProfileDrawer student={selected} onClose={() => setSelected(null)} />
+      <ProfileDrawer
+        student={selected}
+        onClose={() => setSelected(null)}
+        onMarkPlaced={(s) => setPlacedTargetStudent(s)}
+      />
+      <MarkPlacedModal
+        student={placedTargetStudent}
+        isOpen={Boolean(placedTargetStudent)}
+        onClose={() => setPlacedTargetStudent(null)}
+        onSuccess={() => {
+          loadData();
+          if (selected && placedTargetStudent && selected._id === placedTargetStudent._id) {
+            setSelected(null);
+          }
+        }}
+      />
     </div>
   );
 };

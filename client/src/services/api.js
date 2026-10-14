@@ -126,6 +126,36 @@ export const exportCollegeStudents = async (format = "csv") => {
   return response.data;
 };
 
+export const markStudentPlacement = async (studentId, payload) => {
+  const { data } = await api.patch(`/college-features/students/${studentId}/placement`, payload);
+  return data;
+};
+
+export const shortlistStudentsForDrive = async (payload) => {
+  const { data } = await api.post("/college-features/shortlist-drive", payload);
+  return data;
+};
+
+export const fetchAlumniList = async () => {
+  const { data } = await api.get("/college-features/alumni");
+  return data;
+};
+
+export const addAlumniMentor = async (payload) => {
+  const { data } = await api.post("/college-features/alumni", payload);
+  return data;
+};
+
+export const fetchCollegeProfile = async () => {
+  const { data } = await api.get("/college-features/profile");
+  return data;
+};
+
+export const updateCollegeProfile = async (payload) => {
+  const { data } = await api.put("/college-features/profile", payload);
+  return data;
+};
+
 // ==================== RECRUITER API ====================
 
 export const fetchRecruiterStats = async () => {

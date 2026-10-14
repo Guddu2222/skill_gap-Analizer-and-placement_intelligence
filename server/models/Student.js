@@ -138,6 +138,9 @@ const studentSchema = new mongoose.Schema(
     isPlaced: { type: Boolean, default: false },
     placementPackage: { type: Number }, // CTC in lakhs
     placedCompany: { type: String },
+    jobRole: { type: String },
+    offerType: { type: String, default: "Regular" },
+    offerDate: { type: Date },
 
     // Calculated Fields
     profileCompletionPercentage: { type: Number, default: 0 },

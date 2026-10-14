@@ -43,6 +43,8 @@ const Sidebar = ({ role = "college", collapsed: controlledCollapsed, onToggle })
       { icon: LayoutDashboard, label: "Dashboard", path: "/college" },
       { icon: Briefcase, label: "Campus Drives", path: "/college/drives" },
       { icon: Users, label: "Students", path: "/college/students" },
+      { icon: UserCheck, label: "Drive Shortlist", path: "/college/shortlist" },
+      { icon: GraduationCap, label: "Alumni & Mentors", path: "/college/alumni" },
       { icon: Building, label: "Recruiters", path: "/college/recruiters" },
       { icon: BarChart2, label: "Analytics", path: "/college/analytics" },
     ],

@@ -675,6 +675,152 @@ router.put("/drive-requests/:id/accept", auth, roleCheck(["college_admin"]), asy
   }
 });
 
+// PATCH /api/college-features/students/:id/placement — Mark student as placed or update placement status
+router.patch("/students/:id/placement", auth, roleCheck(["college_admin"]), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      placementStatus = "placed",
+      isPlaced = true,
+      placedCompany,
+      placementPackage,
+      jobRole,
+      offerType = "Regular",
+      offerDate = new Date(),
+    } = req.body;
+
+    const student = await Student.findById(id);
+    if (!student) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    student.placementStatus = placementStatus;
+    student.isPlaced = isPlaced;
+    if (placedCompany !== undefined) student.placedCompany = placedCompany;
+    if (placementPackage !== undefined) student.placementPackage = parseFloat(placementPackage) || 0;
+    if (jobRole !== undefined) student.jobRole = jobRole;
+    if (offerType !== undefined) student.offerType = offerType;
+    if (offerDate !== undefined) student.offerDate = new Date(offerDate);
+
+    await student.save();
+
+    res.json({
+      success: true,
+      message: `Student placement status updated to ${placementStatus}`,
+      student,
+    });
+  } catch (err) {
+    console.error("Error updating placement record:", err);
+    res.status(500).json({ error: "Failed to update placement record" });
+  }
+});
+
+// POST /api/college-features/shortlist-drive — Bulk shortlist students for a campus drive
+router.post("/shortlist-drive", auth, roleCheck(["college_admin"]), async (req, res) => {
+  try {
+    const { driveId, studentIds, round = "Round 1 (Online Assessment)" } = req.body;
+    if (!driveId || !Array.isArray(studentIds) || studentIds.length === 0) {
+      return res.status(400).json({ error: "Drive ID and student IDs array are required" });
+    }
+
+    const drive = await CampusDrive.findById(driveId);
+    if (!drive) {
+      return res.status(404).json({ error: "Campus drive not found" });
+    }
+
+    let createdOrUpdated = 0;
+    for (const studentId of studentIds) {
+      await DriveApplication.findOneAndUpdate(
+        { drive: driveId, student: studentId },
+        {
+          $set: {
+            status: "shortlisted",
+            notes: `Shortlisted for ${round} by College Placement Cell`,
+          },
+        },
+        { upsert: true, new: true }
+      );
+      createdOrUpdated++;
+    }
+
+    res.json({
+      success: true,
+      message: `Successfully shortlisted ${createdOrUpdated} candidates for drive`,
+      drive: drive.title || drive.company,
+      count: createdOrUpdated,
+    });
+  } catch (err) {
+    console.error("Error shortlisting students for drive:", err);
+    res.status(500).json({ error: "Failed to shortlist students for drive" });
+  }
+});
+
+// GET /api/college-features/alumni — List all alumni mentors
+router.get("/alumni", auth, roleCheck(["college_admin", "student"]), async (req, res) => {
+  try {
+    const alumniList = await Alumni.find({}).sort({ createdAt: -1 }).lean();
+    res.json(alumniList);
+  } catch (err) {
+    console.error("Error fetching alumni list:", err);
+    res.status(500).json({ error: "Failed to fetch alumni" });
+  }
+});
+
+// GET /api/college-features/profile — Get College Profile Details
+router.get("/profile", auth, roleCheck(["college_admin"]), async (req, res) => {
+  try {
+    const collegeId = req.user.collegeId;
+    let college = null;
+    if (collegeId) {
+      college = await College.findById(collegeId);
+    } else {
+      college = await College.findOne({});
+    }
+
+    if (!college) {
+      return res.status(404).json({ error: "College record not found" });
+    }
+
+    res.json(college);
+  } catch (err) {
+    console.error("Error fetching college profile:", err);
+    res.status(500).json({ error: "Failed to fetch college profile" });
+  }
+});
+
+// PUT /api/college-features/profile — Update College Profile Details
+router.put("/profile", auth, roleCheck(["college_admin"]), async (req, res) => {
+  try {
+    const collegeId = req.user.collegeId;
+    const { name, location, logoUrl, contactEmail, contactPhone, website, about } = req.body;
+
+    let college = null;
+    if (collegeId) {
+      college = await College.findById(collegeId);
+    } else {
+      college = await College.findOne({});
+    }
+
+    if (!college) {
+      return res.status(404).json({ error: "College record not found" });
+    }
+
+    if (name) college.name = name;
+    if (location) college.location = location;
+    if (logoUrl !== undefined) college.logoUrl = logoUrl;
+    if (contactEmail !== undefined) college.contactEmail = contactEmail;
+    if (contactPhone !== undefined) college.contactPhone = contactPhone;
+    if (website !== undefined) college.website = website;
+    if (about !== undefined) college.about = about;
+
+    await college.save();
+    res.json({ success: true, message: "College profile updated successfully", college });
+  } catch (err) {
+    console.error("Error updating college profile:", err);
+    res.status(500).json({ error: "Failed to update college profile" });
+  }
+});
+
 // POST /api/college-features/alumni — Add Alumni Mentor
 router.post("/alumni", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
