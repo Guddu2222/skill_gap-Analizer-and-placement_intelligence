@@ -13,9 +13,9 @@ import {
   Loader2,
   CheckCircle,
   AlertCircle,
-  ChevronRight,
 } from "lucide-react";
 import { updateStudentProfile } from "../../services/api";
+import { STANDARD_DEPARTMENTS, normalizeDepartment } from "../../constants/departments";
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 const PROFICIENCY_LEVELS = ["beginner", "intermediate", "advanced", "expert"];
@@ -289,7 +289,12 @@ const ProfileEditModal = ({ student, open, onClose, onProfileUpdate }) => {
     if (!validate()) return;
     setSaving(true);
     try {
-      const payload = { ...form, skills, preferredLocations };
+      const payload = {
+        ...form,
+        department: normalizeDepartment(form.department),
+        skills,
+        preferredLocations,
+      };
       
       // Sanitize empty values for numbers and enums to prevent Mongoose cast errors
       const fieldsToSanitize = ['cgpa', 'graduationYear', 'admissionYear', 'currentSemester', 'activeBacklogs', 'clearedBacklogs', 'expectedSalaryMin', 'expectedSalaryMax', 'gender'];
@@ -373,10 +378,13 @@ const ProfileEditModal = ({ student, open, onClose, onProfileUpdate }) => {
         />
       </Field>
       <Field label="Department" required>
-        <Input
-          value={form.department}
+        <Select
+          value={normalizeDepartment(form.department)}
           onChange={set("department")}
-          placeholder="Computer Science"
+          options={[
+            { value: "", label: "Select Department" },
+            ...STANDARD_DEPARTMENTS.map((dept) => ({ value: dept, label: dept })),
+          ]}
         />
       </Field>
       <Field label="Degree">

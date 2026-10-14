@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Building2, Briefcase, GraduationCap, Target, MapPin, Phone, Upload, CheckCircle, ChevronRight, ArrowLeft, X, AlertCircle } from 'lucide-react';
 import { updateStudentProfile } from '../../services/api';
+import { STANDARD_DEPARTMENTS, normalizeDepartment } from '../../constants/departments';
 
 const OnboardingWizard = ({ user, onComplete }) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -72,7 +73,7 @@ const OnboardingWizard = ({ user, onComplete }) => {
         
         await updateStudentProfile({
           college: studentData.collegeName,
-          department: studentData.department,
+          department: normalizeDepartment(studentData.department),
           graduationYear: studentData.year,
           rollNumber: studentData.rollNumber,
           targetRole: studentData.targetRole,
@@ -176,13 +177,18 @@ const OnboardingWizard = ({ user, onComplete }) => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">Department</label>
-                  <input 
-                    type="text" 
+                  <select 
                     value={studentData.department} 
                     onChange={e => setStudentData({...studentData, department: e.target.value})} 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all placeholder:text-slate-600" 
-                    placeholder="Computer Science" 
-                  />
+                    className="w-full bg-[#121224] border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-indigo-500 focus:bg-[#16162a] transition-all text-sm"
+                  >
+                    <option value="" disabled className="text-slate-500">Select Department</option>
+                    {STANDARD_DEPARTMENTS.map((dept) => (
+                      <option key={dept} value={dept} className="bg-[#17172b] text-white">
+                        {dept}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">Graduation Year</label>

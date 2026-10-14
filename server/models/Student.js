@@ -149,6 +149,11 @@ const studentSchema = new mongoose.Schema(
 studentSchema.pre("save", function (next) {
   const student = this;
 
+  if (student.department) {
+    const { normalizeDepartment } = require("../utils/departmentHelper");
+    student.department = normalizeDepartment(student.department);
+  }
+
   const requiredFields = [
     "firstName",
     "lastName",

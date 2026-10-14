@@ -144,13 +144,10 @@ router.get(
             ).toFixed(2)
           : 0;
 
+      const { normalizeDepartment } = require("../utils/departmentHelper");
       const departmentStats = {};
       students.forEach((student) => {
-        let dept = student.department || "Other";
-        dept = dept.trim().toLowerCase();
-        
-        // Capitalize the first letter of each word for display
-        dept = dept.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        const dept = normalizeDepartment(student.department);
 
         if (!departmentStats[dept])
           departmentStats[dept] = { total: 0, placed: 0, students: [] };

@@ -12,6 +12,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import StudentDetailModal from "./StudentDetailModal";
+import { normalizeDepartment } from "../constants/departments";
 
 const StudentsView = ({
   students,
@@ -38,8 +39,10 @@ const StudentsView = ({
         (student.roll_number || "").toLowerCase().includes(search) ||
         (student.college_roll_number || "").toLowerCase().includes(search) ||
         (student.email || "").toLowerCase().includes(search);
+      const dept = normalizeDepartment(student.department);
       const matchesDept =
         selectedDepartment === "all" ||
+        dept === selectedDepartment ||
         student.department === selectedDepartment;
       return matchesSearch && matchesDept;
     });
@@ -93,7 +96,7 @@ const StudentsView = ({
             <div className="flex items-center justify-between text-xs">
               <span className="text-slate-400">Department</span>
               <span className="font-semibold text-slate-200">
-                {student.department || "–"}
+                {normalizeDepartment(student.department)}
               </span>
             </div>
             <div className="flex items-center justify-between text-xs">
@@ -220,7 +223,7 @@ const StudentsView = ({
                 )}
               </div>
               <p className="text-xs text-slate-400 truncate mt-0.5">
-                {student.roll_number || "–"} • {student.department}
+                {student.roll_number || "–"} • {normalizeDepartment(student.department)}
               </p>
             </div>
           </div>

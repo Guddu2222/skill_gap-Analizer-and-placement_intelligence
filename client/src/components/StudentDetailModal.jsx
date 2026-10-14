@@ -13,6 +13,7 @@ import {
   Code2,
   ExternalLink,
 } from "lucide-react";
+import { normalizeDepartment } from "../constants/departments";
 
 const StudentDetailModal = ({ student, onClose }) => {
   if (!student) return null;
@@ -77,7 +78,7 @@ const StudentDetailModal = ({ student, onClose }) => {
                 )}
               </div>
               <p className="text-sm text-slate-400 mb-3">
-                {student.roll_number || "No Roll"} • {student.department}
+                {student.roll_number || "No Roll"} • {normalizeDepartment(student.department)}
                 {student.college_roll_number ? ` • College ID: ${student.college_roll_number}` : ""}
               </p>
               <div className="flex flex-wrap items-center gap-4 text-xs text-slate-300">
