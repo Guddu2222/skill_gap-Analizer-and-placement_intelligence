@@ -10,23 +10,23 @@ import {
   TrendingUp,
   Calendar,
   MapPin,
+  Code2,
+  ExternalLink,
 } from "lucide-react";
 
 const StudentDetailModal = ({ student, onClose }) => {
   if (!student) return null;
 
   const getProficiencyColor = (level) => {
-    const colors = {
-      beginner: "bg-red-100 text-red-700",
-      intermediate: "bg-yellow-100 text-yellow-700",
-      advanced: "bg-blue-100 text-blue-700",
-      expert: "bg-green-100 text-green-700",
-    };
-    return colors[(level || "").toLowerCase()] || "bg-gray-100 text-gray-700";
+    const l = (level || "").toLowerCase();
+    if (l === "expert") return "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30";
+    if (l === "advanced") return "bg-cyan-500/15 text-cyan-400 border border-cyan-500/30";
+    if (l === "intermediate") return "bg-amber-500/15 text-amber-400 border border-amber-500/30";
+    return "bg-rose-500/15 text-rose-400 border border-rose-500/30";
   };
 
   const groupedSkills = (student.skills || []).reduce((acc, skill) => {
-    const cat = skill.skill_category || "other";
+    const cat = skill.skill_category || "technical";
     if (!acc[cat]) acc[cat] = [];
     acc[cat].push(skill);
     return acc;
@@ -34,52 +34,68 @@ const StudentDetailModal = ({ student, onClose }) => {
 
   const displayName =
     [student.first_name, student.last_name].filter(Boolean).join(" ") ||
-    student.roll_number;
+    student.roll_number ||
+    "Student";
+
+  const initials =
+    ((student.first_name || "")[0] || "") + ((student.last_name || "")[0] || "S");
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fadeIn"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl"
+        className="bg-[#141426] border border-white/10 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl relative text-[#e3e0f1]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white relative">
+        {/* Ambient header glow */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-violet-600/15 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="bg-gradient-to-r from-violet-600/20 via-indigo-600/20 to-cyan-600/15 border-b border-white/8 p-7 relative">
           <button
             type="button"
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 hover:bg-white/20 rounded-lg transition-colors"
+            className="absolute top-5 right-5 p-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-colors text-slate-300 hover:text-white"
             aria-label="Close"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
-          <div className="flex items-start space-x-4">
-            <div className="w-20 h-20 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center text-3xl font-bold border-2 border-white/30">
-              {(student.first_name || "")[0]}
-              {(student.last_name || "")[0]}
+
+          <div className="flex items-start space-x-5">
+            <div className="w-20 h-20 bg-gradient-to-br from-violet-600 to-cyan-600 rounded-2xl flex items-center justify-center text-2xl font-bold text-white shadow-xl shadow-violet-600/30 border border-white/15 shrink-0">
+              {initials.toUpperCase()}
             </div>
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold mb-1">{displayName}</h2>
-              <p className="text-blue-100 mb-3">
-                {student.roll_number} • {student.department}
+            <div className="flex-1 pr-10">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
+                <h2 className="text-2xl font-extrabold text-white tracking-tight">{displayName}</h2>
+                {student.is_placed && (
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                    <Award className="w-3.5 h-3.5" />
+                    Placed
+                  </span>
+                )}
+              </div>
+              <p className="text-sm text-slate-400 mb-3">
+                {student.roll_number || "No Roll"} • {student.department}
+                {student.college_roll_number ? ` • College ID: ${student.college_roll_number}` : ""}
               </p>
-              <div className="flex flex-wrap items-center gap-4">
+              <div className="flex flex-wrap items-center gap-4 text-xs text-slate-300">
                 {student.email && (
                   <a
                     href={`mailto:${student.email}`}
-                    className="flex items-center space-x-2 text-sm hover:text-blue-200 transition-colors"
+                    className="flex items-center space-x-1.5 hover:text-violet-400 transition-colors"
                   >
-                    <Mail className="w-4 h-4" />
+                    <Mail className="w-3.5 h-3.5 text-slate-400" />
                     <span>{student.email}</span>
                   </a>
                 )}
                 {student.phone && (
                   <a
                     href={`tel:${student.phone}`}
-                    className="flex items-center space-x-2 text-sm hover:text-blue-200 transition-colors"
+                    className="flex items-center space-x-1.5 hover:text-cyan-400 transition-colors"
                   >
-                    <Phone className="w-4 h-4" />
+                    <Phone className="w-3.5 h-3.5 text-slate-400" />
                     <span>{student.phone}</span>
                   </a>
                 )}
@@ -88,89 +104,93 @@ const StudentDetailModal = ({ student, onClose }) => {
           </div>
         </div>
 
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4">
-              <TrendingUp className="w-8 h-8 text-blue-600 mb-2" />
-              <p className="text-2xl font-bold text-gray-900">
-                {student.cgpa ?? "–"}
+        <div className="p-7 overflow-y-auto max-h-[calc(90vh-170px)] space-y-6">
+          {/* Quick Stats Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="rounded-2xl bg-white/[0.03] border border-white/8 p-4">
+              <TrendingUp className="w-6 h-6 text-violet-400 mb-2" />
+              <p className="text-2xl font-bold text-white tracking-tight">
+                {student.cgpa != null ? student.cgpa : "–"}
               </p>
-              <p className="text-sm text-gray-600">CGPA</p>
+              <p className="text-xs text-slate-400">Cumulative GPA</p>
             </div>
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4">
-              <Calendar className="w-8 h-8 text-purple-600 mb-2" />
-              <p className="text-2xl font-bold text-gray-900">
+            <div className="rounded-2xl bg-white/[0.03] border border-white/8 p-4">
+              <Calendar className="w-6 h-6 text-cyan-400 mb-2" />
+              <p className="text-2xl font-bold text-white tracking-tight">
                 {student.graduation_year ?? "–"}
               </p>
-              <p className="text-sm text-gray-600">Graduation</p>
+              <p className="text-xs text-slate-400">Graduation Year</p>
             </div>
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4">
-              <Award className="w-8 h-8 text-green-600 mb-2" />
-              <p className="text-2xl font-bold text-gray-900">
+            <div className="rounded-2xl bg-white/[0.03] border border-white/8 p-4">
+              <Code2 className="w-6 h-6 text-indigo-400 mb-2" />
+              <p className="text-2xl font-bold text-white tracking-tight">
                 {student.skills?.length || 0}
               </p>
-              <p className="text-sm text-gray-600">Skills</p>
+              <p className="text-xs text-slate-400">Verified Skills</p>
             </div>
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4">
+            <div className="rounded-2xl bg-white/[0.03] border border-white/8 p-4">
               {student.is_placed ? (
                 <>
-                  <Award className="w-8 h-8 text-orange-600 mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">
+                  <Award className="w-6 h-6 text-emerald-400 mb-2" />
+                  <p className="text-2xl font-bold text-emerald-400 tracking-tight">
                     ₹{student.placement_package}L
                   </p>
-                  <p className="text-sm text-gray-600">Package</p>
+                  <p className="text-xs text-slate-400">Annual CTC</p>
                 </>
               ) : (
                 <>
-                  <MapPin className="w-8 h-8 text-orange-600 mb-2" />
-                  <p className="text-lg font-bold text-gray-900">Seeking</p>
-                  <p className="text-sm text-gray-600">Opportunities</p>
+                  <MapPin className="w-6 h-6 text-amber-400 mb-2" />
+                  <p className="text-lg font-bold text-white tracking-tight">Seeking</p>
+                  <p className="text-xs text-slate-400">Campus Drives</p>
                 </>
               )}
             </div>
           </div>
 
+          {/* Placed Highlight Card */}
           {student.is_placed && (
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6">
-              <div className="flex items-center space-x-3">
-                <Award className="w-6 h-6 text-green-600 shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-green-900">
-                    Placed at {student.placed_company}
-                  </h3>
-                  <p className="text-sm text-green-700">
-                    Package: ₹{student.placement_package} LPA
-                  </p>
-                </div>
+            <div className="bg-emerald-500/10 border border-emerald-500/25 rounded-2xl p-5 flex items-center space-x-4">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-300 shrink-0">
+                <Award className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="font-bold text-white text-base">
+                  Placed at {student.placed_company || "Recruiter Partner"}
+                </h3>
+                <p className="text-xs text-emerald-300 mt-0.5">
+                  Package: ₹{student.placement_package} LPA • Offer Confirmed
+                </p>
               </div>
             </div>
           )}
 
-          <div className="mb-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">
-              Skills Inventory
+          {/* Skills Breakdown */}
+          <div>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300 mb-4 flex items-center gap-2">
+              <Code2 className="w-4 h-4 text-violet-400" />
+              Verified Skills Inventory
             </h3>
             <div className="space-y-4">
               {Object.entries(groupedSkills).map(([category, skills]) => (
-                <div key={category} className="bg-gray-50 rounded-xl p-4">
-                  <h4 className="font-semibold text-gray-900 mb-3 capitalize">
+                <div key={category} className="bg-white/[0.02] border border-white/5 rounded-2xl p-4">
+                  <h4 className="font-semibold text-white text-xs uppercase tracking-wider mb-3 capitalize text-slate-300">
                     {(category || "other").replace(/_/g, " ")}
                   </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {skills.map((skill, index) => (
                       <div
                         key={index}
-                        className="flex items-center justify-between bg-white rounded-lg p-3 border border-gray-200"
+                        className="flex items-center justify-between bg-[#10101e] rounded-xl px-3.5 py-2.5 border border-white/5"
                       >
-                        <span className="font-medium text-gray-900">
-                          {skill.skill_name}
+                        <span className="font-medium text-slate-200 text-xs">
+                          {typeof skill === "string" ? skill : skill.skill_name}
                         </span>
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold ${getProficiencyColor(
-                            skill.proficiency_level,
+                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${getProficiencyColor(
+                            skill.proficiency_level
                           )}`}
                         >
-                          {skill.proficiency_level}
+                          {skill.proficiency_level || "Intermediate"}
                         </span>
                       </div>
                     ))}
@@ -178,20 +198,21 @@ const StudentDetailModal = ({ student, onClose }) => {
                 </div>
               ))}
               {Object.keys(groupedSkills).length === 0 && (
-                <p className="text-gray-500 text-sm">No skills recorded.</p>
+                <p className="text-slate-500 text-xs py-4 text-center">No skills registered yet.</p>
               )}
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          {/* Action Links */}
+          <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-white/8">
             {student.resume_url && (
               <a
                 href={student.resume_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-violet-600/30 transition-all"
               >
-                <Download className="w-5 h-5" />
+                <Download className="w-4 h-4" />
                 <span>Download Resume</span>
               </a>
             )}
@@ -200,9 +221,9 @@ const StudentDetailModal = ({ student, onClose }) => {
                 href={student.linkedin_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-[#0A66C2] text-white rounded-lg font-semibold hover:bg-[#004182] transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600/15 hover:bg-blue-600/25 text-blue-400 border border-blue-500/30 rounded-xl text-xs font-semibold transition-all"
               >
-                <Linkedin className="w-5 h-5" />
+                <Linkedin className="w-4 h-4" />
                 <span>LinkedIn</span>
               </a>
             )}
@@ -211,9 +232,9 @@ const StudentDetailModal = ({ student, onClose }) => {
                 href={student.github_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 rounded-xl text-xs font-semibold transition-all"
               >
-                <Github className="w-5 h-5" />
+                <Github className="w-4 h-4" />
                 <span>GitHub</span>
               </a>
             )}

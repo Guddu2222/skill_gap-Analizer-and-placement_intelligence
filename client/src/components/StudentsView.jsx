@@ -7,6 +7,9 @@ import {
   Linkedin,
   Github,
   Award,
+  ExternalLink,
+  GraduationCap,
+  Sparkles,
 } from "lucide-react";
 import StudentDetailModal from "./StudentDetailModal";
 
@@ -45,116 +48,140 @@ const StudentsView = ({
   const StudentCard = ({ student }) => {
     const name =
       [student.first_name, student.last_name].filter(Boolean).join(" ") ||
-      student.roll_number;
+      student.roll_number ||
+      "Student";
     const initials =
-      (student.first_name || "")[0] + (student.last_name || "")[0] || "?";
+      (student.first_name || "")[0] + (student.last_name || "")[0] || "S";
+
     return (
       <div
-        className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-blue-300"
+        className="group relative bg-[#141426]/90 backdrop-blur-xl rounded-2xl p-6 shadow-xl hover:shadow-violet-500/10 transition-all duration-300 cursor-pointer border border-white/8 hover:border-violet-500/40 hover:-translate-y-1 flex flex-col justify-between"
         onClick={() => setSelectedStudent(student)}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => e.key === "Enter" && setSelectedStudent(student)}
       >
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">
-              {initials}
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900">{name}</h3>
-              <p className="text-sm text-gray-500">{student.roll_number}</p>
-              {student.college_roll_number && (
-                <p className="text-xs text-blue-600 font-medium">
-                  College: {student.college_roll_number}
+        <div>
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center space-x-3.5">
+              <div className="w-12 h-12 bg-gradient-to-br from-violet-600 to-cyan-600 rounded-xl flex items-center justify-center text-white font-bold text-base shadow-lg shadow-violet-600/30 border border-white/10 shrink-0">
+                {initials.toUpperCase()}
+              </div>
+              <div>
+                <h3 className="font-bold text-white text-base group-hover:text-violet-300 transition-colors line-clamp-1">
+                  {name}
+                </h3>
+                <p className="text-xs text-slate-400 font-mono mt-0.5">
+                  {student.roll_number || "No Roll"}
                 </p>
-              )}
+                {student.college_roll_number && (
+                  <p className="text-[11px] text-cyan-400 font-medium mt-0.5">
+                    College ID: {student.college_roll_number}
+                  </p>
+                )}
+              </div>
+            </div>
+            {student.is_placed && (
+              <span className="px-2.5 py-1 bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-semibold flex items-center shrink-0">
+                <Award className="w-3.5 h-3.5 mr-1" />
+                Placed
+              </span>
+            )}
+          </div>
+
+          <div className="space-y-2 mb-4 bg-white/[0.02] p-3 rounded-xl border border-white/5">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-400">Department</span>
+              <span className="font-semibold text-slate-200">
+                {student.department || "–"}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-400">CGPA</span>
+              <span
+                className={`font-bold ${
+                  parseFloat(student.cgpa) >= 8
+                    ? "text-emerald-400"
+                    : parseFloat(student.cgpa) >= 6
+                    ? "text-cyan-400"
+                    : "text-amber-400"
+                }`}
+              >
+                {student.cgpa != null ? `${student.cgpa} / 10` : "–"}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-400">Graduation Year</span>
+              <span className="font-semibold text-slate-200">
+                {student.graduation_year ?? "–"}
+              </span>
             </div>
           </div>
-          {student.is_placed && (
-            <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold flex items-center">
-              <Award className="w-3 h-3 mr-1" />
-              Placed
-            </span>
-          )}
-        </div>
-        <div className="space-y-2 mb-4">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Department</span>
-            <span className="font-medium text-gray-900">
-              {student.department}
-            </span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">CGPA</span>
-            <span className="font-medium text-gray-900">
-              {student.cgpa != null ? `${student.cgpa}/10` : "–"}
-            </span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Graduation</span>
-            <span className="font-medium text-gray-900">
-              {student.graduation_year ?? "–"}
-            </span>
-          </div>
-        </div>
-        {student.skills && student.skills.length > 0 && (
-          <div className="mb-4">
-            <p className="text-xs font-semibold text-gray-700 mb-2">
-              Top Skills
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {student.skills.slice(0, 5).map((skill, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 bg-blue-50 text-blue-700 rounded-lg text-xs font-medium"
-                >
-                  {skill.skill_name}
-                </span>
-              ))}
-              {student.skills.length > 5 && (
-                <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium">
-                  +{student.skills.length - 5} more
-                </span>
-              )}
+
+          {student.skills && student.skills.length > 0 && (
+            <div className="mb-4">
+              <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                Top Skills
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {student.skills.slice(0, 4).map((skill, index) => (
+                  <span
+                    key={index}
+                    className="px-2.5 py-0.5 bg-violet-500/10 text-violet-300 border border-violet-500/20 rounded-md text-xs font-medium"
+                  >
+                    {typeof skill === "string" ? skill : skill.skill_name}
+                  </span>
+                ))}
+                {student.skills.length > 4 && (
+                  <span className="px-2 py-0.5 bg-white/5 text-slate-400 border border-white/10 rounded-md text-xs">
+                    +{student.skills.length - 4}
+                  </span>
+                )}
+              </div>
             </div>
+          )}
+        </div>
+
+        <div className="flex items-center justify-between pt-3.5 border-t border-white/5 text-slate-400 text-xs">
+          <div className="flex items-center gap-3">
+            {student.email && (
+              <a
+                href={`mailto:${student.email}`}
+                className="hover:text-violet-400 transition-colors p-1"
+                onClick={(e) => e.stopPropagation()}
+                aria-label="Email"
+              >
+                <Mail className="w-4 h-4" />
+              </a>
+            )}
+            {student.linkedin_url && (
+              <a
+                href={student.linkedin_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-cyan-400 transition-colors p-1"
+                onClick={(e) => e.stopPropagation()}
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
+            )}
+            {student.github_url && (
+              <a
+                href={student.github_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors p-1"
+                onClick={(e) => e.stopPropagation()}
+                aria-label="GitHub"
+              >
+                <Github className="w-4 h-4" />
+              </a>
+            )}
           </div>
-        )}
-        <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-          {student.email && (
-            <a
-              href={`mailto:${student.email}`}
-              className="text-gray-400 hover:text-blue-600 transition-colors"
-              onClick={(e) => e.stopPropagation()}
-              aria-label="Email"
-            >
-              <Mail className="w-4 h-4" />
-            </a>
-          )}
-          {student.linkedin_url && (
-            <a
-              href={student.linkedin_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-blue-600 transition-colors"
-              onClick={(e) => e.stopPropagation()}
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-4 h-4" />
-            </a>
-          )}
-          {student.github_url && (
-            <a
-              href={student.github_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-gray-900 transition-colors"
-              onClick={(e) => e.stopPropagation()}
-              aria-label="GitHub"
-            >
-              <Github className="w-4 h-4" />
-            </a>
-          )}
+          <span className="text-[11px] text-violet-400 group-hover:underline flex items-center gap-1 font-semibold">
+            View Profile <ExternalLink className="w-3 h-3" />
+          </span>
         </div>
       </div>
     );
@@ -163,63 +190,58 @@ const StudentsView = ({
   const StudentListItem = ({ student }) => {
     const name =
       [student.first_name, student.last_name].filter(Boolean).join(" ") ||
-      student.roll_number;
+      student.roll_number ||
+      "Student";
     const initials =
-      (student.first_name || "")[0] + (student.last_name || "")[0] || "?";
+      (student.first_name || "")[0] + (student.last_name || "")[0] || "S";
+
     return (
       <div
-        className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer border border-gray-100 hover:border-blue-300"
+        className="bg-[#141426]/90 backdrop-blur-xl rounded-xl p-4 shadow-md hover:shadow-violet-500/10 transition-all duration-300 cursor-pointer border border-white/8 hover:border-violet-500/40 group"
         onClick={() => setSelectedStudent(student)}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => e.key === "Enter" && setSelectedStudent(student)}
       >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4 flex-1 min-w-0">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold shrink-0">
-              {initials}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center space-x-3.5 flex-1 min-w-0">
+            <div className="w-10 h-10 bg-gradient-to-br from-violet-600 to-cyan-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shrink-0 border border-white/10">
+              {initials.toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-gray-900 truncate">{name}</h3>
+                <h3 className="font-semibold text-white truncate group-hover:text-violet-300 transition-colors">
+                  {name}
+                </h3>
                 {student.is_placed && (
-                  <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs font-semibold shrink-0">
+                  <span className="px-2 py-0.5 bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 rounded text-xs font-semibold shrink-0">
                     Placed
                   </span>
                 )}
               </div>
-              <p className="text-sm text-gray-500 truncate">
-                {student.roll_number}
-                {student.college_roll_number
-                  ? ` / ${student.college_roll_number}`
-                  : ""}{" "}
-                • {student.department}
+              <p className="text-xs text-slate-400 truncate mt-0.5">
+                {student.roll_number || "–"} • {student.department}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-6 shrink-0">
-            <div className="text-right">
-              <p className="text-sm font-semibold text-gray-900">
-                {student.cgpa != null ? student.cgpa : "–"} CGPA
+          <div className="flex items-center gap-6 shrink-0 justify-between sm:justify-end">
+            <div className="text-left sm:text-right">
+              <p className="text-sm font-bold text-white">
+                {student.cgpa != null ? `${student.cgpa} CGPA` : "–"}
               </p>
-              <p className="text-xs text-gray-500">
-                {student.graduation_year ?? "–"}
+              <p className="text-[11px] text-slate-400">
+                Class of {student.graduation_year ?? "–"}
               </p>
             </div>
-            <div className="flex flex-wrap gap-1 max-w-xs justify-end">
+            <div className="hidden md:flex flex-wrap gap-1 max-w-xs justify-end">
               {student.skills?.slice(0, 3).map((skill, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs"
+                  className="px-2 py-0.5 bg-violet-500/10 text-violet-300 border border-violet-500/20 rounded text-xs"
                 >
-                  {skill.skill_name}
+                  {typeof skill === "string" ? skill : skill.skill_name}
                 </span>
               ))}
-              {student.skills?.length > 3 && (
-                <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
-                  +{student.skills.length - 3}
-                </span>
-              )}
             </div>
           </div>
         </div>
@@ -230,96 +252,110 @@ const StudentsView = ({
   const deptList = Array.isArray(departments)
     ? departments
     : departments
-      ? Object.keys(departments)
-      : [];
+    ? Object.keys(departments)
+    : [];
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-xl p-4 shadow-md">
+      {/* ─── FILTERS & SEARCH BAR ─── */}
+      <div className="bg-[rgba(23,23,43,0.8)] backdrop-blur-xl rounded-2xl p-4 shadow-xl border border-white/8">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search by name, roll number (university or college), email..."
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Search by student name, roll number, email..."
+              className="w-full pl-10 pr-4 py-2.5 bg-[#121224] border border-white/10 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
             />
           </div>
-          <select
-            value={selectedDepartment}
-            onChange={(e) => setSelectedDepartment(e.target.value)}
-            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="all">All Departments</option>
-            {deptList.map((dept) => (
-              <option key={dept} value={dept}>
-                {dept}
-              </option>
-            ))}
-          </select>
-          <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
-            <button
-              type="button"
-              onClick={() => setViewMode("grid")}
-              className={`p-2 rounded-lg transition-all ${
-                viewMode === "grid"
-                  ? "bg-white text-blue-600 shadow-sm"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-              aria-label="Grid view"
+
+          <div className="flex flex-wrap items-center gap-3">
+            <select
+              value={selectedDepartment}
+              onChange={(e) => setSelectedDepartment(e.target.value)}
+              className="px-3.5 py-2.5 bg-[#121224] border border-white/10 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-violet-500"
             >
-              <Grid3x3 className="w-5 h-5" />
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode("list")}
-              className={`p-2 rounded-lg transition-all ${
-                viewMode === "list"
-                  ? "bg-white text-blue-600 shadow-sm"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-              aria-label="List view"
-            >
-              <List className="w-5 h-5" />
-            </button>
+              <option value="all">All Departments</option>
+              {deptList.map((dept) => (
+                <option key={dept} value={dept}>
+                  {dept}
+                </option>
+              ))}
+            </select>
+
+            <div className="flex items-center gap-1 bg-white/5 rounded-xl p-1 border border-white/8">
+              <button
+                type="button"
+                onClick={() => setViewMode("grid")}
+                className={`p-2 rounded-lg transition-all ${
+                  viewMode === "grid"
+                    ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-600/30"
+                    : "text-slate-400 hover:text-white"
+                }`}
+                aria-label="Grid view"
+              >
+                <Grid3x3 className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode("list")}
+                className={`p-2 rounded-lg transition-all ${
+                  viewMode === "list"
+                    ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-600/30"
+                    : "text-slate-400 hover:text-white"
+                }`}
+                aria-label="List view"
+              >
+                <List className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
-        <div className="mt-4 pt-4 border-t border-gray-200">
-          <p className="text-sm text-gray-600">
-            Showing{" "}
-            <span className="font-semibold text-gray-900">
-              {filteredStudents.length}
-            </span>{" "}
-            students
+
+        <div className="mt-3.5 pt-3.5 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
+          <p>
+            Showing <span className="font-bold text-white">{filteredStudents.length}</span>{" "}
+            students matching criteria
           </p>
+          {selectedDepartment !== "all" && (
+            <button
+              onClick={() => setSelectedDepartment("all")}
+              className="text-violet-400 hover:text-violet-300 font-semibold"
+            >
+              Reset Department Filter
+            </button>
+          )}
         </div>
       </div>
 
+      {/* ─── STUDENTS CONTAINER ─── */}
       {viewMode === "grid" ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredStudents.map((student) => (
-            <StudentCard key={student.id} student={student} />
+            <StudentCard key={student.id || student._id} student={student} />
           ))}
         </div>
       ) : (
         <div className="space-y-3">
           {filteredStudents.map((student) => (
-            <StudentListItem key={student.id} student={student} />
+            <StudentListItem key={student.id || student._id} student={student} />
           ))}
         </div>
       )}
 
       {filteredStudents.length === 0 && (
-        <div className="bg-white rounded-xl p-12 text-center shadow-md">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Search className="w-8 h-8 text-gray-400" />
+        <div className="bg-[rgba(23,23,43,0.8)] border border-white/8 rounded-2xl p-16 text-center shadow-xl">
+          <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-slate-500">
+            <Search className="w-7 h-7" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            No students found
+          <h3 className="text-base font-bold text-white mb-1">
+            No students match your search
           </h3>
-          <p className="text-gray-600">Try adjusting your search or filters</p>
+          <p className="text-xs text-slate-400 max-w-sm mx-auto">
+            Try adjusting your search query, clearing department filters, or checking roll numbers.
+          </p>
         </div>
       )}
 

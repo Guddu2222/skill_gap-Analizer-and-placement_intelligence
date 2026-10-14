@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import StudentsView from "../components/StudentsView";
 import SkillsAnalytics from "../components/SkillsAnalytics";
@@ -9,8 +10,15 @@ import {
   Building2,
   Download,
   BarChart3,
-  Code,
+  Code2,
   Briefcase,
+  MapPin,
+  Sparkles,
+  ArrowUpRight,
+  GraduationCap,
+  ChevronRight,
+  Calendar,
+  Layers,
 } from "lucide-react";
 import {
   fetchCollegeDashboard,
@@ -19,27 +27,38 @@ import {
   exportCollegeStudents,
 } from "../services/api";
 
-const StatCard = ({ icon: Icon, title, value, subtitle, trend, color }) => (
-  <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+const StatCard = ({ icon: Icon, title, value, subtitle, trend, color, glowColor }) => (
+  <div className="relative overflow-hidden rounded-2xl bg-[rgba(23,23,43,0.8)] backdrop-blur-xl border border-white/8 p-6 hover:border-violet-500/40 transition-all duration-300 group shadow-lg hover:shadow-violet-500/10 hover:-translate-y-1">
+    <div
+      className={`absolute top-0 right-0 w-28 h-28 rounded-full blur-3xl opacity-20 -translate-y-6 translate-x-6 transition-opacity group-hover:opacity-40 ${glowColor}`}
+    />
     <div className="flex items-start justify-between">
       <div className="flex-1">
-        <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
-        <h3 className="text-3xl font-bold text-gray-900 mb-2">{value}</h3>
-        <p className="text-sm text-gray-500">{subtitle}</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+          {title}
+        </p>
+        <h3 className="text-3xl font-extrabold text-white tracking-tight mb-1">
+          {value}
+        </h3>
+        <p className="text-xs text-slate-400 flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-violet-400/80" />
+          {subtitle}
+        </p>
       </div>
       <div
-        className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${color}`}
+        className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border border-white/10 shadow-lg ${color}`}
       >
         <Icon className="w-6 h-6 text-white" />
       </div>
     </div>
     {trend != null && (
-      <div className="mt-4 pt-4 border-t border-gray-100">
-        <div className="flex items-center text-sm">
-          <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
-          <span className="text-green-600 font-semibold">{trend}%</span>
-          <span className="text-gray-500 ml-1">vs last month</span>
+      <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <div className="flex items-center text-emerald-400 font-semibold gap-1">
+          <TrendingUp className="w-3.5 h-3.5" />
+          <span>{trend}%</span>
+          <span className="text-slate-400 font-normal">placement rate</span>
         </div>
+        <span className="text-slate-400 text-[11px]">Academic Cohort</span>
       </div>
     )}
   </div>
@@ -128,219 +147,338 @@ const CollegeDashboard = () => {
     ? Object.keys(dashboardData.departmentStats)
     : [];
 
+  const handleDepartmentDrilldown = (deptName) => {
+    setSelectedDepartment(deptName);
+    setActiveView("students");
+  };
+
   if (loading && !dashboardData) {
     return (
-      <div className="flex bg-gray-50 min-h-screen font-sans">
+      <div className="flex bg-[#0a0a14] min-h-screen font-sans text-white">
         <Sidebar role="college" />
         <main className="flex-1 ml-64 flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-gray-600">Loading dashboard...</p>
+          <div className="text-center space-y-4">
+            <div className="relative w-16 h-16 mx-auto">
+              <div className="w-16 h-16 border-4 border-violet-500/20 border-t-violet-500 rounded-full animate-spin" />
+              <Sparkles className="w-6 h-6 text-cyan-400 absolute inset-0 m-auto animate-pulse" />
+            </div>
+            <p className="text-slate-400 text-sm font-medium tracking-wide">
+              Loading Placement Command Center...
+            </p>
           </div>
         </main>
       </div>
     );
   }
 
+  const collegeName =
+    dashboardData?.college?.name || "Panipat Institute of Engineering and Technology";
+  const collegeLocation =
+    dashboardData?.college?.location ||
+    "70, Milestone GT Road, Samalkha, Panipat, Haryana 132102";
+
   return (
-    <div className="flex bg-gray-50 min-h-screen font-sans">
+    <div className="flex bg-[#0a0a14] min-h-screen font-sans text-[#e3e0f1] relative selection:bg-violet-500/30 selection:text-white">
+      {/* Ambient background glows */}
+      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+        <div className="absolute top-0 left-64 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-[140px]" />
+        <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-cyan-600/8 rounded-full blur-[150px]" />
+        <div className="absolute top-1/2 left-1/3 w-[400px] h-[400px] bg-indigo-600/5 rounded-full blur-[120px]" />
+      </div>
+
       <Sidebar role="college" />
-      <main className="flex-1 ml-64 p-8">
-        <header className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              {dashboardData?.college?.name
-                ? `${dashboardData.college.name} – Placement Dashboard`
-                : "Placement Command Center"}
-            </h1>
-            <p className="text-gray-500">
-              {dashboardData?.college?.location
-                ? `${dashboardData.college.location} • `
-                : ""}
-              Academic Year Overview
-            </p>
-          </div>
-          <div className="flex items-center gap-4">
-            {error && (
-              <span className="text-sm text-red-600 bg-red-50 px-3 py-1 rounded-lg">
-                {error}
-              </span>
-            )}
-            <button
-              type="button"
-              onClick={handleExport}
-              disabled={exporting}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 disabled:opacity-50"
-            >
-              <Download className="w-4 h-4" />
-              {exporting ? "Exporting..." : "Export Data"}
-            </button>
+
+      <main className="flex-1 ml-64 p-8 max-w-7xl">
+        {/* ─── HERO HEADER BANNER ─── */}
+        <header className="relative overflow-hidden rounded-3xl bg-[rgba(23,23,43,0.7)] backdrop-blur-2xl border border-white/10 p-7 mb-8 shadow-2xl">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-violet-600/15 via-cyan-500/10 to-transparent rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/3" />
+
+          <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="flex items-start gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white shadow-xl shadow-violet-600/30 border border-white/15 shrink-0">
+                <GraduationCap className="w-8 h-8" />
+              </div>
+              <div>
+                <div className="flex flex-wrap items-center gap-2.5 mb-1.5">
+                  <h1 className="text-2xl font-extrabold text-white tracking-tight">
+                    {collegeName}
+                  </h1>
+                  <span className="px-2.5 py-0.5 rounded-full bg-violet-500/15 text-violet-300 text-xs font-semibold border border-violet-500/30 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    Campus Hub
+                  </span>
+                </div>
+                <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400">
+                  <span className="flex items-center gap-1.5 text-slate-300">
+                    <MapPin className="w-3.5 h-3.5 text-cyan-400" />
+                    {collegeLocation}
+                  </span>
+                  <span className="flex items-center gap-1.5 text-slate-400">
+                    <Calendar className="w-3.5 h-3.5 text-violet-400" />
+                    Academic Year 2025–2026 Overview
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0">
+              {error && (
+                <span className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 px-3 py-1.5 rounded-xl">
+                  {error}
+                </span>
+              )}
+              <Link
+                to="/college/analytics"
+                className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 text-xs font-semibold transition-all flex items-center gap-2 hover:border-violet-500/30"
+              >
+                <BarChart3 className="w-4 h-4 text-violet-400" />
+                Deep Analytics
+              </Link>
+              <button
+                type="button"
+                onClick={handleExport}
+                disabled={exporting}
+                className="px-5 py-2.5 bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-600 hover:from-violet-500 hover:to-cyan-500 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-lg shadow-violet-600/25 border border-white/10 disabled:opacity-50"
+              >
+                <Download className="w-4 h-4" />
+                {exporting ? "Exporting..." : "Export Cohort CSV"}
+              </button>
+            </div>
           </div>
         </header>
 
-        {!dashboardData?.college && !loading && (
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-8">
-            <p className="text-amber-800">
-              You are not linked to a college, or the college record is missing.
-              Dashboard and student data are available only for college admins
-              with an associated college.
-            </p>
-          </div>
-        )}
-
-        <div className="flex gap-2 mb-8 bg-white rounded-xl p-2 shadow-sm">
+        {/* ─── NAVIGATION CAPSULE TABS ─── */}
+        <div className="flex items-center gap-2 mb-8 p-1.5 bg-[rgba(23,23,43,0.7)] backdrop-blur-xl rounded-2xl border border-white/8 w-fit shadow-lg">
           <button
             type="button"
             onClick={() => setActiveView("overview")}
-            className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
+            className={`px-5 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 ${
               activeView === "overview"
-                ? "bg-blue-600 text-white shadow-lg"
-                : "text-gray-600 hover:bg-gray-100"
+                ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-600/30"
+                : "text-slate-400 hover:text-white hover:bg-white/5"
             }`}
           >
-            <BarChart3 className="w-5 h-5" />
+            <BarChart3 className="w-4 h-4" />
             Overview
           </button>
           <button
             type="button"
             onClick={() => setActiveView("students")}
-            className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
+            className={`px-5 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 ${
               activeView === "students"
-                ? "bg-blue-600 text-white shadow-lg"
-                : "text-gray-600 hover:bg-gray-100"
+                ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-600/30"
+                : "text-slate-400 hover:text-white hover:bg-white/5"
             }`}
           >
-            <Users className="w-5 h-5" />
-            Students
+            <Users className="w-4 h-4" />
+            Students Directory
+            <span
+              className={`px-1.5 py-0.5 rounded-md text-[10px] ${
+                activeView === "students"
+                  ? "bg-white/20 text-white font-bold"
+                  : "bg-white/10 text-slate-300"
+              }`}
+            >
+              {dashboardData?.statistics?.totalStudents ?? students.length}
+            </span>
           </button>
           <button
             type="button"
             onClick={() => setActiveView("skills")}
-            className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
+            className={`px-5 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 ${
               activeView === "skills"
-                ? "bg-blue-600 text-white shadow-lg"
-                : "text-gray-600 hover:bg-gray-100"
+                ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-600/30"
+                : "text-slate-400 hover:text-white hover:bg-white/5"
             }`}
           >
-            <Code className="w-5 h-5" />
-            Skills Analytics
+            <Code2 className="w-4 h-4" />
+            Skills Intelligence
           </button>
         </div>
 
+        {/* ─── OVERVIEW TAB ─── */}
         {activeView === "overview" && dashboardData && (
-          <div className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="space-y-8 animate-fadeIn">
+            {/* Stat Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
               <StatCard
                 icon={Users}
                 title="Total Students"
                 value={dashboardData.statistics?.totalStudents ?? 0}
-                subtitle="Registered students"
-                color="bg-gradient-to-br from-blue-500 to-blue-600"
+                subtitle="Enrolled this batch"
+                color="bg-gradient-to-br from-violet-500 to-indigo-600"
+                glowColor="bg-violet-500"
               />
               <StatCard
                 icon={Award}
                 title="Placed Students"
                 value={dashboardData.statistics?.placedStudents ?? 0}
-                subtitle="Successfully placed"
-                color="bg-gradient-to-br from-green-500 to-emerald-600"
+                subtitle="Offer letters secured"
+                color="bg-gradient-to-br from-emerald-500 to-teal-600"
+                glowColor="bg-emerald-500"
+                trend={dashboardData.statistics?.placementRate ?? 0}
               />
               <StatCard
                 icon={TrendingUp}
                 title="Placement Rate"
                 value={`${dashboardData.statistics?.placementRate ?? 0}%`}
-                subtitle="Success rate"
-                color="bg-gradient-to-br from-purple-500 to-purple-600"
+                subtitle="Cohort success ratio"
+                color="bg-gradient-to-br from-cyan-500 to-blue-600"
+                glowColor="bg-cyan-500"
               />
               <StatCard
                 icon={Briefcase}
                 title="Avg Package"
-                value={`₹${dashboardData.statistics?.avgPackage ?? 0}L`}
-                subtitle="Per annum"
-                color="bg-gradient-to-br from-orange-500 to-orange-600"
+                value={`₹${dashboardData.statistics?.avgPackage ?? 0} LPA`}
+                subtitle="Annual CTC average"
+                color="bg-gradient-to-br from-amber-500 to-orange-600"
+                glowColor="bg-amber-500"
               />
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-lg">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">
-                Department-wise Breakdown
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Overall Placement Progress Bar */}
+            <div className="rounded-2xl bg-[rgba(23,23,43,0.8)] backdrop-blur-xl border border-white/8 p-6 shadow-xl">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                <div>
+                  <h3 className="font-bold text-white text-base">
+                    Cohort Placement Target Progress
+                  </h3>
+                  <p className="text-xs text-slate-400">
+                    Real-time status based on campus drives and offer uploads
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400">
+                    {dashboardData.statistics?.placementRate ?? 0}%
+                  </span>
+                  <span className="text-xs text-slate-400">completed</span>
+                </div>
+              </div>
+              <div className="h-3.5 bg-white/5 rounded-full overflow-hidden p-0.5 border border-white/10">
+                <div
+                  className="h-full bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-400 rounded-full transition-all duration-1000 shadow-lg shadow-violet-500/50"
+                  style={{
+                    width: `${Math.min(dashboardData.statistics?.placementRate ?? 0, 100)}%`,
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Department Breakdown Section */}
+            <div className="rounded-3xl bg-[rgba(23,23,43,0.8)] backdrop-blur-xl border border-white/8 p-7 shadow-xl">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Layers className="w-5 h-5 text-violet-400" />
+                    <h2 className="text-lg font-bold text-white">
+                      Department-wise Placement Performance
+                    </h2>
+                  </div>
+                  <p className="text-xs text-slate-400">
+                    Click any department card to drill down directly to its student directory
+                  </p>
+                </div>
+                <span className="text-xs px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 w-fit">
+                  {Object.keys(dashboardData.departmentStats || {}).length} Departments Active
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {dashboardData.departmentStats &&
                   Object.entries(dashboardData.departmentStats).map(
-                    ([dept, data]) => (
-                      <div
-                        key={dept}
-                        className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-5 border border-gray-200 hover:shadow-md transition-all"
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <h3 className="font-semibold text-gray-900">
-                            {dept}
-                          </h3>
-                          <Building2 className="w-5 h-5 text-blue-600" />
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">
-                              Total Students
-                            </span>
-                            <span className="font-semibold text-gray-900">
-                              {data.total}
-                            </span>
+                    ([dept, data]) => {
+                      const rate =
+                        data.total > 0
+                          ? ((data.placed / data.total) * 100).toFixed(1)
+                          : "0.0";
+                      return (
+                        <div
+                          key={dept}
+                          onClick={() => handleDepartmentDrilldown(dept)}
+                          className="group relative rounded-2xl bg-[#141426]/90 p-5 border border-white/8 hover:border-violet-500/50 hover:bg-[#1a1a32] transition-all duration-300 cursor-pointer shadow-md hover:shadow-violet-500/10 hover:-translate-y-1"
+                        >
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-300 group-hover:bg-violet-500/20 transition-colors">
+                                <Building2 className="w-5 h-5" />
+                              </div>
+                              <div>
+                                <h3 className="font-bold text-white text-sm group-hover:text-violet-300 transition-colors line-clamp-1">
+                                  {dept}
+                                </h3>
+                                <p className="text-xs text-slate-400">
+                                  {data.total} registered students
+                                </p>
+                              </div>
+                            </div>
+                            <div className="p-1 rounded-lg text-slate-500 group-hover:text-violet-400 transition-colors">
+                              <ArrowUpRight className="w-4 h-4" />
+                            </div>
                           </div>
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">Placed</span>
-                            <span className="font-semibold text-green-600">
-                              {data.placed}
-                            </span>
-                          </div>
-                          <div className="pt-2">
-                            <div className="flex justify-between text-xs text-gray-600 mb-1">
-                              <span>Placement Rate</span>
-                              <span className="font-semibold">
-                                {data.total > 0
-                                  ? ((data.placed / data.total) * 100).toFixed(
-                                      1,
-                                    )
-                                  : 0}
-                                %
+
+                          <div className="space-y-3 pt-3 border-t border-white/5">
+                            <div className="flex justify-between items-center text-xs">
+                              <span className="text-slate-400">Placed Students</span>
+                              <span className="font-bold text-emerald-400">
+                                {data.placed}{" "}
+                                <span className="text-slate-400 font-normal">/ {data.total}</span>
                               </span>
                             </div>
-                            <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500"
-                                style={{
-                                  width: `${data.total > 0 ? (data.placed / data.total) * 100 : 0}%`,
-                                }}
-                              />
+
+                            <div>
+                              <div className="flex justify-between text-[11px] text-slate-400 mb-1.5 font-medium">
+                                <span>Placement Rate</span>
+                                <span className="text-cyan-400 font-bold">{rate}%</span>
+                              </div>
+                              <div className="h-2 bg-white/5 rounded-full overflow-hidden border border-white/5">
+                                <div
+                                  className="h-full bg-gradient-to-r from-violet-500 to-cyan-400 rounded-full transition-all duration-700"
+                                  style={{
+                                    width: `${Math.min(parseFloat(rate), 100)}%`,
+                                  }}
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ),
+                      );
+                    }
                   )}
               </div>
+
               {(!dashboardData.departmentStats ||
                 Object.keys(dashboardData.departmentStats).length === 0) && (
-                <p className="text-gray-500">No department data yet.</p>
+                <div className="text-center py-12 text-slate-500">
+                  <Building2 className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                  <p className="text-sm">No department data recorded yet.</p>
+                </div>
               )}
             </div>
           </div>
         )}
 
+        {/* ─── STUDENTS VIEW TAB ─── */}
         {activeView === "students" && (
-          <StudentsView
-            students={students}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            selectedDepartment={selectedDepartment}
-            setSelectedDepartment={setSelectedDepartment}
-            viewMode={viewMode}
-            setViewMode={setViewMode}
-            departments={departments}
-          />
+          <div className="animate-fadeIn">
+            <StudentsView
+              students={students}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              selectedDepartment={selectedDepartment}
+              setSelectedDepartment={setSelectedDepartment}
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+              departments={departments}
+            />
+          </div>
         )}
 
-        {activeView === "skills" && <SkillsAnalytics skillsData={skillsData} />}
+        {/* ─── SKILLS ANALYTICS TAB ─── */}
+        {activeView === "skills" && (
+          <div className="animate-fadeIn">
+            <SkillsAnalytics skillsData={skillsData} />
+          </div>
+        )}
       </main>
     </div>
   );
