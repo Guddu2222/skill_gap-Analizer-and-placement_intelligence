@@ -343,4 +343,48 @@ export const getMyMentorshipRequests = async () => {
   return data;
 };
 
+// ==================== NOTIFICATIONS API ====================
+export const fetchNotifications = async () => {
+  const { data } = await api.get("/notifications");
+  return data;
+};
+
+export const markNotificationRead = async (id) => {
+  const { data } = await api.patch(`/notifications/${id}/read`);
+  return data;
+};
+
+export const markAllNotificationsRead = async () => {
+  const { data } = await api.patch("/notifications/read-all");
+  return data;
+};
+
+export const dismissNotification = async (id) => {
+  const { data } = await api.delete(`/notifications/${id}`);
+  return data;
+};
+
+// ==================== COMMUNITY INTERVIEW EXPERIENCES API ====================
+export const fetchInterviewExperiences = async (params = {}) => {
+  const query = new URLSearchParams(params).toString();
+  const { data } = await api.get(`/interviews/experiences?${query}`);
+  return data;
+};
+
+export const shareInterviewExperience = async (payload) => {
+  const { data } = await api.post("/interviews/experiences", payload);
+  return data;
+};
+
+export const upvoteInterviewExperience = async (id) => {
+  const { data } = await api.post(`/interviews/experiences/${id}/upvote`);
+  return data;
+};
+
+// ==================== RECRUITER ANALYTICS API ====================
+export const fetchRecruiterAnalytics = async () => {
+  const { data } = await api.get("/recruiter-features/analytics");
+  return data;
+};
+
 export default api;

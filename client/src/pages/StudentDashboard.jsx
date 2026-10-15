@@ -36,6 +36,7 @@ import AnalyzedSkillsModal from "../components/student/AnalyzedSkillsModal";
 import ATSChecker from "../components/student/ATSChecker";
 
 import OnboardingWizard from "../components/onboarding/OnboardingWizard";
+import NotificationDrawer from "../components/NotificationDrawer";
 
 const SIDEBAR_COLLAPSED_KEY = "sgapi_sidebar_collapsed";
 
@@ -48,6 +49,8 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
   const [loading, setLoading] = useState(true);
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showSkillsModal, setShowSkillsModal] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(3);
   const [analysisError, setAnalysisError] = useState(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
     () => localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === "true"
@@ -213,8 +216,15 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
               <input className="bg-transparent border-none focus:ring-0 text-xs w-48 text-on-surface outline-none" placeholder="Search skills, jobs..." type="text"/>
             </div>
             <div className="flex items-center gap-4 text-slate-400">
-              <button className="hover:text-white transition-colors">
+              <button
+                onClick={() => setShowNotifications(true)}
+                className="relative hover:text-white transition-colors"
+                title="Notifications"
+              >
                 <span className="material-symbols-outlined">notifications</span>
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                )}
               </button>
               <button 
                 onClick={() => setShowEditProfile(true)}
@@ -549,6 +559,13 @@ const StudentDashboard = ({ activeRoute = "overview" }) => {
         isOpen={showSkillsModal} 
         onClose={() => setShowSkillsModal(false)}
         analysis={skillGapAnalysis}
+      />
+
+      {/* ── Real-time Notification Center Drawer ── */}
+      <NotificationDrawer
+        isOpen={showNotifications}
+        onClose={() => setShowNotifications(false)}
+        onUnreadCountChange={(c) => setUnreadCount(c)}
       />
     </div>
   );

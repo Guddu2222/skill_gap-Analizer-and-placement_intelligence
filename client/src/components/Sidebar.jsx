@@ -21,6 +21,7 @@ import {
   TrendingUp,
   CheckSquare,
   UserCheck,
+  Sparkles,
 } from "lucide-react";
 
 const Sidebar = ({ role = "college", collapsed: controlledCollapsed, onToggle }) => {
@@ -77,6 +78,11 @@ const Sidebar = ({ role = "college", collapsed: controlledCollapsed, onToggle })
         icon: MessageSquare,
         label: "Interviews",
         path: "/student/interviews",
+      },
+      {
+        icon: Sparkles,
+        label: "Interview Debriefs",
+        path: "/student/community-interviews",
       },
     ],
   };

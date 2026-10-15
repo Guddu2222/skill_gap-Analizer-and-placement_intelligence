@@ -19,7 +19,9 @@ import {
   ChevronRight,
   Calendar,
   Layers,
+  Bell,
 } from "lucide-react";
+import NotificationDrawer from "../components/NotificationDrawer";
 import {
   fetchCollegeDashboard,
   fetchCollegeStudents,
@@ -75,6 +77,7 @@ const CollegeDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("grid");
   const [exporting, setExporting] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const loadDashboard = async () => {
     try {
@@ -82,11 +85,17 @@ const CollegeDashboard = () => {
       const data = await fetchCollegeDashboard();
       setDashboardData(data);
     } catch (err) {
-      const msg =
+      const status = err.response?.status;
+      let msg =
         err.response?.data?.error ||
         err.response?.data?.msg ||
         err.message ||
         "Failed to load dashboard";
+      if (status === 403) {
+        msg = "Your account is not linked to a college yet. Please log out and log back in, or contact support.";
+      } else if (status === 401) {
+        msg = "Session expired. Please log in again.";
+      }
       setError(msg);
       setDashboardData(null);
     }
@@ -171,6 +180,54 @@ const CollegeDashboard = () => {
     );
   }
 
+  // Error / not-linked state
+  if (!loading && !dashboardData && error) {
+    return (
+      <div className="flex bg-[#0a0a14] min-h-screen font-sans text-white">
+        <Sidebar role="college" />
+        <main className="flex-1 ml-64 flex items-center justify-center p-8">
+          <div className="max-w-lg w-full text-center space-y-6">
+            {/* Ambient glow */}
+            <div className="absolute inset-0 pointer-events-none -z-10">
+              <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-violet-600/10 rounded-full blur-[120px]" />
+            </div>
+            <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-violet-600/20 to-indigo-600/20 border border-violet-500/30 flex items-center justify-center shadow-xl shadow-violet-500/10">
+              <GraduationCap className="w-10 h-10 text-violet-400" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-extrabold text-white mb-2">Dashboard Unavailable</h2>
+              <p className="text-slate-400 text-sm leading-relaxed">{error}</p>
+            </div>
+            <div className="rounded-2xl bg-[rgba(23,23,43,0.8)] backdrop-blur-xl border border-white/8 p-5 text-left space-y-3">
+              <p className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Troubleshooting Steps</p>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li className="flex items-start gap-2"><span className="text-violet-400 mt-0.5">•</span> Log out and log back in to refresh your session token</li>
+                <li className="flex items-start gap-2"><span className="text-violet-400 mt-0.5">•</span> Ensure your account was registered as a College Admin</li>
+                <li className="flex items-start gap-2"><span className="text-violet-400 mt-0.5">•</span> Contact the platform administrator if the issue persists</li>
+              </ul>
+            </div>
+            <div className="flex gap-3 justify-center">
+              <button
+                type="button"
+                onClick={() => { setLoading(true); setError(null); loadDashboard().finally(() => setLoading(false)); }}
+                className="px-6 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-violet-600/25"
+              >
+                Retry
+              </button>
+              <button
+                type="button"
+                onClick={() => { localStorage.removeItem('token'); window.location.href = '/login'; }}
+                className="px-6 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 rounded-xl text-sm font-semibold border border-white/10 transition-all"
+              >
+                Log Out & Re-login
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   const collegeName =
     dashboardData?.college?.name || "Panipat Institute of Engineering and Technology";
   const collegeLocation =
@@ -227,6 +284,15 @@ const CollegeDashboard = () => {
                   {error}
                 </span>
               )}
+              <button
+                type="button"
+                onClick={() => setShowNotifications(true)}
+                className="relative p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors"
+                title="Placement Notifications"
+              >
+                <Bell className="w-4 h-4" />
+                <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+              </button>
               <Link
                 to="/college/analytics"
                 className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 text-xs font-semibold transition-all flex items-center gap-2 hover:border-violet-500/30"
@@ -480,6 +546,11 @@ const CollegeDashboard = () => {
           </div>
         )}
       </main>
+
+      <NotificationDrawer
+        isOpen={showNotifications}
+        onClose={() => setShowNotifications(false)}
+      />
     </div>
   );
 };

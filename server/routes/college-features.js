@@ -1,4 +1,4 @@
-const express = require("express");
+﻿const express = require("express");
 const router = express.Router();
 const Student = require("../models/Student");
 const College = require("../models/College");
@@ -11,7 +11,7 @@ const DriveApplication = require("../models/DriveApplication");
 const auth = require("../middleware/auth");
 const { roleCheck } = require("../middleware/auth");
 
-// GET /api/college-features/recruiters — list all recruiter users (real DB data)
+// GET /api/college-features/recruiters â€” list all recruiter users (real DB data)
 router.get("/recruiters", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
     const recruiters = await User.find({ role: "recruiter" })
@@ -64,7 +64,38 @@ async function resolveCollegeIds(collegeId) {
   return ids;
 }
 
-// Helper: normalize student for API (optional snake_case for legacy frontend)
+/**
+ * Shared helper: get the canonicalized collegeId for the requesting admin.
+ * Handles JWT tokens that are missing collegeId (e.g. issued before this field was added)
+ * by looking up and optionally creating/linking the College document.
+ * Returns a string collegeId or null if it can't be resolved.
+ */
+async function getCollegeId(req) {
+  if (req.user.collegeId) return req.user.collegeId;
+  const userDoc = await User.findById(req.user.userId).lean();
+  if (!userDoc) return null;
+  if (userDoc.college) return userDoc.college.toString();
+  // Auto-create a placeholder college
+  const emailDomain = userDoc.email?.split("@")[1]?.toLowerCase();
+  const collegeName =
+    userDoc.collegeName ||
+    userDoc.name ||
+    (emailDomain ? `College (${emailDomain})` : "My College");
+  const filter = emailDomain
+    ? { emailDomain }
+    : { name: new RegExp("^" + collegeName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "$", "i") };
+  let college = await College.findOne(filter).lean();
+  if (!college) {
+    college = await College.create({
+      name: collegeName,
+      emailDomain: emailDomain || undefined,
+    });
+  }
+  await User.findByIdAndUpdate(userDoc._id, { college: college._id });
+  return college._id.toString();
+}
+
+
 function toStudentResponse(doc) {
   const s = doc.toObject ? doc.toObject() : doc;
   const skills = (s.skills || []).map((sk) => ({
@@ -108,14 +139,16 @@ router.get(
   roleCheck(["college_admin"]),
   async (req, res) => {
     try {
-      const collegeId = req.user.collegeId;
+      const collegeId = await getCollegeId(req);
+
       if (!collegeId)
         return res
           .status(403)
-          .json({ error: "College not associated with this account" });
+          .json({ error: "College not associated with this account. Please complete your profile setup." });
 
       const college = await College.findById(collegeId).lean();
       if (!college) return res.status(404).json({ error: "College not found" });
+
 
       const collegeIds = await resolveCollegeIds(collegeId);
       const students = await Student.find({
@@ -187,7 +220,7 @@ router.get(
   roleCheck(["college_admin"]),
   async (req, res) => {
     try {
-      const collegeId = req.user.collegeId;
+      const collegeId = await getCollegeId(req);
       if (!collegeId)
         return res.status(403).json({ error: "College not associated" });
 
@@ -254,7 +287,7 @@ router.get(
   roleCheck(["college_admin"]),
   async (req, res) => {
     try {
-      const collegeId = req.user.collegeId;
+      const collegeId = await getCollegeId(req);
       if (!collegeId)
         return res.status(403).json({ error: "College not associated" });
 
@@ -327,7 +360,7 @@ router.get(
   roleCheck(["college_admin"]),
   async (req, res) => {
     try {
-      const collegeId = req.user.collegeId;
+      const collegeId = await getCollegeId(req);
       const { department } = req.params;
       if (!collegeId)
         return res.status(403).json({ error: "College not associated" });
@@ -371,7 +404,7 @@ router.get(
   roleCheck(["college_admin"]),
   async (req, res) => {
     try {
-      const collegeId = req.user.collegeId;
+      const collegeId = await getCollegeId(req);
       const { format = "csv" } = req.query;
       if (!collegeId)
         return res.status(403).json({ error: "College not associated" });
@@ -564,10 +597,10 @@ router.post("/shortlist", auth, async (req, res) => {
   }
 });
 
-// 4. Recruiter CRM — real aggregated data from DB
+// 4. Recruiter CRM â€” real aggregated data from DB
 router.get("/recruiter-crm", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
-    const collegeId = req.user.collegeId;
+    const collegeId = await getCollegeId(req);
 
     // Aggregate drive stats per company from CampusDrive model
     const driveStats = await CampusDrive.aggregate([
@@ -625,7 +658,7 @@ router.get("/recruiter-crm", auth, roleCheck(["college_admin"]), async (req, res
 // Get all incoming drive requests for the college
 router.get("/drive-requests", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
-    const collegeId = req.user.collegeId;
+    const collegeId = await getCollegeId(req);
     if (!collegeId) return res.status(400).json({ error: "College ID missing" });
 
     const requests = await DriveRequest.find({ college: collegeId })
@@ -643,7 +676,7 @@ router.get("/drive-requests", auth, roleCheck(["college_admin"]), async (req, re
 // Accept a drive request
 router.put("/drive-requests/:id/accept", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
-    const collegeId = req.user.collegeId;
+    const collegeId = await getCollegeId(req);
     const request = await DriveRequest.findOne({ _id: req.params.id, college: collegeId })
       .populate("job");
 
@@ -675,7 +708,7 @@ router.put("/drive-requests/:id/accept", auth, roleCheck(["college_admin"]), asy
   }
 });
 
-// PATCH /api/college-features/students/:id/placement — Mark student as placed or update placement status
+// PATCH /api/college-features/students/:id/placement â€” Mark student as placed or update placement status
 router.patch("/students/:id/placement", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
     const { id } = req.params;
@@ -715,7 +748,7 @@ router.patch("/students/:id/placement", auth, roleCheck(["college_admin"]), asyn
   }
 });
 
-// POST /api/college-features/shortlist-drive — Bulk shortlist students for a campus drive
+// POST /api/college-features/shortlist-drive â€” Bulk shortlist students for a campus drive
 router.post("/shortlist-drive", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
     const { driveId, studentIds, round = "Round 1 (Online Assessment)" } = req.body;
@@ -755,7 +788,7 @@ router.post("/shortlist-drive", auth, roleCheck(["college_admin"]), async (req, 
   }
 });
 
-// GET /api/college-features/alumni — List all alumni mentors
+// GET /api/college-features/alumni â€” List all alumni mentors
 router.get("/alumni", auth, roleCheck(["college_admin", "student"]), async (req, res) => {
   try {
     const alumniList = await Alumni.find({}).sort({ createdAt: -1 }).lean();
@@ -766,10 +799,10 @@ router.get("/alumni", auth, roleCheck(["college_admin", "student"]), async (req,
   }
 });
 
-// GET /api/college-features/profile — Get College Profile Details
+// GET /api/college-features/profile â€” Get College Profile Details
 router.get("/profile", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
-    const collegeId = req.user.collegeId;
+    const collegeId = await getCollegeId(req);
     let college = null;
     if (collegeId) {
       college = await College.findById(collegeId);
@@ -788,10 +821,10 @@ router.get("/profile", auth, roleCheck(["college_admin"]), async (req, res) => {
   }
 });
 
-// PUT /api/college-features/profile — Update College Profile Details
+// PUT /api/college-features/profile â€” Update College Profile Details
 router.put("/profile", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
-    const collegeId = req.user.collegeId;
+    const collegeId = await getCollegeId(req);
     const { name, location, logoUrl, contactEmail, contactPhone, website, about } = req.body;
 
     let college = null;
@@ -821,7 +854,7 @@ router.put("/profile", auth, roleCheck(["college_admin"]), async (req, res) => {
   }
 });
 
-// POST /api/college-features/alumni — Add Alumni Mentor
+// POST /api/college-features/alumni â€” Add Alumni Mentor
 router.post("/alumni", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
     const { name, company, role, batch, department, email, linkedInProfile, skills, isMentor } = req.body;
