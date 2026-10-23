@@ -3,13 +3,40 @@ const router = express.Router();
 const CampusDrive = require("../models/CampusDrive");
 const DriveApplication = require("../models/DriveApplication");
 const Student = require("../models/Student");
+const User = require("../models/User");
+const College = require("../models/College");
 const auth = require("../middleware/auth");
 const { roleCheck } = require("../middleware/auth");
+
+async function getCollegeId(req) {
+  if (req.user && req.user.collegeId) return req.user.collegeId;
+  if (!req.user || !req.user.userId) return null;
+  const userDoc = await User.findById(req.user.userId).lean();
+  if (!userDoc) return null;
+  if (userDoc.college) return userDoc.college.toString();
+  const emailDomain = userDoc.email?.split("@")[1]?.toLowerCase();
+  const collegeName =
+    userDoc.collegeName ||
+    userDoc.name ||
+    (emailDomain ? `College (${emailDomain})` : "My College");
+  const filter = emailDomain
+    ? { emailDomain }
+    : { name: new RegExp("^" + collegeName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "$", "i") };
+  let college = await College.findOne(filter).lean();
+  if (!college) {
+    college = await College.create({
+      name: collegeName,
+      emailDomain: emailDomain || undefined,
+    });
+  }
+  await User.findByIdAndUpdate(userDoc._id, { college: college._id });
+  return college._id.toString();
+}
 
 // GET all campus drives for the college
 router.get("/", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
-    const collegeId = req.user.collegeId;
+    const collegeId = await getCollegeId(req);
     if (!collegeId) return res.status(403).json({ error: "College not associated" });
 
     const drives = await CampusDrive.find({ college: collegeId }).sort({ createdAt: -1 });
@@ -23,7 +50,7 @@ router.get("/", auth, roleCheck(["college_admin"]), async (req, res) => {
 // POST a new campus drive
 router.post("/", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
-    const collegeId = req.user.collegeId;
+    const collegeId = await getCollegeId(req);
     if (!collegeId) return res.status(403).json({ error: "College not associated" });
 
     const newDrive = new CampusDrive({
@@ -41,7 +68,10 @@ router.post("/", auth, roleCheck(["college_admin"]), async (req, res) => {
 // GET specific drive details
 router.get("/:id", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {
-    const drive = await CampusDrive.findOne({ _id: req.params.id, college: req.user.collegeId });
+    const collegeId = await getCollegeId(req);
+    const filter = { _id: req.params.id };
+    if (collegeId) filter.college = collegeId;
+    const drive = await CampusDrive.findOne(filter);
     if (!drive) return res.status(404).json({ error: "Drive not found" });
     res.json(drive);
   } catch (error) {

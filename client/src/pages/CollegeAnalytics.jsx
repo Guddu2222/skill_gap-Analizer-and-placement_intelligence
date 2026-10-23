@@ -15,20 +15,45 @@ const CollegeAnalytics = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [dashRes, gapRes] = await Promise.allSettled([
+        const [dashRes, gapRes, placedRes, atRiskRes] = await Promise.allSettled([
           api.get('/college-features/dashboard'),
-          api.get('/college-features/skill-gap-report'),
+          api.get('/college-features/curriculum-gap'),
+          api.get('/college-features/students', { params: { placementStatus: 'placed', limit: 100 } }),
+          api.get('/college-features/at-risk'),
         ]);
 
         if (dashRes.status === 'fulfilled') {
           const d = dashRes.value.data;
-          setStats(d.stats || d);
-          setPlaced(d.placedStudents || []);
-          setUnplaced(d.unplacedStudents || []);
+          const statistics = d.statistics || {};
+          setStats({
+            totalStudents: statistics.totalStudents ?? 0,
+            placedStudents: statistics.placedStudents ?? 0,
+            placementRate: statistics.placementRate ?? 0,
+            avgPackage: statistics.avgPackage ?? 0,
+            departments: statistics.departments ?? (d.departmentStats ? Object.keys(d.departmentStats).length : 0),
+          });
         }
 
         if (gapRes.status === 'fulfilled') {
-          setSkillGaps(gapRes.value.data?.skillGaps || gapRes.value.data || []);
+          const gapData = gapRes.value.data;
+          const critical = gapData.criticalGaps || [];
+          const overview = gapData.overview || [];
+          const combined = critical.length > 0 ? critical : overview;
+          const mappedGaps = combined.map((gap) => ({
+            skill: gap.skill,
+            urgency: gap.gap > (gap.supplyCount || 1) ? 'High' : 'Medium',
+            recommendation: `Market demand is ${gap.demandCount} jobs, while current student cohort supply is ${gap.supplyCount}.`,
+            marketDemand: `${gap.demandCount} jobs`,
+          }));
+          setSkillGaps(mappedGaps);
+        }
+
+        if (placedRes.status === 'fulfilled') {
+          setPlaced(placedRes.value.data?.students || []);
+        }
+
+        if (atRiskRes.status === 'fulfilled') {
+          setUnplaced(atRiskRes.value.data || []);
         }
       } catch (err) {
         console.error('Failed to fetch analytics data:', err);
@@ -224,8 +249,8 @@ const CollegeAnalytics = () => {
                       </div>
                       <p className="text-xs text-slate-400">{s.department || s.branch} · {s.rollNumber || s.roll_number || 'N/A'}</p>
                       <div className="pt-2 border-t border-white/5 flex justify-between text-xs">
-                        <span className="text-slate-400">Company: <span className="text-white font-medium">{s.company || s.placed_company || 'N/A'}</span></span>
-                        <span className="text-emerald-400 font-semibold">{s.package ? `INR ${s.package} LPA` : ''}</span>
+                        <span className="text-slate-400">Company: <span className="text-white font-medium">{s.placed_company || s.placedCompany || s.company || 'N/A'}</span></span>
+                        <span className="text-emerald-400 font-semibold">{s.placement_package || s.placementPackage || s.package ? `INR ${s.placement_package || s.placementPackage || s.package} LPA` : ''}</span>
                       </div>
                     </div>
                   ))}
@@ -254,14 +279,21 @@ const CollegeAnalytics = () => {
                     >
                       <div className="flex items-center justify-between">
                         <p className="font-semibold text-white">
-                          {[s.firstName || s.first_name, s.lastName || s.last_name].filter(Boolean).join(' ') || 'Student'}
+                          {s.name || [s.firstName || s.first_name, s.lastName || s.last_name].filter(Boolean).join(' ') || 'Student'}
                         </p>
-                        <span className="px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 text-xs font-semibold">
-                          Needs Support
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                          s.riskLevel === 'Critical'
+                            ? 'bg-red-500/15 text-red-400 border border-red-500/25'
+                            : 'bg-amber-500/15 text-amber-400 border border-amber-500/20'
+                        }`}>
+                          {s.riskLevel ? `${s.riskLevel} Risk` : 'Needs Support'}
                         </span>
                       </div>
-                      <p className="text-xs text-slate-400">{s.department || s.branch} · CGPA: {s.cgpa ?? 'N/A'}</p>
-                      <p className="text-xs text-slate-500">{s.email}</p>
+                      <p className="text-xs text-slate-400">{s.department || s.branch || 'Cohort Student'} · Roll: {s.rollNumber || s.roll_number || 'N/A'} · CGPA: {s.cgpa ?? 'N/A'}</p>
+                      {s.riskFactors && s.riskFactors.length > 0 && (
+                        <p className="text-xs text-amber-300/80 mt-1">Factors: {s.riskFactors.join(', ')}</p>
+                      )}
+                      {s.email && <p className="text-xs text-slate-500">{s.email}</p>}
                     </div>
                   ))}
                 </div>

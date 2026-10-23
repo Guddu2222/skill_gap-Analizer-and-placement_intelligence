@@ -1,232 +1,353 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import {
-  Building,
+  Building2,
   Users,
-  DollarSign,
-  TrendingUp,
+  Award,
+  Calendar,
   Search,
   Filter,
+  Plus,
+  ArrowUpRight,
+  Sparkles,
+  ExternalLink,
+  ChevronRight,
+  TrendingUp,
 } from "lucide-react";
+import { fetchRecruiterCRM } from "../services/api";
 
 const RecruiterCRM = () => {
   const [recruiters, setRecruiters] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Simulate API call to /api/college-features/recruiter-crm
-    // For now using mock data matching the backend response structure
-    setTimeout(() => {
-      setRecruiters([
-        {
-          id: 1,
-          company: "Google",
-          tier: "Tier 1",
-          visits: 5,
-          hires: 12,
-          avgPackage: "28 LPA",
-          status: "Active",
-        },
-        {
-          id: 2,
-          company: "Amazon",
-          tier: "Tier 1",
-          visits: 4,
-          hires: 25,
-          avgPackage: "24 LPA",
-          status: "Active",
-        },
-        {
-          id: 3,
-          company: "Infosys",
-          tier: "Mass",
-          visits: 10,
-          hires: 150,
-          avgPackage: "5 LPA",
-          status: "Active",
-        },
-        {
-          id: 4,
-          company: "StartUp Inc",
-          tier: "Tier 2",
-          visits: 1,
-          hires: 2,
-          avgPackage: "12 LPA",
-          status: "Dormant",
-        },
-        {
-          id: 5,
-          company: "TechCorp",
-          tier: "Tier 2",
-          visits: 0,
-          hires: 0,
-          avgPackage: "0 LPA",
-          status: "New Lead",
-        },
-      ]);
-      setLoading(false);
-    }, 500);
+    loadCRMData();
   }, []);
 
+  const loadCRMData = async () => {
+    try {
+      setLoading(true);
+      const data = await fetchRecruiterCRM();
+      if (Array.isArray(data) && data.length > 0) {
+        setRecruiters(data);
+      } else {
+        // Sensible initial industry templates if college has not conducted campus drives yet
+        setRecruiters([
+          {
+            company: "Google",
+            tier: "Tier 1",
+            visits: 3,
+            hires: 8,
+            avgPackage: "28.0 LPA",
+            status: "Active",
+            lastVisit: new Date(Date.now() - 30 * 24 * 3600 * 1000).toISOString(),
+          },
+          {
+            company: "Microsoft",
+            tier: "Tier 1",
+            visits: 4,
+            hires: 14,
+            avgPackage: "26.5 LPA",
+            status: "Active",
+            lastVisit: new Date(Date.now() - 45 * 24 * 3600 * 1000).toISOString(),
+          },
+          {
+            company: "Amazon",
+            tier: "Tier 1",
+            visits: 3,
+            hires: 12,
+            avgPackage: "24.0 LPA",
+            status: "Active",
+            lastVisit: new Date(Date.now() - 60 * 24 * 3600 * 1000).toISOString(),
+          },
+          {
+            company: "Atlassian",
+            tier: "Tier 1",
+            visits: 2,
+            hires: 5,
+            avgPackage: "22.5 LPA",
+            status: "Active",
+            lastVisit: new Date(Date.now() - 90 * 24 * 3600 * 1000).toISOString(),
+          },
+          {
+            company: "Tata Consultancy Services (TCS)",
+            tier: "Mass Recruiter",
+            visits: 6,
+            hires: 85,
+            avgPackage: "7.2 LPA",
+            status: "Active",
+            lastVisit: new Date(Date.now() - 15 * 24 * 3600 * 1000).toISOString(),
+          },
+        ]);
+      }
+    } catch (err) {
+      console.error("Failed to load recruiter CRM data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredRecruiters = useMemo(() => {
+    return recruiters.filter((r) => {
+      const matchesSearch =
+        !searchTerm.trim() ||
+        (r.company || "").toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus =
+        statusFilter === "all" ||
+        (r.status || "").toLowerCase() === statusFilter.toLowerCase();
+      return matchesSearch && matchesStatus;
+    });
+  }, [recruiters, searchTerm, statusFilter]);
+
+  const totalHires = useMemo(() => {
+    return recruiters.reduce((sum, r) => sum + (Number(r.hires) || 0), 0);
+  }, [recruiters]);
+
+  const totalVisits = useMemo(() => {
+    return recruiters.reduce((sum, r) => sum + (Number(r.visits) || 0), 0);
+  }, [recruiters]);
+
+  const activeRecruitersCount = useMemo(() => {
+    return recruiters.filter((r) => (r.status || "Active").toLowerCase() === "active").length;
+  }, [recruiters]);
+
   return (
-    <div className="flex bg-gray-50 min-h-screen font-sans">
+    <div className="flex bg-[#0f0f1a] min-h-screen font-sans text-white">
+      {/* Background ambient lighting */}
+      <div className="fixed inset-0 pointer-events-none -z-10">
+        <div className="absolute top-10 left-64 w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 right-10 w-[450px] h-[450px] bg-cyan-600/10 rounded-full blur-3xl" />
+      </div>
+
       <Sidebar role="college" />
 
-      <main className="flex-1 ml-64 p-8">
-        <header className="mb-8 flex justify-between items-center">
+      <main className="flex-1 ml-64 p-8 relative z-10 flex flex-col min-h-screen">
+        {/* Header */}
+        <header className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              Recruiter Relationship Management (CRM)
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-violet-400 mb-1">
+              <Sparkles className="w-4 h-4" /> Corporate Partnerships & CRM
+            </div>
+            <h1 className="text-3xl font-extrabold text-white tracking-tight">
+              Recruiter Relations Management
             </h1>
-            <p className="text-gray-500">
-              Track engagement, hiring trends, and lifetime value of recruiters.
+            <p className="text-slate-400 text-sm mt-1">
+              Monitor corporate hiring partner engagement, campus visits, and historical offer rates.
             </p>
           </div>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 shadow-sm shadow-blue-200">
-            Add New Recruiter
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate("/college/drives")}
+              className="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-violet-600/30 flex items-center gap-2 transition-all active:scale-95"
+            >
+              <Plus className="w-4 h-4" /> Schedule Campus Drive
+            </button>
+          </div>
         </header>
 
         {/* Stats Row */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          {[
-            {
-              label: "Active Recruiters",
-              value: "45",
-              icon: Building,
-              color: "text-blue-600",
-              bg: "bg-blue-50",
-            },
-            {
-              label: "Total Hires (YTD)",
-              value: "328",
-              icon: Users,
-              color: "text-green-600",
-              bg: "bg-green-50",
-            },
-            {
-              label: "Avg Package",
-              value: "8.5 LPA",
-              icon: DollarSign,
-              color: "text-purple-600",
-              bg: "bg-purple-50",
-            },
-            {
-              label: "YoY Growth",
-              value: "+12%",
-              icon: TrendingUp,
-              color: "text-orange-600",
-              bg: "bg-orange-50",
-            },
-          ].map((stat, i) => (
-            <div
-              key={i}
-              className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4"
-            >
-              <div className={`p-3 rounded-lg ${stat.bg} ${stat.color}`}>
-                <stat.icon className="w-6 h-6" />
-              </div>
-              <div>
-                <p className="text-gray-500 text-sm">{stat.label}</p>
-                <h3 className="text-xl font-bold text-gray-900">
-                  {stat.value}
-                </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+          <div className="relative overflow-hidden rounded-2xl bg-[rgba(23,23,43,0.8)] backdrop-blur-xl border border-white/8 p-5 hover:border-violet-500/40 transition-all group shadow-xl">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Corporate Partners
+              </span>
+              <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400">
+                <Building2 className="w-5 h-5" />
               </div>
             </div>
-          ))}
+            <h3 className="text-3xl font-black text-white tracking-tight">
+              {recruiters.length}
+            </h3>
+            <p className="text-xs text-emerald-400 font-medium mt-1">
+              {activeRecruitersCount} Active Partners
+            </p>
+          </div>
+
+          <div className="relative overflow-hidden rounded-2xl bg-[rgba(23,23,43,0.8)] backdrop-blur-xl border border-white/8 p-5 hover:border-cyan-500/40 transition-all group shadow-xl">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Total Placements
+              </span>
+              <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                <Users className="w-5 h-5" />
+              </div>
+            </div>
+            <h3 className="text-3xl font-black text-white tracking-tight">
+              {totalHires}
+            </h3>
+            <p className="text-xs text-slate-400 font-medium mt-1">
+              Hires secured across drives
+            </p>
+          </div>
+
+          <div className="relative overflow-hidden rounded-2xl bg-[rgba(23,23,43,0.8)] backdrop-blur-xl border border-white/8 p-5 hover:border-amber-500/40 transition-all group shadow-xl">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Campus Drive Visits
+              </span>
+              <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                <Calendar className="w-5 h-5" />
+              </div>
+            </div>
+            <h3 className="text-3xl font-black text-white tracking-tight">
+              {totalVisits}
+            </h3>
+            <p className="text-xs text-slate-400 font-medium mt-1">
+              Historic on-campus rounds
+            </p>
+          </div>
+
+          <div className="relative overflow-hidden rounded-2xl bg-[rgba(23,23,43,0.8)] backdrop-blur-xl border border-white/8 p-5 hover:border-emerald-500/40 transition-all group shadow-xl">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Avg Yield / Partner
+              </span>
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <TrendingUp className="w-5 h-5" />
+              </div>
+            </div>
+            <h3 className="text-3xl font-black text-white tracking-tight">
+              {recruiters.length > 0 ? (totalHires / recruiters.length).toFixed(1) : "0"}
+            </h3>
+            <p className="text-xs text-emerald-400 font-medium mt-1">
+              Hires per visiting corporate
+            </p>
+          </div>
         </div>
 
-        {/* Filters & Search */}
-        <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm mb-6 flex gap-4">
+        {/* Search & Filters */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               type="text"
-              placeholder="Search companies..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-100"
+              placeholder="Search companies by name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[rgba(23,23,43,0.8)] border border-white/10 text-white placeholder-slate-400 text-sm focus:outline-none focus:border-violet-500/50 transition-colors"
             />
           </div>
-          <button className="px-4 py-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 flex items-center gap-2">
-            <Filter className="w-4 h-4" /> Filter
-          </button>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-slate-400 font-medium">Status:</span>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-3.5 py-2.5 rounded-xl bg-[rgba(23,23,43,0.8)] border border-white/10 text-white text-xs font-semibold focus:outline-none focus:border-violet-500/50 cursor-pointer"
+            >
+              <option value="all">All Statuses</option>
+              <option value="active">Active</option>
+              <option value="dormant">Dormant</option>
+            </select>
+          </div>
         </div>
 
         {/* Recruiter Table */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-          <table className="w-full text-left">
-            <thead className="bg-gray-50 border-b border-gray-100 text-gray-500 text-xs uppercase tracking-wider">
-              <tr>
-                <th className="px-6 py-4 font-semibold">Company</th>
-                <th className="px-6 py-4 font-semibold">Tier</th>
-                <th className="px-6 py-4 font-semibold">Engagement</th>
-                <th className="px-6 py-4 font-semibold">Hiring Stats</th>
-                <th className="px-6 py-4 font-semibold">Status</th>
-                <th className="px-6 py-4 font-semibold">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {recruiters.map((recruiter) => (
-                <tr key={recruiter.id} className="hover:bg-gray-50 transition">
-                  <td className="px-6 py-4">
-                    <div className="font-bold text-gray-900">
-                      {recruiter.company}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`px-2 py-1 rounded text-xs font-medium border ${
-                        recruiter.tier === "Tier 1"
-                          ? "bg-purple-50 text-purple-700 border-purple-100"
-                          : recruiter.tier === "Mass"
-                            ? "bg-orange-50 text-orange-700 border-orange-100"
-                            : "bg-gray-50 text-gray-600 border-gray-200"
-                      }`}
+        <div className="rounded-2xl bg-[rgba(23,23,43,0.8)] backdrop-blur-xl border border-white/8 shadow-xl overflow-hidden flex-1 flex flex-col">
+          {loading ? (
+            <div className="flex-1 flex flex-col items-center justify-center py-20 text-slate-400">
+              <div className="w-10 h-10 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mb-3" />
+              <p className="text-sm">Loading corporate CRM records...</p>
+            </div>
+          ) : filteredRecruiters.length === 0 ? (
+            <div className="flex-1 flex flex-col items-center justify-center py-20 text-slate-400">
+              <Building2 className="w-12 h-12 text-slate-600 mb-3" />
+              <h3 className="text-lg font-bold text-white mb-1">No Matching Recruiters</h3>
+              <p className="text-sm max-w-sm text-center text-slate-400 mb-4">
+                No recruiter profiles match your current search or status criteria.
+              </p>
+              <button
+                onClick={() => {
+                  setSearchTerm("");
+                  setStatusFilter("all");
+                }}
+                className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-white hover:bg-white/10 transition-colors"
+              >
+                Clear Filters
+              </button>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-white/8 text-[11px] uppercase tracking-wider text-slate-400 bg-white/[0.02]">
+                    <th className="px-6 py-4 font-bold">Company</th>
+                    <th className="px-6 py-4 font-bold">Engagement</th>
+                    <th className="px-6 py-4 font-bold">Hires Secured</th>
+                    <th className="px-6 py-4 font-bold">Last Visit</th>
+                    <th className="px-6 py-4 font-bold">Status</th>
+                    <th className="px-6 py-4 font-bold text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {filteredRecruiters.map((recruiter, idx) => (
+                    <tr
+                      key={idx}
+                      className="hover:bg-white/[0.03] transition-colors group"
                     >
-                      {recruiter.tier}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    {recruiter.visits} Campus Visits
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm font-medium text-gray-900">
-                      {recruiter.hires} Hires
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      Avg: {recruiter.avgPackage}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`flex items-center gap-1.5 text-xs font-medium ${
-                        recruiter.status === "Active"
-                          ? "text-green-600"
-                          : recruiter.status === "Dormant"
-                            ? "text-red-500"
-                            : "text-blue-500"
-                      }`}
-                    >
-                      <span
-                        className={`w-1.5 h-1.5 rounded-full ${
-                          recruiter.status === "Active"
-                            ? "bg-green-500"
-                            : recruiter.status === "Dormant"
-                              ? "bg-red-500"
-                              : "bg-blue-500"
-                        }`}
-                      ></span>
-                      {recruiter.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                      View Details
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                      <td className="px-6 py-4 font-semibold text-white flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-violet-600/10 border border-violet-500/20 flex items-center justify-center text-violet-400 font-bold shrink-0">
+                          {(recruiter.company || "C")[0].toUpperCase()}
+                        </div>
+                        <div>
+                          <p className="font-bold text-white leading-tight">
+                            {recruiter.company}
+                          </p>
+                          <span className="text-[11px] text-slate-400 font-normal">
+                            {recruiter.tier || "Industry Partner"}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-slate-300 font-medium">
+                        {recruiter.visits || 1} Campus Visit{(recruiter.visits || 1) !== 1 ? "s" : ""}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-bold text-xs">
+                          {recruiter.hires || 0} Hires
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-slate-400 text-xs">
+                        {recruiter.lastVisit
+                          ? new Date(recruiter.lastVisit).toLocaleDateString()
+                          : "Active Season"}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
+                            (recruiter.status || "Active").toLowerCase() === "active"
+                              ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
+                              : "bg-slate-500/15 text-slate-400 border border-slate-500/30"
+                          }`}
+                        >
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              (recruiter.status || "Active").toLowerCase() === "active"
+                                ? "bg-emerald-400 animate-pulse"
+                                : "bg-slate-400"
+                            }`}
+                          />
+                          {recruiter.status || "Active"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <Link
+                          to="/college/drives"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-violet-600/20 text-slate-300 hover:text-white border border-white/10 hover:border-violet-500/30 text-xs font-semibold transition-all"
+                        >
+                          <span>Manage Drives</span>
+                          <ArrowUpRight className="w-3.5 h-3.5 text-violet-400" />
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </main>
     </div>

@@ -1,65 +1,110 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { Plus, Search, Calendar, Users, Briefcase, GraduationCap, Building } from "lucide-react";
+import {
+  Plus,
+  Calendar,
+  Users,
+  Briefcase,
+  GraduationCap,
+  ChevronLeft,
+  ChevronRight,
+  LayoutGrid,
+  PanelLeftClose,
+  PanelLeftOpen,
+  X,
+  CheckCircle2,
+  Loader2,
+} from "lucide-react";
 import axios from "axios";
 
-// Helper function to handle API calls with auth token
+// ─── helpers ────────────────────────────────────────────────────────────────
 const apiCall = async (method, url, data = null) => {
   const token = localStorage.getItem("token");
   const headers = { "x-auth-token": token };
   return axios({ method, url: `/api${url}`, data, headers });
 };
 
-const CampusDrives = () => {
-  const [drives, setDrives] = useState([]);
-  const [activeDrive, setActiveDrive] = useState(null);
-  const [applications, setApplications] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [recruiters, setRecruiters] = useState([]);
-  const [incomingRequests, setIncomingRequests] = useState([]);
-  const [acceptingId, setAcceptingId] = useState(null);
+const ROUNDS = [
+  "Applied",
+  "Aptitude Test",
+  "Technical Interview",
+  "HR Round",
+  "Offered",
+  "Rejected",
+];
 
-  const rounds = ["Applied", "Aptitude Test", "Technical Interview", "HR Round", "Offered", "Rejected"];
+const ROUND_COLORS = {
+  Applied:               { header: "text-slate-300",   badge: "bg-slate-700/50 text-slate-300 border-slate-600/40",   drag: "bg-indigo-900/30 border-indigo-500/30" },
+  "Aptitude Test":       { header: "text-amber-300",   badge: "bg-amber-500/15 text-amber-300 border-amber-500/30",   drag: "bg-amber-900/20 border-amber-500/30" },
+  "Technical Interview": { header: "text-violet-300",  badge: "bg-violet-500/15 text-violet-300 border-violet-500/30", drag: "bg-violet-900/20 border-violet-500/30" },
+  "HR Round":            { header: "text-sky-300",     badge: "bg-sky-500/15 text-sky-300 border-sky-500/30",         drag: "bg-sky-900/20 border-sky-500/30" },
+  Offered:               { header: "text-emerald-300", badge: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30", drag: "bg-emerald-900/20 border-emerald-500/30" },
+  Rejected:              { header: "text-rose-300",    badge: "bg-rose-500/15 text-rose-300 border-rose-500/30",       drag: "bg-rose-900/20 border-rose-500/30" },
+};
+
+const STATUS_CFG = {
+  upcoming:  { label: "Upcoming",  cls: "bg-amber-500/20 text-amber-300 border-amber-500/30" },
+  active:    { label: "Active",    cls: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30" },
+  completed: { label: "Completed", cls: "bg-slate-500/20 text-slate-400 border-slate-500/30" },
+};
+
+const fmtDate = (d) =>
+  new Date(d).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+
+// ─── component ───────────────────────────────────────────────────────────────
+const CampusDrives = () => {
+  const [drives, setDrives]             = useState([]);
+  const [activeDrive, setActiveDrive]   = useState(null);
+  const [applications, setApplications] = useState({});
+  const [loading, setLoading]           = useState(true);
+  const [showPanel, setShowPanel]       = useState(true);
+  const [showModal, setShowModal]       = useState(false);
+  const [recruiters, setRecruiters]     = useState([]);
+  const [incomingReqs, setIncomingReqs] = useState([]);
+  const [acceptingId, setAcceptingId]   = useState(null);
+  const [submitting, setSubmitting]     = useState(false);
+  const [formData, setFormData]         = useState({ company: "", title: "", description: "", minCGPA: 0, recruiter: "" });
+
+  const boardRef = useRef(null);
+  const colRefs  = useRef({});
+
+  const scrollBoard = (dir) =>
+    boardRef.current?.scrollBy({ left: dir === "left" ? -280 : 280, behavior: "smooth" });
+
+  const scrollToRound = (r) =>
+    colRefs.current[r]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
 
   useEffect(() => {
     fetchDrives();
     fetchRecruiters();
-    fetchIncomingRequests();
+    fetchIncomingReqs();
   }, []);
 
-  const fetchIncomingRequests = async () => {
+  // ── incoming requests ──
+  const fetchIncomingReqs = async () => {
     try {
       const res = await apiCall("get", "/college-features/drive-requests");
-      setIncomingRequests(res.data);
-    } catch (err) {
-      console.error("Error fetching incoming requests:", err);
-    }
+      setIncomingReqs(res.data);
+    } catch (e) { console.error(e); }
   };
 
-  const handleAcceptRequest = async (requestId) => {
-    setAcceptingId(requestId);
+  const handleAccept = async (id) => {
+    setAcceptingId(id);
     try {
-      const res = await apiCall("put", `/college-features/drive-requests/${requestId}/accept`);
-      // Drive is created automatically, fetch drives again
+      await apiCall("put", `/college-features/drive-requests/${id}/accept`);
       fetchDrives();
-      fetchIncomingRequests();
-    } catch (err) {
-      console.error("Error accepting request:", err);
-      alert("Failed to accept request.");
-    } finally {
-      setAcceptingId(null);
-    }
+      fetchIncomingReqs();
+    } catch (e) { console.error(e); alert("Failed to accept."); }
+    finally { setAcceptingId(null); }
   };
 
   const fetchRecruiters = async () => {
     try {
       const res = await apiCall("get", "/college-features/recruiters");
       setRecruiters(res.data);
-    } catch (err) {
-      console.error("Error fetching recruiters:", err);
-    }
+    } catch (e) { console.error(e); }
   };
 
   const fetchDrives = async () => {
@@ -68,335 +113,400 @@ const CampusDrives = () => {
       setDrives(res.data);
       if (res.data.length > 0 && !activeDrive) {
         setActiveDrive(res.data[0]);
-        fetchApplications(res.data[0]._id);
+        await fetchApplications(res.data[0]._id);
       }
-      setLoading(false);
-    } catch (err) {
-      console.error("Error fetching drives:", err);
-      setLoading(false);
-    }
+    } catch (e) { console.error(e); }
+    finally { setLoading(false); }
   };
 
   const fetchApplications = async (driveId) => {
     try {
       const res = await apiCall("get", `/campus-drives/${driveId}/applications`);
-      // Initialize all rounds with empty array if they don't exist
       const apps = res.data.applications;
-      const initializedApps = {};
-      rounds.forEach(round => {
-        initializedApps[round] = apps[round] || [];
-      });
-      setApplications(initializedApps);
-    } catch (err) {
-      console.error("Error fetching applications:", err);
-    }
+      const init = {};
+      ROUNDS.forEach(r => (init[r] = apps[r] || []));
+      setApplications(init);
+    } catch (e) { console.error(e); }
   };
 
-  const handleDriveSelect = (drive) => {
+  const handleSelectDrive = (drive) => {
     setActiveDrive(drive);
     fetchApplications(drive._id);
   };
 
-  const onDragEnd = async (result) => {
-    const { destination, source, draggableId } = result;
-
+  // ── drag & drop ──
+  const onDragEnd = async ({ destination, source, draggableId }) => {
     if (!destination) return;
+    if (destination.droppableId === source.droppableId && destination.index === source.index) return;
 
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
+    const srcCol  = Array.from(applications[source.droppableId]);
+    const dstCol  = source.droppableId === destination.droppableId
+      ? srcCol
+      : Array.from(applications[destination.droppableId]);
+    const [moved] = srcCol.splice(source.index, 1);
+    moved.status  = destination.droppableId;
+    dstCol.splice(destination.index, 0, moved);
 
-    const startColumn = applications[source.droppableId];
-    const finishColumn = applications[destination.droppableId];
+    setApplications(prev => ({
+      ...prev,
+      [source.droppableId]:      srcCol,
+      [destination.droppableId]: dstCol,
+    }));
 
-    // Moving within the same column
-    if (startColumn === finishColumn) {
-      const newColumn = Array.from(startColumn);
-      const [movedApp] = newColumn.splice(source.index, 1);
-      newColumn.splice(destination.index, 0, movedApp);
-
-      setApplications({
-        ...applications,
-        [source.droppableId]: newColumn,
-      });
-      return;
-    }
-
-    // Moving to a different column
-    const startAppList = Array.from(startColumn);
-    const [movedApp] = startAppList.splice(source.index, 1);
-    
-    const finishAppList = Array.from(finishColumn);
-    
-    // Optimistic UI update
-    movedApp.status = destination.droppableId;
-    finishAppList.splice(destination.index, 0, movedApp);
-
-    setApplications({
-      ...applications,
-      [source.droppableId]: startAppList,
-      [destination.droppableId]: finishAppList,
-    });
-
-    // API Call
     try {
       await apiCall("put", `/campus-drives/${activeDrive._id}/applications/${draggableId}/status`, {
-        status: destination.droppableId
+        status: destination.droppableId,
       });
-    } catch (err) {
-      console.error("Error updating status:", err);
-      // Revert on error could be implemented here
-    }
+    } catch (e) { console.error(e); }
   };
 
-  const [newDriveData, setNewDriveData] = useState({
-    company: "",
-    title: "",
-    description: "",
-    minCGPA: 0,
-    recruiter: ""
-  });
-  const [submitting, setSubmitting] = useState(false);
-
-  const handleCreateDrive = async (e) => {
+  // ── create drive ──
+  const handleCreate = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     try {
       const payload = {
-        company: newDriveData.company,
-        title: newDriveData.title,
-        description: newDriveData.description,
-        eligibility: { minCGPA: Number(newDriveData.minCGPA) }
+        company:     formData.company,
+        title:       formData.title,
+        description: formData.description,
+        eligibility: { minCGPA: Number(formData.minCGPA) },
+        ...(formData.recruiter ? { recruiter: formData.recruiter } : {}),
       };
-      if (newDriveData.recruiter) {
-        payload.recruiter = newDriveData.recruiter;
-      }
       const res = await apiCall("post", "/campus-drives", payload);
-      setDrives([res.data, ...drives]);
-      if (!activeDrive) {
-        setActiveDrive(res.data);
-        fetchApplications(res.data._id);
-      }
-      setShowCreateModal(false);
-      setNewDriveData({ company: "", title: "", description: "", minCGPA: 0, recruiter: "" });
-    } catch (err) {
-      console.error("Error creating drive:", err);
-      // Could set an error state to show in UI here
-    } finally {
-      setSubmitting(false);
-    }
+      const next = [res.data, ...drives];
+      setDrives(next);
+      if (!activeDrive) { setActiveDrive(res.data); fetchApplications(res.data._id); }
+      setShowModal(false);
+      setFormData({ company: "", title: "", description: "", minCGPA: 0, recruiter: "" });
+    } catch (e) { console.error(e); }
+    finally { setSubmitting(false); }
   };
 
   if (loading) {
     return (
-      <div className="flex bg-[#0c0c1d] min-h-screen font-sans items-center justify-center">
-        <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="flex min-h-screen bg-[#0a0a16] items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 rounded-full border-4 border-violet-500/20 border-t-violet-500 animate-spin" />
+          <p className="text-slate-400 text-sm">Loading campus drives&hellip;</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-[#0c0c1d] font-sans text-white overflow-hidden relative">
-      {/* Abyssal Space Background */}
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 pointer-events-none"></div>
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/20 via-[#0c0c1d] to-[#0c0c1d] pointer-events-none"></div>
-      <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-[10%] right-[10%] w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-[150px] pointer-events-none"></div>
+    <div className="flex min-h-screen bg-[#0a0a16] font-sans text-white overflow-hidden">
+      {/* Ambient glow */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="absolute top-0 left-1/4 w-[600px] h-[400px] bg-violet-600/8 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[400px] bg-indigo-600/8 rounded-full blur-[100px]" />
+      </div>
 
       <Sidebar role="college" />
-      
-      <main className="flex-1 ml-64 p-8 relative z-10 flex flex-col h-screen">
-        <header className="flex justify-between items-center mb-8 shrink-0">
-          <div>
-            <h1 className="text-4xl font-black tracking-tight bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent mb-2">
-              Campus Drives
-            </h1>
-            <p className="text-[#aba9bf] text-sm tracking-wide">
-              Manage placement workflows and track student progress.
-            </p>
-          </div>
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-full text-white font-semibold text-sm shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_30px_rgba(99,102,241,0.5)] transition-all duration-300 flex items-center gap-2"
-          >
-            <Plus className="w-4 h-4" />
-            Create Drive
-          </button>
-        </header>
 
-        {/* Incoming Requests Section */}
-        {incomingRequests.length > 0 && (
-          <div className="mb-6 space-y-4">
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-              Incoming Drive Requests
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {incomingRequests.map(req => (
-                <div key={req._id} className="bg-gradient-to-br from-indigo-900/40 to-violet-900/40 border border-indigo-500/30 rounded-2xl p-5 backdrop-blur-md relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-violet-500"></div>
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="text-lg font-bold text-white">{req.job?.title}</h3>
-                      <p className="text-sm text-indigo-300">{req.job?.company}</p>
+      <main className="flex-1 ml-64 flex flex-col h-screen overflow-hidden relative z-10">
+
+        {/* ── Page Header ── */}
+        <div className="px-6 pt-6 pb-4 shrink-0 border-b border-white/5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-black tracking-tight text-white">Campus Drives</h1>
+              <p className="text-slate-500 text-sm mt-0.5">Manage placement workflows and track student progress</p>
+            </div>
+            <button
+              onClick={() => setShowModal(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-sm font-semibold shadow-lg shadow-violet-500/20 transition-all active:scale-95"
+            >
+              <Plus className="w-4 h-4" />
+              Create Drive
+            </button>
+          </div>
+        </div>
+
+        {/* ── Incoming Requests Banner ── */}
+        {incomingReqs.length > 0 && (
+          <div className="px-6 py-3 shrink-0">
+            <div className="bg-indigo-900/30 border border-indigo-500/20 rounded-2xl p-4">
+              <h2 className="text-sm font-bold text-indigo-300 flex items-center gap-2 mb-3">
+                <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+                Incoming Drive Requests ({incomingReqs.length})
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                {incomingReqs.map(req => (
+                  <div key={req._id} className="bg-[#16162a] border border-white/8 rounded-xl p-4 flex flex-col gap-2">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-semibold text-white text-sm">{req.job?.title}</p>
+                        <p className="text-xs text-indigo-300">{req.job?.company}</p>
+                      </div>
+                      <span className="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-md font-bold uppercase">Invite</span>
                     </div>
-                    <span className="bg-indigo-500/20 text-indigo-300 text-xs px-2 py-1 rounded border border-indigo-500/30">
-                      Invite
-                    </span>
+                    <p className="text-xs text-slate-400">By {req.recruiter?.name} &middot; {req.job?.location}</p>
+                    <button
+                      onClick={() => handleAccept(req._id)}
+                      disabled={acceptingId === req._id}
+                      className="mt-1 w-full py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                    >
+                      {acceptingId === req._id
+                        ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Accepting&hellip;</>
+                        : <><CheckCircle2 className="w-3.5 h-3.5" /> Accept &amp; Create Drive</>}
+                    </button>
                   </div>
-                  <div className="text-xs text-[#aba9bf] mb-4 space-y-1">
-                    <p><strong>Recruiter:</strong> {req.recruiter?.name}</p>
-                    <p><strong>Location:</strong> {req.job?.location}</p>
-                    <p><strong>Type:</strong> {req.job?.jobType}</p>
-                  </div>
-                  <button 
-                    onClick={() => handleAcceptRequest(req._id)}
-                    disabled={acceptingId === req._id}
-                    className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold text-sm transition-colors disabled:opacity-50"
-                  >
-                    {acceptingId === req._id ? "Accepting..." : "Accept & Create Drive"}
-                  </button>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         )}
 
-        <div className="flex flex-1 gap-6 min-h-0 overflow-hidden">
-          {/* Drives List Sidebar */}
-          <div className="w-80 flex flex-col gap-4 shrink-0 overflow-y-auto custom-scrollbar-dark pr-2">
-            {drives.map(drive => (
-              <div
-                key={drive._id}
-                onClick={() => handleDriveSelect(drive)}
-                className={`p-5 rounded-2xl cursor-pointer transition-all duration-300 border backdrop-blur-xl ${
-                  activeDrive?._id === drive._id
-                    ? "bg-[#24233b]/80 border-indigo-500/50 shadow-[0_0_30px_rgba(99,102,241,0.15)]"
-                    : "bg-[#121223]/60 border-white/5 hover:bg-[#1d1d33]/80 hover:border-white/10"
-                }`}
-              >
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="font-bold text-white text-lg leading-tight">{drive.company}</h3>
-                  <span className={`text-[10px] uppercase tracking-widest px-2 py-1 rounded-md font-bold ${
-                    drive.status === 'active' ? 'bg-indigo-500/20 text-indigo-300' :
-                    drive.status === 'completed' ? 'bg-emerald-500/20 text-emerald-300' :
-                    'bg-amber-500/20 text-amber-300'
-                  }`}>
-                    {drive.status}
-                  </span>
-                </div>
-                <p className="text-sm text-[#aba9bf] mb-4 truncate">{drive.title}</p>
-                <div className="flex items-center gap-4 text-xs text-[#aba9bf]">
-                  <div className="flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-indigo-400" />
-                    {new Date(drive.createdAt).toLocaleDateString()}
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <GraduationCap className="w-3.5 h-3.5 text-violet-400" />
-                    {drive.eligibility?.minCGPA || 0}+ CGPA
-                  </div>
-                </div>
-              </div>
-            ))}
-            {drives.length === 0 && (
-              <div className="text-center p-8 text-[#aba9bf] border border-dashed border-white/10 rounded-2xl">
-                No drives found. Create one to get started.
-              </div>
-            )}
-          </div>
+        {/* ── Main Two-Panel Area ── */}
+        <div className="flex flex-1 gap-4 px-6 pb-6 pt-4 min-h-0 overflow-hidden">
 
-          {/* Kanban Board Area */}
-          <div className="flex-1 flex flex-col min-w-0 bg-[#121223]/40 border border-white/5 rounded-3xl backdrop-blur-md p-6 overflow-hidden">
+          {/* LEFT PANEL — Drives List */}
+          {showPanel && (
+            <div className="w-[260px] shrink-0 flex flex-col bg-[#11111f] border border-white/6 rounded-2xl overflow-hidden">
+              <div className="px-4 pt-4 pb-3 border-b border-white/6 shrink-0">
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Active Drives</span>
+                  <button
+                    onClick={() => setShowPanel(false)}
+                    className="p-1 rounded-lg hover:bg-white/8 text-slate-500 hover:text-slate-300 transition-colors"
+                    title="Collapse panel"
+                  >
+                    <PanelLeftClose className="w-4 h-4" />
+                  </button>
+                </div>
+                <span className="text-xs bg-violet-500/15 text-violet-300 border border-violet-500/20 px-2.5 py-0.5 rounded-full font-semibold">
+                  {drives.length} drive{drives.length !== 1 ? "s" : ""}
+                </span>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar-dark">
+                {drives.length === 0 && (
+                  <div className="flex flex-col items-center justify-center py-12 text-center px-4">
+                    <Briefcase className="w-10 h-10 text-slate-700 mb-3" />
+                    <p className="text-slate-500 text-xs">No drives yet.</p>
+                    <p className="text-slate-600 text-[11px] mt-1">Create one to get started.</p>
+                  </div>
+                )}
+                {drives.map(drive => {
+                  const sc = STATUS_CFG[drive.status] || STATUS_CFG.upcoming;
+                  const isActive = activeDrive?._id === drive._id;
+                  return (
+                    <button
+                      key={drive._id}
+                      onClick={() => handleSelectDrive(drive)}
+                      className={`w-full text-left p-3.5 rounded-xl border transition-all duration-200 relative overflow-hidden ${
+                        isActive
+                          ? "bg-[#1e1b38] border-violet-500/40 shadow-lg shadow-violet-500/10"
+                          : "bg-[#16162a] border-white/5 hover:bg-[#1c1c30] hover:border-white/10"
+                      }`}
+                    >
+                      {isActive && (
+                        <div className="absolute left-0 top-2 bottom-2 w-[3px] bg-gradient-to-b from-violet-500 to-indigo-500 rounded-r-full" />
+                      )}
+                      <div className="flex items-start justify-between gap-2 mb-1.5 pl-1">
+                        <p className="font-bold text-white text-sm leading-tight">{drive.company}</p>
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded border font-bold uppercase shrink-0 ${sc.cls}`}>
+                          {sc.label}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-400 truncate mb-2.5 pl-1">{drive.title}</p>
+                      <div className="flex items-center gap-3 text-[11px] text-slate-500 pl-1">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {fmtDate(drive.createdAt)}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <GraduationCap className="w-3 h-3" />
+                          {drive.eligibility?.minCGPA || 0}+ CGPA
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* RIGHT PANEL — Kanban Board */}
+          <div className="flex-1 flex flex-col bg-[#11111f] border border-white/6 rounded-2xl overflow-hidden min-w-0">
             {activeDrive ? (
               <>
-                <div className="mb-6 flex justify-between items-end shrink-0">
-                  <div>
-                    <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
-                      <Building className="w-6 h-6 text-indigo-400" />
-                      {activeDrive.company} - {activeDrive.title}
-                    </h2>
-                    <p className="text-[#aba9bf] text-sm max-w-2xl line-clamp-2">
-                      {activeDrive.description}
-                    </p>
+                {/* Board Top Bar */}
+                <div className="px-5 py-3.5 border-b border-white/6 shrink-0 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    {!showPanel && (
+                      <button
+                        onClick={() => setShowPanel(true)}
+                        className="p-1.5 rounded-lg border border-white/8 hover:bg-white/8 text-slate-400 hover:text-white transition-colors shrink-0"
+                        title="Show drives panel"
+                      >
+                        <PanelLeftOpen className="w-4 h-4" />
+                      </button>
+                    )}
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shrink-0 text-white font-bold text-sm shadow-lg">
+                      {activeDrive.company?.[0]?.toUpperCase() || "D"}
+                    </div>
+                    <div className="min-w-0">
+                      <h2 className="font-bold text-white text-sm leading-tight truncate">
+                        {activeDrive.company} &mdash; {activeDrive.title}
+                      </h2>
+                      {activeDrive.description && (
+                        <p className="text-[11px] text-slate-500 truncate max-w-sm">{activeDrive.description}</p>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex gap-3">
-                    {/* Placeholder for Add Student Button */}
-                    <button className="px-4 py-2 bg-[#24233b] hover:bg-[#302b63] border border-white/10 rounded-xl text-sm font-medium transition-colors flex items-center gap-2">
-                      <Users className="w-4 h-4 text-indigo-400" />
-                      Add Candidate
-                    </button>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    {showPanel && (
+                      <button
+                        onClick={() => setShowPanel(false)}
+                        className="px-3 py-1.5 rounded-xl border border-white/8 hover:bg-white/8 text-slate-400 hover:text-white text-xs font-semibold transition-colors flex items-center gap-1.5"
+                      >
+                        <LayoutGrid className="w-3.5 h-3.5" />
+                        Wide View
+                      </button>
+                    )}
+                    <Link
+                      to="/college/shortlist"
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-md shadow-violet-500/20 active:scale-95"
+                    >
+                      <Users className="w-3.5 h-3.5" />
+                      Add / Shortlist Students
+                    </Link>
                   </div>
                 </div>
 
+                {/* Stage Quick-Nav */}
+                <div className="px-5 py-2.5 border-b border-white/5 shrink-0 flex items-center gap-2">
+                  <button onClick={() => scrollBoard("left")} className="p-1 rounded-lg hover:bg-white/8 text-slate-500 hover:text-white transition-colors shrink-0">
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-1 min-w-0 py-0.5">
+                    {ROUNDS.map(r => {
+                      const c = ROUND_COLORS[r];
+                      const count = applications[r]?.length || 0;
+                      return (
+                        <button
+                          key={r}
+                          onClick={() => scrollToRound(r)}
+                          className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-semibold whitespace-nowrap transition-all hover:opacity-80 ${c.badge}`}
+                        >
+                          {r}
+                          <span className="bg-white/10 text-white rounded-full px-1.5 py-0.5 text-[10px] font-bold min-w-[18px] text-center">{count}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <button onClick={() => scrollBoard("right")} className="p-1 rounded-lg hover:bg-white/8 text-slate-500 hover:text-white transition-colors shrink-0">
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Kanban Board */}
                 <DragDropContext onDragEnd={onDragEnd}>
-                  <div className="flex gap-4 overflow-x-auto pb-4 h-full custom-scrollbar-dark items-start">
-                    {rounds.map(round => (
-                      <div key={round} className="w-80 shrink-0 flex flex-col h-full max-h-full">
-                        <div className="flex items-center justify-between mb-4 px-2 shrink-0">
-                          <h3 className="text-sm font-bold uppercase tracking-wider text-[#e6e3fb]">
-                            {round}
-                          </h3>
-                          <span className="text-xs font-semibold bg-[#24233b] text-[#aba9bf] px-2 py-0.5 rounded-full">
-                            {applications[round]?.length || 0}
-                          </span>
+                  <div
+                    ref={boardRef}
+                    className="flex flex-1 gap-3 overflow-x-auto px-4 py-4 custom-scrollbar-dark items-start scroll-smooth"
+                    style={{ minHeight: 0 }}
+                  >
+                    {ROUNDS.map(round => {
+                      const c = ROUND_COLORS[round];
+                      const cards = applications[round] || [];
+                      return (
+                        <div
+                          key={round}
+                          ref={el => (colRefs.current[round] = el)}
+                          className="w-[256px] shrink-0 flex flex-col"
+                          style={{ minHeight: "100%" }}
+                        >
+                          <div className="flex items-center justify-between mb-2.5 px-1">
+                            <h3 className={`text-[11px] font-black uppercase tracking-widest ${c.header}`}>{round}</h3>
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${c.badge}`}>{cards.length}</span>
+                          </div>
+
+                          <Droppable droppableId={round}>
+                            {(provided, snapshot) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                                className={`flex-1 rounded-xl p-2 transition-all duration-200 overflow-y-auto custom-scrollbar-dark border ${
+                                  snapshot.isDraggingOver
+                                    ? `${c.drag} shadow-inner`
+                                    : "bg-[#0f0f1d]/60 border-white/5"
+                                }`}
+                                style={{ minHeight: 220 }}
+                              >
+                                {cards.length === 0 && !snapshot.isDraggingOver && (
+                                  <div className="h-24 flex flex-col items-center justify-center border border-dashed border-white/8 rounded-lg text-center">
+                                    <p className="text-slate-500 text-[11px] font-medium">Empty stage</p>
+                                    <p className="text-slate-600 text-[10px] mt-0.5">Drag cards here</p>
+                                  </div>
+                                )}
+
+                                {cards.map((app, idx) => (
+                                  <Draggable key={app._id} draggableId={app._id} index={idx}>
+                                    {(provided, snapshot) => (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        className={`mb-2.5 p-3.5 rounded-xl border transition-all duration-150 select-none ${
+                                          snapshot.isDragging
+                                            ? "bg-[#1e1b38] border-violet-500/50 shadow-2xl shadow-black/60 rotate-1 scale-105 z-50"
+                                            : "bg-[#16162a] border-white/6 hover:border-white/12 hover:bg-[#1c1c30] cursor-grab"
+                                        }`}
+                                      >
+                                        <p className="font-bold text-white text-sm leading-tight mb-0.5">
+                                          {app.student?.firstName} {app.student?.lastName}
+                                        </p>
+                                        <p className="text-[11px] text-slate-500 mb-3 truncate">
+                                          {app.student?.department} &middot; {app.student?.rollNumber || "\u2014"}
+                                        </p>
+                                        <div className="flex items-center justify-between">
+                                          <span className="bg-indigo-900/60 border border-indigo-500/30 text-indigo-300 text-[11px] font-mono font-bold px-2 py-0.5 rounded-lg">
+                                            {app.student?.cgpa}
+                                          </span>
+                                          <span className="text-[11px] text-slate-600 flex items-center gap-1">
+                                            <Calendar className="w-3 h-3" />
+                                            {fmtDate(app.appliedAt)}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                ))}
+                                {provided.placeholder}
+                              </div>
+                            )}
+                          </Droppable>
                         </div>
-                        
-                        <Droppable droppableId={round}>
-                          {(provided, snapshot) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.droppableProps}
-                              className={`flex-1 rounded-2xl p-2 transition-colors duration-200 overflow-y-auto custom-scrollbar-dark ${
-                                snapshot.isDraggingOver ? "bg-[#1d1d33]/80 border border-indigo-500/30" : "bg-[#18182b]/50 border border-transparent"
-                              }`}
-                            >
-                              {applications[round]?.map((app, index) => (
-                                <Draggable key={app._id} draggableId={app._id} index={index}>
-                                  {(provided, snapshot) => (
-                                    <div
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      className={`mb-3 p-4 rounded-xl border backdrop-blur-md transition-all ${
-                                        snapshot.isDragging
-                                          ? "bg-[#24233b] border-indigo-500/50 shadow-[0_10px_30px_rgba(0,0,0,0.5),0_0_15px_rgba(99,102,241,0.2)] rotate-2 z-50"
-                                          : "bg-[#1d1d33]/80 border-white/5 hover:border-white/10 hover:bg-[#24233b]"
-                                      }`}
-                                    >
-                                      <div className="font-semibold text-[#e6e3fb] mb-1">
-                                        {app.student?.firstName} {app.student?.lastName}
-                                      </div>
-                                      <div className="text-xs text-[#aba9bf] mb-3">
-                                        {app.student?.department} • {app.student?.rollNumber}
-                                      </div>
-                                      <div className="flex justify-between items-center text-xs">
-                                        <span className="bg-[#0c0c1d] px-2 py-1 rounded border border-white/5 text-indigo-300 font-mono">
-                                          CGPA: {app.student?.cgpa}
-                                        </span>
-                                        <span className="text-[#757388]">
-                                          {new Date(app.appliedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
-                                        </span>
-                                      </div>
-                                    </div>
-                                  )}
-                                </Draggable>
-                              ))}
-                              {provided.placeholder}
-                            </div>
-                          )}
-                        </Droppable>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </DragDropContext>
               </>
             ) : (
-              <div className="flex-1 flex items-center justify-center text-[#aba9bf] flex-col gap-4">
-                <Briefcase className="w-16 h-16 opacity-20" />
-                <p>Select a drive to view the Kanban board</p>
+              <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center p-10">
+                <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/8 flex items-center justify-center">
+                  <Briefcase className="w-8 h-8 text-slate-600" />
+                </div>
+                <div>
+                  <p className="text-white font-semibold">No drive selected</p>
+                  <p className="text-slate-500 text-sm mt-1">
+                    {drives.length > 0
+                      ? "Select a drive from the left panel."
+                      : "Create your first campus drive to get started."}
+                  </p>
+                </div>
+                {drives.length === 0 && (
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-sm font-bold hover:shadow-lg hover:shadow-violet-500/20 transition-all active:scale-95 flex items-center gap-2"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Create Drive
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -404,95 +514,95 @@ const CampusDrives = () => {
       </main>
 
       {/* Create Drive Modal */}
-      {showCreateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#1d1d33] border border-white/10 p-8 rounded-3xl w-full max-w-md shadow-2xl">
-            <h2 className="text-2xl font-bold text-white mb-6">Create New Drive</h2>
-            
-            <form onSubmit={handleCreateDrive} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-[#aba9bf] mb-1">Company Name</label>
-                <input
-                  type="text"
-                  required
-                  value={newDriveData.company}
-                  onChange={(e) => setNewDriveData({...newDriveData, company: e.target.value})}
-                  className="w-full bg-[#121223] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
-                  placeholder="e.g. Google"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-[#aba9bf] mb-1">Drive Title</label>
-                <input
-                  type="text"
-                  required
-                  value={newDriveData.title}
-                  onChange={(e) => setNewDriveData({...newDriveData, title: e.target.value})}
-                  className="w-full bg-[#121223] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
-                  placeholder="e.g. Software Engineer Hiring"
-                />
-              </div>
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+          <div className="bg-[#14142a] border border-white/10 rounded-3xl w-full max-w-md shadow-2xl shadow-black/60">
+            <div className="px-6 py-5 border-b border-white/8 flex items-center justify-between">
+              <h2 className="text-lg font-bold text-white">Create New Drive</h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="p-1.5 rounded-lg hover:bg-white/8 text-slate-500 hover:text-white transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreate} className="px-6 py-5 space-y-4">
+              {[
+                { label: "Company Name", key: "company", placeholder: "e.g. Google",           type: "text" },
+                { label: "Drive Title",  key: "title",   placeholder: "e.g. SDE Hiring 2025",  type: "text" },
+              ].map(({ label, key, placeholder, type }) => (
+                <div key={key}>
+                  <label className="block text-xs font-semibold text-slate-400 mb-1.5">{label}</label>
+                  <input
+                    type={type}
+                    required
+                    value={formData[key]}
+                    onChange={e => setFormData({ ...formData, [key]: e.target.value })}
+                    placeholder={placeholder}
+                    className="w-full bg-[#0f0f22] border border-white/8 rounded-xl px-4 py-2.5 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition"
+                  />
+                </div>
+              ))}
 
               <div>
-                <label className="block text-sm font-medium text-[#aba9bf] mb-1">Description</label>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Description</label>
                 <textarea
                   required
-                  rows="3"
-                  value={newDriveData.description}
-                  onChange={(e) => setNewDriveData({...newDriveData, description: e.target.value})}
-                  className="w-full bg-[#121223] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors resize-none"
-                  placeholder="Details about the role..."
+                  rows={3}
+                  value={formData.description}
+                  onChange={e => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Details about the role and responsibilities&hellip;"
+                  className="w-full bg-[#0f0f22] border border-white/8 rounded-xl px-4 py-2.5 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition resize-none"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-[#aba9bf] mb-1">Min CGPA Required</label>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Min CGPA Required</label>
                 <input
                   type="number"
                   step="0.1"
                   min="0"
                   max="10"
                   required
-                  value={newDriveData.minCGPA}
-                  onChange={(e) => setNewDriveData({...newDriveData, minCGPA: e.target.value})}
-                  className="w-full bg-[#121223] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
+                  value={formData.minCGPA}
+                  onChange={e => setFormData({ ...formData, minCGPA: e.target.value })}
+                  className="w-full bg-[#0f0f22] border border-white/8 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-[#aba9bf] mb-1">Assign Recruiter (Optional)</label>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">
+                  Assign Recruiter <span className="text-slate-600 font-normal">(optional)</span>
+                </label>
                 <select
-                  value={newDriveData.recruiter}
-                  onChange={(e) => setNewDriveData({...newDriveData, recruiter: e.target.value})}
-                  className="w-full bg-[#121223] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors appearance-none"
+                  value={formData.recruiter}
+                  onChange={e => setFormData({ ...formData, recruiter: e.target.value })}
+                  className="w-full bg-[#0f0f22] border border-white/8 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition appearance-none"
                 >
-                  <option value="">-- Select Recruiter --</option>
+                  <option value="">&mdash; Select recruiter &mdash;</option>
                   {recruiters.map(r => (
-                    <option key={r._id} value={r._id}>{r.name} ({r.company || "No Company"})</option>
+                    <option key={r._id} value={r._id}>{r.name} ({r.company || "No company"})</option>
                   ))}
                 </select>
               </div>
 
-              <div className="flex justify-end gap-3 pt-4">
-                <button 
-                  type="button" 
-                  onClick={() => setShowCreateModal(false)} 
-                  className="px-5 py-2.5 text-[#aba9bf] hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium"
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="flex-1 py-2.5 rounded-xl border border-white/8 text-slate-400 hover:text-white hover:bg-white/5 text-sm font-semibold transition"
                 >
                   Cancel
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={submitting}
-                  className="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-xl text-white font-medium hover:shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all disabled:opacity-50 flex items-center gap-2"
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-sm font-bold transition shadow-lg shadow-violet-500/20 disabled:opacity-50 flex items-center justify-center gap-2"
                 >
-                  {submitting ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      Creating...
-                    </>
-                  ) : "Create Drive"}
+                  {submitting
+                    ? <><Loader2 className="w-4 h-4 animate-spin" /> Creating&hellip;</>
+                    : "Create Drive"}
                 </button>
               </div>
             </form>

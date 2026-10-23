@@ -156,6 +156,21 @@ export const updateCollegeProfile = async (payload) => {
   return data;
 };
 
+export const fetchRecruiterCRM = async () => {
+  const { data } = await api.get("/college-features/recruiter-crm");
+  return data;
+};
+
+export const fetchCurriculumGap = async () => {
+  const { data } = await api.get("/college-features/curriculum-gap");
+  return data;
+};
+
+export const fetchAtRiskStudents = async () => {
+  const { data } = await api.get("/college-features/at-risk");
+  return data;
+};
+
 // ==================== RECRUITER API ====================
 
 export const fetchRecruiterStats = async () => {
@@ -184,7 +199,7 @@ export const searchCandidates = async (criteria) => {
 export const fetchDomainExperts = async (domain, limit = 20) => {
   const { data } = await api.get(
     `/recruiter-features/candidates/top-by-domain/${domain}`,
-    { params: { limit } },
+    { params: { limit } }, 
   );
   return data;
 };
