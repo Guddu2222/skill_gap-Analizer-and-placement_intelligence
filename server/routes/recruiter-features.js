@@ -7,6 +7,8 @@ const SavedCandidate = require("../models/SavedCandidate");
 const CampusDrive = require("../models/CampusDrive");
 const DriveApplication = require("../models/DriveApplication");
 const DriveRequest = require("../models/DriveRequest");
+const Job = require("../models/Job");
+const Notification = require("../models/Notification");
 const auth = require("../middleware/auth");
 const { roleCheck } = require("../middleware/auth");
 
@@ -768,7 +770,97 @@ router.put("/drives/:id/applications/:appId/status", auth, roleCheck(["recruiter
   }
 });
 
+// Update application evaluation scorecard & offer details
+router.put(
+  "/drives/:id/applications/:appId/evaluation",
+  auth,
+  roleCheck(["recruiter"]),
+  async (req, res) => {
+    try {
+      const { status, interviewScorecard, offerDetails } = req.body;
+
+      // Ensure the drive is assigned to this recruiter
+      const drive = await CampusDrive.findOne({
+        _id: req.params.id,
+        recruiter: req.user.userId,
+      });
+      if (!drive)
+        return res
+          .status(403)
+          .json({ error: "Not authorized to modify this drive" });
+
+      const updateFields = { updatedAt: Date.now() };
+      if (status) updateFields.status = status;
+      if (interviewScorecard) {
+        updateFields.interviewScorecard = {
+          ...interviewScorecard,
+          evaluatedAt: Date.now(),
+        };
+      }
+      if (offerDetails) {
+        updateFields.offerDetails = offerDetails;
+      }
+
+      const application = await DriveApplication.findOneAndUpdate(
+        { _id: req.params.appId, drive: req.params.id },
+        { $set: updateFields },
+        { new: true }
+      ).populate(
+        "student",
+        "firstName lastName email rollNumber department cgpa skills"
+      );
+
+      if (!application)
+        return res.status(404).json({ error: "Application not found" });
+
+      // If moved to Offered with package details, reflect onto Student profile
+      if (status === "Offered" && application.student) {
+        const studentUpdates = { isPlaced: true, placementStatus: "placed" };
+        if (offerDetails?.ctc) {
+          const numMatch = offerDetails.ctc.match(/[\d.]+/);
+          if (numMatch) studentUpdates.placementPackage = parseFloat(numMatch[0]);
+        }
+        await Student.findByIdAndUpdate(application.student._id, {
+          $set: studentUpdates,
+        });
+      }
+
+      // Send status email if status was changed
+      if (status && application.student?.email) {
+        const studentName =
+          `${application.student.firstName || ""} ${application.student.lastName || ""}`.trim();
+        sendDriveStatusEmail(
+          application.student.email,
+          studentName,
+          drive?.title || "Campus Placement Drive",
+          drive?.companyName || "Recruiting Partner",
+          status
+        );
+      }
+
+      res.json(application);
+    } catch (error) {
+      console.error("Error updating application evaluation:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
+
 // ==================== DRIVE REQUESTS ====================
+
+// GET /api/recruiter-features/drive-requests - Fetch all requests sent by this recruiter
+router.get("/drive-requests", auth, roleCheck(["recruiter"]), async (req, res) => {
+  try {
+    const requests = await DriveRequest.find({ recruiter: req.user.userId })
+      .populate("college", "name location tier logoUrl website")
+      .populate("job", "title company location salary jobType requirements")
+      .sort({ createdAt: -1 });
+    res.json(requests);
+  } catch (err) {
+    console.error("Error fetching recruiter drive requests:", err);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
 
 router.post("/drive-requests", auth, roleCheck(["recruiter"]), async (req, res) => {
   try {
@@ -866,6 +958,337 @@ router.get("/analytics", auth, roleCheck(["recruiter"]), async (req, res) => {
     console.error("Error generating recruiter analytics:", err);
     res.status(500).json({ error: "Failed to generate recruiter analytics" });
   }
-});
+// ==================== SMART SHORTLIST & INTERVIEW SCHEDULING ====================
+
+// POST /api/recruiter-features/smart-shortlist
+router.post(
+  "/smart-shortlist",
+  auth,
+  roleCheck(["recruiter"]),
+  async (req, res) => {
+    try {
+      const {
+        jobId,
+        targetSkills = [],
+        minCgpa = 0,
+        departments = [],
+        collegeId,
+        placementStatusFilter = "unplaced", // "all" | "unplaced"
+        limit = 30,
+      } = req.body;
+
+      let requiredSkills = [...targetSkills];
+      let jobDetails = null;
+
+      if (jobId) {
+        jobDetails = await Job.findById(jobId).lean();
+        if (
+          jobDetails &&
+          Array.isArray(jobDetails.requirements) &&
+          jobDetails.requirements.length > 0
+        ) {
+          const jobReqs = jobDetails.requirements
+            .map((r) => r.trim())
+            .filter(Boolean);
+          requiredSkills = Array.from(new Set([...requiredSkills, ...jobReqs]));
+        }
+      }
+
+      // Build query for students
+      const query = {};
+      if (minCgpa > 0) {
+        query.cgpa = { $gte: parseFloat(minCgpa) };
+      }
+      if (departments.length > 0) {
+        query.department = { $in: departments };
+      }
+      if (collegeId) {
+        query.college = new mongoose.Types.ObjectId(collegeId);
+      }
+      if (placementStatusFilter === "unplaced") {
+        query.isPlaced = { $ne: true };
+      }
+
+      const students = await Student.find(query)
+        .populate("college", "name tier location logoUrl")
+        .populate("user", "name email avatar")
+        .sort({ cgpa: -1 })
+        .limit(100)
+        .lean();
+
+      // Normalize required skill names
+      const normRequired = requiredSkills
+        .map((s) => s.toLowerCase().trim())
+        .filter(Boolean);
+
+      const proficiencyWeights = {
+        beginner: 0.65,
+        intermediate: 0.85,
+        advanced: 1.0,
+        expert: 1.25,
+      };
+
+      const matchedCandidates = students.map((student) => {
+        const studentSkills = (student.skills || []).map((sk) => {
+          const rawName =
+            typeof sk === "string" ? sk : sk.skillName || sk.name || "";
+          const level =
+            typeof sk === "object"
+              ? sk.proficiencyLevel || "intermediate"
+              : "intermediate";
+          return {
+            name: rawName,
+            level: level.toLowerCase(),
+            weight: proficiencyWeights[level.toLowerCase()] || 0.85,
+          };
+        });
+
+        const studentSkillNames = studentSkills.map((s) =>
+          s.name.toLowerCase().trim()
+        );
+
+        const matchedSkills = [];
+        const missingSkills = [];
+        let weightedSkillScore = 0;
+
+        if (normRequired.length > 0) {
+          normRequired.forEach((reqSkill) => {
+            const foundIdx = studentSkillNames.findIndex(
+              (s) =>
+                s === reqSkill || s.includes(reqSkill) || reqSkill.includes(s)
+            );
+            if (foundIdx !== -1) {
+              const matchedObj = studentSkills[foundIdx];
+              matchedSkills.push(matchedObj.name);
+              weightedSkillScore += matchedObj.weight;
+            } else {
+              const orig =
+                requiredSkills.find(
+                  (r) => r.toLowerCase().trim() === reqSkill
+                ) || reqSkill;
+              missingSkills.push(orig);
+            }
+          });
+        }
+
+        // Skill Match Percentage (capped at 100)
+        let skillMatchPct = 0;
+        if (normRequired.length > 0) {
+          skillMatchPct = Math.min(
+            100,
+            Math.round((weightedSkillScore / normRequired.length) * 100)
+          );
+        } else {
+          skillMatchPct = Math.min(100, studentSkills.length * 12 || 50);
+        }
+
+        // Joining / Offer Probability calculation
+        let joiningProbability = 70;
+        const riskFactors = [];
+
+        if (student.isPlaced) {
+          joiningProbability -= 35;
+          riskFactors.push("Already placed at another organization");
+        } else {
+          joiningProbability += 10;
+        }
+
+        const cgpa = student.cgpa || 0;
+        if (cgpa >= 8.5) {
+          joiningProbability += 10;
+        } else if (cgpa < 6.5) {
+          joiningProbability -= 15;
+          riskFactors.push("Academic CGPA below 6.5 threshold");
+        }
+
+        if (skillMatchPct < 50) {
+          riskFactors.push("Significant core skill gaps");
+          joiningProbability -= 15;
+        }
+
+        joiningProbability = Math.max(15, Math.min(98, joiningProbability));
+
+        // Overall Composite Match Score (0 - 100)
+        const cgpaNorm = Math.min(100, (cgpa / 10) * 100);
+        const overallScore = Math.round(
+          skillMatchPct * 0.6 + cgpaNorm * 0.25 + joiningProbability * 0.15
+        );
+
+        let matchBadge = "Needs Training";
+        if (overallScore >= 80) matchBadge = "Top Match";
+        else if (overallScore >= 65) matchBadge = "Strong Candidate";
+        else if (overallScore >= 50) matchBadge = "Potential Match";
+
+        return {
+          id: student._id,
+          name:
+            `${student.firstName || ""} ${student.lastName || ""}`.trim() ||
+            student.user?.name ||
+            "Candidate",
+          email: student.email || student.user?.email,
+          rollNumber: student.rollNumber,
+          department: student.department || "Computer Science",
+          college: student.college
+            ? {
+                id: student.college._id,
+                name: student.college.name,
+                tier: student.college.tier,
+                location: student.college.location,
+              }
+            : null,
+          cgpa,
+          isPlaced: !!student.isPlaced,
+          skills: student.skills || [],
+          matchedSkills,
+          missingSkills,
+          skillMatchPct,
+          joiningProbability,
+          riskFactors,
+          overallScore,
+          matchBadge,
+          resumeUrl: student.resumeUrl,
+          linkedinUrl: student.linkedinUrl,
+          githubUsername: student.githubUsername,
+        };
+      });
+
+      matchedCandidates.sort((a, b) => b.overallScore - a.overallScore);
+
+      res.json({
+        success: true,
+        job: jobDetails
+          ? {
+              id: jobDetails._id,
+              title: jobDetails.title,
+              company: jobDetails.company,
+              requirements: jobDetails.requirements,
+            }
+          : null,
+        requiredSkills,
+        totalFound: matchedCandidates.length,
+        candidates: matchedCandidates.slice(0, parseInt(limit)),
+      });
+    } catch (err) {
+      console.error("Smart Shortlist error:", err);
+      res
+        .status(500)
+        .json({ error: "Failed to run smart shortlisting algorithm" });
+    }
+  }
+);
+
+// POST /api/recruiter-features/smart-shortlist/schedule
+router.post(
+  "/smart-shortlist/schedule",
+  auth,
+  roleCheck(["recruiter"]),
+  async (req, res) => {
+    try {
+      const {
+        candidates = [],
+        date,
+        startTime = "10:00",
+        slotDurationMinutes = 45,
+        panels = ["Technical Panel 1", "Technical Panel 2"],
+        driveTitle = "Campus Interview",
+      } = req.body;
+
+      if (!candidates || candidates.length === 0) {
+        return res
+          .status(400)
+          .json({ error: "No candidates selected for scheduling" });
+      }
+
+      const scheduledInterviews = [];
+      const interviewDate = date
+        ? new Date(date)
+        : new Date(Date.now() + 24 * 3600 * 1000);
+      const dateStr = interviewDate.toISOString().split("T")[0];
+
+      const [startH, startM] = startTime.split(":").map(Number);
+      let currentMinutes =
+        (isNaN(startH) ? 10 : startH) * 60 + (isNaN(startM) ? 0 : startM);
+
+      for (let i = 0; i < candidates.length; i++) {
+        const c = candidates[i];
+        const panel = panels[i % panels.length];
+
+        const slotHour = Math.floor(currentMinutes / 60);
+        const slotMin = currentMinutes % 60;
+        const period = slotHour >= 12 ? "PM" : "AM";
+        const displayHour = slotHour % 12 === 0 ? 12 : slotHour % 12;
+        const displayMin = slotMin < 10 ? `0${slotMin}` : slotMin;
+        const timeSlotString = `${displayHour}:${displayMin} ${period}`;
+
+        const roomCode =
+          Math.random().toString(36).substring(2, 5) +
+          "-" +
+          Math.random().toString(36).substring(2, 6) +
+          "-" +
+          Math.random().toString(36).substring(2, 5);
+        const meetLink = `https://meet.google.com/${roomCode}`;
+
+        scheduledInterviews.push({
+          candidateId: c.id || c._id,
+          candidateName: c.name,
+          email: c.email,
+          date: dateStr,
+          time: timeSlotString,
+          panel,
+          meetLink,
+          status: "Scheduled",
+        });
+
+        currentMinutes += parseInt(slotDurationMinutes);
+
+        // Update or insert SavedCandidate record with status "interviewing"
+        if (c.id || c._id) {
+          try {
+            await SavedCandidate.findOneAndUpdate(
+              { recruiter: req.user.userId, student: c.id || c._id },
+              {
+                $set: {
+                  status: "interviewing",
+                  notes: `Scheduled ${driveTitle} on ${dateStr} at ${timeSlotString} (${panel})`,
+                },
+              },
+              { upsert: true, new: true, setDefaultsOnInsert: true }
+            );
+
+            // Notify the student
+            const studentDoc = await Student.findById(c.id || c._id).select(
+              "user"
+            );
+            if (studentDoc && studentDoc.user) {
+              await Notification.create({
+                recipient: studentDoc.user,
+                recipientRole: "student",
+                title: `Interview Scheduled: ${driveTitle}`,
+                message: `You have an interview scheduled on ${dateStr} at ${timeSlotString} with ${panel}. Meeting Link: ${meetLink}`,
+                category: "interview",
+                link: "/student/interviews",
+              });
+            }
+          } catch (notifErr) {
+            console.error(
+              "Error creating student notification for interview:",
+              notifErr
+            );
+          }
+        }
+      }
+
+      res.json({
+        success: true,
+        count: scheduledInterviews.length,
+        schedule: scheduledInterviews,
+      });
+    } catch (err) {
+      console.error("Smart Shortlist schedule error:", err);
+      res.status(500).json({ error: "Failed to schedule interviews" });
+    }
+  }
+);
 
 module.exports = router;
+

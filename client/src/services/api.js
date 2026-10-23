@@ -241,6 +241,28 @@ export const unsaveCandidate = async (studentId) => {
   return data;
 };
 
+export const runSmartShortlist = async (payload) => {
+  const { data } = await api.post("/recruiter-features/smart-shortlist", payload);
+  return data;
+};
+
+export const scheduleSmartInterviews = async (payload) => {
+  const { data } = await api.post("/recruiter-features/smart-shortlist/schedule", payload);
+  return data;
+};
+
+export const fetchRecruiterDriveRequests = async () => {
+  const { data } = await api.get("/recruiter-features/drive-requests");
+  return data;
+};
+
+export const updateApplicationEvaluation = async (driveId, appId, payload) => {
+  const { data } = await api.put(`/recruiter-features/drives/${driveId}/applications/${appId}/evaluation`, payload);
+  return data;
+};
+
+
+
 // ==================== STUDENT API ====================
 export const fetchStudentProfile = async () => {
   const { data } = await api.get("/student-features/me");
