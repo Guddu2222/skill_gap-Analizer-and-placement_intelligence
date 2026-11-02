@@ -20,6 +20,10 @@ import {
   ExternalLink,
   Sliders,
   Check,
+  Zap,
+  Activity,
+  ShieldAlert,
+  Eye,
 } from "lucide-react";
 import axios from "axios";
 import { updateApplicationEvaluation } from "../services/api";
@@ -456,6 +460,48 @@ const RecruiterDrives = () => {
                                               </div>
                                             )}
 
+                                          {/* Aptitude Assessment & AI Vision Proctoring Snippet */}
+                                          {app.aptitudeScore && (
+                                            <div className="mb-2.5 p-2 rounded-lg bg-black/35 border border-white/5 text-[11px] space-y-1">
+                                              <div className="flex items-center justify-between">
+                                                <span className="font-semibold text-slate-300 flex items-center gap-1">
+                                                  <Zap className="w-3 h-3 text-amber-400" />
+                                                  Aptitude: {app.aptitudeScore.percentage}%
+                                                </span>
+                                                <span
+                                                  className={`text-[10px] font-bold px-1.5 py-0.2 rounded border ${
+                                                    app.aptitudeScore.passed
+                                                      ? "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
+                                                      : "text-rose-400 bg-rose-500/10 border-rose-500/20"
+                                                  }`}
+                                                >
+                                                  {app.aptitudeScore.passed ? "Passed" : "Cutoff Failed"}
+                                                </span>
+                                              </div>
+                                              <div className="flex items-center justify-between text-[10px] text-slate-400">
+                                                <span className="flex items-center gap-1">
+                                                  <Activity className="w-2.5 h-2.5 text-violet-400" />
+                                                  Vision AI:{" "}
+                                                  {app.aptitudeScore.proctoringMetrics?.webcamStatus === "active"
+                                                    ? "Monitored"
+                                                    : "Standby"}
+                                                </span>
+                                                {app.aptitudeScore.antiCheatFlags &&
+                                                app.aptitudeScore.antiCheatFlags.length > 0 ? (
+                                                  <span className="text-rose-400 font-semibold flex items-center gap-0.5">
+                                                    <ShieldAlert className="w-2.5 h-2.5" />
+                                                    {app.aptitudeScore.antiCheatFlags.length} Flag
+                                                    {app.aptitudeScore.antiCheatFlags.length > 1 ? "s" : ""}
+                                                  </span>
+                                                ) : (
+                                                  <span className="text-emerald-400 font-semibold flex items-center gap-0.5">
+                                                    Clean Proctor
+                                                  </span>
+                                                )}
+                                              </div>
+                                            </div>
+                                          )}
+
                                           {/* Scorecard badge if evaluated */}
                                           <div className="pt-2 border-t border-white/5 flex items-center justify-between text-xs">
                                             {hasScorecard ? (
@@ -555,6 +601,113 @@ const RecruiterDrives = () => {
                     ))}
                   </div>
                 </div>
+
+                {/* Aptitude Assessment & MediaPipe Vision Proctor Dossier */}
+                {selectedApp.aptitudeScore && (
+                  <div className="bg-[#0a0a16] border border-white/8 rounded-2xl p-5 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-white/8">
+                      <div className="flex items-center gap-2">
+                        <Zap className="w-4 h-4 text-amber-400 fill-amber-400" />
+                        <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+                          Aptitude Assessment & MediaPipe Vision Proctor
+                        </h3>
+                      </div>
+                      <span
+                        className={`text-xs font-bold px-2.5 py-0.5 rounded-full border self-start sm:self-auto ${
+                          selectedApp.aptitudeScore.passed
+                            ? "text-emerald-400 bg-emerald-500/15 border-emerald-500/30"
+                            : "text-rose-400 bg-rose-500/15 border-rose-500/30"
+                        }`}
+                      >
+                        Score: {selectedApp.aptitudeScore.percentage}% (
+                        {selectedApp.aptitudeScore.score}/{selectedApp.aptitudeScore.total}) •{" "}
+                        {selectedApp.aptitudeScore.passed ? "Passed" : "Cutoff Not Met"}
+                      </span>
+                    </div>
+
+                    {/* Sectional Breakdown */}
+                    {selectedApp.aptitudeScore.sectionalBreakdown && (
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-center text-xs">
+                        <div className="p-2.5 rounded-xl bg-[#121226] border border-white/5">
+                          <div className="text-[10px] text-slate-400">Quantitative</div>
+                          <div className="text-sm font-bold text-white mt-0.5">
+                            {selectedApp.aptitudeScore.sectionalBreakdown.quantitative?.score || 0} /{" "}
+                            {selectedApp.aptitudeScore.sectionalBreakdown.quantitative?.total || 0}
+                          </div>
+                        </div>
+                        <div className="p-2.5 rounded-xl bg-[#121226] border border-white/5">
+                          <div className="text-[10px] text-slate-400">Logical Reasoning</div>
+                          <div className="text-sm font-bold text-white mt-0.5">
+                            {selectedApp.aptitudeScore.sectionalBreakdown.logical?.score || 0} /{" "}
+                            {selectedApp.aptitudeScore.sectionalBreakdown.logical?.total || 0}
+                          </div>
+                        </div>
+                        <div className="p-2.5 rounded-xl bg-[#121226] border border-white/5">
+                          <div className="text-[10px] text-slate-400">Technical Core & Systems</div>
+                          <div className="text-sm font-bold text-white mt-0.5">
+                            {selectedApp.aptitudeScore.sectionalBreakdown.technical?.score || 0} /{" "}
+                            {selectedApp.aptitudeScore.sectionalBreakdown.technical?.total || 0}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Vision Proctoring Telemetry */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs pt-1">
+                      <div className="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                        <div className="text-[10px] text-slate-400">Webcam Feed</div>
+                        <div className="text-xs font-bold text-emerald-400 mt-0.5 capitalize">
+                          {selectedApp.aptitudeScore.proctoringMetrics?.webcamStatus === "active"
+                            ? "Verified Active"
+                            : selectedApp.aptitudeScore.proctoringMetrics?.webcamStatus || "Active"}
+                        </div>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                        <div className="text-[10px] text-slate-400">Eye Alignment</div>
+                        <div className="text-xs font-bold text-white mt-0.5 flex items-center justify-center gap-1">
+                          <Eye className="w-3 h-3 text-cyan-400" />
+                          {selectedApp.aptitudeScore.proctoringMetrics?.avgEyeContactScore || 90}%
+                        </div>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                        <div className="text-[10px] text-slate-400">Posture Index</div>
+                        <div className="text-xs font-bold text-white mt-0.5 flex items-center justify-center gap-1">
+                          <Activity className="w-3 h-3 text-violet-400" />
+                          {selectedApp.aptitudeScore.proctoringMetrics?.avgPostureScore || 95}%
+                        </div>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                        <div className="text-[10px] text-slate-400">Tab Switches</div>
+                        <div
+                          className={`text-xs font-bold mt-0.5 ${
+                            selectedApp.aptitudeScore.tabSwitchCount > 0
+                              ? "text-rose-400"
+                              : "text-emerald-400"
+                          }`}
+                        >
+                          {selectedApp.aptitudeScore.tabSwitchCount || 0} switch
+                          {selectedApp.aptitudeScore.tabSwitchCount === 1 ? "" : "es"}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Anti-Cheat Flags list if any */}
+                    {selectedApp.aptitudeScore.antiCheatFlags &&
+                      selectedApp.aptitudeScore.antiCheatFlags.length > 0 && (
+                        <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs space-y-1.5">
+                          <div className="text-[11px] uppercase font-bold tracking-wider text-rose-400 flex items-center gap-1.5">
+                            <ShieldAlert className="w-4 h-4" />
+                            Flagged Proctoring Incidents ({selectedApp.aptitudeScore.antiCheatFlags.length})
+                          </div>
+                          <ul className="list-disc list-inside space-y-0.5 text-[11px] text-rose-200/90">
+                            {selectedApp.aptitudeScore.antiCheatFlags.map((flag, fi) => (
+                              <li key={fi}>{flag}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                  </div>
+                )}
 
                 {/* Scorecard Rubrics */}
                 <div className="bg-[#0a0a16] border border-white/8 rounded-2xl p-5 space-y-4">

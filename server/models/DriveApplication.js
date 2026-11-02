@@ -46,6 +46,13 @@ const driveApplicationSchema = new mongoose.Schema({
     },
     tabSwitchCount: { type: Number, default: 0 },
     antiCheatFlags: { type: [String], default: [] },
+    proctoringMetrics: {
+      avgPostureScore: { type: Number, default: 0 },
+      avgEyeContactScore: { type: Number, default: 0 },
+      multipleFaceEvents: { type: Number, default: 0 },
+      faceMissingEvents: { type: Number, default: 0 },
+      webcamStatus: { type: String, default: "inactive" },
+    },
   },
   appliedAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

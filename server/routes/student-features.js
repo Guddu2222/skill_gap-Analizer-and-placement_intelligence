@@ -740,7 +740,12 @@ router.get("/drives/applications/:appId/aptitude-questions", auth, async (req, r
 // Student takes & submits Aptitude Test with Sectional Grading & Anti-Cheat validation
 router.post("/drives/applications/:appId/submit-aptitude", auth, async (req, res) => {
   try {
-    const { answers = {}, tabSwitchCount = 0, antiCheatFlags = [] } = req.body;
+    const {
+      answers = {},
+      tabSwitchCount = 0,
+      antiCheatFlags = [],
+      proctoringMetrics = {},
+    } = req.body;
     const student = await Student.findOne({ user: req.user.userId });
     if (!student) return res.status(404).json({ error: "Student not found" });
 
@@ -812,16 +817,36 @@ router.post("/drives/applications/:appId/submit-aptitude", auth, async (req, res
     const finalTotal = totalEvaluated > 0 ? totalEvaluated : 24;
     const percentage = Math.round((totalScore / finalTotal) * 100);
 
-    // Anti-cheat disqualification threshold (>= 4 tab switches fails automatically)
-    const disqualifiedByCheating = tabSwitchCount >= 4;
-    const passed = percentage >= 60 && !disqualifiedByCheating;
+    const safeProctoring = {
+      avgPostureScore: Number(proctoringMetrics.avgPostureScore) || 0,
+      avgEyeContactScore: Number(proctoringMetrics.avgEyeContactScore) || 0,
+      multipleFaceEvents: Number(proctoringMetrics.multipleFaceEvents) || 0,
+      faceMissingEvents: Number(proctoringMetrics.faceMissingEvents) || 0,
+      webcamStatus: proctoringMetrics.webcamStatus || "inactive",
+    };
 
     const flags = [...antiCheatFlags];
     if (tabSwitchCount > 0) {
       flags.push(`Candidate switched browser tabs ${tabSwitchCount} times`);
     }
+    if (safeProctoring.multipleFaceEvents >= 3) {
+      flags.push(`AI Vision Alert: Multiple persons detected in camera view (${safeProctoring.multipleFaceEvents} times)`);
+    }
+    if (safeProctoring.faceMissingEvents >= 5) {
+      flags.push(`AI Vision Alert: Candidate absent from webcam frame (${safeProctoring.faceMissingEvents} times)`);
+    }
+
+    // Anti-cheat disqualification threshold (>= 4 tab switches OR >= 5 multiple face violations fails automatically)
+    const disqualifiedByCheating = tabSwitchCount >= 4 || safeProctoring.multipleFaceEvents >= 5;
+    const passed = percentage >= 60 && !disqualifiedByCheating;
+
     if (disqualifiedByCheating) {
-      flags.push("Disqualified: Excessive background tab switches detected");
+      if (tabSwitchCount >= 4) {
+        flags.push("Disqualified: Excessive background tab switches detected");
+      }
+      if (safeProctoring.multipleFaceEvents >= 5) {
+        flags.push("Disqualified: Persistent multiple persons detected in camera stream");
+      }
     }
 
     application.aptitudeScore = {
@@ -833,6 +858,7 @@ router.post("/drives/applications/:appId/submit-aptitude", auth, async (req, res
       sectionalBreakdown: sectionalScores,
       tabSwitchCount: Number(tabSwitchCount),
       antiCheatFlags: flags,
+      proctoringMetrics: safeProctoring,
     };
     application.updatedAt = new Date();
 
