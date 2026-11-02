@@ -27,6 +27,26 @@ const driveApplicationSchema = new mongoose.Schema({
     offerLetterUrl: { type: String, default: "" },
     notes: { type: String, default: "" },
   },
+  offerResponse: {
+    type: String,
+    enum: ["pending", "accepted", "declined"],
+    default: "pending",
+  },
+  offerRespondedAt: { type: Date },
+  aptitudeScore: {
+    score: { type: Number },
+    total: { type: Number },
+    percentage: { type: Number },
+    passed: { type: Boolean },
+    attemptedAt: { type: Date },
+    sectionalBreakdown: {
+      quantitative: { score: Number, total: Number },
+      logical: { score: Number, total: Number },
+      technical: { score: Number, total: Number },
+    },
+    tabSwitchCount: { type: Number, default: 0 },
+    antiCheatFlags: { type: [String], default: [] },
+  },
   appliedAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

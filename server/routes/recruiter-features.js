@@ -958,6 +958,8 @@ router.get("/analytics", auth, roleCheck(["recruiter"]), async (req, res) => {
     console.error("Error generating recruiter analytics:", err);
     res.status(500).json({ error: "Failed to generate recruiter analytics" });
   }
+});
+
 // ==================== SMART SHORTLIST & INTERVIEW SCHEDULING ====================
 
 // POST /api/recruiter-features/smart-shortlist

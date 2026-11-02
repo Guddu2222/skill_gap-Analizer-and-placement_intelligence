@@ -261,6 +261,23 @@ export const updateApplicationEvaluation = async (driveId, appId, payload) => {
   return data;
 };
 
+export const respondToJobOffer = async (appId, decision) => {
+  const { data } = await api.put(`/student-features/drives/applications/${appId}/offer-response`, { decision });
+  return data;
+};
+
+export const fetchAptitudeQuestions = async (appId) => {
+  const { data } = await api.get(`/student-features/drives/applications/${appId}/aptitude-questions`);
+  return data;
+};
+
+export const submitAptitudeAssessment = async (appId, payload) => {
+  const { data } = await api.post(`/student-features/drives/applications/${appId}/submit-aptitude`, payload);
+  return data;
+};
+
+
+
 
 
 // ==================== STUDENT API ====================

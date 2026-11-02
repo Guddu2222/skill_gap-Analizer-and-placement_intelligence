@@ -8,6 +8,9 @@ const MentorshipBooking = require("../models/MentorshipBooking");
 const InterviewExperience = require("../models/InterviewExperience");
 const CampusDrive = require("../models/CampusDrive");
 const DriveApplication = require("../models/DriveApplication");
+const Notification = require("../models/Notification");
+const QuestionBank = require("../models/QuestionBank");
+const { SEED_QUESTIONS } = require("../utils/seedQuestionBank");
 const auth = require("../middleware/auth");
 const { upload, uploadImage } = require("../config/cloudinary");
 
@@ -593,4 +596,306 @@ router.post("/drives/:id/apply", auth, async (req, res) => {
   }
 });
 
+// Student responds to an offer ("accept" or "decline")
+router.put("/drives/applications/:appId/offer-response", auth, async (req, res) => {
+  try {
+    const { decision } = req.body; // "accept" | "decline"
+    if (!["accept", "decline"].includes(decision)) {
+      return res.status(400).json({ error: "Invalid decision. Must be 'accept' or 'decline'." });
+    }
+
+    const student = await Student.findOne({ user: req.user.userId });
+    if (!student) return res.status(404).json({ error: "Student not found" });
+
+    const application = await DriveApplication.findOne({
+      _id: req.params.appId,
+      student: student._id,
+    }).populate("drive");
+
+    if (!application) {
+      return res.status(404).json({ error: "Application not found" });
+    }
+
+    if (application.status !== "Offered") {
+      return res.status(400).json({ error: "Can only respond to applications in 'Offered' stage." });
+    }
+
+    application.offerResponse = decision === "accept" ? "accepted" : "declined";
+    application.offerRespondedAt = new Date();
+    application.updatedAt = new Date();
+
+    if (decision === "accept") {
+      // Update student placed status & package
+      const studentUpdates = { isPlaced: true, placementStatus: "placed" };
+      if (application.offerDetails?.ctc) {
+        const numMatch = application.offerDetails.ctc.match(/[\d.]+/);
+        if (numMatch) studentUpdates.placementPackage = parseFloat(numMatch[0]);
+      }
+      await Student.findByIdAndUpdate(student._id, { $set: studentUpdates });
+
+      // Notify recruiter if present
+      if (application.drive?.recruiter) {
+        await Notification.create({
+          recipient: application.drive.recruiter,
+          recipientRole: "recruiter",
+          title: "Offer Accepted! 🎉",
+          message: `${student.firstName || "A candidate"} ${student.lastName || ""} has officially accepted your offer for ${application.drive.title} (${application.drive.company})!`,
+          category: "placement",
+          link: "/recruiter/drives",
+        });
+      }
+    } else {
+      application.status = "Rejected";
+
+      // Notify recruiter
+      if (application.drive?.recruiter) {
+        await Notification.create({
+          recipient: application.drive.recruiter,
+          recipientRole: "recruiter",
+          title: "Offer Declined",
+          message: `${student.firstName || "A candidate"} ${student.lastName || ""} has declined the offer for ${application.drive.title}.`,
+          category: "placement",
+          link: "/recruiter/drives",
+        });
+      }
+    }
+
+    await application.save();
+    res.json({ success: true, application });
+  } catch (err) {
+    console.error("Error updating offer response:", err);
+    res.status(500).json({ error: "Failed to process offer response" });
+  }
+});
+
+// Dynamic Aptitude Assessment Generator (Randomized subset per candidate)
+router.get("/drives/applications/:appId/aptitude-questions", auth, async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.user.userId });
+    if (!student) return res.status(404).json({ error: "Student not found" });
+
+    const application = await DriveApplication.findOne({
+      _id: req.params.appId,
+      student: student._id,
+    }).populate("drive");
+
+    if (!application) {
+      return res.status(404).json({ error: "Application not found" });
+    }
+
+    if (application.status !== "Aptitude Test") {
+      return res.status(400).json({ error: "Application is not in Aptitude Test stage." });
+    }
+
+    // Attempt to pull questions from MongoDB QuestionBank; fallback to SEED_QUESTIONS
+    let pool = await QuestionBank.find().lean();
+    if (!pool || pool.length === 0) {
+      pool = SEED_QUESTIONS;
+    }
+
+    // Partition into sections
+    const quantPool = pool.filter((q) => q.category === "Quantitative Aptitude");
+    const logicalPool = pool.filter((q) => q.category === "Logical Reasoning");
+    const techPool = pool.filter((q) =>
+      q.category.includes("Technical") || q.category.includes("Web")
+    );
+
+    // Shuffle helper
+    const shuffle = (array) => [...array].sort(() => 0.5 - Math.random());
+
+    // Sample 7 Quant, 7 Logical, 10 Technical => 24 questions total
+    const sampledQuant = shuffle(quantPool.length >= 7 ? quantPool : pool).slice(0, 7);
+    const sampledLogical = shuffle(logicalPool.length >= 7 ? logicalPool : pool).slice(0, 7);
+    const sampledTech = shuffle(techPool.length >= 10 ? techPool : pool).slice(0, 10);
+
+    const combinedQuestions = [...sampledQuant, ...sampledLogical, ...sampledTech];
+
+    // Strip out correctOptionIndex and explanation to prevent inspect-element cheating
+    const secureQuestions = combinedQuestions.map((q, idx) => ({
+      id: q._id ? q._id.toString() : `q_${idx}`,
+      index: idx,
+      category: q.category,
+      difficulty: q.difficulty,
+      question: q.question,
+      options: q.options,
+    }));
+
+    res.json({
+      success: true,
+      totalQuestions: secureQuestions.length,
+      timeLimitMinutes: 20, // 20 minutes for 24 questions
+      questions: secureQuestions,
+      sections: [
+        { name: "Quantitative Aptitude", count: sampledQuant.length },
+        { name: "Logical Reasoning", count: sampledLogical.length },
+        { name: "Core Technical & CS", count: sampledTech.length },
+      ],
+    });
+  } catch (err) {
+    console.error("Error generating dynamic aptitude test:", err);
+    res.status(500).json({ error: "Failed to generate assessment questions" });
+  }
+});
+
+// Student takes & submits Aptitude Test with Sectional Grading & Anti-Cheat validation
+router.post("/drives/applications/:appId/submit-aptitude", auth, async (req, res) => {
+  try {
+    const { answers = {}, tabSwitchCount = 0, antiCheatFlags = [] } = req.body;
+    const student = await Student.findOne({ user: req.user.userId });
+    if (!student) return res.status(404).json({ error: "Student not found" });
+
+    const application = await DriveApplication.findOne({
+      _id: req.params.appId,
+      student: student._id,
+    }).populate("drive");
+
+    if (!application) {
+      return res.status(404).json({ error: "Application not found" });
+    }
+
+    // Load full question bank with answer keys
+    let pool = await QuestionBank.find().lean();
+    if (!pool || pool.length === 0) {
+      pool = SEED_QUESTIONS;
+    }
+
+    // Create lookup by string ID or question text
+    const poolMap = new Map();
+    pool.forEach((q, idx) => {
+      if (q._id) poolMap.set(q._id.toString(), q);
+      poolMap.set(`q_${idx}`, q);
+      poolMap.set(q.question.trim(), q);
+    });
+
+    let totalScore = 0;
+    let totalEvaluated = 0;
+    const sectionalScores = {
+      quantitative: { score: 0, total: 0 },
+      logical: { score: 0, total: 0 },
+      technical: { score: 0, total: 0 },
+    };
+
+    const reviewDetails = [];
+
+    // Evaluate answers
+    Object.entries(answers).forEach(([qKey, selectedOptionIdx]) => {
+      const qDoc = poolMap.get(qKey);
+      if (!qDoc) return;
+
+      totalEvaluated++;
+      const isCorrect = Number(selectedOptionIdx) === qDoc.correctOptionIndex;
+      if (isCorrect) totalScore++;
+
+      // Section classification
+      if (qDoc.category.includes("Quant")) {
+        sectionalScores.quantitative.total++;
+        if (isCorrect) sectionalScores.quantitative.score++;
+      } else if (qDoc.category.includes("Logic")) {
+        sectionalScores.logical.total++;
+        if (isCorrect) sectionalScores.logical.score++;
+      } else {
+        sectionalScores.technical.total++;
+        if (isCorrect) sectionalScores.technical.score++;
+      }
+
+      reviewDetails.push({
+        question: qDoc.question,
+        category: qDoc.category,
+        userAnswer: qDoc.options[selectedOptionIdx] || "Unanswered",
+        correctAnswer: qDoc.options[qDoc.correctOptionIndex],
+        isCorrect,
+        explanation: qDoc.explanation || "",
+      });
+    });
+
+    // In case no answers were answered or sparse submission
+    const finalTotal = totalEvaluated > 0 ? totalEvaluated : 24;
+    const percentage = Math.round((totalScore / finalTotal) * 100);
+
+    // Anti-cheat disqualification threshold (>= 4 tab switches fails automatically)
+    const disqualifiedByCheating = tabSwitchCount >= 4;
+    const passed = percentage >= 60 && !disqualifiedByCheating;
+
+    const flags = [...antiCheatFlags];
+    if (tabSwitchCount > 0) {
+      flags.push(`Candidate switched browser tabs ${tabSwitchCount} times`);
+    }
+    if (disqualifiedByCheating) {
+      flags.push("Disqualified: Excessive background tab switches detected");
+    }
+
+    application.aptitudeScore = {
+      score: totalScore,
+      total: finalTotal,
+      percentage,
+      passed,
+      attemptedAt: new Date(),
+      sectionalBreakdown: sectionalScores,
+      tabSwitchCount: Number(tabSwitchCount),
+      antiCheatFlags: flags,
+    };
+    application.updatedAt = new Date();
+
+    if (passed) {
+      application.status = "Technical Interview";
+
+      // Seed rubric on scorecard
+      application.interviewScorecard = application.interviewScorecard || {};
+      application.interviewScorecard.problemSolving = Math.min(
+        5,
+        Math.max(3, Math.round((percentage / 100) * 5))
+      );
+
+      // Student notification
+      await Notification.create({
+        recipient: req.user.userId,
+        recipientRole: "student",
+        title: "Aptitude Round Cleared! 🎉",
+        message: `Congratulations! You scored ${percentage}% in the Aptitude Assessment for ${
+          application.drive?.title || "Placement Drive"
+        } and advanced to Technical Interview.`,
+        category: "interview",
+        link: "/student/drives",
+      });
+    } else {
+      application.status = "Rejected";
+
+      const failMsg = disqualifiedByCheating
+        ? "Assessment terminated: Repeated browser tab switches triggered anti-cheat policy."
+        : `You scored ${percentage}% in the Aptitude Assessment for ${
+            application.drive?.title || "Placement Drive"
+          }. The qualifying cutoff was 60%.`;
+
+      await Notification.create({
+        recipient: req.user.userId,
+        recipientRole: "student",
+        title: "Aptitude Assessment Result",
+        message: failMsg,
+        category: "interview",
+        link: "/student/drives",
+      });
+    }
+
+    await application.save();
+    res.json({
+      success: true,
+      passed,
+      disqualifiedByCheating,
+      score: totalScore,
+      total: finalTotal,
+      percentage,
+      sectionalBreakdown: sectionalScores,
+      tabSwitchCount,
+      newStatus: application.status,
+      reviewDetails,
+      application,
+    });
+  } catch (err) {
+    console.error("Error submitting aptitude assessment:", err);
+    res.status(500).json({ error: "Failed to submit assessment" });
+  }
+});
+
 module.exports = router;
+
+
