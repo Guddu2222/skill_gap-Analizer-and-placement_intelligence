@@ -1,4 +1,4 @@
-﻿const express = require("express");
+const express = require("express");
 const router = express.Router();
 const Student = require("../models/Student");
 const College = require("../models/College");
@@ -213,7 +213,179 @@ router.get(
   },
 );
 
-// Get All Students with Filters
+// ─── NIRF / NAAC Placement Report ──────────────────────────────────────────
+router.get(
+  "/placement-report",
+  auth,
+  roleCheck(["college_admin"]),
+  async (req, res) => {
+    try {
+      const collegeId = await getCollegeId(req);
+      if (!collegeId) return res.status(403).json({ error: "College not associated" });
+
+      const { year } = req.query; // optional filter by graduation year
+      const collegeIds = await resolveCollegeIds(collegeId);
+      const college = await College.findById(collegeId).lean();
+
+      let query = { college: { $in: collegeIds } };
+      if (year) query.graduationYear = parseInt(year, 10);
+
+      const students = await Student.find(query).lean();
+
+      const placed = students.filter(s => s.isPlaced || s.placementStatus === "placed");
+      const total  = students.length;
+      const totalPlaced = placed.length;
+      const placementRate = total > 0 ? ((totalPlaced / total) * 100).toFixed(2) : 0;
+
+      const withPkg = placed.filter(s => s.placementPackage > 0);
+      const avgPackage = withPkg.length > 0
+        ? (withPkg.reduce((s, p) => s + p.placementPackage, 0) / withPkg.length).toFixed(2)
+        : 0;
+      const maxPackage = withPkg.length > 0
+        ? Math.max(...withPkg.map(s => s.placementPackage))
+        : 0;
+      const medianPackage = (() => {
+        if (!withPkg.length) return 0;
+        const sorted = [...withPkg.map(s => s.placementPackage)].sort((a, b) => a - b);
+        const m = Math.floor(sorted.length / 2);
+        return sorted.length % 2 !== 0 ? sorted[m] : ((sorted[m - 1] + sorted[m]) / 2).toFixed(2);
+      })();
+
+      // Department-wise breakdown (NIRF Table 2.1)
+      const deptMap = {};
+      students.forEach(s => {
+        const dept = s.department || "Unknown";
+        if (!deptMap[dept]) deptMap[dept] = { total: 0, placed: 0, packages: [] };
+        deptMap[dept].total++;
+        if (s.isPlaced || s.placementStatus === "placed") {
+          deptMap[dept].placed++;
+          if (s.placementPackage > 0) deptMap[dept].packages.push(s.placementPackage);
+        }
+      });
+      const departmentBreakdown = Object.entries(deptMap).map(([dept, d]) => ({
+        department: dept,
+        totalStudents: d.total,
+        placedStudents: d.placed,
+        placementRate: d.total > 0 ? ((d.placed / d.total) * 100).toFixed(1) : "0.0",
+        avgPackage: d.packages.length > 0
+          ? (d.packages.reduce((a, b) => a + b, 0) / d.packages.length).toFixed(2) : 0,
+        maxPackage: d.packages.length > 0 ? Math.max(...d.packages) : 0,
+      })).sort((a, b) => b.placedStudents - a.placedStudents);
+
+      // Gender-wise breakdown (NAAC Criterion 5.2.1)
+      const genderMap = {};
+      students.forEach(s => {
+        const g = s.gender || "not_specified";
+        if (!genderMap[g]) genderMap[g] = { total: 0, placed: 0 };
+        genderMap[g].total++;
+        if (s.isPlaced || s.placementStatus === "placed") genderMap[g].placed++;
+      });
+      const genderBreakdown = Object.entries(genderMap).map(([gender, d]) => ({
+        gender: gender.replace(/_/g, " "),
+        totalStudents: d.total,
+        placedStudents: d.placed,
+        placementRate: d.total > 0 ? ((d.placed / d.total) * 100).toFixed(1) : "0.0",
+      }));
+
+      // Year-wise breakdown (NAAC Trend table)
+      const yearMap = {};
+      students.forEach(s => {
+        const y = s.graduationYear || s.year || "N/A";
+        if (!yearMap[y]) yearMap[y] = { total: 0, placed: 0, packages: [] };
+        yearMap[y].total++;
+        if (s.isPlaced || s.placementStatus === "placed") {
+          yearMap[y].placed++;
+          if (s.placementPackage > 0) yearMap[y].packages.push(s.placementPackage);
+        }
+      });
+      const yearBreakdown = Object.entries(yearMap)
+        .sort(([a], [b]) => Number(b) - Number(a))
+        .map(([yr, d]) => ({
+          year: yr,
+          totalStudents: d.total,
+          placedStudents: d.placed,
+          placementRate: d.total > 0 ? ((d.placed / d.total) * 100).toFixed(1) : "0.0",
+          avgPackage: d.packages.length > 0
+            ? (d.packages.reduce((a, b) => a + b, 0) / d.packages.length).toFixed(2) : 0,
+        }));
+
+      // Salary distribution bands (NIRF)
+      const bands = [
+        { label: "< 3 LPA",      min: 0,  max: 3  },
+        { label: "3 – 6 LPA",    min: 3,  max: 6  },
+        { label: "6 – 10 LPA",   min: 6,  max: 10 },
+        { label: "10 – 20 LPA",  min: 10, max: 20 },
+        { label: "> 20 LPA",     min: 20, max: Infinity },
+      ];
+      const salaryBands = bands.map(b => ({
+        label: b.label,
+        count: withPkg.filter(s => s.placementPackage >= b.min && s.placementPackage < b.max).length,
+      }));
+
+      // Top recruiters
+      const recruiterMap = {};
+      placed.forEach(s => {
+        const c = s.placedCompany || "Unknown";
+        if (!recruiterMap[c]) recruiterMap[c] = { company: c, count: 0, packages: [] };
+        recruiterMap[c].count++;
+        if (s.placementPackage > 0) recruiterMap[c].packages.push(s.placementPackage);
+      });
+      const topRecruiters = Object.values(recruiterMap)
+        .map(r => ({
+          company: r.company,
+          count: r.count,
+          avgPackage: r.packages.length > 0
+            ? (r.packages.reduce((a, b) => a + b, 0) / r.packages.length).toFixed(2) : 0,
+        }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 15);
+
+      // Individual placed student list (for detailed tables)
+      const placedStudentsList = placed.map(s => ({
+        rollNumber: s.rollNumber || s.collegeRollNumber || "—",
+        name: [s.firstName, s.lastName].filter(Boolean).join(" ") || "—",
+        department: s.department || "—",
+        graduationYear: s.graduationYear || s.year || "—",
+        gender: s.gender || "—",
+        cgpa: s.cgpa ?? "—",
+        company: s.placedCompany || "—",
+        jobRole: s.jobRole || "—",
+        package: s.placementPackage ?? "—",
+        offerType: s.offerType || "Regular",
+      }));
+
+      // Available graduation years for filter dropdown
+      const availableYears = [...new Set(students.map(s => s.graduationYear || s.year).filter(Boolean))].sort((a, b) => b - a);
+
+      res.json({
+        college: { name: college?.name || "College", location: college?.location || "" },
+        generatedAt: new Date().toISOString(),
+        filterYear: year || "All Years",
+        summary: {
+          totalStudents: total,
+          totalPlaced: totalPlaced,
+          totalUnplaced: total - totalPlaced,
+          placementRate: parseFloat(placementRate),
+          avgPackage: parseFloat(avgPackage),
+          maxPackage,
+          medianPackage: parseFloat(medianPackage),
+        },
+        departmentBreakdown,
+        genderBreakdown,
+        yearBreakdown,
+        salaryBands,
+        topRecruiters,
+        placedStudentsList,
+        availableYears,
+      });
+    } catch (err) {
+      console.error("Placement report error:", err);
+      res.status(500).json({ error: "Failed to generate placement report" });
+    }
+  }
+);
+
+
 router.get(
   "/students",
   auth,

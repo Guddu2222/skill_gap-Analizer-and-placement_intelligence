@@ -80,6 +80,44 @@ router.get("/:id", auth, roleCheck(["college_admin"]), async (req, res) => {
   }
 });
 
+// PUT customize assessment settings (duration, question count, cutoff, strictness)
+router.put("/:id/assessment-settings", auth, roleCheck(["college_admin"]), async (req, res) => {
+  try {
+    const collegeId = await getCollegeId(req);
+    const filter = { _id: req.params.id };
+    if (collegeId) filter.college = collegeId;
+
+    const drive = await CampusDrive.findOne(filter);
+    if (!drive) return res.status(404).json({ error: "Drive not found" });
+
+    const {
+      durationMinutes = 20,
+      questionCount = 24,
+      passingCutoffPercentage = 60,
+      proctoringStrictness = "standard",
+      sectionalDistribution,
+    } = req.body;
+
+    drive.assessmentSettings = {
+      durationMinutes: Number(durationMinutes),
+      questionCount: Number(questionCount),
+      passingCutoffPercentage: Number(passingCutoffPercentage),
+      proctoringStrictness,
+      sectionalDistribution: sectionalDistribution || drive.assessmentSettings?.sectionalDistribution || {
+        quantitative: Math.round(Number(questionCount) * 0.3),
+        logical: Math.round(Number(questionCount) * 0.3),
+        technical: Number(questionCount) - (Math.round(Number(questionCount) * 0.3) * 2),
+      },
+    };
+
+    await drive.save();
+    res.json({ success: true, assessmentSettings: drive.assessmentSettings, drive });
+  } catch (error) {
+    console.error("Error updating drive assessment settings:", error);
+    res.status(500).json({ error: "Failed to update assessment settings" });
+  }
+});
+
 // GET applications for a specific drive
 router.get("/:id/applications", auth, roleCheck(["college_admin"]), async (req, res) => {
   try {

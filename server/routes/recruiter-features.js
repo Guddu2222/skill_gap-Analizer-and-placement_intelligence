@@ -181,6 +181,7 @@ router.get("/colleges", auth, roleCheck(["recruiter"]), async (req, res) => {
 
         return {
           id: college._id,
+          _id: college._id,
           name: college.name,
           location: college.location,
           tier: college.tier,
@@ -842,6 +843,51 @@ router.put(
     } catch (error) {
       console.error("Error updating application evaluation:", error);
       res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
+
+// Customize Drive Assessment Settings (duration, question count, cutoff, strictness)
+router.put(
+  "/drives/:id/assessment-settings",
+  auth,
+  roleCheck(["recruiter"]),
+  async (req, res) => {
+    try {
+      const drive = await CampusDrive.findOne({
+        _id: req.params.id,
+        recruiter: req.user.userId,
+      });
+      if (!drive)
+        return res
+          .status(403)
+          .json({ error: "Not authorized to modify this drive" });
+
+      const {
+        durationMinutes = 20,
+        questionCount = 24,
+        passingCutoffPercentage = 60,
+        proctoringStrictness = "standard",
+        sectionalDistribution,
+      } = req.body;
+
+      drive.assessmentSettings = {
+        durationMinutes: Number(durationMinutes),
+        questionCount: Number(questionCount),
+        passingCutoffPercentage: Number(passingCutoffPercentage),
+        proctoringStrictness,
+        sectionalDistribution: sectionalDistribution || drive.assessmentSettings?.sectionalDistribution || {
+          quantitative: Math.round(Number(questionCount) * 0.3),
+          logical: Math.round(Number(questionCount) * 0.3),
+          technical: Number(questionCount) - (Math.round(Number(questionCount) * 0.3) * 2),
+        },
+      };
+
+      await drive.save();
+      res.json({ success: true, assessmentSettings: drive.assessmentSettings, drive });
+    } catch (error) {
+      console.error("Error updating drive assessment settings:", error);
+      res.status(500).json({ error: "Failed to update assessment settings" });
     }
   }
 );

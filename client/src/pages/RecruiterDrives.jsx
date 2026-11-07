@@ -24,7 +24,12 @@ import {
   Activity,
   ShieldAlert,
   Eye,
+  Settings2,
+  ShieldCheck,
+  BarChart3,
+  Save,
 } from "lucide-react";
+
 import axios from "axios";
 import { updateApplicationEvaluation } from "../services/api";
 
@@ -81,6 +86,16 @@ const RecruiterDrives = () => {
 
   const rounds = ["Technical Interview", "HR Round", "Offered", "Rejected"];
 
+  // Assessment Settings modal
+  const [showAssessModal, setShowAssessModal] = useState(false);
+  const [assessSaving, setAssessSaving]       = useState(false);
+  const [assessForm, setAssessForm] = useState({
+    questionCount:           10,
+    durationMinutes:         20,
+    passingCutoffPercentage: 60,
+    proctoringStrictness:    "standard",
+  });
+
   useEffect(() => {
     fetchDrives();
   }, []);
@@ -116,6 +131,30 @@ const RecruiterDrives = () => {
     } catch (err) {
       console.error("Error fetching applications:", err);
     }
+  };
+
+  const openAssessModal = () => {
+    const s = activeDrive?.assessmentSettings || {};
+    setAssessForm({
+      questionCount:           s.questionCount           ?? 10,
+      durationMinutes:         s.durationMinutes         ?? 20,
+      passingCutoffPercentage: s.passingCutoffPercentage ?? 60,
+      proctoringStrictness:    s.proctoringStrictness    ?? "standard",
+    });
+    setShowAssessModal(true);
+  };
+
+  const handleSaveAssess = async (e) => {
+    e.preventDefault();
+    if (!activeDrive) return;
+    setAssessSaving(true);
+    try {
+      const res = await apiCall("put", `/recruiter-features/drives/${activeDrive._id}/assessment-settings`, assessForm);
+      setActiveDrive(prev => ({ ...prev, assessmentSettings: res.data.assessmentSettings }));
+      setDrives(prev => prev.map(d => d._id === activeDrive._id ? { ...d, assessmentSettings: res.data.assessmentSettings } : d));
+      setShowAssessModal(false);
+    } catch (e) { console.error(e); alert("Failed to save assessment settings."); }
+    finally { setAssessSaving(false); }
   };
 
   const handleDriveSelect = (drive) => {
@@ -337,7 +376,14 @@ const RecruiterDrives = () => {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={openAssessModal}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-xs font-semibold transition-all active:scale-95"
+                    >
+                      <Settings2 className="w-3.5 h-3.5" />
+                      Assessment Settings
+                    </button>
                     <span className="text-xs text-slate-400">
                       Total Pipeline:{" "}
                       <strong className="text-white">
@@ -461,7 +507,7 @@ const RecruiterDrives = () => {
                                             )}
 
                                           {/* Aptitude Assessment & AI Vision Proctoring Snippet */}
-                                          {app.aptitudeScore && (
+                                          {app.aptitudeScore?.attemptedAt && typeof app.aptitudeScore.percentage === "number" && (
                                             <div className="mb-2.5 p-2 rounded-lg bg-black/35 border border-white/5 text-[11px] space-y-1">
                                               <div className="flex items-center justify-between">
                                                 <span className="font-semibold text-slate-300 flex items-center gap-1">
@@ -547,7 +593,130 @@ const RecruiterDrives = () => {
         </div>
 
         {/* Evaluation & Scorecard Modal */}
-        {selectedApp && (
+  
+      {/* ── Assessment Settings Modal ── */}
+      {showAssessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+          <div className="bg-[#14142a] border border-white/10 rounded-3xl w-full max-w-lg shadow-2xl shadow-black/60">
+            <div className="px-6 py-5 border-b border-white/8 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg">
+                  <Settings2 className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold text-white">Assessment Settings</h2>
+                  <p className="text-[11px] text-slate-500 mt-0.5">{activeDrive?.title} ({activeDrive?.college?.name})</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowAssessModal(false)}
+                className="p-1.5 rounded-lg hover:bg-white/8 text-slate-500 hover:text-white transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveAssess} className="px-6 py-5 space-y-5">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 mb-2">
+                    <BarChart3 className="w-3.5 h-3.5 text-violet-400" />
+                    Number of Questions
+                  </label>
+                  <input
+                    type="number" min="5" max="50" required
+                    value={assessForm.questionCount}
+                    onChange={e => setAssessForm({ ...assessForm, questionCount: Number(e.target.value) })}
+                    className="w-full bg-[#0f0f22] border border-white/8 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition"
+                  />
+                  <p className="text-[10px] text-slate-600 mt-1">Recommended: 10–20 questions</p>
+                </div>
+                <div>
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 mb-2">
+                    <Clock className="w-3.5 h-3.5 text-sky-400" />
+                    Duration (minutes)
+                  </label>
+                  <input
+                    type="number" min="5" max="120" required
+                    value={assessForm.durationMinutes}
+                    onChange={e => setAssessForm({ ...assessForm, durationMinutes: Number(e.target.value) })}
+                    className="w-full bg-[#0f0f22] border border-white/8 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/30 transition"
+                  />
+                  <p className="text-[10px] text-slate-600 mt-1">Recommended: 20–45 min</p>
+                </div>
+              </div>
+
+              <div>
+                <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 mb-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  Passing Cutoff — <span className="text-emerald-300 font-bold ml-1">{assessForm.passingCutoffPercentage}%</span>
+                </label>
+                <input
+                  type="range" min="30" max="90" step="5"
+                  value={assessForm.passingCutoffPercentage}
+                  onChange={e => setAssessForm({ ...assessForm, passingCutoffPercentage: Number(e.target.value) })}
+                  className="w-full h-2 rounded-full accent-emerald-500 cursor-pointer"
+                />
+                <div className="flex justify-between text-[10px] text-slate-600 mt-1">
+                  <span>30% (lenient)</span><span>60% (standard)</span><span>90% (strict)</span>
+                </div>
+              </div>
+
+              <div>
+                <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 mb-2">
+                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                  Proctoring Strictness
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { val: "standard", label: "Standard", desc: "Up to 3 tab switches allowed",    color: "border-sky-500/40 bg-sky-500/10 text-sky-300" },
+                    { val: "strict",   label: "Strict",   desc: "Max 1 tab switch, strict face ID", color: "border-rose-500/40 bg-rose-500/10 text-rose-300" },
+                  ].map(({ val, label, desc, color }) => (
+                    <button
+                      key={val}
+                      type="button"
+                      onClick={() => setAssessForm({ ...assessForm, proctoringStrictness: val })}
+                      className={`p-3.5 rounded-xl border-2 text-left transition-all ${
+                        assessForm.proctoringStrictness === val
+                          ? color + " shadow-md"
+                          : "border-white/8 bg-white/3 text-slate-400 hover:border-white/15"
+                      }`}
+                    >
+                      <div className="font-bold text-sm mb-0.5">{label}</div>
+                      <div className="text-[10px] opacity-80">{desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-indigo-900/20 border border-indigo-500/20 rounded-xl px-4 py-3 text-[11px] text-indigo-300">
+                ⚡ Settings apply to the next aptitude test session for this drive. Existing submitted tests are unaffected.
+              </div>
+
+              <div className="flex gap-3 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setShowAssessModal(false)}
+                  className="flex-1 py-2.5 rounded-xl border border-white/8 text-slate-400 hover:text-white hover:bg-white/5 text-sm font-semibold transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={assessSaving}
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white text-sm font-bold transition shadow-lg shadow-amber-500/20 disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {assessSaving
+                    ? <><Clock className="w-4 h-4 animate-spin" />Saving…</>
+                    : <><Save className="w-4 h-4" />Save Settings</>}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {selectedApp && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
             <div className="bg-[#121226] border border-white/10 rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto custom-scrollbar-dark p-7 relative shadow-2xl">
               <button
@@ -603,7 +772,7 @@ const RecruiterDrives = () => {
                 </div>
 
                 {/* Aptitude Assessment & MediaPipe Vision Proctor Dossier */}
-                {selectedApp.aptitudeScore && (
+                {selectedApp.aptitudeScore?.attemptedAt && typeof selectedApp.aptitudeScore.percentage === "number" && (
                   <div className="bg-[#0a0a16] border border-white/8 rounded-2xl p-5 space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-white/8">
                       <div className="flex items-center gap-2">

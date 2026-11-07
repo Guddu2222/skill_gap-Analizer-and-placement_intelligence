@@ -276,6 +276,16 @@ export const submitAptitudeAssessment = async (appId, payload) => {
   return data;
 };
 
+export const updateCollegeDriveAssessmentSettings = async (driveId, settings) => {
+  const { data } = await api.put(`/campus-drives/${driveId}/assessment-settings`, settings);
+  return data;
+};
+
+export const updateRecruiterDriveAssessmentSettings = async (driveId, settings) => {
+  const { data } = await api.put(`/recruiter-features/drives/${driveId}/assessment-settings`, settings);
+  return data;
+};
+
 
 
 

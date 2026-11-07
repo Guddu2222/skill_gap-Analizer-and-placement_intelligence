@@ -29,9 +29,17 @@ import {
   Eye,
   UserCheck,
   Users,
-  Activity,
   Maximize2,
   Minimize2,
+  Monitor,
+  ScreenShare,
+  ScreenShareOff,
+  ShieldCheck,
+  Lock,
+  RefreshCw,
+  AlertOctagon,
+  Layers,
+  Activity,
 } from "lucide-react";
 import axios from "axios";
 import useVisionProctor from "../hooks/useVisionProctor";
@@ -68,6 +76,18 @@ const StudentDrives = () => {
   const [testSubmitting, setTestSubmitting] = useState(false);
   const [testResult, setTestResult] = useState(null);
 
+  // Pre-Flight Security Checklist Modal state
+  const [preflightApp, setPreflightApp] = useState(null);
+  const [preflightError, setPreflightError] = useState("");
+
+  // Entire Screen Monitoring & Mandatory Fullscreen State
+  const screenStreamRef = useRef(null);
+  const screenVideoRef = useRef(null);
+  const screenCanvasRef = useRef(null);
+  const [screenStatus, setScreenStatus] = useState("inactive"); // "inactive" | "initializing" | "active" | "denied" | "not_monitor" | "stopped" | "error"
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [fullscreenExitCount, setFullscreenExitCount] = useState(0);
+
   // Anti-cheat & Tab-switch state
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
   const [showWarningModal, setShowWarningModal] = useState(false);
@@ -83,6 +103,8 @@ const StudentDrives = () => {
     eyeContactSamples: [],
     multipleFaceCount: 0,
     faceMissingCount: 0,
+    fullscreenExitCount: 0,
+    incidentSnapshots: [], // [{ timestamp, reason, image }]
   });
   const lastVisionStateRef = useRef({ hadMultiple: false, wasMissing: false });
 
@@ -132,7 +154,144 @@ const StudentDrives = () => {
     setWebcamStatus("inactive");
   };
 
-  // Ensure video element rebinds stream if mounted
+  // Start Entire Screen Capture
+  const startScreenCapture = async () => {
+    try {
+      setScreenStatus("initializing");
+      setPreflightError("");
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+        setScreenStatus("error");
+        setPreflightError(
+          "Screen capture API is not supported by your browser. Please use Google Chrome or Microsoft Edge."
+        );
+        return false;
+      }
+
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        video: {
+          displaySurface: "monitor",
+          cursor: "always",
+        },
+        audio: false,
+      });
+
+      const videoTrack = stream.getVideoTracks()[0];
+      const settings = videoTrack.getSettings ? videoTrack.getSettings() : {};
+
+      // Enforce entire screen capture (not single tab or application window)
+      if (settings.displaySurface && settings.displaySurface !== "monitor") {
+        videoTrack.stop();
+        setScreenStatus("not_monitor");
+        setPreflightError(
+          "Security Requirement: You must share your ENTIRE SCREEN, not an individual application window or browser tab. Click 'Authorize Screen' again and select 'Entire Screen'."
+        );
+        return false;
+      }
+
+      screenStreamRef.current = stream;
+      if (screenVideoRef.current) {
+        screenVideoRef.current.srcObject = stream;
+        screenVideoRef.current.play().catch((e) => console.warn("Screen video play error:", e));
+      }
+
+      videoTrack.onended = () => {
+        setScreenStatus("stopped");
+        captureIncidentSnapshot("Screen sharing terminated by candidate");
+        handleAutoSubmitTest(
+          tabSwitchCount,
+          "Disqualified: Screen sharing was abruptly disconnected during the assessment"
+        );
+      };
+
+      setScreenStatus("active");
+      return true;
+    } catch (err) {
+      console.warn("Screen capture permission error:", err);
+      if (err.name === "NotAllowedError" || err.name === "PermissionDeniedError") {
+        setScreenStatus("denied");
+        setPreflightError(
+          "Permission Denied: Entire screen sharing is mandatory to sit for this assessment."
+        );
+      } else {
+        setScreenStatus("error");
+        setPreflightError(err.message || "Failed to initialize screen capture.");
+      }
+      return false;
+    }
+  };
+
+  // Stop Screen Capture
+  const stopScreenCapture = () => {
+    if (screenStreamRef.current) {
+      screenStreamRef.current.getTracks().forEach((track) => track.stop());
+      screenStreamRef.current = null;
+    }
+    if (screenVideoRef.current) {
+      screenVideoRef.current.srcObject = null;
+    }
+    setScreenStatus("inactive");
+  };
+
+  // Fullscreen Management
+  const enterFullscreen = async () => {
+    try {
+      const docEl = document.documentElement;
+      if (docEl.requestFullscreen) {
+        await docEl.requestFullscreen();
+      } else if (docEl.webkitRequestFullscreen) {
+        await docEl.webkitRequestFullscreen();
+      }
+      setIsFullscreen(true);
+      return true;
+    } catch (err) {
+      console.warn("Fullscreen request error:", err);
+      return false;
+    }
+  };
+
+  const exitFullscreenSafely = async () => {
+    try {
+      if (document.fullscreenElement || document.webkitFullscreenElement) {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          await document.webkitExitFullscreen();
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+    setIsFullscreen(false);
+  };
+
+  // Lightweight Incident Snapshot Capture (~15KB JPEG from screen stream)
+  const captureIncidentSnapshot = (reason) => {
+    try {
+      if (!screenVideoRef.current || screenVideoRef.current.readyState < 2) return;
+      if (proctorLogsRef.current.incidentSnapshots.length >= 6) return;
+
+      const video = screenVideoRef.current;
+      const canvas = screenCanvasRef.current || document.createElement("canvas");
+      canvas.width = 480;
+      canvas.height = 270;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      ctx.drawImage(video, 0, 0, 480, 270);
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.55);
+
+      proctorLogsRef.current.incidentSnapshots.push({
+        timestamp: new Date().toISOString(),
+        reason,
+        image: dataUrl,
+      });
+    } catch (err) {
+      console.warn("Incident snapshot capture failed:", err);
+    }
+  };
+
+  // Ensure webcam video element rebinds stream if mounted
   useEffect(() => {
     if (webcamStreamRef.current && videoRef.current && !videoRef.current.srcObject) {
       videoRef.current.srcObject = webcamStreamRef.current;
@@ -140,10 +299,20 @@ const StudentDrives = () => {
     }
   }, [webcamStatus, activeTestApp, isCameraMinimized]);
 
-  // Clean up webcam stream on unmount
+  // Ensure screen video element rebinds stream if mounted
+  useEffect(() => {
+    if (screenStreamRef.current && screenVideoRef.current && !screenVideoRef.current.srcObject) {
+      screenVideoRef.current.srcObject = screenStreamRef.current;
+      screenVideoRef.current.play().catch(() => {});
+    }
+  }, [screenStatus, activeTestApp]);
+
+  // Clean up all streams and fullscreen on unmount
   useEffect(() => {
     return () => {
       stopWebcam();
+      stopScreenCapture();
+      exitFullscreenSafely();
     };
   }, []);
 
@@ -171,6 +340,7 @@ const StudentDrives = () => {
             "Disqualified: Repeated multiple faces detected in webcam feed"
           );
         } else {
+          captureIncidentSnapshot("Multiple faces identified in webcam feed");
           setShowWarningModal(true);
         }
       }
@@ -211,12 +381,66 @@ const StudentDrives = () => {
     return () => clearInterval(timer);
   }, [activeTestApp, testResult, testLoading, timeLeft, tabSwitchCount]);
 
+  // Monitor Mandatory Fullscreen Integrity
+  useEffect(() => {
+    if (!activeTestApp || testResult) return;
+
+    const handleFullscreenChange = () => {
+      const isCurrentlyFullscreen = !!(
+        document.fullscreenElement || document.webkitFullscreenElement
+      );
+      setIsFullscreen(isCurrentlyFullscreen);
+
+      if (!isCurrentlyFullscreen && !testResult && !testSubmitting) {
+        captureIncidentSnapshot("Candidate exited mandatory fullscreen exam environment");
+        setFullscreenExitCount((prev) => {
+          const nextCount = prev + 1;
+          proctorLogsRef.current.fullscreenExitCount = nextCount;
+
+          if (nextCount >= 3) {
+            handleAutoSubmitTest(
+              tabSwitchCount,
+              "Disqualified: Repeatedly exited mandatory fullscreen examination environment"
+            );
+          } else {
+            setShowWarningModal(true);
+            if (warningDismissTimeout.current) {
+              clearTimeout(warningDismissTimeout.current);
+            }
+            warningDismissTimeout.current = setTimeout(() => {
+              setShowWarningModal(false);
+            }, 7000);
+          }
+          return nextCount;
+        });
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", handleFullscreenChange);
+    };
+  }, [activeTestApp, testResult, testSubmitting, tabSwitchCount]);
+
+  // Window Focus Lost / Blur listener
+  useEffect(() => {
+    if (!activeTestApp || testResult) return;
+    const handleBlur = () => {
+      captureIncidentSnapshot("Window focus lost / external app overlay detected");
+    };
+    window.addEventListener("blur", handleBlur);
+    return () => window.removeEventListener("blur", handleBlur);
+  }, [activeTestApp, testResult]);
+
   // Anti-Cheat Tab Switching & Window Blur Monitor
   useEffect(() => {
     if (!activeTestApp || testResult) return;
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
+        captureIncidentSnapshot("Browser tab switch or window minimize detected");
         setTabSwitchCount((prev) => {
           const nextCount = prev + 1;
           if (nextCount >= 4) {
@@ -317,10 +541,12 @@ const StudentDrives = () => {
   // Launch Dynamic Assessment
   const startAptitudeTest = async (app) => {
     setActiveTestApp(app);
+    setPreflightApp(null);
     setTestLoading(true);
     setCurrentQIndex(0);
     setSelectedAnswers({});
     setTabSwitchCount(0);
+    setFullscreenExitCount(0);
     setShowWarningModal(false);
     setTestResult(null);
     setIsCameraMinimized(false);
@@ -331,11 +557,15 @@ const StudentDrives = () => {
       eyeContactSamples: [],
       multipleFaceCount: 0,
       faceMissingCount: 0,
+      fullscreenExitCount: 0,
+      incidentSnapshots: [],
     };
     lastVisionStateRef.current = { hadMultiple: false, wasMissing: false };
 
-    // Request webcam feed
-    startWebcam();
+    // Request webcam feed if not active
+    if (webcamStatus !== "active") {
+      await startWebcam();
+    }
 
     try {
       const res = await fetchAptitudeQuestions(app._id);
@@ -358,10 +588,14 @@ const StudentDrives = () => {
 
   const closeTestModal = () => {
     stopWebcam();
+    stopScreenCapture();
+    exitFullscreenSafely();
     setActiveTestApp(null);
+    setPreflightApp(null);
     setTestResult(null);
     setQuestions([]);
     setSelectedAnswers({});
+    setFullscreenExitCount(0);
   };
 
   const selectAnswer = (qKey, optionIndex) => {
@@ -405,6 +639,9 @@ const StudentDrives = () => {
         multipleFaceEvents: pLogs.multipleFaceCount,
         faceMissingEvents: pLogs.faceMissingCount,
         webcamStatus,
+        screenShareStatus: screenStatus,
+        fullscreenExitCount: proctorLogsRef.current.fullscreenExitCount || fullscreenExitCount,
+        incidentSnapshots: pLogs.incidentSnapshots || [],
       };
 
       const res = await submitAptitudeAssessment(activeTestApp._id, {
@@ -421,7 +658,10 @@ const StudentDrives = () => {
         passed: res.passed,
         disqualifiedByCheating: res.disqualifiedByCheating,
         sectionalBreakdown: res.sectionalBreakdown,
-        proctoringMetrics: proctoringPayload,
+        proctoringMetrics: {
+          ...proctoringPayload,
+          ...res.proctoringMetrics,
+        },
         reviewDetails: res.reviewDetails || [],
       });
 
@@ -598,7 +838,18 @@ const StudentDrives = () => {
               const minCgpa = drive.eligibility?.minCGPA || 0;
               const studentCgpa = student?.cgpa || 0;
               const isEligible = studentCgpa >= minCgpa;
-              const isAptitudeStage = status === "Aptitude Test";
+              const hasAttemptedAptitude = Boolean(
+                app?.aptitudeScore?.attemptedAt &&
+                  typeof app?.aptitudeScore?.percentage === "number"
+              );
+              const hasAptitudeRound = Array.isArray(drive.rounds)
+                ? drive.rounds.includes("Aptitude Test")
+                : true;
+              const isAptitudeStage =
+                Boolean(app) &&
+                hasAptitudeRound &&
+                !hasAttemptedAptitude &&
+                (status === "Aptitude Test" || status === "Applied");
 
               return (
                 <div
@@ -628,7 +879,7 @@ const StudentDrives = () => {
                               ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300"
                               : status === "Technical Interview"
                               ? "bg-violet-500/20 border-violet-500/40 text-violet-300"
-                              : status === "Aptitude Test"
+                              : (status === "Aptitude Test" || isAptitudeStage)
                               ? "bg-amber-500/20 border-amber-500/40 text-amber-300 animate-pulse"
                               : status === "Rejected"
                               ? "bg-rose-500/20 border-rose-500/40 text-rose-300"
@@ -636,7 +887,7 @@ const StudentDrives = () => {
                           }`}
                         >
                           <CheckCircle className="w-3.5 h-3.5" />
-                          {status}
+                          {isAptitudeStage ? "Aptitude Test" : status}
                         </span>
                       )}
                     </div>
@@ -670,7 +921,7 @@ const StudentDrives = () => {
                         </span>
                       </div>
 
-                      {app?.aptitudeScore && (
+                      {hasAttemptedAptitude ? (
                         <div className="flex items-center justify-between text-slate-400 pt-1.5 border-t border-white/5">
                           <span>Aptitude Score</span>
                           <span
@@ -681,10 +932,17 @@ const StudentDrives = () => {
                             }`}
                           >
                             {app.aptitudeScore.percentage}% (
-                            {app.aptitudeScore.passed ? "Passed" : "Failed"})
+                            {app.aptitudeScore.passed ? "Passed" : "Cutoff Not Met"})
                           </span>
                         </div>
-                      )}
+                      ) : isAptitudeStage ? (
+                        <div className="flex items-center justify-between text-slate-400 pt-1.5 border-t border-white/5">
+                          <span>Aptitude Assessment</span>
+                          <span className="text-amber-400 font-semibold text-xs flex items-center gap-1">
+                            <Zap className="w-3 h-3" /> Ready to Take
+                          </span>
+                        </div>
+                      ) : null}
                     </div>
                   </div>
 
@@ -713,7 +971,11 @@ const StudentDrives = () => {
                       )
                     ) : isAptitudeStage ? (
                       <button
-                        onClick={() => startAptitudeTest(app)}
+                        onClick={() => {
+                          setPreflightApp(app);
+                          setPreflightError("");
+                          startWebcam();
+                        }}
                         className="w-full py-2.5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-amber-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer animate-pulse"
                       >
                         <Zap className="w-3.5 h-3.5 fill-white text-white" />
@@ -735,30 +997,248 @@ const StudentDrives = () => {
           </div>
         )}
 
+        {/* PRE-FLIGHT PROCTORING & SCREEN CAPTURE CHECKLIST MODAL */}
+        {preflightApp && !activeTestApp && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+            <div className="bg-[#121226] border border-violet-500/30 rounded-3xl w-full max-w-2xl p-7 relative shadow-2xl flex flex-col space-y-5">
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/25">
+                    <ShieldCheck className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                      Assessment Pre-Flight Security Check
+                    </h2>
+                    <p className="text-xs text-slate-400">
+                      {preflightApp.drive?.company} • {preflightApp.drive?.title}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    stopWebcam();
+                    stopScreenCapture();
+                    setPreflightApp(null);
+                  }}
+                  className="p-1.5 rounded-xl hover:bg-white/10 text-slate-400 hover:text-white transition-all cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {preflightError && (
+                <div className="p-3.5 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-200 text-xs flex items-start gap-2.5">
+                  <AlertOctagon className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-bold">Security Checklist Notice</p>
+                    <p className="text-[11px] text-rose-300/90 mt-0.5">{preflightError}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* 3 Verification Cards */}
+              <div className="space-y-3">
+                {/* Step 1: Camera & Face AI */}
+                <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between gap-4">
+                  <div className="flex items-start gap-3.5">
+                    <div
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                        webcamStatus === "active"
+                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                          : "bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                      }`}
+                    >
+                      <Camera className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-xs font-bold text-white">1. AI Vision & Camera Proctor</h4>
+                        {webcamStatus === "active" ? (
+                          <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded-full border border-emerald-500/30">
+                            Ready & Verified
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-bold text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded-full border border-amber-500/30">
+                            {webcamStatus === "initializing" ? "Connecting..." : "Required"}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-slate-400 mt-0.5">
+                        MediaPipe AI continuously validates candidate presence, eye gaze alignment, and posture.
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    {webcamStatus !== "active" ? (
+                      <button
+                        type="button"
+                        onClick={startWebcam}
+                        className="px-3.5 py-1.5 bg-violet-600 hover:bg-violet-500 rounded-xl text-white text-xs font-semibold transition-all cursor-pointer whitespace-nowrap"
+                      >
+                        {webcamStatus === "initializing" ? "Connecting..." : "Grant Camera"}
+                      </button>
+                    ) : (
+                      <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+                        <Check className="w-4 h-4" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Step 2: Screen Sharing Authorization */}
+                <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between gap-4">
+                  <div className="flex items-start gap-3.5">
+                    <div
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                        screenStatus === "active"
+                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                          : "bg-violet-500/20 text-violet-400 border border-violet-500/30"
+                      }`}
+                    >
+                      <Monitor className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-xs font-bold text-white">2. Entire Screen Capture Authorization</h4>
+                        {screenStatus === "active" ? (
+                          <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded-full border border-emerald-500/30">
+                            Entire Screen Active
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-bold text-violet-400 bg-violet-500/15 px-2 py-0.5 rounded-full border border-violet-500/30">
+                            Mandatory Entire Screen
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-slate-400 mt-0.5">
+                        You must share your <strong>"Entire Screen"</strong>. Selecting a single application window or tab is strictly forbidden.
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    {screenStatus !== "active" ? (
+                      <button
+                        type="button"
+                        onClick={startScreenCapture}
+                        className="px-3.5 py-1.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 rounded-xl text-white text-xs font-semibold shadow-lg shadow-violet-600/25 transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5"
+                      >
+                        <ScreenShare className="w-3.5 h-3.5" />
+                        Authorize Screen
+                      </button>
+                    ) : (
+                      <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+                        <Check className="w-4 h-4" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Step 3: Mandatory Fullscreen Mode */}
+                <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between gap-4">
+                  <div className="flex items-start gap-3.5">
+                    <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
+                      <Lock className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-xs font-bold text-white">3. Mandatory Fullscreen Exam Environment</h4>
+                        <span className="text-[10px] font-bold text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded-full border border-amber-500/30">
+                          Auto-Locks on Launch
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-400 mt-0.5">
+                        Test locks into full-screen mode. Exiting full-screen or switching windows logs incident snapshots. 3 exit strikes result in disqualification.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-slate-500 text-xs font-mono">
+                    Auto-engages
+                  </div>
+                </div>
+              </div>
+
+              {/* Rules Notice */}
+              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[11px] space-y-1">
+                <p className="font-semibold flex items-center gap-1.5">
+                  <ShieldAlert className="w-3.5 h-3.5" /> Examination Integrity Protocol:
+                </p>
+                <p className="text-amber-200/80">
+                  • Do not minimize the window or switch applications.
+                  • Do not stop screen sharing during the assessment.
+                  • Keep your face centered in the camera frame at all times.
+                </p>
+              </div>
+
+              {/* Action Footer */}
+              <div className="flex items-center justify-between pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    stopWebcam();
+                    stopScreenCapture();
+                    setPreflightApp(null);
+                  }}
+                  className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/10 text-xs font-semibold transition-all cursor-pointer"
+                >
+                  Cancel & Exit
+                </button>
+
+                <button
+                  type="button"
+                  disabled={webcamStatus !== "active" || screenStatus !== "active"}
+                  onClick={async () => {
+                    await enterFullscreen();
+                    startAptitudeTest(preflightApp);
+                  }}
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 cursor-pointer"
+                >
+                  <Lock className="w-3.5 h-3.5" />
+                  Lock Fullscreen & Begin Assessment
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* DYNAMIC APTITUDE ASSESSMENT MODAL */}
         {activeTestApp && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
             <div className="bg-[#121226] border border-white/10 rounded-3xl w-full max-w-3xl max-h-[92vh] overflow-y-auto custom-scrollbar-dark p-7 relative shadow-2xl flex flex-col">
-              {/* TAB SWITCH WARNING OVERLAY */}
+              {/* TAB SWITCH & FULLSCREEN BREACH WARNING OVERLAY */}
               {showWarningModal && !testResult && (
-                <div className="absolute top-4 left-4 right-4 z-40 bg-rose-950/90 border border-rose-500 text-rose-200 px-4 py-3 rounded-2xl backdrop-blur-md shadow-2xl flex items-center justify-between animate-bounce">
+                <div className="absolute top-4 left-4 right-4 z-40 bg-rose-950/95 border-2 border-rose-500 text-rose-200 px-4 py-3 rounded-2xl backdrop-blur-md shadow-2xl flex items-center justify-between animate-bounce">
                   <div className="flex items-center gap-3">
                     <ShieldAlert className="w-6 h-6 text-rose-400 flex-shrink-0" />
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-rose-300">
-                        Anti-Cheat Alert: Tab Switch Detected ({tabSwitchCount}/3 Warnings)
+                      <p className="text-xs font-bold uppercase tracking-wider text-rose-300 flex items-center gap-2">
+                        Anti-Cheat Alert: Integrity Breached!
+                        <span className="text-[10px] text-rose-400 font-mono">
+                          (Tab Switches: {tabSwitchCount}/3 • Fullscreen Exits: {fullscreenExitCount}/2)
+                        </span>
                       </p>
-                      <p className="text-[11px] text-rose-200/90">
-                        Navigating away from this window is strictly monitored. 4 tab switches will cause immediate test termination and disqualification.
+                      <p className="text-[11px] text-rose-200/90 mt-0.5">
+                        Navigating away from the window or escaping full-screen mode captures an incident snapshot. 4 tab switches or 3 fullscreen exits will cause immediate disqualification.
                       </p>
                     </div>
                   </div>
-                  <button
-                    onClick={() => setShowWarningModal(false)}
-                    className="p-1 rounded-lg hover:bg-rose-900/50 text-rose-400 hover:text-white"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-2 shrink-0">
+                    {!isFullscreen && (
+                      <button
+                        onClick={enterFullscreen}
+                        className="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white text-[11px] font-bold rounded-lg shadow cursor-pointer flex items-center gap-1"
+                      >
+                        <Lock className="w-3 h-3" /> Re-lock Fullscreen
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setShowWarningModal(false)}
+                      className="p-1 rounded-lg hover:bg-rose-900/50 text-rose-400 hover:text-white"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -772,7 +1252,7 @@ const StudentDrives = () => {
               ) : !testResult ? (
                 <>
                   {/* Test Top Navigation */}
-                  <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+                  <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4 flex-wrap gap-3">
                     <div>
                       <h2 className="text-lg font-bold text-white flex items-center gap-2">
                         <Zap className="w-5 h-5 text-amber-400 fill-amber-400" />
@@ -783,11 +1263,46 @@ const StudentDrives = () => {
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {/* Entire Screen Status Badge */}
+                      <span
+                        className={`flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-xl border ${
+                          screenStatus === "active"
+                            ? "text-emerald-400 bg-emerald-500/10 border-emerald-500/25"
+                            : "text-rose-400 bg-rose-500/15 border-rose-500/30 animate-pulse"
+                        }`}
+                      >
+                        <Monitor className="w-3.5 h-3.5" />
+                        {screenStatus === "active" ? "Screen Monitored" : "Screen Inactive"}
+                      </span>
+
+                      {/* Fullscreen Status Badge */}
+                      {isFullscreen ? (
+                        <span className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/25 px-2.5 py-1 rounded-xl">
+                          <Lock className="w-3.5 h-3.5" />
+                          Fullscreen Locked
+                        </span>
+                      ) : (
+                        <button
+                          onClick={enterFullscreen}
+                          className="flex items-center gap-1.5 text-[11px] font-semibold text-rose-400 bg-rose-500/15 border border-rose-500/30 px-2.5 py-1 rounded-xl hover:bg-rose-500/25 transition-all cursor-pointer animate-pulse"
+                        >
+                          <AlertOctagon className="w-3.5 h-3.5" />
+                          Fullscreen Breached (Re-lock)
+                        </button>
+                      )}
+
                       {tabSwitchCount > 0 && (
                         <span className="flex items-center gap-1 text-[11px] font-semibold text-rose-400 bg-rose-500/10 border border-rose-500/25 px-2.5 py-1 rounded-xl">
                           <ShieldAlert className="w-3.5 h-3.5" />
                           Tab Switches: {tabSwitchCount}/3
+                        </span>
+                      )}
+
+                      {fullscreenExitCount > 0 && (
+                        <span className="flex items-center gap-1 text-[11px] font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/25 px-2.5 py-1 rounded-xl">
+                          <AlertTriangle className="w-3.5 h-3.5" />
+                          Exits: {fullscreenExitCount}/2
                         </span>
                       )}
 
@@ -1216,14 +1731,14 @@ const StudentDrives = () => {
                     </div>
                   )}
 
-                  {/* AI Vision Proctoring Report */}
+                  {/* AI Vision & Screen Proctoring Report */}
                   <div className="bg-[#0a0a16] border border-white/8 rounded-2xl p-4 space-y-3">
                     <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                      <Activity className="w-4 h-4 text-emerald-400" />
-                      MediaPipe AI Vision Proctoring Dossier
+                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                      Proctoring & Screen Integrity Dossier
                     </h4>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 text-center">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 text-center">
                       <div className="p-3 rounded-xl bg-[#121226] border border-white/5">
                         <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">
                           Webcam Stream
@@ -1231,6 +1746,36 @@ const StudentDrives = () => {
                         <p className="text-xs font-bold text-emerald-400 mt-1 capitalize flex items-center justify-center gap-1">
                           <CheckCircle className="w-3.5 h-3.5" />
                           {webcamStatus === "active" ? "Verified Active" : webcamStatus}
+                        </p>
+                      </div>
+
+                      <div className="p-3 rounded-xl bg-[#121226] border border-white/5">
+                        <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">
+                          Screen Capture
+                        </p>
+                        <p className="text-xs font-bold text-emerald-400 mt-1 capitalize flex items-center justify-center gap-1">
+                          <Monitor className="w-3.5 h-3.5" />
+                          {testResult.proctoringMetrics?.screenShareStatus === "active"
+                            ? "Entire Screen Verified"
+                            : testResult.proctoringMetrics?.screenShareStatus || "Verified"}
+                        </p>
+                      </div>
+
+                      <div className="p-3 rounded-xl bg-[#121226] border border-white/5">
+                        <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">
+                          Fullscreen Integrity
+                        </p>
+                        <p
+                          className={`text-xs font-bold mt-1 flex items-center justify-center gap-1 ${
+                            (testResult.proctoringMetrics?.fullscreenExitCount || 0) === 0
+                              ? "text-emerald-400"
+                              : "text-amber-400"
+                          }`}
+                        >
+                          <Lock className="w-3.5 h-3.5" />
+                          {(testResult.proctoringMetrics?.fullscreenExitCount || 0) === 0
+                            ? "0 Exits (Locked)"
+                            : `${testResult.proctoringMetrics?.fullscreenExitCount} Exit Incident(s)`}
                         </p>
                       </div>
 
@@ -1271,6 +1816,44 @@ const StudentDrives = () => {
                       </div>
                     </div>
                   </div>
+
+                  {/* Incident Screen Evidence Gallery */}
+                  {testResult.proctoringMetrics?.incidentSnapshots &&
+                    testResult.proctoringMetrics.incidentSnapshots.length > 0 && (
+                      <div className="bg-[#0a0a16] border border-rose-500/25 rounded-2xl p-4 space-y-3">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-rose-300 flex items-center gap-1.5">
+                          <AlertOctagon className="w-4 h-4 text-rose-400" />
+                          Flagged Incident Screen Evidence (
+                          {testResult.proctoringMetrics.incidentSnapshots.length})
+                        </h4>
+                        <p className="text-[11px] text-slate-400">
+                          Automated lightweight snapshots captured at the exact moment of anti-cheat breaches (window defocus, tab switches, or fullscreen exits).
+                        </p>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                          {testResult.proctoringMetrics.incidentSnapshots.map((snap, sIdx) => (
+                            <div
+                              key={sIdx}
+                              className="bg-[#121226] border border-white/10 rounded-xl overflow-hidden shadow-md flex flex-col"
+                            >
+                              <img
+                                src={snap.image}
+                                alt={snap.reason}
+                                className="w-full h-24 sm:h-28 object-cover bg-black"
+                              />
+                              <div className="p-2.5 text-[10px] flex-1 flex flex-col justify-between">
+                                <p className="font-semibold text-rose-300 leading-snug">
+                                  {snap.reason}
+                                </p>
+                                <p className="text-slate-500 font-mono mt-1">
+                                  {new Date(snap.timestamp).toLocaleTimeString()}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                   {/* Review Answers Drawer */}
                   {testResult.reviewDetails && testResult.reviewDetails.length > 0 && (
@@ -1320,6 +1903,17 @@ const StudentDrives = () => {
             </div>
           </div>
         )}
+
+        {/* Hidden Screen Video & Offscreen Canvas for Incident Snapshots */}
+        <video
+          ref={screenVideoRef}
+          autoPlay
+          playsInline
+          muted
+          className="hidden"
+          aria-hidden="true"
+        />
+        <canvas ref={screenCanvasRef} className="hidden" aria-hidden="true" />
       </main>
     </div>
   );

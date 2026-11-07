@@ -582,10 +582,14 @@ router.post("/drives/:id/apply", auth, async (req, res) => {
       return res.status(400).json({ msg: "You have already applied to this drive" });
     }
 
+    const hasAptitudeRound = Array.isArray(drive.rounds)
+      ? drive.rounds.includes("Aptitude Test")
+      : true;
+
     const newApp = new DriveApplication({
       drive: drive._id,
       student: student._id,
-      status: "Applied",
+      status: hasAptitudeRound ? "Aptitude Test" : "Applied",
     });
 
     await newApp.save();
@@ -683,8 +687,13 @@ router.get("/drives/applications/:appId/aptitude-questions", auth, async (req, r
       return res.status(404).json({ error: "Application not found" });
     }
 
-    if (application.status !== "Aptitude Test") {
-      return res.status(400).json({ error: "Application is not in Aptitude Test stage." });
+    if (!["Applied", "Aptitude Test"].includes(application.status)) {
+      return res.status(400).json({ error: "Application is not eligible for Aptitude Test stage." });
+    }
+
+    if (application.status === "Applied") {
+      application.status = "Aptitude Test";
+      await application.save();
     }
 
     // Attempt to pull questions from MongoDB QuestionBank; fallback to SEED_QUESTIONS
@@ -692,6 +701,13 @@ router.get("/drives/applications/:appId/aptitude-questions", auth, async (req, r
     if (!pool || pool.length === 0) {
       pool = SEED_QUESTIONS;
     }
+
+    // Read customized assessment settings from Drive
+    const driveSettings = application.drive?.assessmentSettings || {};
+    const durationMinutes = Number(driveSettings.durationMinutes) || 20;
+    const questionCount = Number(driveSettings.questionCount) || 24;
+    const passingCutoffPercentage = Number(driveSettings.passingCutoffPercentage) || 60;
+    const proctoringStrictness = driveSettings.proctoringStrictness || "standard";
 
     // Partition into sections
     const quantPool = pool.filter((q) => q.category === "Quantitative Aptitude");
@@ -703,10 +719,20 @@ router.get("/drives/applications/:appId/aptitude-questions", auth, async (req, r
     // Shuffle helper
     const shuffle = (array) => [...array].sort(() => 0.5 - Math.random());
 
-    // Sample 7 Quant, 7 Logical, 10 Technical => 24 questions total
-    const sampledQuant = shuffle(quantPool.length >= 7 ? quantPool : pool).slice(0, 7);
-    const sampledLogical = shuffle(logicalPool.length >= 7 ? logicalPool : pool).slice(0, 7);
-    const sampledTech = shuffle(techPool.length >= 10 ? techPool : pool).slice(0, 10);
+    // Compute dynamic sectional distribution based on questionCount
+    let quantTarget = Math.round(questionCount * 0.3);
+    let logicalTarget = Math.round(questionCount * 0.3);
+    let techTarget = questionCount - (quantTarget + logicalTarget);
+
+    if (driveSettings.sectionalDistribution) {
+      if (driveSettings.sectionalDistribution.quantitative) quantTarget = driveSettings.sectionalDistribution.quantitative;
+      if (driveSettings.sectionalDistribution.logical) logicalTarget = driveSettings.sectionalDistribution.logical;
+      if (driveSettings.sectionalDistribution.technical) techTarget = driveSettings.sectionalDistribution.technical;
+    }
+
+    const sampledQuant = shuffle(quantPool.length >= quantTarget ? quantPool : pool).slice(0, quantTarget);
+    const sampledLogical = shuffle(logicalPool.length >= logicalTarget ? logicalPool : pool).slice(0, logicalTarget);
+    const sampledTech = shuffle(techPool.length >= techTarget ? techPool : pool).slice(0, techTarget);
 
     const combinedQuestions = [...sampledQuant, ...sampledLogical, ...sampledTech];
 
@@ -723,7 +749,9 @@ router.get("/drives/applications/:appId/aptitude-questions", auth, async (req, r
     res.json({
       success: true,
       totalQuestions: secureQuestions.length,
-      timeLimitMinutes: 20, // 20 minutes for 24 questions
+      timeLimitMinutes: durationMinutes,
+      passingCutoffPercentage,
+      proctoringStrictness,
       questions: secureQuestions,
       sections: [
         { name: "Quantitative Aptitude", count: sampledQuant.length },
@@ -823,11 +851,22 @@ router.post("/drives/applications/:appId/submit-aptitude", auth, async (req, res
       multipleFaceEvents: Number(proctoringMetrics.multipleFaceEvents) || 0,
       faceMissingEvents: Number(proctoringMetrics.faceMissingEvents) || 0,
       webcamStatus: proctoringMetrics.webcamStatus || "inactive",
+      screenShareStatus: proctoringMetrics.screenShareStatus || "inactive",
+      fullscreenExitCount: Number(proctoringMetrics.fullscreenExitCount) || 0,
+      incidentSnapshots: Array.isArray(proctoringMetrics.incidentSnapshots)
+        ? proctoringMetrics.incidentSnapshots.slice(0, 5)
+        : [],
     };
 
     const flags = [...antiCheatFlags];
     if (tabSwitchCount > 0) {
       flags.push(`Candidate switched browser tabs ${tabSwitchCount} times`);
+    }
+    if (safeProctoring.fullscreenExitCount > 0) {
+      flags.push(`Candidate exited fullscreen environment ${safeProctoring.fullscreenExitCount} times`);
+    }
+    if (safeProctoring.screenShareStatus !== "active") {
+      flags.push(`Proctor Alert: Screen sharing stream disconnected or incomplete`);
     }
     if (safeProctoring.multipleFaceEvents >= 3) {
       flags.push(`AI Vision Alert: Multiple persons detected in camera view (${safeProctoring.multipleFaceEvents} times)`);
@@ -836,16 +875,24 @@ router.post("/drives/applications/:appId/submit-aptitude", auth, async (req, res
       flags.push(`AI Vision Alert: Candidate absent from webcam frame (${safeProctoring.faceMissingEvents} times)`);
     }
 
-    // Anti-cheat disqualification threshold (>= 4 tab switches OR >= 5 multiple face violations fails automatically)
-    const disqualifiedByCheating = tabSwitchCount >= 4 || safeProctoring.multipleFaceEvents >= 5;
-    const passed = percentage >= 60 && !disqualifiedByCheating;
+    const driveSettings = application.drive?.assessmentSettings || {};
+    const cutoff = Number(driveSettings.passingCutoffPercentage) || 60;
+    const strictness = driveSettings.proctoringStrictness || "standard";
+
+    const maxTabSwitches = strictness === "strict" ? 2 : 4;
+    const maxMultiFaces = strictness === "strict" ? 3 : 5;
+    const totalExitStrikes = tabSwitchCount + safeProctoring.fullscreenExitCount;
+
+    // Anti-cheat disqualification threshold
+    const disqualifiedByCheating = totalExitStrikes >= maxTabSwitches || safeProctoring.multipleFaceEvents >= maxMultiFaces;
+    const passed = percentage >= cutoff && !disqualifiedByCheating;
 
     if (disqualifiedByCheating) {
-      if (tabSwitchCount >= 4) {
-        flags.push("Disqualified: Excessive background tab switches detected");
+      if (totalExitStrikes >= maxTabSwitches) {
+        flags.push(`Disqualified: Exceeded ${maxTabSwitches - 1} allowed navigation/fullscreen escape warning(s) [${strictness} mode]`);
       }
-      if (safeProctoring.multipleFaceEvents >= 5) {
-        flags.push("Disqualified: Persistent multiple persons detected in camera stream");
+      if (safeProctoring.multipleFaceEvents >= maxMultiFaces) {
+        flags.push(`Disqualified: Persistent multiple faces detected [${strictness} mode]`);
       }
     }
 
@@ -877,7 +924,7 @@ router.post("/drives/applications/:appId/submit-aptitude", auth, async (req, res
         recipient: req.user.userId,
         recipientRole: "student",
         title: "Aptitude Round Cleared! 🎉",
-        message: `Congratulations! You scored ${percentage}% in the Aptitude Assessment for ${
+        message: `Congratulations! You scored ${percentage}% (Cutoff: ${cutoff}%) in the Aptitude Assessment for ${
           application.drive?.title || "Placement Drive"
         } and advanced to Technical Interview.`,
         category: "interview",
@@ -887,10 +934,10 @@ router.post("/drives/applications/:appId/submit-aptitude", auth, async (req, res
       application.status = "Rejected";
 
       const failMsg = disqualifiedByCheating
-        ? "Assessment terminated: Repeated browser tab switches triggered anti-cheat policy."
+        ? `Assessment terminated: Anti-cheat policy triggered (${flags[flags.length - 1] || "Proctoring violation"}).`
         : `You scored ${percentage}% in the Aptitude Assessment for ${
             application.drive?.title || "Placement Drive"
-          }. The qualifying cutoff was 60%.`;
+          }. The qualifying cutoff was ${cutoff}%.`;
 
       await Notification.create({
         recipient: req.user.userId,
@@ -906,6 +953,8 @@ router.post("/drives/applications/:appId/submit-aptitude", auth, async (req, res
     res.json({
       success: true,
       passed,
+      cutoff,
+      strictness,
       disqualifiedByCheating,
       score: totalScore,
       total: finalTotal,

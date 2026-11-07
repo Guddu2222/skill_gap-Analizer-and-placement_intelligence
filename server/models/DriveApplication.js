@@ -1,5 +1,39 @@
 const mongoose = require("mongoose");
 
+const aptitudeScoreSchema = new mongoose.Schema(
+  {
+    score: { type: Number },
+    total: { type: Number },
+    percentage: { type: Number },
+    passed: { type: Boolean },
+    attemptedAt: { type: Date },
+    sectionalBreakdown: {
+      quantitative: { score: Number, total: Number },
+      logical: { score: Number, total: Number },
+      technical: { score: Number, total: Number },
+    },
+    tabSwitchCount: { type: Number, default: 0 },
+    antiCheatFlags: { type: [String], default: [] },
+    proctoringMetrics: {
+      avgPostureScore: { type: Number, default: 0 },
+      avgEyeContactScore: { type: Number, default: 0 },
+      multipleFaceEvents: { type: Number, default: 0 },
+      faceMissingEvents: { type: Number, default: 0 },
+      webcamStatus: { type: String, default: "inactive" },
+      screenShareStatus: { type: String, default: "inactive" },
+      fullscreenExitCount: { type: Number, default: 0 },
+      incidentSnapshots: [
+        {
+          timestamp: { type: Date, default: Date.now },
+          reason: { type: String },
+          image: { type: String }, // Base64 compressed JPEG thumbnail
+        },
+      ],
+    },
+  },
+  { _id: false }
+);
+
 const driveApplicationSchema = new mongoose.Schema({
   drive: { type: mongoose.Schema.Types.ObjectId, ref: "CampusDrive", required: true },
   student: {
@@ -34,25 +68,8 @@ const driveApplicationSchema = new mongoose.Schema({
   },
   offerRespondedAt: { type: Date },
   aptitudeScore: {
-    score: { type: Number },
-    total: { type: Number },
-    percentage: { type: Number },
-    passed: { type: Boolean },
-    attemptedAt: { type: Date },
-    sectionalBreakdown: {
-      quantitative: { score: Number, total: Number },
-      logical: { score: Number, total: Number },
-      technical: { score: Number, total: Number },
-    },
-    tabSwitchCount: { type: Number, default: 0 },
-    antiCheatFlags: { type: [String], default: [] },
-    proctoringMetrics: {
-      avgPostureScore: { type: Number, default: 0 },
-      avgEyeContactScore: { type: Number, default: 0 },
-      multipleFaceEvents: { type: Number, default: 0 },
-      faceMissingEvents: { type: Number, default: 0 },
-      webcamStatus: { type: String, default: "inactive" },
-    },
+    type: aptitudeScoreSchema,
+    default: undefined,
   },
   appliedAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

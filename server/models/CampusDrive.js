@@ -17,6 +17,21 @@ const campusDriveSchema = new mongoose.Schema({
     type: [String],
     default: ["Applied", "Aptitude Test", "Technical Interview", "HR Round", "Offered", "Rejected"]
   },
+  assessmentSettings: {
+    durationMinutes: { type: Number, default: 20 },
+    questionCount: { type: Number, default: 24 },
+    passingCutoffPercentage: { type: Number, default: 60 },
+    proctoringStrictness: {
+      type: String,
+      enum: ["standard", "strict"],
+      default: "standard"
+    },
+    sectionalDistribution: {
+      quantitative: { type: Number, default: 7 },
+      logical: { type: Number, default: 7 },
+      technical: { type: Number, default: 10 }
+    }
+  },
   status: {
     type: String,
     enum: ["upcoming", "active", "completed"],

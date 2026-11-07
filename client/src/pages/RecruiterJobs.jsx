@@ -45,6 +45,18 @@ const RecruiterJobs = () => {
   const [colleges, setColleges] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [inviteLoading, setInviteLoading] = useState(false);
+  const [toast, setToast] = useState(null); // { type: "success" | "error" | "info", title: string, message: string }
+
+  const showToast = (type, message, title = "") => {
+    setToast({ type, message, title });
+  };
+
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
 
   const [newJobData, setNewJobData] = useState({
     title: "",
@@ -54,6 +66,7 @@ const RecruiterJobs = () => {
     salary: "",
     description: "",
     requirements: "",
+    targetCollegeId: "",
   });
 
   const navigate = useNavigate();
@@ -66,12 +79,24 @@ const RecruiterJobs = () => {
     try {
       setLoading(true);
       const [jobsRes, collegesRes, reqsData] = await Promise.all([
-        apiCall("get", "/jobs/me"),
-        apiCall("get", "/colleges"),
-        fetchRecruiterDriveRequests().catch(() => []),
+        apiCall("get", "/jobs/me").catch((err) => {
+          console.error("Error loading recruiter jobs:", err);
+          return { data: [] };
+        }),
+        apiCall("get", "/colleges").catch((err) => {
+          console.error("Error loading colleges:", err);
+          return { data: [] };
+        }),
+        fetchRecruiterDriveRequests().catch((err) => {
+          console.error("Error loading drive requests:", err);
+          return [];
+        }),
       ]);
       setJobs(jobsRes.data || []);
-      setColleges(collegesRes.data || []);
+      const collegesList = Array.isArray(collegesRes.data)
+        ? collegesRes.data
+        : collegesRes.data?.colleges || [];
+      setColleges(collegesList);
       setRequests(reqsData || []);
     } catch (err) {
       console.error("Error loading recruiter jobs data:", err);
@@ -96,12 +121,32 @@ const RecruiterJobs = () => {
     e.preventDefault();
     try {
       const payload = {
-        ...newJobData,
+        title: newJobData.title,
+        company: newJobData.company,
+        location: newJobData.location,
+        jobType: newJobData.jobType,
+        salary: newJobData.salary,
+        description: newJobData.description,
         requirements: newJobData.requirements.split(",").map((s) => s.trim()),
       };
       const res = await apiCall("post", "/jobs", payload);
-      setJobs([res.data, ...jobs]);
+      const createdJob = res.data;
+      setJobs([createdJob, ...jobs]);
+
+      if (newJobData.targetCollegeId) {
+        try {
+          await apiCall("post", "/recruiter-features/drive-requests", {
+            jobId: createdJob._id,
+            collegeId: newJobData.targetCollegeId,
+          });
+          reloadRequests();
+        } catch (inviteErr) {
+          console.error("Error auto-inviting college during job creation:", inviteErr);
+        }
+      }
+
       setShowCreateModal(false);
+      const hadCollege = Boolean(newJobData.targetCollegeId);
       setNewJobData({
         title: "",
         company: "",
@@ -110,27 +155,35 @@ const RecruiterJobs = () => {
         salary: "",
         description: "",
         requirements: "",
+        targetCollegeId: "",
       });
+      showToast(
+        "success",
+        hadCollege
+          ? "Job posted successfully and campus drive request dispatched to partner college!"
+          : "Job role posted and published successfully to the platform!",
+        "Role Published"
+      );
     } catch (err) {
       console.error("Error creating job:", err);
-      alert("Failed to create job.");
+      showToast("error", err.response?.data?.error || "Failed to create job role. Please check required fields.", "Error");
     }
   };
 
   const handleInviteCollege = async (collegeId) => {
-    if (!selectedJob) return;
+    if (!selectedJob || !collegeId) return;
     setInviteLoading(true);
     try {
       await apiCall("post", "/recruiter-features/drive-requests", {
         jobId: selectedJob._id,
         collegeId: collegeId,
       });
-      alert("Drive request sent successfully to college placement office!");
+      showToast("success", "Drive request sent successfully to college placement office!", "Invitation Dispatched");
       setShowInviteModal(false);
       reloadRequests();
     } catch (err) {
       console.error("Error sending invite:", err);
-      alert(err.response?.data?.error || "Failed to send invite.");
+      showToast("error", err.response?.data?.error || "Failed to send drive invitation.", "Invitation Failed");
     } finally {
       setInviteLoading(false);
     }
@@ -142,11 +195,12 @@ const RecruiterJobs = () => {
   const acceptedInvites = requests.filter((r) => r.status === "accepted").length;
   const pendingInvites = requests.filter((r) => r.status === "pending").length;
 
-  const filteredColleges = colleges.filter(
-    (c) =>
-      c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (c.location && c.location.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const filteredColleges = (colleges || []).filter((c) => {
+    const q = (searchQuery || "").toLowerCase();
+    const nameMatch = (c?.name || "").toLowerCase().includes(q);
+    const locationMatch = (c?.location || "").toLowerCase().includes(q);
+    return nameMatch || locationMatch;
+  });
 
   const displayedRequests = requests.filter((r) => {
     if (inviteStatusFilter === "all") return true;
@@ -642,6 +696,41 @@ const RecruiterJobs = () => {
                   />
                 </div>
 
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                      <Building2 className="w-3.5 h-3.5 text-violet-400" />
+                      Target Campus / Partner College (Optional)
+                    </label>
+                    <span className="text-[11px] text-violet-400 font-medium">
+                      {colleges.length} Registered Institutions
+                    </span>
+                  </div>
+                  <select
+                    value={newJobData.targetCollegeId}
+                    onChange={(e) =>
+                      setNewJobData({
+                        ...newJobData,
+                        targetCollegeId: e.target.value,
+                      })
+                    }
+                    className="w-full bg-[#0a0a16] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-violet-500 transition-colors"
+                  >
+                    <option value="">Open to all / Invite college later</option>
+                    {colleges.map((col) => {
+                      const cid = col._id || col.id;
+                      return (
+                        <option key={cid} value={cid}>
+                          {col.name} {col.location ? `— ${col.location}` : ""} {col.tier ? `(${col.tier})` : ""}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Optionally select a registered college to automatically send a campus drive request immediately upon posting.
+                  </p>
+                </div>
+
                 <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
                   <button
                     type="button"
@@ -674,16 +763,23 @@ const RecruiterJobs = () => {
               </button>
 
               <div className="p-6 border-b border-white/10">
-                <h2 className="text-xl font-bold text-white mb-1">
-                  Invite College for Placement Drive
-                </h2>
-                <p className="text-xs text-slate-400">
-                  Send a drive request to campus placement officers for{" "}
-                  <span className="text-violet-300 font-semibold">
-                    {selectedJob.title}
+                <div className="flex items-center justify-between pr-8">
+                  <div>
+                    <h2 className="text-xl font-bold text-white mb-1">
+                      Invite College for Placement Drive
+                    </h2>
+                    <p className="text-xs text-slate-400">
+                      Send a drive request to campus placement officers for{" "}
+                      <span className="text-violet-300 font-semibold">
+                        {selectedJob.title}
+                      </span>
+                      .
+                    </p>
+                  </div>
+                  <span className="px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs font-medium">
+                    {colleges.length} Registered
                   </span>
-                  .
-                </p>
+                </div>
               </div>
 
               <div className="p-6 bg-[#0a0a16] flex-1 overflow-hidden flex flex-col">
@@ -699,44 +795,121 @@ const RecruiterJobs = () => {
                 </div>
 
                 <div className="flex-1 overflow-y-auto custom-scrollbar-dark space-y-2.5 pr-2">
-                  {filteredColleges.map((college) => (
-                    <div
-                      key={college._id}
-                      className="bg-[#121226] border border-white/8 p-4 rounded-xl flex items-center justify-between hover:border-violet-500/50 transition-colors"
-                    >
-                      <div>
-                        <h4 className="font-bold text-sm text-white">
-                          {college.name}
-                        </h4>
-                        <div className="flex items-center gap-3 text-xs text-slate-400 mt-0.5">
-                          <span className="flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-slate-500" />{" "}
-                            {college.location || "Location not set"}
-                          </span>
-                          {college.tier && (
-                            <span className="text-[11px] text-cyan-400 font-medium">
-                              • Tier {college.tier}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => handleInviteCollege(college._id)}
-                        disabled={inviteLoading}
-                        className="flex items-center gap-1.5 bg-violet-600/20 text-violet-300 border border-violet-500/40 px-3.5 py-1.5 rounded-xl text-xs font-semibold hover:bg-violet-600 hover:text-white transition-all disabled:opacity-50 cursor-pointer"
+                  {filteredColleges.map((college) => {
+                    const collegeId = college._id || college.id;
+                    const existingRequest = requests.find((r) => {
+                      const rJobId = r.job?._id || r.job;
+                      const rCollegeId = r.college?._id || r.college;
+                      return (
+                        String(rJobId) === String(selectedJob?._id) &&
+                        String(rCollegeId) === String(collegeId)
+                      );
+                    });
+
+                    return (
+                      <div
+                        key={collegeId}
+                        className="bg-[#121226] border border-white/8 p-4 rounded-xl flex items-center justify-between hover:border-violet-500/50 transition-colors"
                       >
-                        <Send className="w-3.5 h-3.5" />
-                        Send Invite
-                      </button>
-                    </div>
-                  ))}
+                        <div>
+                          <h4 className="font-bold text-sm text-white">
+                            {college.name}
+                          </h4>
+                          <div className="flex items-center gap-3 text-xs text-slate-400 mt-0.5">
+                            <span className="flex items-center gap-1">
+                              <MapPin className="w-3 h-3 text-slate-500" />{" "}
+                              {college.location || "Location not set"}
+                            </span>
+                            {college.tier && (
+                              <span className="text-[11px] text-cyan-400 font-medium">
+                                • Tier {college.tier}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {existingRequest ? (
+                          <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-violet-500/15 border border-violet-500/30 text-violet-300 text-xs font-semibold">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-violet-400" />
+                            {existingRequest.status === "accepted"
+                              ? "Drive Accepted"
+                              : existingRequest.status === "pending"
+                              ? "Invite Sent"
+                              : "Invite Declined"}
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => handleInviteCollege(collegeId)}
+                            disabled={inviteLoading}
+                            className="flex items-center gap-1.5 bg-violet-600/20 text-violet-300 border border-violet-500/40 px-3.5 py-1.5 rounded-xl text-xs font-semibold hover:bg-violet-600 hover:text-white transition-all disabled:opacity-50 cursor-pointer"
+                          >
+                            <Send className="w-3.5 h-3.5" />
+                            Send Invite
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
                   {filteredColleges.length === 0 && (
                     <div className="text-center py-10 text-slate-500 text-xs">
-                      No colleges found matching "{searchQuery}"
+                      {searchQuery
+                        ? `No colleges found matching "${searchQuery}"`
+                        : "No partner colleges registered yet on this platform."}
                     </div>
                   )}
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modern Toast Notification */}
+        {toast && (
+          <div className="fixed top-6 right-6 z-[100] max-w-sm w-full transition-all duration-300 transform translate-y-0">
+            <div
+              className={`p-4 rounded-2xl backdrop-blur-xl border shadow-2xl flex items-start gap-3.5 ${
+                toast.type === "success"
+                  ? "bg-[#0b1b1b]/95 border-emerald-500/30 text-emerald-200 shadow-emerald-900/30"
+                  : toast.type === "error"
+                  ? "bg-[#1f0d14]/95 border-rose-500/30 text-rose-200 shadow-rose-900/30"
+                  : "bg-[#13122c]/95 border-violet-500/30 text-violet-200 shadow-violet-900/30"
+              }`}
+            >
+              <div
+                className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                  toast.type === "success"
+                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                    : toast.type === "error"
+                    ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                    : "bg-violet-500/20 text-violet-400 border border-violet-500/30"
+                }`}
+              >
+                {toast.type === "success" ? (
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                ) : toast.type === "error" ? (
+                  <AlertCircle className="w-5 h-5 text-rose-400" />
+                ) : (
+                  <CheckCircle2 className="w-5 h-5 text-violet-400" />
+                )}
+              </div>
+
+              <div className="flex-1 pt-0.5 min-w-0">
+                {toast.title && (
+                  <h4 className="text-sm font-bold text-white mb-0.5 leading-snug">
+                    {toast.title}
+                  </h4>
+                )}
+                <p className="text-xs text-slate-300 leading-relaxed break-words">
+                  {toast.message}
+                </p>
+              </div>
+
+              <button
+                onClick={() => setToast(null)}
+                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors shrink-0"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
           </div>
         )}

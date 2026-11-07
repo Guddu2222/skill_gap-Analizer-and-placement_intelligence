@@ -87,11 +87,20 @@ const SmartShortlist = () => {
     try {
       setLoading(true);
       const [jobsRes, collegesRes] = await Promise.all([
-        apiCall("get", "/jobs"),
-        apiCall("get", "/colleges"),
+        apiCall("get", "/jobs").catch((err) => {
+          console.error("Error loading jobs in SmartShortlist:", err);
+          return { data: [] };
+        }),
+        apiCall("get", "/colleges").catch((err) => {
+          console.error("Error loading colleges in SmartShortlist:", err);
+          return { data: [] };
+        }),
       ]);
       setJobs(jobsRes.data || []);
-      setColleges(collegesRes.data || []);
+      const collegesList = Array.isArray(collegesRes.data)
+        ? collegesRes.data
+        : collegesRes.data?.colleges || [];
+      setColleges(collegesList);
 
       // Run initial shortlist with default targetSkills
       await executeShortlist({
