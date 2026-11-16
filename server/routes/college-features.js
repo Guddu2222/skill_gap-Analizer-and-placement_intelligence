@@ -7,6 +7,7 @@ const User = require("../models/User");
 const CampusDrive = require("../models/CampusDrive");
 const DriveRequest = require("../models/DriveRequest");
 const Alumni = require("../models/Alumni");
+const Notification = require("../models/Notification");
 const DriveApplication = require("../models/DriveApplication");
 const auth = require("../middleware/auth");
 const { roleCheck } = require("../middleware/auth");
@@ -872,6 +873,20 @@ router.put("/drive-requests/:id/accept", auth, roleCheck(["college_admin"]), asy
     });
     
     await newDrive.save();
+
+    // Notify the recruiter that their drive request was accepted
+    try {
+      await Notification.create({
+        recipient: request.recruiter,
+        recipientRole: "recruiter",
+        title: "Campus Drive Request Accepted 🎉",
+        message: `Your drive request for "${request.job?.title || "the posted role"}" has been accepted by the college. Your campus drive is now live!`,
+        category: "drive",
+        link: "/recruiter/drives",
+      });
+    } catch (notifErr) {
+      console.error("[drive-request accept] notification error:", notifErr.message);
+    }
 
     res.json({ success: true, message: "Request accepted and drive created automatically", request, drive: newDrive });
   } catch (error) {

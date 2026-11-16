@@ -8,8 +8,10 @@ import {
   TrendingUp,
   Briefcase,
   Search,
+  Bell,
 } from "lucide-react";
 import Sidebar from "../components/Sidebar";
+import NotificationDrawer from "../components/NotificationDrawer";
 import CollegeExplorer from "../components/recruiter/CollegeExplorer";
 import AdvancedSearch from "../components/recruiter/AdvancedSearch";
 import DomainExperts from "../components/recruiter/DomainExperts";
@@ -47,6 +49,8 @@ const RecruiterDashboard = () => {
   const [activeTab, setActiveTab] = useState("explore");
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     fetchRecruiterStats()
@@ -74,6 +78,16 @@ const RecruiterDashboard = () => {
                 </p>
               </div>
             </div>
+            <button
+              onClick={() => setIsNotificationOpen(true)}
+              className="relative p-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/10"
+              title="Notifications"
+            >
+              <Bell className="w-5 h-5" />
+              {unreadCount > 0 && (
+                <span className="absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" />
+              )}
+            </button>
           </div>
         </header>
 
@@ -148,6 +162,12 @@ const RecruiterDashboard = () => {
           {activeTab === "experts" && <DomainExperts />}
         </div>
       </main>
+
+      <NotificationDrawer
+        isOpen={isNotificationOpen}
+        onClose={() => setIsNotificationOpen(false)}
+        onUnreadCountChange={(c) => setUnreadCount(c)}
+      />
     </div>
   );
 };

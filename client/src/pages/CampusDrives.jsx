@@ -22,13 +22,11 @@ import {
   BarChart3,
   Save,
 } from "lucide-react";
-import axios from "axios";
+import api from "../services/api";
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 const apiCall = async (method, url, data = null) => {
-  const token = localStorage.getItem("token");
-  const headers = { "x-auth-token": token };
-  return axios({ method, url: `/api${url}`, data, headers });
+  return api({ method, url, data });
 };
 
 const ROUNDS = [
@@ -101,8 +99,11 @@ const CampusDrives = () => {
   const fetchIncomingReqs = async () => {
     try {
       const res = await apiCall("get", "/college-features/drive-requests");
-      setIncomingReqs(res.data);
-    } catch (e) { console.error(e); }
+      setIncomingReqs(Array.isArray(res.data) ? res.data : []);
+    } catch (e) {
+      console.error(e);
+      setIncomingReqs([]);
+    }
   };
 
   const handleAccept = async (id) => {
@@ -118,19 +119,26 @@ const CampusDrives = () => {
   const fetchRecruiters = async () => {
     try {
       const res = await apiCall("get", "/college-features/recruiters");
-      setRecruiters(res.data);
-    } catch (e) { console.error(e); }
+      setRecruiters(Array.isArray(res.data) ? res.data : []);
+    } catch (e) {
+      console.error(e);
+      setRecruiters([]);
+    }
   };
 
   const fetchDrives = async () => {
     try {
       const res = await apiCall("get", "/campus-drives");
-      setDrives(res.data);
-      if (res.data.length > 0 && !activeDrive) {
-        setActiveDrive(res.data[0]);
-        await fetchApplications(res.data[0]._id);
+      const driveList = Array.isArray(res.data) ? res.data : [];
+      setDrives(driveList);
+      if (driveList.length > 0 && !activeDrive) {
+        setActiveDrive(driveList[0]);
+        await fetchApplications(driveList[0]._id);
       }
-    } catch (e) { console.error(e); }
+    } catch (e) {
+      console.error(e);
+      setDrives([]);
+    }
     finally { setLoading(false); }
   };
 

@@ -41,18 +41,15 @@ import {
   Layers,
   Activity,
 } from "lucide-react";
-import axios from "axios";
 import useVisionProctor from "../hooks/useVisionProctor";
-import {
+import api, {
   respondToJobOffer,
   fetchAptitudeQuestions,
   submitAptitudeAssessment,
 } from "../services/api";
 
 const apiCall = async (method, url, data = null) => {
-  const token = localStorage.getItem("token");
-  const headers = { "x-auth-token": token };
-  return axios({ method, url: `/api${url}`, data, headers });
+  return api({ method, url, data });
 };
 
 const StudentDrives = () => {
@@ -479,8 +476,8 @@ const StudentDrives = () => {
         apiCall("get", "/student-features/drives/applications"),
         apiCall("get", "/student-features/me"),
       ]);
-      setDrives(drivesRes.data || []);
-      setApplications(appsRes.data || []);
+      setDrives(Array.isArray(drivesRes.data) ? drivesRes.data : []);
+      setApplications(Array.isArray(appsRes.data) ? appsRes.data : []);
       setStudent(meRes.data?.student || null);
     } catch (err) {
       console.error("Error fetching student drives data:", err);

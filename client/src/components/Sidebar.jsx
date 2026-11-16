@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
@@ -26,10 +26,19 @@ import {
 
 const Sidebar = ({ role = "college", collapsed: controlledCollapsed, onToggle }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [localCollapsed, setLocalCollapsed] = useState(false);
   
   const isControlled = controlledCollapsed !== undefined;
   const collapsed = isControlled ? controlledCollapsed : localCollapsed;
+
+  // Auto-detect role from the active URL path with prop and localStorage fallback
+  const activeRole = (() => {
+    if (location.pathname.startsWith("/recruiter")) return "recruiter";
+    if (location.pathname.startsWith("/student")) return "student";
+    if (location.pathname.startsWith("/college")) return "college";
+    return role || localStorage.getItem("userRole") || "college";
+  })();
 
   const handleToggle = () => {
     if (isControlled && onToggle) {
@@ -99,12 +108,21 @@ const Sidebar = ({ role = "college", collapsed: controlledCollapsed, onToggle })
     student: Zap,
   };
 
-  const navLinks = links[role] || links.college;
-  const RoleIcon = roleIcons[role] || Zap;
+  const navLinks = links[activeRole] || links.college;
+  const RoleIcon = roleIcons[activeRole] || Zap;
+
+  const isLinkActive = (targetPath) => {
+    if (location.pathname === targetPath) return true;
+    if (targetPath === "/recruiter" && (location.pathname === "/recruiter" || location.pathname === "/recruiter/dashboard")) return true;
+    if (targetPath === "/college" && (location.pathname === "/college" || location.pathname === "/college/dashboard")) return true;
+    if (targetPath === "/student/overview" && (location.pathname === "/student" || location.pathname === "/student/overview")) return true;
+    return false;
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userRole");
+    localStorage.removeItem("userId");
     navigate("/login");
   };
 
@@ -133,7 +151,7 @@ const Sidebar = ({ role = "college", collapsed: controlledCollapsed, onToggle })
               SkillBridge
             </span>
             <span className="text-violet-300/70 text-[10px] font-medium uppercase tracking-widest">
-              {roleLabels[role]}
+              {roleLabels[activeRole]}
             </span>
           </div>
         )}
@@ -170,45 +188,49 @@ const Sidebar = ({ role = "college", collapsed: controlledCollapsed, onToggle })
             key={link.path}
             to={link.path}
             end={link.path.split("/").length <= 2}
-            className={({ isActive }) =>
-              `relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden ${
-                isActive
+            className={({ isActive }) => {
+              const active = isActive || isLinkActive(link.path);
+              return `relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden ${
+                active
                   ? "bg-white/15 text-white shadow-lg"
                   : "text-white/50 hover:text-white/80 hover:bg-white/8"
-              }`
-            }
+              }`;
+            }}
             title={collapsed ? link.label : undefined}
           >
-            {({ isActive }) => (
-              <>
-                {/* Active glow */}
-                {isActive && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-indigo-500/5 rounded-xl" />
-                )}
-                <span
-                  className={`relative flex-shrink-0 transition-colors ${
-                    isActive
-                      ? "text-violet-400"
-                      : "group-hover:text-white/70"
-                  }`}
-                >
-                  <link.icon className="w-4 h-4" />
-                </span>
-                {!collapsed && (
-                  <span className="relative truncate">{link.label}</span>
-                )}
-                {isActive && !collapsed && (
-                  <span className="relative ml-auto w-1.5 h-1.5 rounded-full bg-violet-400 flex-shrink-0" />
-                )}
-                {/* Tooltip for collapsed */}
-                {collapsed && (
-                  <div className="absolute left-full ml-2 px-2.5 py-1.5 bg-slate-800 text-white text-xs font-medium rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 shadow-xl z-50">
-                    {link.label}
-                    <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-2 h-2 bg-slate-800 rotate-45" />
-                  </div>
-                )}
-              </>
-            )}
+            {({ isActive }) => {
+              const active = isActive || isLinkActive(link.path);
+              return (
+                <>
+                  {/* Active glow */}
+                  {active && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-indigo-500/5 rounded-xl" />
+                  )}
+                  <span
+                    className={`relative flex-shrink-0 transition-colors ${
+                      active
+                        ? "text-violet-400"
+                        : "group-hover:text-white/70"
+                    }`}
+                  >
+                    <link.icon className="w-4 h-4" />
+                  </span>
+                  {!collapsed && (
+                    <span className="relative truncate">{link.label}</span>
+                  )}
+                  {active && !collapsed && (
+                    <span className="relative ml-auto w-1.5 h-1.5 rounded-full bg-violet-400 flex-shrink-0" />
+                  )}
+                  {/* Tooltip for collapsed */}
+                  {collapsed && (
+                    <div className="absolute left-full ml-2 px-2.5 py-1.5 bg-slate-800 text-white text-xs font-medium rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 shadow-xl z-50">
+                      {link.label}
+                      <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-2 h-2 bg-slate-800 rotate-45" />
+                    </div>
+                  )}
+                </>
+              );
+            }}
           </NavLink>
         ))}
       </nav>
@@ -262,7 +284,7 @@ const Sidebar = ({ role = "college", collapsed: controlledCollapsed, onToggle })
         </NavLink>
 
         <NavLink
-          to={`/${role}/settings`}
+          to={`/${activeRole}/settings`}
           className={({ isActive }) =>
             `relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group overflow-hidden ${
               isActive

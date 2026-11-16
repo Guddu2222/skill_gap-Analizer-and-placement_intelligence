@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Sidebar from '../components/Sidebar';
-import { Users, Search, Briefcase, Mail, Phone, Github, Linkedin, ExternalLink, Star } from 'lucide-react';
+import NotificationDrawer from '../components/NotificationDrawer';
+import { Users, Search, Briefcase, Mail, Phone, Github, Linkedin, ExternalLink, Star, Bell } from 'lucide-react';
 import api from '../services/api';
 
 const RecruiterCandidates = () => {
@@ -11,7 +12,26 @@ const RecruiterCandidates = () => {
   const [dept, setDept] = useState('');
   const [skill, setSkill] = useState('');
   const [shortlistFilter, setShortlistFilter] = useState(false);
+  // Persistent: Set of saved student IDs (loaded from backend)
   const [saved, setSaved] = useState(new Set());
+  const [savingId, setSavingId] = useState(null); // tracks which card is being saved
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // Load saved candidate IDs from backend on mount
+  useEffect(() => {
+    api.get('/recruiter-features/candidates/saved')
+      .then(r => {
+        const ids = new Set(
+          (r.data?.savedCandidates || [])
+            .map(sc => sc.student?._id || sc.student)
+            .filter(Boolean)
+            .map(String)
+        );
+        setSaved(ids);
+      })
+      .catch(() => {}); // silent — saved state starts empty on error
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -21,17 +41,26 @@ const RecruiterCandidates = () => {
       .finally(() => setLoading(false));
   }, [search, minCGPA, dept, skill]);
 
-  const displayed = candidates.filter(c => !shortlistFilter || saved.has(c._id || c.id));
+  const displayed = candidates.filter(c => !shortlistFilter || saved.has(String(c._id || c.id)));
 
-  const toggleSave = (id) => setSaved(prev => {
-    const n = new Set(prev);
-    if (n.has(id)) {
-      n.delete(id);
-    } else {
-      n.add(id);
+  const toggleSave = useCallback(async (id) => {
+    const sid = String(id);
+    const isSaved = saved.has(sid);
+    setSavingId(sid);
+    try {
+      if (isSaved) {
+        await api.delete(`/recruiter-features/candidates/save/${sid}`);
+        setSaved(prev => { const n = new Set(prev); n.delete(sid); return n; });
+      } else {
+        await api.post('/recruiter-features/candidates/save', { studentId: sid, folderName: 'General' });
+        setSaved(prev => new Set([...prev, sid]));
+      }
+    } catch (err) {
+      console.error('Save toggle error:', err);
+    } finally {
+      setSavingId(null);
     }
-    return n;
-  });
+  }, [saved]);
 
   const initials = (c) => [(c.firstName || c.first_name || ''), (c.lastName || c.last_name || '')]
     .filter(Boolean).map(n => n[0]).join('').toUpperCase() || 'C';
@@ -61,22 +90,34 @@ const RecruiterCandidates = () => {
               {candidates.length} candidates
             </span>
           </div>
-          <button
-            onClick={() => setShortlistFilter(f => !f)}
-            className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl border transition-all ${
-              shortlistFilter
-                ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
-                : 'bg-white/5 border-white/10 text-slate-300 hover:text-white hover:bg-white/10'
-            }`}
-          >
-            <Star className="w-4 h-4" />
-            {shortlistFilter ? 'Show All' : 'My Shortlist'}
-            {shortlistFilter && (
-              <span className="ml-1 px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-xs">
-                {saved.size}
-              </span>
-            )}
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShortlistFilter(f => !f)}
+              className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl border transition-all ${
+                shortlistFilter
+                  ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
+                  : 'bg-white/5 border-white/10 text-slate-300 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              <Star className="w-4 h-4" />
+              {shortlistFilter ? 'Show All' : 'My Shortlist'}
+              {shortlistFilter && (
+                <span className="ml-1 px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-xs">
+                  {saved.size}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => setIsNotificationOpen(true)}
+              className="relative p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors"
+              title="Notifications"
+            >
+              <Bell className="w-4 h-4" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+              )}
+            </button>
+          </div>
         </header>
 
         <div className="flex-1 p-8 space-y-6">
@@ -136,7 +177,9 @@ const RecruiterCandidates = () => {
             <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
               {displayed.map(c => {
                 const id = c._id || c.id;
-                const isSaved = saved.has(id);
+                const sid = String(id);
+                const isSaved = saved.has(sid);
+                const isSavingThis = savingId === sid;
                 const name = [c.firstName || c.first_name, c.lastName || c.last_name].filter(Boolean).join(' ') || 'Candidate';
                 return (
                   <div
@@ -156,11 +199,15 @@ const RecruiterCandidates = () => {
                         </div>
                         <button
                           onClick={() => toggleSave(id)}
+                          disabled={isSavingThis}
                           className={`p-1.5 rounded-lg border transition-all ${
-                            isSaved
+                            isSavingThis
+                              ? 'opacity-50 cursor-wait border-white/10'
+                              : isSaved
                               ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
                               : 'border-white/5 text-slate-500 hover:text-white hover:bg-white/5'
                           }`}
+                          title={isSaved ? 'Remove from shortlist' : 'Save to shortlist'}
                         >
                           <Star className="w-4 h-4 fill-current" />
                         </button>
@@ -224,6 +271,12 @@ const RecruiterCandidates = () => {
           )}
         </div>
       </main>
+
+      <NotificationDrawer
+        isOpen={isNotificationOpen}
+        onClose={() => setIsNotificationOpen(false)}
+        onUnreadCountChange={(c) => setUnreadCount(c)}
+      />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
+import NotificationDrawer from "../components/NotificationDrawer";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Plus,
@@ -20,14 +21,12 @@ import {
   Filter,
   X,
   Building2,
+  Bell,
 } from "lucide-react";
-import axios from "axios";
-import { fetchRecruiterDriveRequests } from "../services/api";
+import api, { fetchRecruiterDriveRequests } from "../services/api";
 
 const apiCall = async (method, url, data = null) => {
-  const token = localStorage.getItem("token");
-  const headers = { "x-auth-token": token };
-  return axios({ method, url: `/api${url}`, data, headers });
+  return api({ method, url, data });
 };
 
 const RecruiterJobs = () => {
@@ -46,6 +45,8 @@ const RecruiterJobs = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [inviteLoading, setInviteLoading] = useState(false);
   const [toast, setToast] = useState(null); // { type: "success" | "error" | "info", title: string, message: string }
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const showToast = (type, message, title = "") => {
     setToast({ type, message, title });
@@ -92,12 +93,12 @@ const RecruiterJobs = () => {
           return [];
         }),
       ]);
-      setJobs(jobsRes.data || []);
+      setJobs(Array.isArray(jobsRes.data) ? jobsRes.data : []);
       const collegesList = Array.isArray(collegesRes.data)
         ? collegesRes.data
         : collegesRes.data?.colleges || [];
-      setColleges(collegesList);
-      setRequests(reqsData || []);
+      setColleges(Array.isArray(collegesList) ? collegesList : []);
+      setRequests(Array.isArray(reqsData) ? reqsData : []);
     } catch (err) {
       console.error("Error loading recruiter jobs data:", err);
     } finally {
@@ -238,6 +239,16 @@ const RecruiterJobs = () => {
           </div>
 
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsNotificationOpen(true)}
+              className="relative p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors border border-white/5"
+              title="Notifications"
+            >
+              <Bell className="w-5 h-5" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+              )}
+            </button>
             <button
               onClick={() => setShowCreateModal(true)}
               className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold py-2.5 px-5 rounded-xl transition-all duration-300 shadow-lg shadow-violet-600/20 cursor-pointer"
@@ -914,6 +925,12 @@ const RecruiterJobs = () => {
           </div>
         )}
       </main>
+
+      <NotificationDrawer
+        isOpen={isNotificationOpen}
+        onClose={() => setIsNotificationOpen(false)}
+        onUnreadCountChange={(c) => setUnreadCount(c)}
+      />
     </div>
   );
 };

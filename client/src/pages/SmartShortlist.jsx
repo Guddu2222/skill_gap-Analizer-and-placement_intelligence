@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Sidebar from "../components/Sidebar";
+import NotificationDrawer from "../components/NotificationDrawer";
 import {
   Sparkles,
   Calendar,
@@ -25,18 +26,16 @@ import {
   Video,
   Award,
   TrendingUp,
+  Bell,
 } from "lucide-react";
-import axios from "axios";
-import {
+import api, {
   runSmartShortlist,
   scheduleSmartInterviews,
   saveCandidate,
 } from "../services/api";
 
 const apiCall = async (method, url, data = null) => {
-  const token = localStorage.getItem("token");
-  const headers = { "x-auth-token": token };
-  return axios({ method, url: `/api${url}`, data, headers });
+  return api({ method, url, data });
 };
 
 const SmartShortlist = () => {
@@ -77,6 +76,8 @@ const SmartShortlist = () => {
   const [schedulingLoading, setSchedulingLoading] = useState(false);
   const [copiedLinkIndex, setCopiedLinkIndex] = useState(null);
   const [scheduleSuccessMsg, setScheduleSuccessMsg] = useState("");
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   // Initial load
   useEffect(() => {
@@ -96,11 +97,11 @@ const SmartShortlist = () => {
           return { data: [] };
         }),
       ]);
-      setJobs(jobsRes.data || []);
+      setJobs(Array.isArray(jobsRes.data) ? jobsRes.data : []);
       const collegesList = Array.isArray(collegesRes.data)
         ? collegesRes.data
         : collegesRes.data?.colleges || [];
-      setColleges(collegesList);
+      setColleges(Array.isArray(collegesList) ? collegesList : []);
 
       // Run initial shortlist with default targetSkills
       await executeShortlist({
@@ -292,6 +293,16 @@ const SmartShortlist = () => {
           </div>
 
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsNotificationOpen(true)}
+              className="relative p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors border border-white/5"
+              title="Notifications"
+            >
+              <Bell className="w-5 h-5" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+              )}
+            </button>
             <button
               onClick={() => executeShortlist()}
               disabled={loading}
@@ -863,6 +874,12 @@ const SmartShortlist = () => {
           </div>
         </div>
       </main>
+
+      <NotificationDrawer
+        isOpen={isNotificationOpen}
+        onClose={() => setIsNotificationOpen(false)}
+        onUnreadCountChange={(c) => setUnreadCount(c)}
+      />
     </div>
   );
 };

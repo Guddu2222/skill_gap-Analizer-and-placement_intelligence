@@ -9,6 +9,8 @@ const DriveApplication = require("../models/DriveApplication");
 const DriveRequest = require("../models/DriveRequest");
 const Job = require("../models/Job");
 const Notification = require("../models/Notification");
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
 const auth = require("../middleware/auth");
 const { roleCheck } = require("../middleware/auth");
 
@@ -634,17 +636,35 @@ router.post("/offer-probability", auth, async (req, res) => {
     const expectedCTC = 15;
     if (offerCTC < expectedCTC) {
       probability -= 20;
-      riskFactors.push("Offer below expectation");
+      riskFactors.push("Offer below market expectation");
     } else if (offerCTC > expectedCTC * 1.5) probability += 15;
 
     const preferredLocations = ["Bangalore", "Remote"];
     if (!preferredLocations.includes(location)) {
       probability -= 15;
-      riskFactors.push("Location mismatch");
+      riskFactors.push("Location mismatch with candidate preference");
     }
-    if (Math.random() > 0.7) {
-      probability -= 25;
-      riskFactors.push("Has competing offers");
+
+    // Real signal: check if student has competing recruiters (SavedCandidate records)
+    const competingInterest = await SavedCandidate.countDocuments({
+      student: studentId,
+      status: { $in: ["interviewing", "offered"] },
+    });
+    if (competingInterest > 1) {
+      probability -= 20;
+      riskFactors.push(`Engaged with ${competingInterest} other recruiters`);
+    }
+
+    // Real signal: low CGPA increases risk of offer mismatch
+    if (student.cgpa && student.cgpa < 6.5) {
+      probability -= 10;
+      riskFactors.push("Academic CGPA below threshold");
+    }
+
+    // Real signal: already placed
+    if (student.isPlaced) {
+      probability -= 30;
+      riskFactors.push("Already placed at another organisation");
     }
 
     probability = Math.min(Math.max(probability, 10), 99);
@@ -665,18 +685,35 @@ router.get("/campus-roi", auth, async (req, res) => {
     const colleges = await College.find().lean();
     const roiData = await Promise.all(
       colleges.slice(0, 10).map(async (c) => {
-        const students = await Student.find({ college: c._id }).lean();
+        const students = await Student.find({ college: c._id })
+          .select("isPlaced placementPackage cgpa")
+          .lean();
         const placed = students.filter((s) => s.isPlaced).length;
         const rate =
           students.length > 0
             ? ((placed / students.length) * 100).toFixed(0)
             : 0;
+
+        // Real retention: ratio of placed vs total registered (approximation)
+        const retentionRate =
+          students.length > 0
+            ? Math.min(99, parseFloat(((placed / students.length) * 100).toFixed(1)))
+            : 0;
+
+        // Real avg performance: average CGPA of placed students as proxy
+        const placedStudents = students.filter((s) => s.isPlaced && s.cgpa);
+        const avgCgpa =
+          placedStudents.length > 0
+            ? placedStudents.reduce((sum, s) => sum + s.cgpa, 0) / placedStudents.length
+            : 0;
+        const avgPerformance = avgCgpa > 0 ? parseFloat((avgCgpa / 2).toFixed(2)) : 0; // scale 10→5
+
         return {
           college: c.name,
           hires: placed,
-          retentionRate: Math.min(90 + Math.random() * 10, 99),
-          avgPerformance: 3.5 + Math.random() * 1.5,
-          roiScore: parseInt(rate) || 50,
+          retentionRate,
+          avgPerformance,
+          roiScore: parseInt(rate) || 0,
         };
       }),
     );
@@ -1268,13 +1305,9 @@ router.post(
         const displayMin = slotMin < 10 ? `0${slotMin}` : slotMin;
         const timeSlotString = `${displayHour}:${displayMin} ${period}`;
 
-        const roomCode =
-          Math.random().toString(36).substring(2, 5) +
-          "-" +
-          Math.random().toString(36).substring(2, 6) +
-          "-" +
-          Math.random().toString(36).substring(2, 5);
-        const meetLink = `https://meet.google.com/${roomCode}`;
+        // Use Jitsi Meet — rooms are auto-created on visit, no API key needed
+        const roomName = `skillbridge-${Date.now()}-slot${i}`;
+        const meetLink = `https://meet.jit.si/${roomName}`;
 
         scheduledInterviews.push({
           candidateId: c.id || c._id,
@@ -1337,6 +1370,97 @@ router.post(
     }
   }
 );
+
+// ==================== RECRUITER PROFILE & SETTINGS ====================
+
+// GET /api/recruiter-features/profile
+router.get("/profile", auth, roleCheck(["recruiter"]), async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId)
+      .select("-password -verificationCode -verificationCodeExpires")
+      .lean();
+    if (!user) return res.status(404).json({ error: "Recruiter profile not found" });
+
+    res.json(user);
+  } catch (err) {
+    console.error("Fetch recruiter profile error:", err);
+    res.status(500).json({ error: "Failed to fetch recruiter profile" });
+  }
+});
+
+// PUT /api/recruiter-features/profile
+router.put("/profile", auth, roleCheck(["recruiter"]), async (req, res) => {
+  try {
+    const {
+      name,
+      company,
+      designation,
+      phone,
+      location,
+      website,
+      bio,
+      hiringInterests,
+      notifPrefs,
+      avatar,
+    } = req.body;
+
+    const updateFields = {};
+    if (name !== undefined) updateFields.name = name;
+    if (company !== undefined) updateFields.company = company;
+    if (designation !== undefined) updateFields.designation = designation;
+    if (phone !== undefined) updateFields.phone = phone;
+    if (location !== undefined) updateFields.location = location;
+    if (website !== undefined) updateFields.website = website;
+    if (bio !== undefined) updateFields.bio = bio;
+    if (avatar !== undefined) updateFields.avatar = avatar;
+    if (Array.isArray(hiringInterests)) updateFields.hiringInterests = hiringInterests;
+    if (notifPrefs && typeof notifPrefs === "object") updateFields.notifPrefs = notifPrefs;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.userId,
+      { $set: updateFields },
+      { new: true, runValidators: true }
+    ).select("-password -verificationCode -verificationCodeExpires");
+
+    res.json({ success: true, profile: updatedUser });
+  } catch (err) {
+    console.error("Update recruiter profile error:", err);
+    res.status(500).json({ error: "Failed to update recruiter profile" });
+  }
+});
+
+// PUT /api/recruiter-features/profile/password
+router.put("/profile/password", auth, roleCheck(["recruiter"]), async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    if (!newPassword || newPassword.length < 6) {
+      return res.status(400).json({ error: "New password must be at least 6 characters" });
+    }
+
+    const user = await User.findById(req.user.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    // If user has a password set (not Google/OAuth only), verify current password
+    if (user.password) {
+      if (!currentPassword) {
+        return res.status(400).json({ error: "Current password is required" });
+      }
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ error: "Incorrect current password" });
+      }
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+    await user.save();
+
+    res.json({ success: true, message: "Password updated successfully" });
+  } catch (err) {
+    console.error("Change password error:", err);
+    res.status(500).json({ error: "Failed to update password" });
+  }
+});
 
 module.exports = router;
 

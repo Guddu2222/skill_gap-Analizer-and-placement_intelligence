@@ -286,6 +286,21 @@ export const updateRecruiterDriveAssessmentSettings = async (driveId, settings) 
   return data;
 };
 
+export const fetchRecruiterProfile = async () => {
+  const { data } = await api.get("/recruiter-features/profile");
+  return data;
+};
+
+export const updateRecruiterProfile = async (payload) => {
+  const { data } = await api.put("/recruiter-features/profile", payload);
+  return data;
+};
+
+export const updateRecruiterPassword = async (payload) => {
+  const { data } = await api.put("/recruiter-features/profile/password", payload);
+  return data;
+};
+
 
 
 

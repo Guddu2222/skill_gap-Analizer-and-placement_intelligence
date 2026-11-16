@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
+import NotificationDrawer from "../components/NotificationDrawer";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import {
   Users,
@@ -28,15 +29,13 @@ import {
   ShieldCheck,
   BarChart3,
   Save,
+  Bell,
 } from "lucide-react";
 
-import axios from "axios";
-import { updateApplicationEvaluation } from "../services/api";
+import api, { updateApplicationEvaluation } from "../services/api";
 
 const apiCall = async (method, url, data = null) => {
-  const token = localStorage.getItem("token");
-  const headers = { "x-auth-token": token };
-  return axios({ method, url: `/api${url}`, data, headers });
+  return api({ method, url, data });
 };
 
 const ROUND_COLORS = {
@@ -67,6 +66,8 @@ const RecruiterDrives = () => {
   const [activeDrive, setActiveDrive] = useState(null);
   const [applications, setApplications] = useState({});
   const [loading, setLoading] = useState(true);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   // Evaluation modal state
   const [selectedApp, setSelectedApp] = useState(null);
@@ -104,13 +105,15 @@ const RecruiterDrives = () => {
     try {
       setLoading(true);
       const res = await apiCall("get", "/recruiter-features/drives");
-      setDrives(res.data);
-      if (res.data.length > 0 && !activeDrive) {
-        setActiveDrive(res.data[0]);
-        fetchApplications(res.data[0]._id);
+      const drivesList = Array.isArray(res.data) ? res.data : [];
+      setDrives(drivesList);
+      if (drivesList.length > 0 && !activeDrive) {
+        setActiveDrive(drivesList[0]);
+        fetchApplications(drivesList[0]._id);
       }
     } catch (err) {
       console.error("Error fetching recruiter drives:", err);
+      setDrives([]);
     } finally {
       setLoading(false);
     }
@@ -311,6 +314,17 @@ const RecruiterDrives = () => {
               </p>
             </div>
           </div>
+
+          <button
+            onClick={() => setIsNotificationOpen(true)}
+            className="relative p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors border border-white/5"
+            title="Notifications"
+          >
+            <Bell className="w-5 h-5" />
+            {unreadCount > 0 && (
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            )}
+          </button>
         </header>
 
         <div className="flex flex-1 gap-6 min-h-0">
@@ -1090,6 +1104,12 @@ const RecruiterDrives = () => {
           </div>
         )}
       </main>
+
+      <NotificationDrawer
+        isOpen={isNotificationOpen}
+        onClose={() => setIsNotificationOpen(false)}
+        onUnreadCountChange={(c) => setUnreadCount(c)}
+      />
     </div>
   );
 };

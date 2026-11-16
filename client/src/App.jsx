@@ -18,6 +18,7 @@ import CollegeAnalytics from "./pages/CollegeAnalytics";
 import CollegeShortlist from "./pages/CollegeShortlist";
 import CollegeAlumni from "./pages/CollegeAlumni";
 import CollegeSettings from "./pages/CollegeSettings";
+import RecruiterSettings from "./pages/RecruiterSettings";
 import CommunityInterviews from "./pages/CommunityInterviews";
 import RecruiterAnalytics from "./pages/RecruiterAnalytics";
 import AboutUs from "./pages/AboutUs";
@@ -73,6 +74,8 @@ const App = () => {
         <Route path="/recruiter/candidates" element={<RecruiterCandidates />} />
         <Route path="/recruiter/smart-shortlist" element={<SmartShortlist />} />
         <Route path="/recruiter/analytics" element={<RecruiterAnalytics />} />
+        <Route path="/recruiter/crm" element={<RecruiterCRM />} />
+        <Route path="/recruiter/settings" element={<RecruiterSettings />} />
         <Route path="/student/community-interviews" element={<CommunityInterviews />} />
 
         {/* Student Dashboard Routes */}

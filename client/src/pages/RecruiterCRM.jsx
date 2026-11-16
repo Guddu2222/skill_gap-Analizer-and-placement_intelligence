@@ -24,6 +24,11 @@ const RecruiterCRM = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const navigate = useNavigate();
 
+  const userRole =
+    localStorage.getItem("userRole") ||
+    (window.location.pathname.startsWith("/college") ? "college" : "recruiter");
+  const drivesPath = userRole === "recruiter" ? "/recruiter/drives" : "/college/drives";
+
   useEffect(() => {
     loadCRMData();
   }, []);
@@ -123,7 +128,7 @@ const RecruiterCRM = () => {
         <div className="absolute bottom-10 right-10 w-[450px] h-[450px] bg-cyan-600/10 rounded-full blur-3xl" />
       </div>
 
-      <Sidebar role="college" />
+      <Sidebar role={userRole} />
 
       <main className="flex-1 ml-64 p-8 relative z-10 flex flex-col min-h-screen">
         {/* Header */}
@@ -141,7 +146,7 @@ const RecruiterCRM = () => {
           </div>
           <div className="flex items-center gap-3">
             <button
-              onClick={() => navigate("/college/drives")}
+              onClick={() => navigate(drivesPath)}
               className="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-violet-600/30 flex items-center gap-2 transition-all active:scale-95"
             >
               <Plus className="w-4 h-4" /> Schedule Campus Drive
@@ -335,7 +340,7 @@ const RecruiterCRM = () => {
                       </td>
                       <td className="px-6 py-4 text-right">
                         <Link
-                          to="/college/drives"
+                          to={drivesPath}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-violet-600/20 text-slate-300 hover:text-white border border-white/10 hover:border-violet-500/30 text-xs font-semibold transition-all"
                         >
                           <span>Manage Drives</span>
