@@ -3,6 +3,19 @@ const router = express.Router();
 const Job = require("../models/Job");
 const auth = require("../middleware/auth");
 const Student = require("../models/Student");
+const { syncExternalJobs } = require("../services/jobSyncService");
+
+// Trigger on-demand sync of live external jobs
+router.post("/sync", auth, async (req, res) => {
+  try {
+    const result = await syncExternalJobs(25);
+    res.json(result);
+  } catch (err) {
+    console.error("Job sync route error:", err.message);
+    res.status(500).json({ error: "Failed to sync external jobs", details: err.message });
+  }
+});
+
 // Get all jobs
 router.get("/", async (req, res) => {
   try {

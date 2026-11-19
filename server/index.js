@@ -48,6 +48,8 @@ mongoose
     console.log("MongoDB connected successfully");
     const { seedQuestionBank } = require("./utils/seedQuestionBank");
     seedQuestionBank();
+    const { initScheduledSync } = require("./services/jobSyncService");
+    initScheduledSync();
   })
   .catch((err) => {
     console.error("MongoDB connection error:", err.message);
